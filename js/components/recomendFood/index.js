@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Image, View, TouchableOpacity } from "react-native";
+import {Text, Image, View, TouchableOpacity } from "react-native";
 
-import { List, ListItem, Header, Container, Content, Text, Thumbnail } from "native-base";
+import { List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
@@ -46,24 +46,29 @@ class RecommendFood extends Component {
 	}
 	renderHorizontalList(foods) {
 		return (
-			<List horizontal={true} itemDivider={false} dataArray={foods}
+			<View style={{flex:1}}>
+			<View style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
+				<Text style={styles.sectionText} note>Section</Text>
+			</View>
+			<List style={{marginLeft:-15, marginRight:-15}} showsHorizontalScrollIndicator={false} horizontal={true} dataArray={foods}
 				renderRow={(item) =>
-					<ListItem>
+					<ListItem style={{ borderBottomWidth: 0 }}>
 						{this.renderCell(item)}
 					</ListItem>
 				}>
 			</List>
+			</View>
 		)
 	}
 	renderList() {
 		var items = ['Simon Mignolet', 'Nathaniel Clyne', 'Dejan Lovren', 'Mama Sakho', 'Emre Can']
 		return (
-			<List itemDivider={false} dataArray={items} renderSeparator={() =>
+			<List style={{ flex: 1 }} dataArray={items} renderSeparator={() =>
 				<View>
 				</View>
 			}
 				renderRow={(item) =>
-					<ListItem>
+					<ListItem style={{ borderBottomWidth: 0}}>
 						{this.renderHorizontalList(items)}
 					</ListItem>
 				}>
@@ -74,8 +79,8 @@ class RecommendFood extends Component {
 		const navigation = this.props.navigation;
 		return (
 			<Container>
-				<Header>
-				</Header>
+				<HeaderContent title='Recommend'>
+					</HeaderContent>
 				<Content>
 					<View style={styles.pageBanner}>
 						{this.pageBanner()}
