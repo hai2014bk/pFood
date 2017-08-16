@@ -7,6 +7,7 @@ import styles from "./styles";
 const headerLogo = require("../../../images/Header-Logo.png");
 
 class HeaderContent extends Component {
+
 	openCart(){
 		console.log('Open Cart')
 	}
@@ -23,7 +24,7 @@ class HeaderContent extends Component {
             <Text style={{ textAlign: 'center', flex: 1, color: '#61b635', fontSize: 17 }}>{this.props.title}</Text>
           </Body>
           <Right style={{ flex: 1 }}>
-            <Button transparent onPress={this.openCart()}>
+            <Button transparent onPress={()=>this.openCart()}>
               <Icon active name="cart" />
             </Button>
           </Right>
@@ -38,7 +39,7 @@ class HeaderContent extends Component {
             <Text style={{ textAlign: 'center', flex: 1, color: '#61b635', fontSize: 17 }}>{this.props.title}</Text>
           </Body>
           <Right style={{ flex: 1 }}>
-            <Button transparent onPress={this.openCart()}>
+            <Button transparent onPress={()=>this.openCart()}>
               <Icon active name="cart" />
             </Button>
           </Right>
