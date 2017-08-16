@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, StatusBar } from "react-native";
+import { Image, StatusBar, Alert } from "react-native";
 
 import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
 
@@ -30,7 +30,11 @@ class SignUp extends Component {
 	}
 
 	createPassword(){
-		
+		if(this.state.email && this.state.name && this.state.password){
+
+		}else{
+			Alert.alert('','Fields are not be blank')
+		}
 	}
 
 	render() {
