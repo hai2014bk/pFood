@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Image, StatusBar } from "react-native";
+import { Image, StatusBar, Alert } from "react-native";
 
-import { Container, Content, Text, Button, Icon, Item, Input, View } from "native-base";
+import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
 
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
@@ -14,53 +14,75 @@ class SignUp extends Component {
 				x: 0,
 				y: 0,
 			},
+			showPassword: true,
+			checked: false,
+			email: '',
+			name: '',
+			password: '',
 		};
 	}
 
+	showPassword() {
+		this.setState({
+			showPassword: !this.state.showPassword,
+			checked: !this.state.checked
+		})
+	}
+
+	createPassword(){
+		if(this.state.email && this.state.name && this.state.password){
+
+		}else{
+			Alert.alert('','Fields are not be blank')
+		}
+	}
+
 	render() {
+		const navigation = this.props.navigation;
 		return (
-			<Container>
+			<Container style={styles.containerWrap}>
 				<StatusBar backgroundColor={commonColor.statusBarColor} barStyle="light-content" />
-				<Image source={require("../../../images/BG-signUp.png")} style={styles.background}>
-					<Content padder>
-						<Text style={styles.signupHeader}>CREATE ACCOUNT</Text>
-						<View style={styles.signupContainer}>
-							<Item rounded style={styles.inputGrp}>
-								<Icon name="person" />
-								<Input placeholder="Username" style={styles.input} placeholderTextColor="#FFF" />
-							</Item>
-
-							<Item rounded style={styles.inputGrp}>
-								<Icon name="mail-open" />
-								<Input placeholder="Email" style={styles.input} placeholderTextColor="#FFF" />
-							</Item>
-
-							<Item rounded style={styles.inputGrp}>
-								<Icon name="unlock" />
-								<Input
-									placeholder="Password"
-									secureTextEntry
-									style={styles.input}
-									placeholderTextColor="#FFF"
-								/>
-							</Item>
-
-							<Button
-								rounded
-								bordered
-								block
-								onPress={() => this.props.navigation.goBack()}
-								style={styles.signupBtn}
-							>
-								<Text style={{ color: "#FFF" }}>Continue</Text>
-							</Button>
-
-							<Button block transparent style={{ marginTop: 10 }}>
-								<Text style={styles.termsText}>Terms & Conditions</Text>
-							</Button>
-						</View>
-					</Content>
-				</Image>
+				<Header>
+					<Left>
+						<Button transparent onPress={() => navigation.goBack()}>
+							<Icon active name="arrow-back" />
+						</Button>
+					</Left>
+				</Header>
+				<Content style={styles.container}>
+					<Form>
+						<Item inlineLabel >
+							<Input value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Input your email' />
+						</Item>
+						<Item inlineLabel >
+							<Input value={this.state.name} onChangeText={text => this.setState({ name: text })} placeholder='Input your name' />
+						</Item>
+						<Item inlineLabel >
+							<Input value={this.state.password} onChangeText={text => this.setState({ password: text })} secureTextEntry={this.state.showPassword} placeholder='Input your password' />
+						</Item>
+					</Form>
+					<Grid style={styles.checkBoxWrap}>
+						<CheckBox onPress={() => this.showPassword()} checked={this.state.checked} />
+						<Text style={styles.showPassword}>Show password</Text>
+					</Grid>
+					<Button onPress={() => this.createPassword()} style={styles.button} block info>
+						<Text>Create your password</Text>
+					</Button>
+					<Grid style={styles.questionWrap}>
+						<Col style={[styles.col, { marginBottom: 5 }]}>
+							<Item style={styles.line} />
+						</Col>
+						<Col style={[styles.col, { flex: 2 }]}>
+							<Text style={styles.questionText}>Already have an account</Text>
+						</Col>
+						<Col style={[styles.col, { marginBottom: 5 }]}>
+							<Item style={styles.line} />
+						</Col>
+					</Grid>
+					<Button onPress={() => navigation.navigate("Login")} style={styles.button} block info>
+						<Text>Sign in now</Text>
+					</Button>
+				</Content>
 			</Container>
 		);
 	}
