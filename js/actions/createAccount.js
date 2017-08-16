@@ -12,8 +12,8 @@ export function createAccountFailed(error) {
 }
 
 export function createAccount(params) {
+	let url = 'http://api.svina.net/api/user/register'
 	return dispatch => {
-		// dispatch(itemsIsLoading(true));
 		// fetch(url)
 		// 	.then(response => {
 		// 		if (!response.ok) {
@@ -25,7 +25,7 @@ export function createAccount(params) {
 		// 	.then(response => response.json())
 		// 	.then(items => dispatch(itemsFetchDataSuccess(items)))
 		// 	.catch(() => dispatch(itemsHasErrored(true)));
-		dispatch(itemsFetchDataSuccess(url));
+		dispatch(itemsFetchDataSuccess(params));
 		dispatch(itemsIsLoading(false));
 	};
 }
