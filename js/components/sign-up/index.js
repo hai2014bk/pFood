@@ -16,6 +16,8 @@ class SignUp extends Component {
 			},
 			showPassword: true,
 			checked: false,
+			firstName:'',
+			lastName:'',
 			email: '',
 			name: '',
 			password: '',
@@ -30,8 +32,13 @@ class SignUp extends Component {
 	}
 
 	createPassword(){
-		if(this.state.email && this.state.name && this.state.password){
-
+		if(this.state.email && this.state.firstName && this.state.lastName && this.state.password){
+			let params = {}
+			params.firstName = this.state.firstName
+			params.lastName = this.state.lastName
+			params.email = this.state.email
+			params.password = this.state.password
+			
 		}else{
 			Alert.alert('','Fields are not be blank')
 		}
@@ -48,7 +55,10 @@ class SignUp extends Component {
 							<Input value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Input your email' />
 						</Item>
 						<Item inlineLabel >
-							<Input value={this.state.name} onChangeText={text => this.setState({ name: text })} placeholder='Input your name' />
+							<Input value={this.state.firstName} onChangeText={text => this.setState({ name: text })} placeholder='Input your first name' />
+						</Item>
+						<Item inlineLabel >
+							<Input value={this.state.lastName} onChangeText={text => this.setState({ name: text })} placeholder='Input your last name' />
 						</Item>
 						<Item inlineLabel >
 							<Input value={this.state.password} onChangeText={text => this.setState({ password: text })} secureTextEntry={this.state.showPassword} placeholder='Input your password' />

@@ -25,7 +25,7 @@ export function createAccount(params) {
 		// 	.then(response => response.json())
 		// 	.then(items => dispatch(itemsFetchDataSuccess(items)))
 		// 	.catch(() => dispatch(itemsHasErrored(true)));
-		dispatch(createAccountSuccess(message));
-		dispatch(createAccountFailed(false));
+		dispatch(itemsFetchDataSuccess(url));
+		dispatch(itemsIsLoading(false));
 	};
 }
