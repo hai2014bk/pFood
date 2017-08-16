@@ -14,6 +14,12 @@ export default {
 	pageBanner: {
 		flex:2
 	},
+	sectionText:{
+		color:'black',
+		fontSize:15,
+		fontWeight:'bold',
+		textAlign:'center'
+	},
 	shopNameText: {
 		color:'black',
 		fontSize:12,
