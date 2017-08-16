@@ -3,6 +3,7 @@ import { Image, View, TouchableOpacity, Platform, Text } from "react-native";
 
 import { Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
+import HeaderContent from "./../headerContent/";
 
 import styles from "./styles";
 
@@ -80,24 +81,10 @@ class Category extends Component {
     }
 
     render() {
-        const navigation = this.props.navi;
+        const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
-                <Header>
-                    <Left>
-                        <Button transparent onPress={() => navigation.navigate('Categories')}>
-                            <Text style={{ color: 'white' }}>Categories</Text>
-                        </Button>
-                    </Left>
-                    <Body style={{ flex: 2 }}>
-
-                    </Body>
-                    <Right>
-                        <Button transparent onPress={() => navigation.goBack()}>
-                            <Icon active name="md-cart" />
-                        </Button>
-                    </Right>
-                </Header>
+                <HeaderContent title="Category" leftIcon="md-menu" leftButton={() => navigation.navigate("Categories")}/>
                 <Content style={styles.contentWrap}>
                     <List dataArray={this.state.data} renderRow={(item, rowID) =>
                         <ListItem>

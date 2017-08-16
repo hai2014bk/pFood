@@ -15,6 +15,8 @@ import {
 
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
+import { login } from "../../actions/login";
+
 
 const bg = require("../../../images/BG.png");
 const logo = require("../../../images/logo.png");
@@ -37,7 +39,7 @@ class Login extends Component {
           barStyle="light-content"
         />
         <Content scrollEnabled={true} bounces={false}>
-				<View style={{marginTop:5,justifyContent:'center',alignItems:'center',resizeMode:'contain',flex:1}}>
+				<View style={{marginTop:5,justifyContent:'center',alignItems:'center',flex:1}}>
 				<Image source={logo} style={{height:100,resizeMode:'contain',}}  />
 				</View>
           <View style={styles.bg}>
@@ -45,7 +47,6 @@ class Login extends Component {
               <Input
                 placeholder="Input your Username"
                 onChangeText={username => this.setState({ username })}
-                placeholderTextColor="#100000"
                 style={styles.input}
               />
             </Item>
@@ -53,7 +54,6 @@ class Login extends Component {
               <Input
                 placeholder="Input your password"
                 secureTextEntry
-                placeholderTextColor="black"
                 onChangeText={password => this.setState({ password })}
                 style={styles.input}
               />
@@ -171,5 +171,14 @@ class Login extends Component {
     );
   }
 }
-
+function bindActions(dispatch) {
+  return {
+    login: (email, password) => dispatch(login(email, password)),
+    clickLoginF: token => dispatch(clickLoginF(token)),
+    reloadDrawer: () => dispatch(reloadDrawer())
+  };
+}
+const mapStateToProps = state => ({
+  login: state.login,
+});
 export default Login;

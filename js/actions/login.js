@@ -1,30 +1,24 @@
+import { APIRequest } from '../utils/Api';
+
+
 export function createAccountSuccess(message) {
 	return {
-		type: "CREATE_ACCOUNT_SUCCESS",
+		type: "LOGIN_SUCCESS",
 		message
 	};
 }
 export function createAccountFailed(error) {
 	return {
-		type: "CREATE_ACCOUNT_FAILED",
+		type: "LOGIN_FAILED",
 		error
 	};
 }
 
-export function createAccount(params) {
+export function login(params) {
+	var url = "http://api.svina.net/api/user/login"
+	var params = 'asdas'
 	return dispatch => {
-		// dispatch(itemsIsLoading(true));
-		// fetch(url)
-		// 	.then(response => {
-		// 		if (!response.ok) {
-		// 			throw Error(response.statusText);
-		// 		}
-		// 		dispatch(itemsIsLoading(false));
-		// 		return response;
-		// 	})
-		// 	.then(response => response.json())
-		// 	.then(items => dispatch(itemsFetchDataSuccess(items)))
-		// 	.catch(() => dispatch(itemsHasErrored(true)));
+		APIRequest.APIRequestPOST()
 		dispatch(createAccountSuccess(message));
 		dispatch(createAccountFailed(false));
 	};

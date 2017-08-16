@@ -11,13 +11,14 @@ export function APIRequestGET(url,isAuth,successCallback,errorCallback) {
             'Content-Type': 'application/json',
         },
     }).then((response) => {
-        if(response.status == 200){
             response.json().then((responseJson) => {
-            successCallback(responseJson)
+            let model = responseJson.model
+            if(model.status=="Success") {
+                successCallback(responseJson)
+            } else {
+                errorCallback(response.errorMessage)
+            }
             })
-        } else {
-            errorCallback(response.errorMessage)
-        }
         })
         .catch((error) => {
         });
@@ -34,18 +35,14 @@ export function APIRequestGET(url,isAuth,successCallback,errorCallback) {
         'Authorization': 'Bearer ' + token,
       },
     }).then((response) => {
-     if(response.status == 200){
-            response.json().then((responseJson) => {
-            successCallback(responseJson)
-            })
-        } else {
-            console.log('response',response)
-            var error = {
-                "error": true,
-                "message":"Fail to request"
+     response.json().then((responseJson) => {
+            let model = responseJson.model
+            if(model.status=="Success") {
+                successCallback(responseJson)
+            } else {
+                errorCallback(response.errorMessage)
             }
-            errorCallback(response.errorMessage)
-        }
+            })
      })
     .catch((error) => {
       console.log(error);
@@ -65,17 +62,14 @@ export function APIRequestPOST(url,param,isAuth,successCallback,errorCallback) {
         },
         body: JSON.stringify(param)
     }).then((response) => {
-        if(response.status == 200){
-            response.json().then((responseJson) => {
-            successCallback(responseJson)
-            })
-        } else {
-            var error = {
-                "error": true,
-                "message": "Fail to request",
+        response.json().then((responseJson) => {
+            let model = responseJson.model
+            if(model.status=="Success") {
+                successCallback(responseJson)
+            } else {
+                errorCallback(response.errorMessage)
             }
-            errorCallback(response.errorMessage)
-        }
+            })
         })
         .catch((error) => {
         });
@@ -92,17 +86,14 @@ export function APIRequestPOST(url,param,isAuth,successCallback,errorCallback) {
       },
       body: JSON.stringify(param)
     }).then((response) => {
-     if(response.status == 200){
-            response.json().then((responseJson) => {
-            successCallback(responseJson)
-            })
-        } else {
-            var error = {
-                "error": true,
-                "message": "Fail to request",
+     response.json().then((responseJson) => {
+            let model = responseJson.model
+            if(model.status=="Success") {
+                successCallback(responseJson)
+            } else {
+                errorCallback(response.errorMessage)
             }
-            errorCallback(response.errorMessage)
-        }
+            })
      })
     .catch((error) => {
     });
