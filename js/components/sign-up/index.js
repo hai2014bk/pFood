@@ -3,6 +3,7 @@ import { Image, StatusBar, Alert } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
 import { connect } from "react-redux";
 import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
+import HeaderContent from "./../headerContent/";
 
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
@@ -49,7 +50,7 @@ class SignUp extends Component {
 		const navigation = this.props.navigation;
 		return (
 			<Container style={styles.containerWrap}>
-				<StatusBar backgroundColor={commonColor.statusBarColor} barStyle="light-content" />
+				<HeaderContent leftButton={()=>navigation.goBack()} leftIcon="ios-arrow-back" title='Register'/>
 				<Content style={styles.container}>
 					<Form>
 						<Item inlineLabel >

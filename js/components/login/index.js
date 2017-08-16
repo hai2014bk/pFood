@@ -51,7 +51,7 @@ class Login extends Component {
         />
         <Content scrollEnabled={true} bounces={false}>
 				<View style={{marginTop:5,justifyContent:'center',alignItems:'center',flex:1}}>
-				<Image source={logo} style={{height:100,}}  />
+				<Image resizeMode='contain' source={logo} style={{height:100,}}  />
 				</View>
           <View style={styles.bg}>
             <Item blook style={styles.inputGrp}>

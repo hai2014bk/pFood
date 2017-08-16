@@ -81,10 +81,10 @@ class Category extends Component {
     }
 
     render() {
-        const navigation = this.props.navigation;
+        const navigation = this.props.navi;
         return (
             <Container style={styles.container}>
-                <HeaderContent title="Category" leftIcon="md-menu" leftButton={() => navigation.navigate("Categories")}/>
+                <HeaderContent rightButton={true} title="Category" leftIcon="md-menu" leftButton={() => navigation.navigate("Categories")}/>
                 <Content style={styles.contentWrap}>
                     <List dataArray={this.state.data} renderRow={(item, rowID) =>
                         <ListItem>

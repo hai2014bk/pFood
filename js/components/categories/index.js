@@ -75,7 +75,7 @@ class Categories extends Component {
         const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
-                <HeaderContent title="Categories" leftButton="ios-arrow-back" />
+                <HeaderContent title="Categories" leftButton={()=>navigation.goBack()} leftIcon="ios-arrow-back" />
                 <Content style={styles.contentWrap}>
                     <Label style={styles.title}>Thực phẩm khô</Label>
                     <List dataArray={dryFood} renderRow={(item) =>

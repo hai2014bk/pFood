@@ -11,6 +11,7 @@ import MainTabFood from "./components/mainTabFood"
 import Categories from "./components/categories";
 import Category from "./components/category";
 import Drawer from "./Drawer";
+
 const App = StackNavigator(
 	{
 		Login: { screen: Login },
