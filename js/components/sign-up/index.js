@@ -42,13 +42,6 @@ class SignUp extends Component {
 		return (
 			<Container style={styles.containerWrap}>
 				<StatusBar backgroundColor={commonColor.statusBarColor} barStyle="light-content" />
-				<Header>
-					<Left>
-						<Button transparent onPress={() => navigation.goBack()}>
-							<Icon active name="arrow-back" />
-						</Button>
-					</Left>
-				</Header>
 				<Content style={styles.container}>
 					<Form>
 						<Item inlineLabel >
