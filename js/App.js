@@ -7,6 +7,7 @@ import Walkthrough from "./components/walkthrough/";
 import Comments from "./components/comments/";
 import Channel from "./components/channel";
 import Story from "./components/story";
+import RecomendFood from "./components/recomendFood"
 import Drawer from "./Drawer";
 
 const App = StackNavigator(
@@ -19,10 +20,11 @@ const App = StackNavigator(
 		Comments: { screen: Comments },
 		Channel: { screen: Channel },
 		Drawer: { screen: Drawer },
+		RecomendFood: {screen : RecomendFood},
 	},
 	{
 		index: 0,
-		initialRouteName: "Login",
+		initialRouteName: "RecomendFood",
 		headerMode: "none",
 	}
 );
