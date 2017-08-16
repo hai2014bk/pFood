@@ -63,10 +63,7 @@ class RecommendFood extends Component {
 	renderList() {
 		var items = ['Simon Mignolet', 'Nathaniel Clyne', 'Dejan Lovren', 'Mama Sakho', 'Emre Can']
 		return (
-			<List style={{ flex: 1 }} dataArray={items} renderSeparator={() =>
-				<View>
-				</View>
-			}
+			<List style={{ flex: 1 }} dataArray={items}
 				renderRow={(item) =>
 					<ListItem style={{ borderBottomWidth: 0}}>
 						{this.renderHorizontalList(items)}
