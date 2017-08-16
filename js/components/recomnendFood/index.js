@@ -89,7 +89,7 @@ class RecommendFood extends Component {
 		const navigation = this.props.navigation;
 		return (
 			<Container>
-				<HeaderContent title='Recommend'>
+				<HeaderContent rightButton={true} title='Recommend'>
 				</HeaderContent>
 				<Content>
 					<View style={styles.pageBanner}>

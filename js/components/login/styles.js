@@ -13,14 +13,12 @@ export default {
   iosShadow: {
     flex: 1,
     width: (deviceHeight < 500) ? 80 : (deviceWidth / 4) + 12,
-    resizeMode: 'contain',
     height: (deviceHeight < 500) ? 50 : (deviceHeight / 15),
     alignSelf: 'center',
     marginTop: (deviceWidth < 330) ? (deviceHeight / 15) : (deviceHeight / 6),
   },
   aShadow: {
     flex: 1,
-    resizeMode: 'contain',
     width: (deviceWidth / 3) + 8,
     height: (deviceHeight / 20),
     padding: 20,
