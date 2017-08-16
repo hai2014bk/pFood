@@ -37,8 +37,8 @@ class Login extends Component {
           barStyle="light-content"
         />
         <Content scrollEnabled={true} bounces={false}>
-				<View style={{marginTop:5,justifyContent:'center',alignItems:'center',resizeMode:'contain',flex:1}}>
-				<Image source={logo} style={{height:100,resizeMode:'contain',}}  />
+				<View style={styles.logo}>
+				<Image source={logo} style={{height:130,resizeMode:'contain',}}  />
 				</View>
           <View style={styles.bg}>
             <Item blook style={styles.inputGrp}>
@@ -78,86 +78,63 @@ class Login extends Component {
               onPress={() => navigation.navigate(" SignUp  ")}
             >
               <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  textAlign: "center",
-                  textDecorationLine: "underline",
-                  color: "blue"
-                }}
+                style={styles.forgot}
               >
                 Forgot your password
               </Text>
             </TouchableOpacity>
-            <Text style={{ color: "black" ,marginTop:15,marginBottom:10}}>
-              --------------Or Sign in with ----------------
+            <Text style={{ color: "black" ,marginTop:30, textAlign: "center",marginBottom:10}}>
+              _______ Or Sign in with _______
             </Text>
+
+
             <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
               <View style={{ flex: 2 }} />
               <Button
                 bordered
-                style={{
-                  flex: 2,
-                  borderRadius: 40,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: 60
-                }}
+                style={
+                styles.button
+                }
               >
                 <Icon
                   name="logo-facebook"
-                  style={{ fontSize: 25, resizeMode: "contain" }}
+                  style={{ fontSize: 26, resizeMode: "contain" }}
                 />
               </Button>
               <View style={{ flex: 1 }} />
               <Button
                 transparent
-                style={{
-                  flex: 2,
-                  borderWidth: 1,
-                  borderRadius: 40,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: 60
-                }}
+                style={styles.button
+                }
               >
                 <Icon
                   name="logo-google"
-                  style={{ fontSize: 25, resizeMode: "contain" }}
+                  style={{ fontSize: 26, resizeMode: "contain" }}
                 />
               </Button>
               <View style={{ flex: 1 }} />
               <Button
                 transparent
-                style={{
-                  flex: 2,
-                  borderWidth: 1,
-                  borderRadius: 40,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: 60
-                }}
+                style={styles.button}
               >
                 <Icon
                   name="ios-call"
-                  style={{ fontSize: 28, resizeMode: "contain" }}
+                  style={{ fontSize: 26, resizeMode: "contain" }}
                 />
               </Button>
               <View style={{ flex: 2 }} />
             </View>
 
-            <Text style={{ fontSize: 16, textAlign: "center", color: "black" }}>
-              "Don't" have an account
-            </Text>
+            <Text style={{ fontSize: 16, textAlign: "center", color: "black", marginTop:30 }}>{"Don't have an account"}</Text>
             <Button
               block
               style={styles.loginBtn}
-              onPress={() => navigation.navigate("   SignUp    ")}
+              onPress={() => navigation.navigate("  Register   ")}
             >
               <Text
                 style={
                   Platform.OS === "android"
-                    ? { fontSize: 16, textAlign: "center" }
+                    ? { fontSize: 16, textAlign: "center",color:'black' }
                     : { fontSize: 16, fontWeight: "900" }
                 }
               >
