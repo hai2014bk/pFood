@@ -1,6 +1,17 @@
 import React, { Component } from "react";
-import { Image, Platform, StatusBar } from "react-native";
-import { Container, Content, Text, Item, Input, Button, Icon, View, Left, Right } from "native-base";
+import { Image, Platform, StatusBar, TouchableOpacity } from "react-native";
+import {
+  Container,
+  Content,
+  Text,
+  Item,
+  Input,
+  Button,
+  Icon,
+  View,
+  Left,
+  Right
+} from "native-base";
 
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
@@ -9,90 +20,156 @@ const bg = require("../../../images/BG.png");
 const logo = require("../../../images/logo.png");
 
 class Login extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			username: "",
-			password: "",
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: "",
+      password: ""
+    };
+  }
 
-	render() {
-		const navigation = this.props.navigation;
-		return (
-			<Container>
-				<StatusBar backgroundColor={commonColor.statusBarColor} barStyle="light-content" />
-				<Content scrollEnabled={true} bounces={false}>
-					<Image source={bg} style={styles.background}>
-						<Image source={logo} style={Platform.OS === "android" ? styles.aShadow : styles.iosShadow} />
+  render() {
+    const navigation = this.props.navigation;
+    return (
+      <Container>
+        <StatusBar
+          backgroundColor={commonColor.statusBarColor}
+          barStyle="light-content"
+        />
+        <Content scrollEnabled={true} bounces={false}>
+				<View style={{marginTop:5,justifyContent:'center',alignItems:'center',resizeMode:'contain',flex:1}}>
+				<Image source={logo} style={{height:100,resizeMode:'contain',}}  />
+				</View>
+          <View style={styles.bg}>
+            <Item blook style={styles.inputGrp}>
+              <Input
+                placeholder="Input your Username"
+                onChangeText={username => this.setState({ username })}
+                placeholderTextColor="#100000"
+                style={styles.input}
+              />
+            </Item>
+            <Item block style={styles.inputGrp}>
+              <Input
+                placeholder="Input your password"
+                secureTextEntry
+                placeholderTextColor="black"
+                onChangeText={password => this.setState({ password })}
+                style={styles.input}
+              />
+            </Item>
+            <Button
+              block
+              style={styles.loginBtn}
+              onPress={() => navigation.navigate("Walkthrough")}
+            >
+              <Text
+                style={
+                  Platform.OS === "android"
+                    ? { fontSize: 16, textAlign: "center", color: "black" }
+                    : { fontSize: 16, fontWeight: "null" }
+                }
+              >
+                Login
+              </Text>
+            </Button>
+            <TouchableOpacity
+              style={{ marginTop: 10, marginBottom: 5 }}
+              onPress={() => navigation.navigate(" SignUp  ")}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: "black",
+                  textAlign: "center",
+                  textDecorationLine: "underline",
+                  color: "blue"
+                }}
+              >
+                Forgot your password
+              </Text>
+            </TouchableOpacity>
+            <Text style={{ color: "black" ,marginTop:15,marginBottom:10}}>
+              --------------Or Sign in with ----------------
+            </Text>
+            <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
+              <View style={{ flex: 2 }} />
+              <Button
+                bordered
+                style={{
+                  flex: 2,
+                  borderRadius: 40,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 60
+                }}
+              >
+                <Icon
+                  name="logo-facebook"
+                  style={{ fontSize: 25, resizeMode: "contain" }}
+                />
+              </Button>
+              <View style={{ flex: 1 }} />
+              <Button
+                transparent
+                style={{
+                  flex: 2,
+                  borderWidth: 1,
+                  borderRadius: 40,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 60
+                }}
+              >
+                <Icon
+                  name="logo-google"
+                  style={{ fontSize: 25, resizeMode: "contain" }}
+                />
+              </Button>
+              <View style={{ flex: 1 }} />
+              <Button
+                transparent
+                style={{
+                  flex: 2,
+                  borderWidth: 1,
+                  borderRadius: 40,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 60
+                }}
+              >
+                <Icon
+                  name="ios-call"
+                  style={{ fontSize: 28, resizeMode: "contain" }}
+                />
+              </Button>
+              <View style={{ flex: 2 }} />
+            </View>
 
-						<View style={styles.bg}>
-							<Item rounded style={styles.inputGrp}>
-								<Icon name="person" />
-								<Input
-									placeholder="Username"
-									onChangeText={username => this.setState({ username })}
-									placeholderTextColor="#FFF"
-									style={styles.input}
-								/>
-							</Item>
+            <Text style={{ fontSize: 16, textAlign: "center", color: "black" }}>
+              "Don't" have an account
+            </Text>
+            <Button
+              block
+              style={styles.loginBtn}
+              onPress={() => navigation.navigate("SignUp")}
+            >
+              <Text
+                style={
+                  Platform.OS === "android"
+                    ? { fontSize: 16, textAlign: "center" }
+                    : { fontSize: 16, fontWeight: "900" }
+                }
+              >
+                Register Now
+              </Text>
+            </Button>
+          </View>
 
-							<Item rounded style={styles.inputGrp}>
-								<Icon name="unlock" />
-								<Input
-									placeholder="Password"
-									secureTextEntry
-									placeholderTextColor="#FFF"
-									onChangeText={password => this.setState({ password })}
-									style={styles.input}
-								/>
-							</Item>
-
-							<Button
-								rounded
-								primary
-								block
-								large
-								style={styles.loginBtn}
-								onPress={() => navigation.navigate("Walkthrough")}
-							>
-								<Text
-									style={
-										Platform.OS === "android"
-											? { fontSize: 16, textAlign: "center", top: -5 }
-											: { fontSize: 16, fontWeight: "900" }
-									}
-								>
-									Get Started
-								</Text>
-							</Button>
-
-							<View style={styles.otherLinksContainer}>
-								<Left>
-									<Button
-										transparent
-										style={{ alignSelf: "flex-start" }}
-										onPress={() => navigation.navigate("SignUp")}
-									>
-										<Text style={styles.helpBtns}>Create Account</Text>
-									</Button>
-								</Left>
-								<Right>
-									<Button
-										transparent
-										style={{ alignSelf: "flex-end" }}
-										onPress={() => navigation.navigate("NeedHelp")}
-									>
-										<Text style={styles.helpBtns}>Need Help?</Text>
-									</Button>
-								</Right>
-							</View>
-						</View>
-					</Image>
-				</Content>
-			</Container>
-		);
-	}
+        </Content>
+      </Container>
+    );
+  }
 }
 
 export default Login;

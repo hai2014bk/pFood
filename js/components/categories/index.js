@@ -37,8 +37,8 @@ class Categories extends Component {
 
     renderDryFood(item) {
         return (
-            <Grid style={{ flexDirection: 'row', height: 20 }}>
-                <Col style={{ flexDirection: 'column', flex: 2, alignItems: 'flex-start' }}>
+            <Grid style={styles.gridWrap}>
+                <Col style={styles.nameWrap}>
                     <Text style={{ color: 'black' }}>{item.name}</Text>
                 </Col>
                 <Col>
@@ -55,8 +55,8 @@ class Categories extends Component {
 
     renderDrink(item) {
         return (
-            <Grid style={{ flexDirection: 'row', height: 20 }}>
-                <Col style={{ flexDirection: 'column', flex: 2, alignItems: 'flex-start' }}>
+            <Grid style={styles.gridWrap}>
+                <Col style={styles.nameWrap}>
                     <Text style={{ color: 'black' }}>{item.name}</Text>
                 </Col>
                 <Col>
@@ -88,13 +88,13 @@ class Categories extends Component {
                     </Right>
                 </Header>
                 <Content style={styles.contentWrap}>
-                    <Label style={{marginLeft: 10, marginTop:10}}>Thực phẩm khô</Label>
+                    <Label style={styles.title}>Thực phẩm khô</Label>
                     <List dataArray={dryFood} renderRow={(item) =>
                         <ListItem>
                             {this.renderDryFood(item)}
                         </ListItem>
                     } />
-                    <Label style={{marginLeft: 10, marginTop:10}}>Đồ uống</Label>
+                    <Label style={styles.title}>Đồ uống</Label>
                     <List dataArray={drink} renderRow={(item) =>
                         <ListItem>
                             {this.renderDrink(item)}
