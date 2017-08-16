@@ -6,6 +6,7 @@ import { Grid, Col } from "react-native-easy-grid";
 import ScrollableTabView from "react-native-scrollable-tab-view";
 import HeaderContent from "./../headerContent/";
 import RecommendFood from "./../recomnendFood/";
+import Category from "./../category/";
 import Login from "./../login/";
 import SignUp from "./../sign-up/";
 import Swiper from 'react-native-swiper';
@@ -24,33 +25,13 @@ class MainTabFood extends Component {
 	selected(tab) {
 		this.setState({ selectedTab: tab })
 	}
-	renderContent() {
-		var tab = this.state.selectedTab
-		switch (tab) {
-			case 'recommend': {
-				return (
-					<RecommendFood />
-				)
-			}
-			case 'trending': {
-				return (
-					<SignUp />
-				)
-			}
-			case 'categrories': {
-				return (
-					<Login />
-				)
-			}
-		}
-	}
 	render() {
 		const navigation = this.props.navigation;
 		return (
 			<Container>
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'bottom'} >
-					<RecommendFood tabLabel="Recommend" />
-					<Login tabLabel="Categrories" />
+					<RecommendFood  tabLabel="Recommend" />
+					<Category navi={navigation} tabLabel="Categrories" />
 					<SignUp tabLabel="Trending" />
 				</ScrollableTabView>
 			</Container>

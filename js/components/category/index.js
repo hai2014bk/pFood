@@ -80,12 +80,12 @@ class Category extends Component {
     }
 
     render() {
-        const navigation = this.props.navigation;
+        const navigation = this.props.navi;
         return (
             <Container style={styles.container}>
                 <Header>
                     <Left>
-                        <Button transparent onPress={() => navigation.navigate("Categories")}>
+                        <Button transparent onPress={() => navigation.navigate('Categories')}>
                             <Text style={{ color: 'white' }}>Categories</Text>
                         </Button>
                     </Left>
