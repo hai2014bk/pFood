@@ -3,6 +3,7 @@ import { Image, View, TouchableOpacity, Platform, Text } from "react-native";
 
 import { Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Label } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
+import HeaderContent from "./../headerContent/";
 
 import styles from "./styles";
 
@@ -37,8 +38,8 @@ class Categories extends Component {
 
     renderDryFood(item) {
         return (
-            <Grid style={{ flexDirection: 'row', height: 20 }}>
-                <Col style={{ flexDirection: 'column', flex: 2, alignItems: 'flex-start' }}>
+            <Grid style={styles.gridWrap}>
+                <Col style={styles.nameWrap}>
                     <Text style={{ color: 'black' }}>{item.name}</Text>
                 </Col>
                 <Col>
@@ -55,8 +56,8 @@ class Categories extends Component {
 
     renderDrink(item) {
         return (
-            <Grid style={{ flexDirection: 'row', height: 20 }}>
-                <Col style={{ flexDirection: 'column', flex: 2, alignItems: 'flex-start' }}>
+            <Grid style={styles.gridWrap}>
+                <Col style={styles.nameWrap}>
                     <Text style={{ color: 'black' }}>{item.name}</Text>
                 </Col>
                 <Col>
@@ -74,27 +75,15 @@ class Categories extends Component {
         const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
-                <Header>
-                    <Left>
-                        <Button transparent onPress={() => navigation.goBack()}>
-                           <Icon name="ios-arrow-back" /> 
-                        </Button>
-                    </Left>
-                    <Body style={{ flex: 2 }}>
-
-                    </Body>
-                    <Right>
-
-                    </Right>
-                </Header>
+                <HeaderContent title="Categories" leftButton="ios-arrow-back" />
                 <Content style={styles.contentWrap}>
-                    <Label style={{marginLeft: 10, marginTop:10}}>Thực phẩm khô</Label>
+                    <Label style={styles.title}>Thực phẩm khô</Label>
                     <List dataArray={dryFood} renderRow={(item) =>
                         <ListItem>
                             {this.renderDryFood(item)}
                         </ListItem>
                     } />
-                    <Label style={{marginLeft: 10, marginTop:10}}>Đồ uống</Label>
+                    <Label style={styles.title}>Đồ uống</Label>
                     <List dataArray={drink} renderRow={(item) =>
                         <ListItem>
                             {this.renderDrink(item)}

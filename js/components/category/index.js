@@ -3,6 +3,7 @@ import { Image, View, TouchableOpacity, Platform, Text } from "react-native";
 
 import { Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
+import HeaderContent from "./../headerContent/";
 
 import styles from "./styles";
 
@@ -53,24 +54,24 @@ class Category extends Component {
         let id = item.id
         return (
             <Grid style={{ flexDirection: 'row' }}>
-                <Col style={{ marginLeft: -10, marginRight: 10 }}>
-                    <Image source={{ uri: 'https://i.imgur.com/toH4mkL.jpg' }} style={{ height: 60, width: 70 }} resizeMode='contain' />
+                <Col style={styles.imageWrap}>
+                    <Image source={{ uri: 'https://i.imgur.com/toH4mkL.jpg' }} style={styles.image} resizeMode='contain' />
                 </Col>
-                <Col style={{ flexDirection: 'column', alignItems: 'flex-start', flex: 1 }}>
-                    <Text style={{ color: 'black', fontSize: 12 }}>{item.name}</Text>
-                    <Text style={{ color: 'black', fontSize: 12 }}>{item.shopName}</Text>
-                    <Text style={{ color: 'black', fontSize: 12 }}>{item.price} {item.unit}</Text>
+                <Col style={styles.infoWrap}>
+                    <Text style={styles.info}>{item.name}</Text>
+                    <Text style={styles.info}>{item.shopName}</Text>
+                    <Text style={styles.info}>{item.price} {item.unit}</Text>
                 </Col>
-                <Col style={{ flexDirection: 'row', flex: 1.5, marginLeft: 10 }}>
+                <Col style={styles.buttonWrap}>
                     <Button onPress={() => this.plus(id)} transparent >
                         <Icon name="md-add" />
                     </Button>
-                    <Text style={{ marginTop: 12, marginLeft: 5 }}>{item.quantity}</Text>
+                    <Text style={styles.quantity}>{item.quantity}</Text>
                     <Button onPress={() => this.minus(id)} transparent >
                         <Icon name="md-remove" />
                     </Button>
                 </Col>
-                <Col style={{ flex: 1, alignItems: 'flex-end', marginLeft: 5 }}>
+                <Col style={styles.cartWrap}>
                     <Button transparent >
                         <Icon active name="md-cart" />
                     </Button>
@@ -80,24 +81,10 @@ class Category extends Component {
     }
 
     render() {
-        const navigation = this.props.navi;
+        const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
-                <Header>
-                    <Left>
-                        <Button transparent onPress={() => navigation.navigate('Categories')}>
-                            <Text style={{ color: 'white' }}>Categories</Text>
-                        </Button>
-                    </Left>
-                    <Body style={{ flex: 2 }}>
-
-                    </Body>
-                    <Right>
-                        <Button transparent onPress={() => navigation.goBack()}>
-                            <Icon active name="md-cart" />
-                        </Button>
-                    </Right>
-                </Header>
+                <HeaderContent title="Category" leftIcon="md-menu" leftButton={() => navigation.navigate("Categories")}/>
                 <Content style={styles.contentWrap}>
                     <List dataArray={this.state.data} renderRow={(item, rowID) =>
                         <ListItem>
