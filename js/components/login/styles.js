@@ -82,6 +82,9 @@ export default {
     justifyContent: "center",
     height: 60
   },
+  line:{
+
+  },
   forgot:{
     fontSize: 16,
     color: "black",

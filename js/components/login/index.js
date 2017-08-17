@@ -16,12 +16,11 @@ import {
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
 
-const bg = require("../../../images/BG.png");
-const logo = require("../../../images/logo.png");
 
 class Login extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       username: "",
       password: ""
@@ -37,9 +36,7 @@ class Login extends Component {
           barStyle="light-content"
         />
         <Content scrollEnabled={true} bounces={false}>
-				<View style={styles.logo}>
-				<Image source={logo} style={{height:130,resizeMode:'contain',}}  />
-				</View>
+
           <View style={styles.bg}>
             <Item blook style={styles.inputGrp}>
               <Input
@@ -70,7 +67,7 @@ class Login extends Component {
                     : { fontSize: 16, fontWeight: "null" }
                 }
               >
-                Loginsss
+                Login
               </Text>
             </Button>
             <TouchableOpacity
@@ -86,7 +83,6 @@ class Login extends Component {
             <Text style={{ color: "black" ,marginTop:30, textAlign: "center",marginBottom:10}}>
               _______ Or Sign in with _______
             </Text>
-
 
             <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
               <View style={{ flex: 2 }} />
