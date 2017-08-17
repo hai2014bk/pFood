@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, StatusBar, Alert, TouchableOpacity } from "react-native";
+import { Image, StatusBar, Alert, TouchableOpacity, ScrollView } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
 import { connect } from "react-redux";
 import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
@@ -28,7 +28,12 @@ class SignUp extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-		console.log('props', props)
+		if(props.createAccountSucces()){
+
+		}
+		if(props.createAccountFailed()){
+			
+		}
 	}
 
 	showPassword() {
@@ -58,39 +63,41 @@ class SignUp extends Component {
 	render() {
 		const navigation = this.props.navigation;
 		return (
-			<Container style={styles.containerWrap}>
-				<Image source={background} style={styles.imageBackground}>
-					<View style={styles.container}>
-						<Form>
-							<Item style={styles.input} regular >
-								<Input value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Input your email' placeholderTextColor='#f4e6db' />
-							</Item>
-							<Item style={styles.input} regular >
-								<Input value={this.state.firstName} onChangeText={text => this.setState({ firstName: text })} placeholder='Input your first name' placeholderTextColor='#f4e6db' />
-							</Item>
-							<Item style={styles.input} regular >
-								<Input value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} placeholder='Input your last name' placeholderTextColor='#f4e6db' />
-							</Item>
-							<Item style={styles.input} regular >
-								<Input value={this.state.password} onChangeText={text => this.setState({ password: text })} secureTextEntry={this.state.showPassword} placeholder='Input your password' placeholderTextColor='#f4e6db' />
-							</Item>
-						</Form>
-						<View style={styles.checkBoxWrap}>
-							<CheckBox style={styles.checkBox} onPress={() => this.showPassword()} checked={this.state.checked} />
-							<Text style={styles.showPassword}>Show password</Text>
+			<ScrollView>
+				<Container style={styles.containerWrap}>
+					<Image source={background} style={styles.imageBackground}>
+						<View style={styles.container}>
+							<Form>
+								<Item style={styles.input} regular >
+									<Input value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Input your email' placeholderTextColor='#f4e6db' />
+								</Item>
+								<Item style={styles.input} regular >
+									<Input value={this.state.firstName} onChangeText={text => this.setState({ firstName: text })} placeholder='Input your first name' placeholderTextColor='#f4e6db' />
+								</Item>
+								<Item style={styles.input} regular >
+									<Input value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} placeholder='Input your last name' placeholderTextColor='#f4e6db' />
+								</Item>
+								<Item style={styles.input} regular >
+									<Input value={this.state.password} onChangeText={text => this.setState({ password: text })} secureTextEntry={this.state.showPassword} placeholder='Input your password' placeholderTextColor='#f4e6db' />
+								</Item>
+							</Form>
+							<View style={styles.checkBoxWrap}>
+								<CheckBox style={styles.checkBox} onPress={() => this.showPassword()} checked={this.state.checked} />
+								<Text style={styles.showPassword}>Show password</Text>
+							</View>
+							<TouchableOpacity onPress={() => this.createPassword()} style={styles.button} >
+								<Text style={{ color: '#f4e6db' }}>Create your password</Text>
+							</TouchableOpacity>
+							<View style={styles.questionWrap}>
+								<Text style={styles.questionText}>Already have an account</Text>
+							</View>
+							<TouchableOpacity onPress={() => navigation.navigate("Login")} style={styles.button}  >
+								<Text style={{ color: '#f4e6db' }}>Sign in now</Text>
+							</TouchableOpacity>
 						</View>
-						<TouchableOpacity onPress={() => this.createPassword()} style={styles.button} >
-							<Text style={{ color: '#f4e6db' }}>Create your password</Text>
-						</TouchableOpacity>
-						<View style={styles.questionWrap}>
-							<Text style={styles.questionText}>Already have an account</Text>
-						</View>
-						<TouchableOpacity onPress={() => navigation.navigate("Login")} style={styles.button}  >
-							<Text style={{ color: '#f4e6db' }}>Sign in now</Text>
-						</TouchableOpacity>
-					</View>
-				</Image>
-			</Container>
+					</Image>
+				</Container>
+			</ScrollView>
 		);
 	}
 	validateEmail(email) {
@@ -105,7 +112,8 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => ({
-
+	createAccountSucces: state.createAccountSucces,
+	createAccountFailed: state.createAccountFailed
 });
 
 export default connect(mapStateToProps, bindActions)(SignUp);

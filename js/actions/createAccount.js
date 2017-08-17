@@ -13,15 +13,16 @@ export function createAccountFailed(error) {
 }
 
 export function createAccount(params) {
+	console.log('params action',params)
 	let url = 'http://api.svina.net/api/user/register'
 	return dispatch => {
 		APIRequest.APIRequestPOST(url, params, false,
 			response => {
-				console.log(response)
+				console.log('respone',response)
 				dispatch(createAccountSuccess(response));
 			},
 			error => {
-				console.log(error)
+				console.log('error',error)
 				dispatch(createAccountFailed(error));
 			}
 		)
