@@ -53,41 +53,29 @@ class Category extends Component {
     renderItems(item) {
         let id = item.id
         return (
-            <Grid style={{ flexDirection: 'row' }}>
-                <Col style={styles.imageWrap}>
-                    <Image source={{ uri: 'https://i.imgur.com/toH4mkL.jpg' }} style={styles.image} resizeMode='contain' />
-                </Col>
-                <Col style={styles.infoWrap}>
-                    <Text style={styles.info}>{item.name}</Text>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={styles.imageWrap}>
+                    <Image source={{ uri: 'https://i.imgur.com/toH4mkL.jpg' }} style={styles.image} resizeMode='stretch' />
+                </View>
+                <View style={styles.infoWrap}>
+                    <Text style={[styles.info, {fontSize:15}]}>{item.name}</Text>
                     <Text style={styles.info}>{item.shopName}</Text>
-                    <Text style={styles.info}>{item.price} {item.unit}</Text>
-                </Col>
-                <Col style={styles.buttonWrap}>
-                    <Button onPress={() => this.plus(id)} transparent >
-                        <Icon name="md-add" />
-                    </Button>
-                    <Text style={styles.quantity}>{item.quantity}</Text>
-                    <Button onPress={() => this.minus(id)} transparent >
-                        <Icon name="md-remove" />
-                    </Button>
-                </Col>
-                <Col style={styles.cartWrap}>
-                    <Button transparent >
-                        <Icon active name="md-cart" />
-                    </Button>
-                </Col>
-            </Grid>
+                    <Text></Text>
+                    <Text style={[styles.info, {fontWeight:'bold'}]}>{item.price} {item.unit}</Text>
+                </View>
+              
+            </View>
         )
     }
 
     render() {
-        const navigation = this.props.navigation;
+        const navigation = this.props.navi;
         return (
             <Container style={styles.container}>
                 <HeaderContent title="Category" leftIcon="md-menu" leftButton={() => navigation.navigate("Categories")}/>
                 <Content style={styles.contentWrap}>
                     <List dataArray={this.state.data} renderRow={(item, rowID) =>
-                        <ListItem>
+                        <ListItem style={{ borderBottomWidth: 0 }}>
                             {this.renderItems(item)}
                         </ListItem>
                     } />
@@ -98,3 +86,18 @@ class Category extends Component {
 }
 
 export default Category;
+
+{/* <Col style={styles.buttonWrap}>
+<Button onPress={() => this.plus(id)} transparent >
+    <Icon name="md-add" />
+</Button>
+<Text style={styles.quantity}>{item.quantity}</Text>
+<Button onPress={() => this.minus(id)} transparent >
+    <Icon name="md-remove" />
+</Button>
+</Col>
+<Col style={styles.cartWrap}>
+<Button transparent >
+    <Icon active name="md-cart" />
+</Button>
+</Col> */}

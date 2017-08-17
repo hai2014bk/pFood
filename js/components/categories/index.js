@@ -6,7 +6,7 @@ import { Grid, Col } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 
 import styles from "./styles";
-
+var circle = require('../../../images/greyCircle.png')
 const headerLogo = require("../../../images/Header-Logo.png");
 const primary = require("../../themes/variable").brandPrimary;
 const dryFood = [
@@ -39,15 +39,15 @@ class Categories extends Component {
     renderDryFood(item) {
         return (
             <Grid style={styles.gridWrap}>
+                <Col>
+                    <Image source={circle} style={styles.cirlce} />
+                </Col>
                 <Col style={styles.nameWrap}>
                     <Text style={{ color: 'black' }}>{item.name}</Text>
                 </Col>
-                <Col>
-
-                </Col>
                 <Col style={{ justifyContent: 'center' }}>
                     <Button transparent >
-                        <Icon active name="ios-arrow-forward" />
+                        <Icon style={styles.arrow} active name="ios-arrow-forward" />
                     </Button>
                 </Col>
             </Grid>
@@ -57,14 +57,15 @@ class Categories extends Component {
     renderDrink(item) {
         return (
             <Grid style={styles.gridWrap}>
+                <Col>
+                    <Image source={circle} style={styles.cirlce} />
+                </Col>
                 <Col style={styles.nameWrap}>
                     <Text style={{ color: 'black' }}>{item.name}</Text>
                 </Col>
-                <Col>
-                </Col>
                 <Col style={{ justifyContent: 'center' }}>
                     <Button transparent >
-                        <Icon active name="ios-arrow-forward" />
+                        <Icon style={styles.arrow} active name="ios-arrow-forward" />
                     </Button>
                 </Col>
             </Grid>
@@ -75,17 +76,17 @@ class Categories extends Component {
         const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
-                <HeaderContent title="Categories" leftButton="ios-arrow-back" />
+                <HeaderContent title="Categories" leftIcon="ios-arrow-back" />
                 <Content style={styles.contentWrap}>
                     <Label style={styles.title}>Thực phẩm khô</Label>
-                    <List dataArray={dryFood} renderRow={(item) =>
-                        <ListItem>
+                    <List style={styles.listWrap} dataArray={dryFood} renderRow={(item) =>
+                        <ListItem style={styles.listItem}>
                             {this.renderDryFood(item)}
                         </ListItem>
                     } />
                     <Label style={styles.title}>Đồ uống</Label>
-                    <List dataArray={drink} renderRow={(item) =>
-                        <ListItem>
+                    <List style={styles.listWrap} dataArray={drink} renderRow={(item) =>
+                        <ListItem style={styles.listItem}>
                             {this.renderDrink(item)}
                         </ListItem>
                     } />
