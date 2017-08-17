@@ -7,17 +7,25 @@ export type State = {
 }
 
 const initialState = {
-  response:'',
-  cats:'',
-  kind:'',
-  error:'',
   success:true,
 };
 
+
 export function login(state:State = initialState, action) {
 	console.log(action.type)
-	 return {
+  if (action.type === 'LOGIN_FAILED') {
+    return {
       ...state,
-      success:true
+      success: false,
     };
+  }
+  if (action.type === 'LOGIN_SUCCESS') {
+    console.log(action);
+    return {
+      ...state,
+        success: true,
+    };
+  }
+  return state;
+
 }

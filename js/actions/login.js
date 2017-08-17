@@ -3,13 +3,13 @@ import * as  APIRequest  from '../utils/Api';
 
 export function loginSuccess(response) {
 	return {
-		type: "LOGIN_SUCCESS",
+		type: 'LOGIN_SUCCESS',
 		response
 	};
 }
 export function loginFailed(error) {
 	return {
-		type: "LOGIN_FAILED",
+		type: 'LOGIN_FAILED',
 		error
 	};
 }

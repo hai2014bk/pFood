@@ -12,17 +12,17 @@ import {
   Left,
   Right
 } from "native-base";
+import { Grid, Col } from "react-native-easy-grid";
 import { connect } from "react-redux";
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
 import { loginClick } from "../../actions/login";
 
-const bg = require("../../../images/BG.png");
-const logo = require("../../../images/logo.png");
 
 class Login extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       username: "",
       password: ""
@@ -35,12 +35,19 @@ class Login extends Component {
     }
     this.props.loginAction(param)
   }
-   componentWillReceiveProps(props) { 
-     this.props.navigation.navigate('MainTabFood')
-   }
-  signUp(){
-    
+   componentWillReceiveProps(props) {
+
+     if (props.login.success) {
+
+   this.props.navigation.navigate('Drawer')
   }
+  else{
+  alert('login unsuccessful');
+  }
+
+}
+
+
   render() {
     const navigation = this.props.navigation;
     return (
@@ -51,7 +58,6 @@ class Login extends Component {
         />
         <Content scrollEnabled={true} bounces={false}>
 				<View style={{marginTop:5,justifyContent:'center',alignItems:'center',flex:1}}>
-				<Image resizeMode='contain' source={logo} style={{height:100,}}  />
 				</View>
           <View style={styles.bg}>
             <Item blook style={styles.inputGrp}>
@@ -89,31 +95,24 @@ class Login extends Component {
               onPress={() => navigation.navigate(" SignUp  ")}
             >
               <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  textAlign: "center",
-                  textDecorationLine: "underline",
-                  color: "blue"
-                }}
+                style={styles.forgot}
               >
                 Forgot your password
               </Text>
             </TouchableOpacity>
-            <Text style={{ color: "black" ,marginTop:15,marginBottom:10}}>
-              --------------Or Sign in with ----------------
+            <Text style={{ color: "black" ,marginTop:30, textAlign: "center",marginBottom:10}}>
+              _______ Or Sign in with _______
             </Text>
+
+
+
             <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
               <View style={{ flex: 2 }} />
               <Button
                 bordered
-                style={{
-                  flex: 2,
-                  borderRadius: 40,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: 60
-                }}
+                style={
+                styles.button
+                }
               >
                 <Icon
                   name="logo-facebook"
@@ -123,14 +122,8 @@ class Login extends Component {
               <View style={{ flex: 1 }} />
               <Button
                 transparent
-                style={{
-                  flex: 2,
-                  borderWidth: 1,
-                  borderRadius: 40,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: 60
-                }}
+                style={styles.button
+                }
               >
                 <Icon
                   name="logo-google"
@@ -140,14 +133,7 @@ class Login extends Component {
               <View style={{ flex: 1 }} />
               <Button
                 transparent
-                style={{
-                  flex: 2,
-                  borderWidth: 1,
-                  borderRadius: 40,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: 60
-                }}
+                style={styles.button}
               >
                 <Icon
                   name="ios-call"
@@ -157,9 +143,7 @@ class Login extends Component {
               <View style={{ flex: 2 }} />
             </View>
 
-            <Text style={{ fontSize: 16, textAlign: "center", color: "black" }}>
-              "Don't" have an account
-            </Text>
+            <Text style={{ fontSize: 16, textAlign: "center", color: "black", marginTop:30 }}>{"Don't have an account"}</Text>
             <Button
               block
               style={styles.loginBtn}
@@ -168,7 +152,7 @@ class Login extends Component {
               <Text
                 style={
                   Platform.OS === "android"
-                    ? { fontSize: 16, textAlign: "center" }
+                    ? { fontSize: 16, textAlign: "center",color:'black' }
                     : { fontSize: 16, fontWeight: "900" }
                 }
               >

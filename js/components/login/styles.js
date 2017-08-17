@@ -64,4 +64,37 @@ export default {
   otherLinksContainer: {
     flexDirection: 'row',
   },
+  questionWrap:{
+   marginTop: 20
+  },
+  col: {
+   justifyContent: 'flex-end',
+   alignItems: 'center'
+  },
+  button:{
+    flex: 2,
+    borderWidth: 1,
+    borderRadius: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 60
+  },
+  line:{
+
+  },
+  forgot:{
+    fontSize: 16,
+    color: "black",
+    textAlign: "center",
+    textDecorationLine: "underline",
+    color: "blue"
+  },
+  logo:{
+    marginTop:40,
+    justifyContent:'center',
+    alignItems:'center',
+    resizeMode:'contain',
+    flex:1
+  },
+
 }
