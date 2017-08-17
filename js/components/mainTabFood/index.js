@@ -30,7 +30,7 @@ class MainTabFood extends Component {
 		return (
 			<Container>
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'bottom'} >
-					<RecommendFood  tabLabel="Recommend" />
+					<RecommendFood navi={navigation}  tabLabel="Recommend" />
 					<Category navi={navigation} tabLabel="Categrories" />
 					<SignUp tabLabel="Trending" />
 				</ScrollableTabView>

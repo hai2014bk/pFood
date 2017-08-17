@@ -11,6 +11,7 @@ import Feedback from "./components/feedback/";
 import Profile from "./components/profile/";
 import Settings from "./components/settings";
 import Widgets from "./components/widgets";
+import MainTabFood from "./components/mainTabFood";
 
 const Drawer = DrawerNavigator(
 	{
@@ -23,6 +24,7 @@ const Drawer = DrawerNavigator(
 		Profile: { screen: Profile },
 		Settings: { screen: Settings },
 		Widgets: { screen: Widgets },
+		MainTabFood: {screen: MainTabFood}
 	},
 	{
 		initialRouteName: "Home",

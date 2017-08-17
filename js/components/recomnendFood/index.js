@@ -49,10 +49,10 @@ class RecommendFood extends Component {
 		return (
 			<View>
 				<TouchableOpacity style={{ flex: 1, alignItems: 'center' }}>
-					<Thumbnail square source={{ uri: 'http://www.ingredientsnetwork.com/47/pdcnewsitem/03/77/23/Cajun-Steak-with-Potatoes-_-Vegetables-cropped.jpg' }} />
+					<Thumbnail style={styles.foodThumnail} square source={{ uri: 'http://www.ingredientsnetwork.com/47/pdcnewsitem/03/77/23/Cajun-Steak-with-Potatoes-_-Vegetables-cropped.jpg' }} />
 					<Text style={styles.foodNameText}> Thịt Bò </Text>
-					<Text style={styles.shopNameText}> 78 Duy Tan </Text>
-					<Text style={styles.priceText}> 1.000.000 </Text>
+					<Text style={styles.shopNameText}> Vin Market </Text>
+					<Text style={styles.priceText}> 200.000 VNĐ </Text>
 				</TouchableOpacity>
 			</View>
 		)
@@ -61,7 +61,7 @@ class RecommendFood extends Component {
 		return (
 			<View style={{ flex: 1 }}>
 				<View style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
-					<Text style={styles.sectionText} note>Section</Text>
+					<Text style={styles.sectionText} note>Đề xuất cho bạn</Text>
 				</View>
 				<List style={{ marginLeft: -15, marginRight: -15 }} showsHorizontalScrollIndicator={false} horizontal={true} dataArray={foods}
 					renderRow={(item) =>
@@ -78,7 +78,7 @@ class RecommendFood extends Component {
 		return (
 			<List style={{ flex: 1 }} dataArray={items}
 				renderRow={(item) =>
-					<ListItem style={{marginBottom:-30, borderBottomWidth: 0 }}>
+					<ListItem style={{marginBottom:-10, borderBottomWidth: 0 }}>
 						{this.renderHorizontalList(items)}
 					</ListItem>
 				}>
@@ -86,10 +86,11 @@ class RecommendFood extends Component {
 		)
 	}
 	render() {
-		const navigation = this.props.navigation;
+		const navigation = this.props.navi;
 		return (
 			<Container>
-				<HeaderContent rightButton={true} title='Recommend'>
+				<HeaderContent leftIcon={'menu'} leftButton={()=> navigation.navigate("DrawerOpen")} 
+					rightButton={true} title='Recommend'>
 				</HeaderContent>
 				<Content>
 					<View style={styles.pageBanner}>

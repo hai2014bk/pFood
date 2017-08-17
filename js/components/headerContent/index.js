@@ -13,11 +13,18 @@ class HeaderContent extends Component {
   }
   renderLeft() {
     if (this.props.leftButton != null) {
-      return (
+      if(this.props.textLeft) {
+        return (
         <Button transparent onPress={this.props.leftButton}>
-          <Icon active name={this.props.leftIcon} />
+          <Text style={{color:'gray'}}>{this.props.textLeft}</Text>
         </Button>
       )
+      } else {
+      return (
+        <Button transparent onPress={this.props.leftButton}>
+          <Icon style={{color:'gray'}} active name={this.props.leftIcon} />
+        </Button>
+      )}
     } else {
       return (
         <View>
@@ -29,7 +36,7 @@ class HeaderContent extends Component {
     if (this.props.rightButton) {
       return (
         <Button transparent onPress={() => this.openCart()}>
-          <Icon active name="cart" />
+          <Icon style={{color:'gray'}} active name="cart" />
         </Button>
       )
     } else {
@@ -41,12 +48,12 @@ class HeaderContent extends Component {
   }
   render() {
       return (
-        <Header style={{ backgroundColor: '#2d456b' }}>
+        <Header style={{ borderBottomWidth:0, backgroundColor: '#fff' }}>
           <Left style={{ flex: 1 }}>
             {this.renderLeft()}
           </Left>
           <Body style={{ flex: 4, flexDirection: 'row' }}>
-            <Text style={{ textAlign: 'center', flex: 1, color: '#61b635', fontSize: 17 }}>{this.props.title}</Text>
+            <Text style={{ textAlign: 'center', flex: 1, color: 'gray', fontSize: 17 }}>{this.props.title}</Text>
           </Body>
           <Right style={{ flex: 1 }}>
             {this.renderRight()}
