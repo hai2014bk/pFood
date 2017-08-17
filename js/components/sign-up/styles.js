@@ -17,6 +17,7 @@ export default {
 	},
 	showPassword: {
 		color: '#f4e6db',
+		backgroundColor:'transparent',
 		marginLeft: 20
 	},
 	button: {
@@ -40,6 +41,8 @@ export default {
 	questionWrap:{	
 		width:'100%',
 		marginTop:30,
+		backgroundColor:'transparent',
+
 	},
 	col: {
 		justifyContent: 'flex-end',
@@ -50,6 +53,9 @@ export default {
 		width:'60%',
 		alignSelf:'center',
 		flexDirection:'row'
+	},
+	textInput:{
+		color:'white'
 	},
 	line: {
 		height: 3,

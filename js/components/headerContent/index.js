@@ -48,7 +48,7 @@ class HeaderContent extends Component {
   }
   render() {
       return (
-        <Header style={{ borderBottomWidth:0, backgroundColor: '#fff' }}>
+        <Header style={{ borderBottomWidth:1,borderBottomColor:'gray', backgroundColor: '#fff' }}>
           <Left style={{ flex: 1.5 }}>
             {this.renderLeft()}
           </Left>

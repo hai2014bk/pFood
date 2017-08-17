@@ -13,6 +13,7 @@ import {
   Right
 } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
+import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from "react-redux";
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
@@ -25,29 +26,28 @@ class Login extends Component {
 
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      isLoading: false
     };
   }
-  loginClick(){
+  loginClick() {
     var param = {
-      email:this.state.username,
-      password:this.state.password
+      email: this.state.username,
+      password: this.state.password
     }
+    this.setState({isLoading:true})
     this.props.loginAction(param)
   }
-   componentWillReceiveProps(props) {
+  componentWillReceiveProps(props) {
+    this.setState({ isLoading: false })
+    if (props.login.success) {
+      this.props.navigation.navigate('Drawer')
+    }
+    else {
+      setTimeout(() => { alert('login unsuccessful') }, 100)
+    }
 
-     if (props.login.success) {
-
-   this.props.navigation.navigate('Drawer')
   }
-  else{
-  alert('login unsuccessful');
-  }
-
-}
-
-
   render() {
     const navigation = this.props.navigation;
     return (
@@ -56,9 +56,10 @@ class Login extends Component {
           backgroundColor={commonColor.statusBarColor}
           barStyle="light-content"
         />
+        <Spinner visible={this.state.isLoading} />
         <Content scrollEnabled={true} bounces={false}>
-				<View style={{marginTop:5,justifyContent:'center',alignItems:'center',flex:1}}>
-				</View>
+          <View style={{ marginTop: 5, justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+          </View>
           <View style={styles.bg}>
             <Item blook style={styles.inputGrp}>
               <Input
@@ -100,18 +101,18 @@ class Login extends Component {
                 Forgot your password
               </Text>
             </TouchableOpacity>
-            <Text style={{ color: "black" ,marginTop:30, textAlign: "center",marginBottom:10}}>
+            <Text style={{ color: "black", marginTop: 30, textAlign: "center", marginBottom: 10 }}>
               _______ Or Sign in with _______
             </Text>
 
 
 
             <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
-              <View style={{ flex: 2 }} />
+              <View style={{ flex: 2, alignItems: 'center' }} />
               <Button
                 bordered
                 style={
-                styles.button
+                  styles.button
                 }
               >
                 <Icon
@@ -143,7 +144,7 @@ class Login extends Component {
               <View style={{ flex: 2 }} />
             </View>
 
-            <Text style={{ fontSize: 16, textAlign: "center", color: "black", marginTop:30 }}>{"Don't have an account"}</Text>
+            <Text style={{ fontSize: 16, textAlign: "center", color: "black", marginTop: 30 }}>{"Don't have an account"}</Text>
             <Button
               block
               style={styles.loginBtn}
@@ -152,7 +153,7 @@ class Login extends Component {
               <Text
                 style={
                   Platform.OS === "android"
-                    ? { fontSize: 16, textAlign: "center",color:'black' }
+                    ? { fontSize: 16, textAlign: "center", color: 'black' }
                     : { fontSize: 16, fontWeight: "900" }
                 }
               >

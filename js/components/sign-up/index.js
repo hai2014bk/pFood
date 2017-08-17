@@ -3,6 +3,7 @@ import { Image, StatusBar, Alert, TouchableOpacity, ScrollView } from "react-nat
 import { createAccount } from "../../actions/createAccount.js"
 import { connect } from "react-redux";
 import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
@@ -23,11 +24,14 @@ class SignUp extends Component {
 			email: '',
 			name: '',
 			password: '',
+			isLoading:false
 		};
 		this.validateEmail = this.validateEmail.bind(this)
 	}
 
 	componentWillReceiveProps(props) {
+		this.props.navigation.goBack()
+		this.setState({isLoading:false})
 		if(props.createAccountSucces()){
 
 		}
@@ -55,6 +59,7 @@ class SignUp extends Component {
 			params.password = this.state.password
 			console.log('params', params)
 			this.props.register(params)
+			this.setState({isLoading:true})
 		} else {
 			Alert.alert('', 'Fields are not be blank')
 		}
@@ -65,20 +70,21 @@ class SignUp extends Component {
 		return (
 			<ScrollView>
 				<Container style={styles.containerWrap}>
+				<Spinner visible={this.state.isLoading} />
 					<Image source={background} style={styles.imageBackground}>
 						<View style={styles.container}>
 							<Form>
 								<Item style={styles.input} regular >
-									<Input value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Input your email' placeholderTextColor='#f4e6db' />
+									<Input style={styles.textInput} value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Input your email' placeholderTextColor='#f4e6db' />
 								</Item>
 								<Item style={styles.input} regular >
-									<Input value={this.state.firstName} onChangeText={text => this.setState({ firstName: text })} placeholder='Input your first name' placeholderTextColor='#f4e6db' />
+									<Input style={styles.textInput} value={this.state.firstName} onChangeText={text => this.setState({ firstName: text })} placeholder='Input your first name' placeholderTextColor='#f4e6db' />
 								</Item>
 								<Item style={styles.input} regular >
-									<Input value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} placeholder='Input your last name' placeholderTextColor='#f4e6db' />
+									<Input style={styles.textInput} value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} placeholder='Input your last name' placeholderTextColor='#f4e6db' />
 								</Item>
 								<Item style={styles.input} regular >
-									<Input value={this.state.password} onChangeText={text => this.setState({ password: text })} secureTextEntry={this.state.showPassword} placeholder='Input your password' placeholderTextColor='#f4e6db' />
+									<Input style={styles.textInput} value={this.state.password} onChangeText={text => this.setState({ password: text })} secureTextEntry={this.state.showPassword} placeholder='Input your password' placeholderTextColor='#f4e6db' />
 								</Item>
 							</Form>
 							<View style={styles.checkBoxWrap}>
@@ -91,7 +97,7 @@ class SignUp extends Component {
 							<View style={styles.questionWrap}>
 								<Text style={styles.questionText}>Already have an account</Text>
 							</View>
-							<TouchableOpacity onPress={() => navigation.navigate("Login")} style={styles.button}  >
+							<TouchableOpacity onPress={() => navigation.goBack()} style={styles.button}  >
 								<Text style={{ color: '#f4e6db' }}>Sign in now</Text>
 							</TouchableOpacity>
 						</View>

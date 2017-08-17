@@ -77,7 +77,8 @@ export default {
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    height: 60
+    height: 60,
+    aspectRatio:1
   },
   line:{
 
