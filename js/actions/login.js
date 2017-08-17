@@ -1,25 +1,33 @@
-import { APIRequest } from '../utils/Api';
+import * as  APIRequest  from '../utils/Api';
 
 
-export function createAccountSuccess(message) {
+export function loginSuccess(response) {
 	return {
 		type: "LOGIN_SUCCESS",
-		message
+		response
 	};
 }
-export function createAccountFailed(error) {
+export function loginFailed(error) {
 	return {
 		type: "LOGIN_FAILED",
 		error
 	};
 }
 
-export function login(params) {
+export function loginClick(params) {
 	var url = "http://api.svina.net/api/user/login"
-	var params = 'asdas'
+	var params = params
+	var isAuth = false
+	console.log(params)
 	return dispatch => {
-		APIRequest.APIRequestPOST()
-		dispatch(createAccountSuccess(message));
-		dispatch(createAccountFailed(false));
+		APIRequest.APIRequestPOST(url,params,isAuth,
+		response => {
+			console.log(response)
+			dispatch(loginSuccess(response));
+		},
+		error => {
+			dispatch(loginFailed(error));
+		}
+		)
 	};
 }

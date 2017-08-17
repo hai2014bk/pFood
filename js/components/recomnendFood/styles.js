@@ -17,23 +17,31 @@ export default {
 	sectionText:{
 		color:'black',
 		fontSize:15,
-		fontWeight:'bold',
+		fontWeight:'normal',
 		textAlign:'center'
+	},
+	foodThumnail:{
+		height:70,
+		aspectRatio:1,
 	},
 	shopNameText: {
 		color:'black',
-		fontSize:12,
+		fontSize:10,
+		fontWeight:'100',
 		textAlign:'center'
 	},
 	foodNameText: {
 		marginTop:5,
 		color:'black',
+		fontWeight:'500',
 		fontSize:13,
 		textAlign:'center'
 	},
 	priceText: {
 		color:'black',
-		fontSize:12,
+		marginTop:8,
+		fontSize:15,
+		fontWeight:'bold',
 		textAlign:'center'
 	},
 	mainContent:{

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 
-import { Text, View } from "native-base";
+import { Icon,Text, View } from "native-base";
 
 class CustomTabBar extends Component {
 	renderTabOption(name, page) {
@@ -16,11 +16,11 @@ class CustomTabBar extends Component {
 					styles.tab,
 					{
 						borderColor: "gray",
-						backgroundColor: isTabActive? 'blue' : 'transparent'
 					},
 				]}
 			>
-				<Text style={{ fontSize:15, color: isTabActive? "white":"gray", fontWeight: isTabActive ? "bold" : "normal" }}>
+				<Icon style={{fontSize:20,color:isTabActive? 'red': 'gray'}} active name="ios-radio-button-on" />
+				<Text style={{ fontSize:12, color:"gray"}}>
 					{name}
 				</Text>
 			</TouchableOpacity>

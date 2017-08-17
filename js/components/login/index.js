@@ -12,11 +12,10 @@ import {
   Left,
   Right
 } from "native-base";
-
+import { connect } from "react-redux";
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
-import { login } from "../../actions/login";
-
+import { loginClick } from "../../actions/login";
 
 const bg = require("../../../images/BG.png");
 const logo = require("../../../images/logo.png");
@@ -29,7 +28,19 @@ class Login extends Component {
       password: ""
     };
   }
-
+  loginClick(){
+    var param = {
+      email:this.state.username,
+      password:this.state.password
+    }
+    this.props.loginAction(param)
+  }
+   componentWillReceiveProps(props) { 
+     this.props.navigation.navigate('MainTabFood')
+   }
+  signUp(){
+    
+  }
   render() {
     const navigation = this.props.navigation;
     return (
@@ -40,7 +51,7 @@ class Login extends Component {
         />
         <Content scrollEnabled={true} bounces={false}>
 				<View style={{marginTop:5,justifyContent:'center',alignItems:'center',flex:1}}>
-				<Image source={logo} style={{height:100,resizeMode:'contain',}}  />
+				<Image resizeMode='contain' source={logo} style={{height:100,}}  />
 				</View>
           <View style={styles.bg}>
             <Item blook style={styles.inputGrp}>
@@ -61,7 +72,7 @@ class Login extends Component {
             <Button
               block
               style={styles.loginBtn}
-              onPress={() => navigation.navigate("Walkthrough")}
+              onPress={() => this.loginClick()}
             >
               <Text
                 style={
@@ -106,7 +117,7 @@ class Login extends Component {
               >
                 <Icon
                   name="logo-facebook"
-                  style={{ fontSize: 25, resizeMode: "contain" }}
+                  style={{ fontSize: 25 }}
                 />
               </Button>
               <View style={{ flex: 1 }} />
@@ -123,7 +134,7 @@ class Login extends Component {
               >
                 <Icon
                   name="logo-google"
-                  style={{ fontSize: 25, resizeMode: "contain" }}
+                  style={{ fontSize: 25 }}
                 />
               </Button>
               <View style={{ flex: 1 }} />
@@ -140,7 +151,7 @@ class Login extends Component {
               >
                 <Icon
                   name="ios-call"
-                  style={{ fontSize: 28, resizeMode: "contain" }}
+                  style={{ fontSize: 28 }}
                 />
               </Button>
               <View style={{ flex: 2 }} />
@@ -165,20 +176,18 @@ class Login extends Component {
               </Text>
             </Button>
           </View>
-
         </Content>
       </Container>
     );
   }
 }
-function bindActions(dispatch) {
+
+function bindAction(dispatch) {
   return {
-    login: (email, password) => dispatch(login(email, password)),
-    clickLoginF: token => dispatch(clickLoginF(token)),
-    reloadDrawer: () => dispatch(reloadDrawer())
+    loginAction: (param) => dispatch(loginClick(param)),
   };
 }
 const mapStateToProps = state => ({
   login: state.login,
 });
-export default Login;
+export default connect(mapStateToProps, bindAction)(Login);

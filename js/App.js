@@ -11,6 +11,7 @@ import MainTabFood from "./components/mainTabFood"
 import Categories from "./components/categories";
 import Category from "./components/category";
 import Drawer from "./Drawer";
+
 const App = StackNavigator(
 	{
 		Login: { screen: Login },
@@ -21,13 +22,12 @@ const App = StackNavigator(
 		Comments: { screen: Comments },
 		Channel: { screen: Channel },
 		Drawer: { screen: Drawer },
-		MainTabFood: {screen: MainTabFood},
 		Categories: { screen: Categories},
 		Category: { screen: Category},
 	},
 	{
 		index: 0,
-		initialRouteName: "Login",
+		initialRouteName: "Walkthrough",
 		headerMode: "none",
 	}
 );
