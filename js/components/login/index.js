@@ -70,7 +70,7 @@ class Login extends Component {
                     : { fontSize: 16, fontWeight: "null" }
                 }
               >
-                Login
+                Loginsss
               </Text>
             </Button>
             <TouchableOpacity

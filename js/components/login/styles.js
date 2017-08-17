@@ -77,7 +77,7 @@ export default {
   button:{
     flex: 2,
     borderWidth: 1,
-    borderRadius: 40,
+    borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
     height: 60
