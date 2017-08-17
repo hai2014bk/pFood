@@ -12,9 +12,11 @@ import {
   Left,
   Right
 } from "native-base";
-
+import { Grid, Col } from "react-native-easy-grid";
+import { connect } from "react-redux";
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
+import { loginClick } from "../../actions/login";
 
 
 class Login extends Component {
@@ -26,6 +28,25 @@ class Login extends Component {
       password: ""
     };
   }
+  loginClick(){
+    var param = {
+      email:this.state.username,
+      password:this.state.password
+    }
+    this.props.loginAction(param)
+  }
+   componentWillReceiveProps(props) {
+
+     if (props.login.success) {
+
+   this.props.navigation.navigate('Drawer')
+  }
+  else{
+  alert('login unsuccessful');
+  }
+
+}
+
 
   render() {
     const navigation = this.props.navigation;
@@ -36,13 +57,13 @@ class Login extends Component {
           barStyle="light-content"
         />
         <Content scrollEnabled={true} bounces={false}>
-
+				<View style={{marginTop:5,justifyContent:'center',alignItems:'center',flex:1}}>
+				</View>
           <View style={styles.bg}>
             <Item blook style={styles.inputGrp}>
               <Input
                 placeholder="Input your Username"
                 onChangeText={username => this.setState({ username })}
-                placeholderTextColor="#100000"
                 style={styles.input}
               />
             </Item>
@@ -50,7 +71,6 @@ class Login extends Component {
               <Input
                 placeholder="Input your password"
                 secureTextEntry
-                placeholderTextColor="black"
                 onChangeText={password => this.setState({ password })}
                 style={styles.input}
               />
@@ -58,7 +78,7 @@ class Login extends Component {
             <Button
               block
               style={styles.loginBtn}
-              onPress={() => navigation.navigate("Walkthrough")}
+              onPress={() => this.loginClick()}
             >
               <Text
                 style={
@@ -84,6 +104,8 @@ class Login extends Component {
               _______ Or Sign in with _______
             </Text>
 
+
+
             <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
               <View style={{ flex: 2 }} />
               <Button
@@ -94,7 +116,7 @@ class Login extends Component {
               >
                 <Icon
                   name="logo-facebook"
-                  style={{ fontSize: 26, resizeMode: "contain" }}
+                  style={{ fontSize: 25 }}
                 />
               </Button>
               <View style={{ flex: 1 }} />
@@ -105,7 +127,7 @@ class Login extends Component {
               >
                 <Icon
                   name="logo-google"
-                  style={{ fontSize: 26, resizeMode: "contain" }}
+                  style={{ fontSize: 25 }}
                 />
               </Button>
               <View style={{ flex: 1 }} />
@@ -115,7 +137,7 @@ class Login extends Component {
               >
                 <Icon
                   name="ios-call"
-                  style={{ fontSize: 26, resizeMode: "contain" }}
+                  style={{ fontSize: 28 }}
                 />
               </Button>
               <View style={{ flex: 2 }} />
@@ -125,7 +147,7 @@ class Login extends Component {
             <Button
               block
               style={styles.loginBtn}
-              onPress={() => navigation.navigate("  Register   ")}
+              onPress={() => navigation.navigate("SignUp")}
             >
               <Text
                 style={
@@ -138,11 +160,18 @@ class Login extends Component {
               </Text>
             </Button>
           </View>
-
         </Content>
       </Container>
     );
   }
 }
 
-export default Login;
+function bindAction(dispatch) {
+  return {
+    loginAction: (param) => dispatch(loginClick(param)),
+  };
+}
+const mapStateToProps = state => ({
+  login: state.login,
+});
+export default connect(mapStateToProps, bindAction)(Login);

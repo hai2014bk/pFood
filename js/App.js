@@ -7,6 +7,9 @@ import Walkthrough from "./components/walkthrough/";
 import Comments from "./components/comments/";
 import Channel from "./components/channel";
 import Story from "./components/story";
+import MainTabFood from "./components/mainTabFood"
+import Categories from "./components/categories";
+import Category from "./components/category";
 import Drawer from "./Drawer";
 
 const App = StackNavigator(
@@ -19,10 +22,12 @@ const App = StackNavigator(
 		Comments: { screen: Comments },
 		Channel: { screen: Channel },
 		Drawer: { screen: Drawer },
+		Categories: { screen: Categories},
+		Category: { screen: Category},
 	},
 	{
 		index: 0,
-		initialRouteName: "Login",
+		initialRouteName: "Walkthrough",
 		headerMode: "none",
 	}
 );
