@@ -24,19 +24,26 @@ class SignUp extends Component {
 			email: '',
 			name: '',
 			password: '',
-			isLoading:false
+			isLoading: false
 		};
 		this.validateEmail = this.validateEmail.bind(this)
 	}
 
 	componentWillReceiveProps(props) {
-		this.props.navigation.goBack()
-		this.setState({isLoading:false})
-		if(props.createAccountSucces()){
-
+		console.log(props.createAccountSuccess)
+		if (props.createAccountSuccess) {
+			this.setState({ isLoading: false })
+			Alert.alert(
+				'',
+				'Create account successfully',
+				[
+					{ text: 'OK', onPress: () => this.props.navigation.goBack() },
+				],
+				{ cancelable: false }
+			)
 		}
-		if(props.createAccountFailed()){
-			
+		if (props.createAccountFailed) {
+			Alert.alert('', 'Create account failed')
 		}
 	}
 
@@ -59,7 +66,7 @@ class SignUp extends Component {
 			params.password = this.state.password
 			console.log('params', params)
 			this.props.register(params)
-			this.setState({isLoading:true})
+			this.setState({ isLoading: true })
 		} else {
 			Alert.alert('', 'Fields are not be blank')
 		}
@@ -70,7 +77,7 @@ class SignUp extends Component {
 		return (
 			<ScrollView>
 				<Container style={styles.containerWrap}>
-				<Spinner visible={this.state.isLoading} />
+					<Spinner visible={this.state.isLoading} />
 					<Image source={background} style={styles.imageBackground}>
 						<View style={styles.container}>
 							<Form>
@@ -92,7 +99,7 @@ class SignUp extends Component {
 								<Text style={styles.showPassword}>Show password</Text>
 							</View>
 							<TouchableOpacity onPress={() => this.createPassword()} style={styles.button} >
-								<Text style={{ color: '#f4e6db' }}>Create your password</Text>
+								<Text style={{ color: '#f4e6db' }}>Create your account</Text>
 							</TouchableOpacity>
 							<View style={styles.questionWrap}>
 								<Text style={styles.questionText}>Already have an account</Text>
@@ -118,7 +125,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => ({
-	createAccountSucces: state.createAccountSucces,
+	createAccountSuccess: state.createAccountSuccess,
 	createAccountFailed: state.createAccountFailed
 });
 
