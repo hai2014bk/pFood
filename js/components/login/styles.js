@@ -53,13 +53,11 @@ export default {
     marginTop: 20,
     height: 50,
     alignItems: 'center',
-    color:'black'
   },
   helpBtns: {
     opacity: 0.9,
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#FFF'
   },
   otherLinksContainer: {
     flexDirection: 'row',
