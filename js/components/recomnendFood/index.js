@@ -49,10 +49,12 @@ class RecommendFood extends Component {
 		return (
 			<View>
 				<TouchableOpacity style={{ flex: 1, alignItems: 'center' }}>
+					<View style={{flex:1,alignItems:'flex-start'}}>
 					<Thumbnail style={styles.foodThumnail} square source={{ uri: 'http://www.ingredientsnetwork.com/47/pdcnewsitem/03/77/23/Cajun-Steak-with-Potatoes-_-Vegetables-cropped.jpg' }} />
 					<Text style={styles.foodNameText}> Thịt Bò </Text>
 					<Text style={styles.shopNameText}> Vin Market </Text>
 					<Text style={styles.priceText}> 200.000 VNĐ </Text>
+					</View>
 				</TouchableOpacity>
 			</View>
 		)
@@ -63,7 +65,7 @@ class RecommendFood extends Component {
 				<View style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
 					<Text style={styles.sectionText} note>Đề xuất cho bạn</Text>
 				</View>
-				<List style={{ marginLeft: -15, marginRight: -15 }} showsHorizontalScrollIndicator={false} horizontal={true} dataArray={foods}
+				<List style={{marginBottom:-10, marginLeft: -15, marginRight: -15 }} showsHorizontalScrollIndicator={false} horizontal={true} dataArray={foods}
 					renderRow={(item) =>
 						<ListItem style={{ borderBottomWidth: 0 }}>
 							{this.renderCell(item)}
@@ -78,7 +80,7 @@ class RecommendFood extends Component {
 		return (
 			<List style={{ flex: 1 }} dataArray={items}
 				renderRow={(item) =>
-					<ListItem style={{marginBottom:-10, borderBottomWidth: 0 }}>
+					<ListItem >
 						{this.renderHorizontalList(items)}
 					</ListItem>
 				}>

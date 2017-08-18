@@ -17,33 +17,34 @@ export default {
 	},
 	sectionText:{
 		color:'black',
-		fontSize:15,
+		fontSize:13,
 		fontWeight:'normal',
-		textAlign:'center'
+		textAlign:'left'
 	},
 	foodThumnail:{
 		height:70,
 		aspectRatio:1,
+		borderRadius:15,
 	},
 	shopNameText: {
-		color:'black',
+		color:'gray',
 		fontSize:10,
 		fontWeight:'100',
-		textAlign:'center'
+		textAlign:'left'
 	},
 	foodNameText: {
 		marginTop:5,
 		color:'black',
 		fontWeight:'500',
-		fontSize:13,
-		textAlign:'center'
+		fontSize:11,
+		textAlign:'left'
 	},
 	priceText: {
 		color:'black',
-		marginTop:8,
-		fontSize:15,
+		marginTop:5,
+		fontSize:12,
 		fontWeight:'bold',
-		textAlign:'center'
+		textAlign:'left'
 	},
 	mainContent:{
 		flex:3
