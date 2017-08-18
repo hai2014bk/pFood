@@ -1,5 +1,4 @@
 
-
 const React = require('react-native');
 
 const { StyleSheet, Dimensions, Platform } = React;
@@ -26,15 +25,32 @@ export default {
     marginTop: (deviceWidth < 330) ? (deviceHeight / 15) : ((deviceHeight / 5) - 60),
   },
   inputGrp: {
-    flexDirection: 'row',
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: 'black',
+    marginTop:12,
+		width:'80%',
+		alignSelf:'center',
+		height: 40,
+    borderWidth:0,
+		backgroundColor:'rgba(255,225,240,0.2)',
+		paddingLeft: 10,
+		borderRadius: 12
   },
   input: {
     paddingLeft: 10,
-    color: '#000000',
+    color: 'white',
     marginLeft:5
+  },
+  loginBtn:{
+    marginTop:12,
+    width:'80%',
+    alignSelf:'center',
+    height: 40,
+    borderColor:'white',
+    borderWidth:1,
+    backgroundColor:'transparent',
+    paddingLeft: 10,
+    justifyContent:'center',
+    alignItems: 'center',
+    borderRadius: 12
   },
   background: {
     flex: 1,
@@ -46,47 +62,60 @@ export default {
     flex: 1,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom: 70,
+    paddingBottom: 50,
     marginTop: (deviceHeight < 500) ? (Platform.OS === 'android' ? 20 : 0) : (Platform.OS === 'android' ? ((deviceHeight / 6) - 45) : ((deviceHeight / 6) - 10)),
   },
-  loginBtn: {
-    marginTop: 20,
-    height: 50,
-    alignItems: 'center',
-  },
+
   helpBtns: {
     opacity: 0.9,
     fontSize: 14,
     fontWeight: 'bold',
+    color: '#FFF'
   },
   otherLinksContainer: {
     flexDirection: 'row',
   },
   questionWrap:{
-   marginTop: 20
-  },
-  col: {
-   justifyContent: 'flex-end',
-   alignItems: 'center'
+   marginTop: 10
   },
   button:{
     flex: 2,
-    borderWidth: 1,
-    borderRadius: 30,
+   paddingTop:10,
     alignItems: "center",
     justifyContent: "center",
     height: 60,
+    backgroundColor:'transparent',
+    borderColor:'transparent',
     aspectRatio:1
-  },
-  line:{
 
+  },
+
+questionText:{
+  color: '#f4e6db',
+  fontSize: 16,
+  marginBottom:15,
+  marginTop:50,
+
+  textAlign:'center',
+
+
+  },
+  regis:{
+    marginTop:12,
+		width:'80%',
+		alignSelf:'center',
+		height: 40,
+    justifyContent:'center',
+		backgroundColor:'rgba(255,225,240,0.2)',
+		paddingLeft: 10,
+		borderRadius: 12,
+    borderWidth:0
   },
   forgot:{
     fontSize: 16,
-    color: "black",
+
     textAlign: "center",
-    textDecorationLine: "underline",
-    color: "blue"
+    color: "white"
   },
   logo:{
     marginTop:40,
