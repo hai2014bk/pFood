@@ -55,7 +55,8 @@ export default {
 		flexDirection:'row'
 	},
 	textInput:{
-		color:'white'
+		color:'white',
+		borderWidth:0
 	},
 	line: {
 		height: 3,
@@ -73,7 +74,8 @@ export default {
 		height: 40,
 		backgroundColor:'rgba(255,225,240,0.2)',
 		paddingLeft: 10,
-		borderRadius: 12
+		borderRadius:12,
+		borderColor:'transparent'
 	},
 	checkBox:{
 		borderColor:'#rgba(255,225,240,0.2)',

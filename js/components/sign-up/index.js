@@ -92,7 +92,7 @@ class SignUp extends Component {
 								<Text style={styles.showPassword}>Show password</Text>
 							</View>
 							<TouchableOpacity onPress={() => this.createPassword()} style={styles.button} >
-								<Text style={{ color: '#f4e6db' }}>Create your password</Text>
+								<Text style={{ color: '#f4e6db' }}>Create your account</Text>
 							</TouchableOpacity>
 							<View style={styles.questionWrap}>
 								<Text style={styles.questionText}>Already have an account</Text>
