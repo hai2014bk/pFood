@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, Platform, StatusBar, TouchableOpacity } from "react-native";
+import {  Keyboard, Image, Platform, StatusBar, TouchableOpacity } from "react-native";
 import {
   Container,
   Content,
@@ -10,7 +10,7 @@ import {
   Icon,
   View,
   Left,
-  Right
+  Right,
 } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -37,6 +37,7 @@ class Login extends Component {
       email: this.state.username,
       password: this.state.password
     }
+    Keyboard.dismiss()
     this.setState({ isLoading: true })
     this.props.loginAction(param)
   }
@@ -48,7 +49,6 @@ class Login extends Component {
     else {
       setTimeout(() => { alert('tài khoản hoặc mật khẩu không chính xác') }, 100)
     }
-
   }
   render() {
     const navigation = this.props.navigation;
@@ -58,11 +58,12 @@ class Login extends Component {
           backgroundColor={commonColor.statusBarColor}
           barStyle="light-content"
         />
-        <Spinner visible={this.state.isLoading} />
         <Image source={bgr} style={styles.background}>
-          <Content>
+          <Content keyboardShouldPersistTaps='handled'>
+                    <Spinner visible={this.state.isLoading} />
+
             <View style={styles.bg}>
-              <Image source={logo} resizeMode='contain' style={{marginBottom:80, marginTop:30, width:'80%'}} />
+              <Image source={logo} resizeMode='contain' style={{marginBottom:60, marginTop:80, width:'95%'}} />
               <Item rounded style={styles.inputGrp}>
                 <Input
                   placeholder="Username"

@@ -30,7 +30,7 @@ export default {
 		alignSelf:'center',
 		height: 40,
     borderColor:'transparent',
-      borderWidth:0,
+    borderWidth:0,
 		backgroundColor:'rgba(255,225,240,0.2)',
 		paddingLeft: 10,
 		borderRadius: 12
