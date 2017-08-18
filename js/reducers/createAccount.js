@@ -1,18 +1,25 @@
-export function createAccountSuccess(state = false, action) {
-	console.log(2222)
-	switch (action.type) {
-		case "CREATE_ACCOUNT_SUCCESS":
-		console.log(111)
-			return true;
-		default:
-			return state;
-	}
+export type State = {
+    success:boolean,  
 }
-export function createAccountFailed(state = true, action) {
-	switch (action.type) {
-		case "CREATE_ACCOUNT_FAILED":
-			return false;
-		default:
-			return state;
-	}
+
+const initialState = {
+  success:true,
+};
+
+
+export function creatAcount(state:State = initialState, action) {
+  if (action.type === 'CREATE_ACCOUNT_FAILED') {
+    return {
+      ...state,
+      success: false,
+    };
+  }
+  if (action.type === 'CREATE_ACCOUNT_SUCCESS') {
+    return {
+      ...state,
+        success: true,
+    };
+  }
+  return state;
+
 }

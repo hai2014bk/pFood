@@ -14,7 +14,8 @@ export default {
 	container: {
 		flex: 1,
 		marginTop:30,
-		marginBottom:10
+		marginBottom:10,
+		justifyContent:'center',
 	},
 	showPassword: {
 		color: '#f4e6db',

@@ -106,7 +106,6 @@ class Login extends Component {
 
               <Text style={styles.questionText}>Or Sign in with</Text>
 
-
               <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
                 <View style={{ flex: 2, alignItems: 'center' }} />
                 <TouchableOpacity
@@ -144,7 +143,7 @@ class Login extends Component {
                 <View style={{ flex: 2 }} />
               </View>
 
-              <Text style={{ fontSize: 16, textAlign: "center", color: "white" }}>{"Don't have an account"}</Text>
+              <Text style={{ marginTop:10, fontSize: 16, textAlign: "center", color: "white" }}>{"Don't have an account"}</Text>
               <Button
                 style={styles.regis}
                 onPress={() => navigation.navigate("SignUp")}

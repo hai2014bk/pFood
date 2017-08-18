@@ -97,8 +97,7 @@ questionText:{
   color: '#f4e6db',
   fontSize: 16,
   marginBottom:15,
-  marginTop:50,
-
+  marginTop:10,
   textAlign:'center',
 
 
