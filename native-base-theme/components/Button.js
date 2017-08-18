@@ -8,6 +8,19 @@ export default (variables = variable) => {
 		".disabled": {
 			backgroundColor: variables.btnDisabledBg,
 		},
+		".noBordered": {
+			backgroundColor: 'rgba(255,225,240,0.2)',
+			borderRadius: 12,
+			borderWidth: 0,
+			width:'60%'
+		},
+		".main": {
+			backgroundColor: 'transparent',
+			borderRadius: 12,
+			borderWidth: 1,
+			borderColor:'white',
+			width:'60%'
+		},
 		".bordered": {
 			".dark": {
 				"NativeBase.Text": {

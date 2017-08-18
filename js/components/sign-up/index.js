@@ -54,22 +54,22 @@ class SignUp extends Component {
 	}
 
 	createPassword() {
-		Keyboard.dismiss()
-		if (this.state.email && this.state.firstName && this.state.lastName && this.state.password) {
-			if (!this.validateEmail(this.state.email)) {
-				Alert.alert('', 'Email is not a valid type')
-			} else {
-				let params = {}
-				params.firstName = this.state.firstName
-				params.lastName = this.state.lastName
-				params.email = this.state.email
-				params.password = this.state.password
-				this.props.register(params)
-				this.setState({ isLoading: true })
-			}
-		} else {
-			Alert.alert('', 'Fields are not be blank')
-		}
+	 Keyboard.dismiss()
+  if (this.state.email && this.state.firstName && this.state.lastName && this.state.password) {
+   if (!this.validateEmail(this.state.email)) {
+    Alert.alert('', 'Email is not a valid type')
+   } else {
+    let params = {}
+    params.firstName = this.state.firstName
+    params.lastName = this.state.lastName
+    params.email = this.state.email
+    params.password = this.state.password
+    this.props.register(params)
+    this.setState({ isLoading: true })
+   }
+  } else {
+   Alert.alert('', 'Fields are not be blank')
+  }
 	}
 
 	render() {
