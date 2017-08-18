@@ -22,45 +22,43 @@ class ForgetPassword extends Component {
 
     }
 
-    onSend(){
-        if(this.state.email){
-            if(!this.validateEmail(this.state.email)){
-                Alert.alert('','Email is not a valid type')
+    onSend() {
+        if (this.state.email) {
+            if (!this.validateEmail(this.state.email)) {
+                Alert.alert('', 'Email is not a valid type')
             } else {
 
             }
         } else {
-            Alert.alert('','Please type your email.')
+            Alert.alert('', 'Please type your email.')
         }
     }
 
     render() {
         const navigation = this.props.navigation;
         return (
-            <ScrollView>
-                <Container style={styles.containerWrap}>
-                    <Spinner visible={this.state.isLoading} />
-                    <Image source={background} style={styles.imageBackground}>
-                        <Icon name="ios-arrow-back" style={styles.iconBack} size={50} onPress={() => navigation.goBack()} /> 
-                        <View style={styles.container}>
-                            <View style={styles.questionWrap}>
-                                <Text style={styles.questionText}>Forgot your password?{"\n"} Please type your email.</Text>
-                            </View>
-                            <Form>
-                                <Item style={styles.input} regular >
-                                    <Input style={styles.textInput} value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Input your email' placeholderTextColor='#f4e6db' />
-                                </Item>
-                            </Form>
-                            <View style={styles.questionWrap}>
-                                <Text style={styles.questionText}>Please check your email after sending, {"\n"} we will send to you new password to login.</Text>
-                            </View>
-                            <TouchableOpacity onPress={() => this.onSend()} style={styles.button} >
-                                <Text style={{ color: '#f4e6db' }}>Send</Text>
-                            </TouchableOpacity>
+            <Container style={styles.containerWrap}>
+                <Spinner visible={this.state.isLoading} />
+                <Image source={background} style={styles.imageBackground}>
+                    <Icon name="ios-arrow-back" style={styles.iconBack} size={50} onPress={() => navigation.goBack()} />
+                    <View style={styles.container}>
+                        <View style={styles.questionWrap}>
+                            <Text style={styles.questionText}>Forgot your password?{"\n"} Please type your email.</Text>
                         </View>
-                    </Image>
-                </Container>
-            </ScrollView>
+                        <Form>
+                            <Item style={styles.input} regular >
+                                <Input style={styles.textInput} value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Input your email' placeholderTextColor='#f4e6db' />
+                            </Item>
+                        </Form>
+                        <View style={styles.questionWrap}>
+                            <Text style={styles.questionText}>Please check your email after sending, {"\n"} we will send to you new password to login.</Text>
+                        </View>
+                        <TouchableOpacity onPress={() => this.onSend()} style={styles.button} >
+                            <Text style={{ color: '#f4e6db' }}>Send</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Image>
+            </Container>
         );
     }
     validateEmail(email) {

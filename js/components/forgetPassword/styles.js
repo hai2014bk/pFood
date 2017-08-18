@@ -13,7 +13,6 @@ export default {
 	},
 	container: {
 		flex: 1,
-		justifyContent:'center'
 	},
 	button: {
 		height: 30,
