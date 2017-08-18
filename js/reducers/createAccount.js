@@ -1,6 +1,8 @@
 export function createAccountSuccess(state = true, action) {
+	console.log(2222)
 	switch (action.type) {
 		case "CREATE_ACCOUNT_SUCCESS":
+		console.log(111)
 			return action.message;
 		default:
 			return state;
