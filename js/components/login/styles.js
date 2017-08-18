@@ -29,7 +29,8 @@ export default {
 		width:'80%',
 		alignSelf:'center',
 		height: 40,
-    borderWidth:0,
+    borderColor:'transparent',
+      borderWidth:0,
 		backgroundColor:'rgba(255,225,240,0.2)',
 		paddingLeft: 10,
 		borderRadius: 12
@@ -37,10 +38,12 @@ export default {
   input: {
     paddingLeft: 10,
     color: 'white',
-    marginLeft:5
+    marginLeft:5,
+    borderWidth:0,
+    borderColor:'transparent',
   },
   loginBtn:{
-    marginTop:12,
+    marginTop:50,
     width:'80%',
     alignSelf:'center',
     height: 40,
@@ -63,9 +66,9 @@ export default {
     paddingLeft: 20,
     paddingRight: 20,
     paddingBottom: 50,
-    marginTop: (deviceHeight < 500) ? (Platform.OS === 'android' ? 20 : 0) : (Platform.OS === 'android' ? ((deviceHeight / 6) - 45) : ((deviceHeight / 6) - 10)),
+    alignItems:'center',
+    marginTop:0
   },
-
   helpBtns: {
     opacity: 0.9,
     fontSize: 14,
@@ -109,7 +112,7 @@ questionText:{
 		backgroundColor:'rgba(255,225,240,0.2)',
 		paddingLeft: 10,
 		borderRadius: 12,
-    borderWidth:0
+    borderWidth:0,
   },
   forgot:{
     fontSize: 16,
