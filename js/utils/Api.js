@@ -17,10 +17,10 @@ export function APIRequestGET(url, isAuth, successCallback, errorCallback) {
                     if (model.status == "Success") {
                         successCallback(responseJson)
                     } else {
-                        errorCallback(response.errorMessage)
+                        errorCallback(responseJson.errorMessage)
                     }
                 } else {
-                    errorCallback(response.errorMessage)
+                    errorCallback(responseJson.errorMessage)
                 }
             })
         })
@@ -45,10 +45,10 @@ export function APIRequestGET(url, isAuth, successCallback, errorCallback) {
                         if (model.status == "Success") {
                             successCallback(responseJson)
                         } else {
-                            errorCallback(response.errorMessage)
+                            errorCallback(responseJson.errorMessage)
                         }
                     } else {
-                        errorCallback(response.errorMessage)
+                        errorCallback(responseJson.errorMessage)
                     }
                 })
             })
@@ -72,14 +72,15 @@ export function APIRequestPOST(url, param, isAuth, successCallback, errorCallbac
         }).then((response) => {
             response.json().then((responseJson) => {
                 let model = responseJson.model
+                console.log('res',responseJson)
                 if (model) {
                     if (model.status == "Success") {
                         successCallback(responseJson)
                     } else {
-                        errorCallback(response.errorMessage)
+                        errorCallback(responseJson.errorMessage)
                     }
                 } else {
-                    errorCallback(response.errorMessage)
+                    errorCallback(responseJson.errorMessage)
                 }
             })
         })
@@ -104,10 +105,10 @@ export function APIRequestPOST(url, param, isAuth, successCallback, errorCallbac
                         if (model.status == "Success") {
                             successCallback(responseJson)
                         } else {
-                            errorCallback(response.errorMessage)
+                            errorCallback(responseJson.errorMessage)
                         }
                     } else {
-                        errorCallback(response.errorMessage)
+                        errorCallback(responseJson.errorMessage)
                     }
                 })
             })

@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { Image, StatusBar, Alert } from "react-native";
+import { Image, StatusBar, Alert, TouchableOpacity, ScrollView } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
 import { connect } from "react-redux";
 import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
-import HeaderContent from "./../headerContent/";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
+var background = require('../../../images/background.png')
 
 class SignUp extends Component {
 	constructor(props) {
@@ -23,7 +24,20 @@ class SignUp extends Component {
 			email: '',
 			name: '',
 			password: '',
+			isLoading:false
 		};
+		this.validateEmail = this.validateEmail.bind(this)
+	}
+
+	componentWillReceiveProps(props) {
+		this.props.navigation.goBack()
+		this.setState({isLoading:false})
+		if(props.createAccountSucces()){
+
+		}
+		if(props.createAccountFailed()){
+			
+		}
 	}
 
 	showPassword() {
@@ -35,12 +49,17 @@ class SignUp extends Component {
 
 	createPassword() {
 		if (this.state.email && this.state.firstName && this.state.lastName && this.state.password) {
+			if (!this.validateEmail(this.state.email)) {
+				Alert.alert('', 'Email is not a valid type')
+			}
 			let params = {}
 			params.firstName = this.state.firstName
 			params.lastName = this.state.lastName
 			params.email = this.state.email
 			params.password = this.state.password
+			console.log('params', params)
 			this.props.register(params)
+			this.setState({isLoading:true})
 		} else {
 			Alert.alert('', 'Fields are not be blank')
 		}
@@ -49,47 +68,47 @@ class SignUp extends Component {
 	render() {
 		const navigation = this.props.navigation;
 		return (
-			<Container style={styles.containerWrap}>
-				<HeaderContent leftButton={()=>navigation.goBack()} leftIcon="ios-arrow-back" title='Register'/>
-				<Content style={styles.container}>
-					<Form>
-						<Item inlineLabel >
-							<Input value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Input your email' />
-						</Item>
-						<Item inlineLabel >
-							<Input value={this.state.firstName} onChangeText={text => this.setState({ firstName: text })} placeholder='Input your first name' />
-						</Item>
-						<Item inlineLabel >
-							<Input value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} placeholder='Input your last name' />
-						</Item>
-						<Item inlineLabel >
-							<Input value={this.state.password} onChangeText={text => this.setState({ password: text })} secureTextEntry={this.state.showPassword} placeholder='Input your password' />
-						</Item>
-					</Form>
-					<Grid style={styles.checkBoxWrap}>
-						<CheckBox onPress={() => this.showPassword()} checked={this.state.checked} />
-						<Text style={styles.showPassword}>Show password</Text>
-					</Grid>
-					<Button onPress={() => this.createPassword()} style={styles.button} block info>
-						<Text>Create your password</Text>
-					</Button>
-					<Grid style={styles.questionWrap}>
-						<Col style={[styles.col, { marginBottom: 5 }]}>
-							<Item style={styles.line} />
-						</Col>
-						<Col style={[styles.col, { flex: 2 }]}>
-							<Text style={styles.questionText}>Already have an account</Text>
-						</Col>
-						<Col style={[styles.col, { marginBottom: 5 }]}>
-							<Item style={styles.line} />
-						</Col>
-					</Grid>
-					<Button onPress={() => navigation.navigate("Login")} style={styles.button} block info>
-						<Text>Sign in now</Text>
-					</Button>
-				</Content>
-			</Container>
+			<ScrollView>
+				<Container style={styles.containerWrap}>
+				<Spinner visible={this.state.isLoading} />
+					<Image source={background} style={styles.imageBackground}>
+						<View style={styles.container}>
+							<Form>
+								<Item style={styles.input} regular >
+									<Input style={styles.textInput} value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Input your email' placeholderTextColor='#f4e6db' />
+								</Item>
+								<Item style={styles.input} regular >
+									<Input style={styles.textInput} value={this.state.firstName} onChangeText={text => this.setState({ firstName: text })} placeholder='Input your first name' placeholderTextColor='#f4e6db' />
+								</Item>
+								<Item style={styles.input} regular >
+									<Input style={styles.textInput} value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} placeholder='Input your last name' placeholderTextColor='#f4e6db' />
+								</Item>
+								<Item style={styles.input} regular >
+									<Input style={styles.textInput} value={this.state.password} onChangeText={text => this.setState({ password: text })} secureTextEntry={this.state.showPassword} placeholder='Input your password' placeholderTextColor='#f4e6db' />
+								</Item>
+							</Form>
+							<View style={styles.checkBoxWrap}>
+								<CheckBox style={styles.checkBox} onPress={() => this.showPassword()} checked={this.state.checked} />
+								<Text style={styles.showPassword}>Show password</Text>
+							</View>
+							<TouchableOpacity onPress={() => this.createPassword()} style={styles.button} >
+								<Text style={{ color: '#f4e6db' }}>Create your password</Text>
+							</TouchableOpacity>
+							<View style={styles.questionWrap}>
+								<Text style={styles.questionText}>Already have an account</Text>
+							</View>
+							<TouchableOpacity onPress={() => navigation.goBack()} style={styles.button}  >
+								<Text style={{ color: '#f4e6db' }}>Sign in now</Text>
+							</TouchableOpacity>
+						</View>
+					</Image>
+				</Container>
+			</ScrollView>
 		);
+	}
+	validateEmail(email) {
+		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(email);
 	}
 }
 function bindActions(dispatch) {
@@ -98,13 +117,9 @@ function bindActions(dispatch) {
 	};
 }
 
-function validateEmail(email) {
-	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	return re.test(email);
-}
-
 const mapStateToProps = state => ({
-
+	createAccountSucces: state.createAccountSucces,
+	createAccountFailed: state.createAccountFailed
 });
 
 export default connect(mapStateToProps, bindActions)(SignUp);

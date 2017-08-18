@@ -5,7 +5,8 @@ const deviceHeight = Dimensions.get("window").height;
 
 export default {
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor:'white'
     },
     content: {
         flex: 1
@@ -15,17 +16,18 @@ export default {
         marginRight: 10
     },
     image:{
-        height:60,
-        width: 70
+        height:90,
+        width: 90,
     },
     infoWrap:{
         flexDirection:'column',
         alignItems:'flex-start',
-        flex:1
+        flex:1,
+        justifyContent:'center'
     },
     info:{
         color:'black',
-        fontSize:12
+        fontSize:14
     },
     buttonWrap:{
         flexDirection:'row',

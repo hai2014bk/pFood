@@ -13,6 +13,7 @@ import {
   Right
 } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
+import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from "react-redux";
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
@@ -26,29 +27,28 @@ class Login extends Component {
 
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      isLoading: false
     };
   }
-  loginClick(){
+  loginClick() {
     var param = {
-      email:this.state.username,
-      password:this.state.password
+      email: this.state.username,
+      password: this.state.password
     }
+    this.setState({isLoading:true})
     this.props.loginAction(param)
   }
-   componentWillReceiveProps(props) {
+  componentWillReceiveProps(props) {
+    this.setState({ isLoading: false })
+    if (props.login.success) {
+      this.props.navigation.navigate('Drawer')
+    }
+    else {
+      setTimeout(() => { alert('tài khoản hoặc mật khẩu không chính xác') }, 100)
+    }
 
-     if (props.login.success) {
-
-   this.props.navigation.navigate('Drawer')
   }
-  else{
-  alert('login unsuccessful');
-  }
-
-}
-
-
   render() {
     const navigation = this.props.navigation;
     return (
@@ -57,37 +57,36 @@ class Login extends Component {
           backgroundColor={commonColor.statusBarColor}
           barStyle="light-content"
         />
+        <Spinner visible={this.state.isLoading} />
         <Content scrollEnabled={true} bounces={false}>
 
 <Image source={bgr} style={styles.background}>
 
           <View style={styles.bg}>
-            <Item blook style={styles.inputGrp}>
+            <Item rounded style={styles.inputGrp}>
               <Input
-                placeholder="Input your Username"
+                placeholder="Username"
+                placeholderTextColor='#f4e6db'
                 onChangeText={username => this.setState({ username })}
                 style={styles.input}
               />
             </Item>
-            <Item block style={styles.inputGrp}>
+            <Item rounded style={styles.inputGrp}>
               <Input
-                placeholder="Input your password"
+                placeholder="Password"
+                placeholderTextColor='#f4e6db'
                 secureTextEntry
                 onChangeText={password => this.setState({ password })}
                 style={styles.input}
               />
             </Item>
             <Button
-              block
+              rounded
               style={styles.loginBtn}
               onPress={() => this.loginClick()}
             >
               <Text
-                style={
-                  Platform.OS === "android"
-                    ? { fontSize: 16, textAlign: "center", color: "black" }
-                    : { fontSize: 16, fontWeight: "null" }
-                }
+                style={{ fontSize: 16, color: "white" }}
               >
                 Login
               </Text>
@@ -104,65 +103,56 @@ class Login extends Component {
             </TouchableOpacity>
 
 
-            <Grid style={styles.questionWrap}>
-                  <Col style={[styles.col, { marginBottom: 7 }]}>
-                   <Item style={styles.line} />
-                  </Col>
-                  <Col style={[styles.col, { flex: 2 }]}>
                    <Text style={styles.questionText}>Or Sign in with</Text>
-                  </Col>
-                  <Col style={[styles.col, { marginBottom: 7 }]}>
-                   <Item style={styles.line} />
-                  </Col>
-                 </Grid>
+
 
             <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
-              <View style={{ flex: 2 }} />
-              <Button
+              <View style={{ flex: 2, alignItems: 'center' }} />
+              <TouchableOpacity
                 bordered
                 style={
-                styles.button
+                  styles.button
                 }
               >
                 <Icon
                   name="logo-facebook"
-                  style={{ fontSize: 25 }}
+                  style={{ fontSize: 40 }}
                 />
-              </Button>
+              </TouchableOpacity>
               <View style={{ flex: 1 }} />
-              <Button
+            <TouchableOpacity
                 transparent
                 style={styles.button
                 }
               >
                 <Icon
                   name="logo-google"
-                  style={{ fontSize: 25 }}
+                  style={{ fontSize: 40 }}
                 />
-              </Button>
+              </TouchableOpacity>
               <View style={{ flex: 1 }} />
-              <Button
+              <TouchableOpacity
                 transparent
                 style={styles.button}
               >
                 <Icon
                   name="ios-call"
-                  style={{ fontSize: 28 }}
+                  style={{ fontSize: 40 }}
                 />
-              </Button>
+              </TouchableOpacity>
               <View style={{ flex: 2 }} />
             </View>
 
-            <Text style={{ fontSize: 16, textAlign: "center", color: "black", marginTop:30 }}>{"Don't have an account"}</Text>
+            <Text style={{ fontSize: 16, textAlign: "center", color: "white" }}>{"Don't have an account"}</Text>
             <Button
-              block
-              style={styles.loginBtn}
+                bordered
+              style={styles.regis}
               onPress={() => navigation.navigate("SignUp")}
             >
               <Text
                 style={
                   Platform.OS === "android"
-                    ? { fontSize: 16, textAlign: "center",color:'black' }
+                    ? { fontSize: 16, textAlign: "center", color: 'white' }
                     : { fontSize: 16, fontWeight: "900" }
                 }
               >
