@@ -19,7 +19,7 @@ import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
 import { loginClick } from "../../actions/login";
 const bgr = require("../../../images/background.png");
-const logo = require("../../../images/logoFamous.png");
+const logo = ''
 
 
 class Login extends Component {

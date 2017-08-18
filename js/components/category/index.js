@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Image, View, TouchableOpacity, Platform, Text } from "react-native";
 
-import { Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem } from "native-base";
+import { Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 
@@ -53,18 +53,29 @@ class Category extends Component {
     renderItems(item) {
         let id = item.id
         return (
-            <View style={{ flexDirection: 'row' }}>
-                <View style={styles.imageWrap}>
-                    <Image source={{ uri: 'https://i.imgur.com/toH4mkL.jpg' }} style={styles.image} resizeMode='stretch' />
-                </View>
-                <View style={styles.infoWrap}>
-                    <Text style={[styles.info, {fontSize:15}]}>{item.name}</Text>
+            <Grid style={{ flexDirection: 'row' }}>
+                <Col style={styles.imageWrap}>
+                    <Thumbnail source={{ uri: 'https://i.imgur.com/toH4mkL.jpg' }} style={styles.image} resizeMode='contain' />
+                </Col>
+                <Col style={styles.infoWrap}>
+                    <Text style={[styles.info, { fontSize: 15 }]}>{item.name}</Text>
                     <Text style={styles.info}>{item.shopName}</Text>
                     <Text></Text>
-                    <Text style={[styles.info, {fontWeight:'bold'}]}>{item.price} {item.unit}</Text>
-                </View>
-              
-            </View>
+                    <Text style={[styles.info, { fontWeight: 'bold' }]}>{item.price} {item.unit}</Text>
+                </Col>
+                <Col style={styles.buttonWrap}>
+                    <TouchableOpacity style={styles.iconWrap} onPress={() => this.plus(id)} >
+                        <Icon name="md-add" style={styles.icon} />
+                    </TouchableOpacity>
+                    <Text style={styles.quantity}>{item.quantity}</Text>
+                    <TouchableOpacity style={styles.iconWrap}  onPress={() => this.minus(id)} >
+                        <Icon style={styles.icon} name="md-remove" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.iconWrap} >
+                        <Icon style={styles.icon} name="md-cart" />
+                    </TouchableOpacity>
+                </Col>
+            </Grid>
         )
     }
 
@@ -72,10 +83,10 @@ class Category extends Component {
         const navigation = this.props.navi;
         return (
             <Container style={styles.container}>
-                <HeaderContent rightButton={true} title="Category" textLeft="categories" leftButton={() => navigation.navigate("Categories")}/>
+                <HeaderContent rightButton={true} title="Category" textLeft="categories" leftButton={() => navigation.navigate("Categories")} />
                 <Content style={styles.contentWrap}>
                     <List dataArray={this.state.data} renderRow={(item, rowID) =>
-                        <ListItem style={{ borderBottomWidth: 0 }}>
+                        <ListItem>
                             {this.renderItems(item)}
                         </ListItem>
                     } />
