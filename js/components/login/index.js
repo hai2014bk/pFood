@@ -17,6 +17,7 @@ import { connect } from "react-redux";
 import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
 import { loginClick } from "../../actions/login";
+const bgr = require("../../../images/background.png");
 
 
 class Login extends Component {
@@ -57,8 +58,9 @@ class Login extends Component {
           barStyle="light-content"
         />
         <Content scrollEnabled={true} bounces={false}>
-				<View style={{marginTop:5,justifyContent:'center',alignItems:'center',flex:1}}>
-				</View>
+
+<Image source={bgr} style={styles.background}>
+
           <View style={styles.bg}>
             <Item blook style={styles.inputGrp}>
               <Input
@@ -100,11 +102,19 @@ class Login extends Component {
                 Forgot your password
               </Text>
             </TouchableOpacity>
-            <Text style={{ color: "black" ,marginTop:30, textAlign: "center",marginBottom:10}}>
-              _______ Or Sign in with _______
-            </Text>
 
 
+            <Grid style={styles.questionWrap}>
+                  <Col style={[styles.col, { marginBottom: 7 }]}>
+                   <Item style={styles.line} />
+                  </Col>
+                  <Col style={[styles.col, { flex: 2 }]}>
+                   <Text style={styles.questionText}>Or Sign in with</Text>
+                  </Col>
+                  <Col style={[styles.col, { marginBottom: 7 }]}>
+                   <Item style={styles.line} />
+                  </Col>
+                 </Grid>
 
             <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
               <View style={{ flex: 2 }} />
@@ -160,6 +170,7 @@ class Login extends Component {
               </Text>
             </Button>
           </View>
+        </Image>
         </Content>
       </Container>
     );

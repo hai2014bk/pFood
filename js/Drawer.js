@@ -27,7 +27,7 @@ const Drawer = DrawerNavigator(
 		MainTabFood: {screen: MainTabFood}
 	},
 	{
-		initialRouteName: "Home",
+		initialRouteName: "MainTabFood",
 		contentComponent: props => <SideBar {...props} />,
 	}
 );

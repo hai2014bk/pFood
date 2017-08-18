@@ -46,7 +46,7 @@ export default {
     flex: 1,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingBottom: 70,
+    paddingBottom: 50,
     marginTop: (deviceHeight < 500) ? (Platform.OS === 'android' ? 20 : 0) : (Platform.OS === 'android' ? ((deviceHeight / 6) - 45) : ((deviceHeight / 6) - 10)),
   },
   loginBtn: {
@@ -65,7 +65,7 @@ export default {
     flexDirection: 'row',
   },
   questionWrap:{
-   marginTop: 20
+   marginTop: 10
   },
   col: {
    justifyContent: 'flex-end',
@@ -77,9 +77,13 @@ export default {
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
-    height: 60
+    height: 60,
+    marginBottom:30
   },
   line:{
+    width:50,
+      height: 2,
+      backgroundColor:'black'
 
   },
   forgot:{

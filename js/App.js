@@ -27,7 +27,7 @@ const App = StackNavigator(
 	},
 	{
 		index: 0,
-		initialRouteName: "Walkthrough",
+		initialRouteName: "Login",
 		headerMode: "none",
 	}
 );
