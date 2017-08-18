@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, Platform, StatusBar, TouchableOpacity } from "react-native";
+import { Image, Platform, StatusBar, TouchableOpacity, Alert } from "react-native";
 import {
   Container,
   Content,
@@ -19,6 +19,8 @@ import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
 import { loginClick } from "../../actions/login";
 const bgr = require("../../../images/background.png");
+const logoF = require("../../../images/logoFamous.png");
+
 
 
 class Login extends Component {
@@ -39,9 +41,61 @@ class Login extends Component {
     this.setState({isLoading:true})
     this.props.loginAction(param)
   }
+  showAlert(title, content, button) {
+  Alert.alert(title, content, button, { cancelable: false });
+}
+  login() {
+    if (this.state.email && this.state.password) {
+      if (Utils.checkSpaceAll(this.state.email)) {
+        this.showAlert("Error", "Username bị bỏ trống", [
+          {
+            text: "OK",
+            onPress: () => {
+              this.email._root.focus(), this.setState({
+                email: "",
+                Username: ""
+              });
+            }
+          }
+        ]);
+        return;
+      } else {
+
+        this.props.loginClick(this.state.email, this.state.password);
+      }
+    } else {
+      if (!this.state.email.trim()) {
+        this.showAlert("Error", "Tên người dùng không được để trống", [
+          {
+            text: "OK",
+            onPress: () => {
+              this.email._root.focus(), this.setState({
+                email: "",
+                Username: ""
+              });
+            }
+          }
+        ]);
+        return;
+      }
+      if (!this.state.password.trim()) {
+        this.showAlert("Error", "mật khẩu người dùng không được để trống", [
+          {
+            text: "OK",
+            onPress: () => {
+              this.password._root.focus();
+            }
+          }
+        ]);
+        return;
+      }
+    }
+
+  }
   componentWillReceiveProps(props) {
     this.setState({ isLoading: false })
-    if (props.login.success) {
+    if (props.login.success)
+    {
       this.props.navigation.navigate('Drawer')
     }
     else {
@@ -58,13 +112,16 @@ class Login extends Component {
           barStyle="light-content"
         />
         <Spinner visible={this.state.isLoading} />
-        <Content scrollEnabled={true} bounces={false}>
-
 <Image source={bgr} style={styles.background}>
-
+<Content scrollEnabled={true} bounces={false}>
+<Image scoure={logoF} style={ styles.logoF} />
           <View style={styles.bg}>
             <Item rounded style={styles.inputGrp}>
               <Input
+              {...this.props}
+          ref={ref => {
+            this.email = ref;
+          }}
                 placeholder="Username"
                 placeholderTextColor='#f4e6db'
                 onChangeText={username => this.setState({ username })}
@@ -73,6 +130,10 @@ class Login extends Component {
             </Item>
             <Item rounded style={styles.inputGrp}>
               <Input
+              {...this.props}
+          ref={ref => {
+            this.email = ref;
+          }}
                 placeholder="Password"
                 placeholderTextColor='#f4e6db'
                 secureTextEntry
@@ -160,8 +221,9 @@ class Login extends Component {
               </Text>
             </Button>
           </View>
-        </Image>
+
         </Content>
+          </Image>
       </Container>
     );
   }

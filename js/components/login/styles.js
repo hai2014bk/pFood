@@ -24,6 +24,14 @@ export default {
     alignSelf: 'center',
     marginTop: (deviceWidth < 330) ? (deviceHeight / 15) : ((deviceHeight / 5) - 60),
   },
+  logoF:{
+    flex:1,
+    hight:100,
+    width:90,
+    alignSelf: 'center',
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    paddingTop:20
+  },
   inputGrp: {
     marginTop:12,
 		width:'80%',
@@ -34,6 +42,7 @@ export default {
 		paddingLeft: 10,
 		borderRadius: 12
   },
+
   input: {
     paddingLeft: 10,
     color: 'white',
