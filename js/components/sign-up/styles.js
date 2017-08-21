@@ -82,6 +82,11 @@ export default {
 	checkBox:{
 		borderColor:'#rgba(255,225,240,0.2)',
 		backgroundColor:'#rgba(255,225,240,0.2)'
+	},
+	passwordNote:{
+		textAlign:'center',
+		fontSize:12,
+		marginTop:3
 	}
 
 };

@@ -13,6 +13,8 @@ export default {
 	},
 	container: {
 		flex: 1,
+		alignItems:'center',
+		marginBottom:10
 	},
 	button: {
 		height: 30,
@@ -36,7 +38,9 @@ export default {
 		width:'100%',
 		marginTop:30,
         backgroundColor:'transparent',
-        marginLeft:-10
+		marginLeft:-10,
+		paddingLeft:20,
+		paddingRight:20
 	},
 	textInput:{
 		color:'white',
