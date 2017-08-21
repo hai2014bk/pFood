@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Text, Image, View, TouchableOpacity } from "react-native";
-
+import {AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import * as mConstants from '../../utils/Constants'
 import { List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
@@ -22,6 +22,12 @@ class RecommendFood extends Component {
 	}
 	componentDidMount() {
 		console.log('mounted')
+		this.test()
+	}
+	async test() {
+		var result = await AsyncStorage.getItem(mConstants.USER_INFO)
+		var token = JSON.parse(result)
+		console.log(token)
 	}
 	pageBanner() {
 		return (

@@ -28,7 +28,7 @@ export function APIRequestGET(url, isAuth, successCallback, errorCallback) {
             });
     } else {
         var token;
-        AsyncStorage.getItem(mConstants.LOGIN_INFO, (err, result) => {
+        AsyncStorage.getItem(mConstants.USER_INFO, (err, result) => {
             token = JSON.parse(result).accessToken
             console.log('token', token)
             fetch(url, {
@@ -88,7 +88,7 @@ export function APIRequestPOST(url, param, isAuth, successCallback, errorCallbac
             });
     } else {
         var token;
-        AsyncStorage.getItem(mConstants.LOGIN_INFO, (err, result) => {
+        AsyncStorage.getItem(mConstants.USER_INFO, (err, result) => {
             token = JSON.parse(result).accessToken
             fetch(url, {
                 method: 'POST',
