@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import {  Keyboard, Image, Platform, StatusBar, TouchableOpacity } from "react-native";
+
+
+import {  Keyboard, Image, Platform, StatusBar, TouchableOpacity,Alert } from "react-native";
+
 import {
   Container,
   Content,
@@ -16,10 +19,12 @@ import { Grid, Col } from "react-native-easy-grid";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from "react-redux";
 import styles from "./styles";
+import * as mValidate from '../../utils/validate'
 import commonColor from "../../../native-base-theme/variables/commonColor";
 import { loginClick } from "../../actions/login";
 const bgr = require("../../../images/background.png");
 const logo = require("../../../images/logoFamous.png")
+
 
 
 class Login extends Component {
@@ -33,17 +38,39 @@ class Login extends Component {
     };
   }
   loginClick() {
-    var param = {
-      email: this.state.username,
-      password: this.state.password
-    }
-    Keyboard.dismiss()
-    setTimeout(() => { this.setState({ isLoading: true }) }, 100)  
-    this.props.loginAction(param)
+
+    if (this.state.email && this.state.password) {
+      if (!this.validateEmail(this.state.email)) {
+        setTimeout(()=>{Alert.alert('', 'Đây không phải dạng email')}, 200)
+    } else{
+    let params = {}
+    params.email = this.state.email
+    params.password = this.state.password
+    this.props.loginAction(params)
+    this.setState({ isLoading: true })
   }
+  }
+  else {
+   setTimeout(()=>{Alert.alert('', 'các trường không được bỏ trống')}, 200)
+ }
+
+
+    Keyboard.dismiss()
+
+  }
+  _hideloading() {
+    this.setState({
+      visible: false
+    });
+  }
+  showAlert(title, content, button) {
+  Alert.alert(title, content, button, { cancelable: false });
+}
+
   componentWillReceiveProps(props) {
     this.setState({ isLoading: false })
-    if (props.login.success) {
+    if (props.login.success)
+    {
       this.props.navigation.navigate('Drawer')
     }
     else {
@@ -58,6 +85,7 @@ class Login extends Component {
           backgroundColor={commonColor.statusBarColor}
           barStyle="light-content"
         />
+
         <Image source={bgr} style={styles.background}>
           <Content keyboardShouldPersistTaps='handled'>
                     <Spinner visible={this.state.isLoading} />
@@ -66,19 +94,29 @@ class Login extends Component {
               <Image source={logo} resizeMode='contain' style={{marginBottom:60, marginTop:80, width:'95%'}} />
               <Item rounded style={styles.inputGrp}>
                 <Input
-                  placeholder="Username"
+                {...this.props}
+          ref={ref => {
+            this.email = ref;
+          }}
+                  placeholder="Tên đăng nhâp"
                   placeholderTextColor='#f4e6db'
-                  onChangeText={username => this.setState({ username })}
+                  onChangeText={email=> this.setState({ email })}
                   style={styles.input}
                 />
               </Item>
               <Item rounded style={styles.inputGrp}>
+
                 <Input
-                  placeholder="Password"
+          {...this.props}
+          ref={ref => {
+            this.password = ref;
+          }}
+                  placeholder="mật khẩu"
                   placeholderTextColor='#f4e6db'
                   secureTextEntry
                   onChangeText={password => this.setState({ password })}
                   style={styles.input}
+
                 />
               </Item>
               <Button
@@ -86,25 +124,28 @@ class Login extends Component {
                 style={styles.loginBtn}
                 onPress={() => this.loginClick()}
               >
-                <Text
-                  style={{ fontSize: 16, color: "white" }}
-                >
-                  Login
-              </Text>
-              </Button>
-              <TouchableOpacity
-                style={{ marginTop: 10, marginBottom: 5 }}
-                onPress={() => navigation.navigate(" SignUp  ")}
+              <Text
+              style={
+              { fontSize:16,color:"white"}
+              }
               >
-                <Text
-                  style={styles.forgot}
-                >
-                  Forgot your password
+                Đăng nhập
+                </Text>
+            </Button>
+            <TouchableOpacity
+              style={{ marginTop: 10, marginBottom: 5 }}
+              onPress={() => navigation.navigate("ForgetPassword")}
+            >
+              <Text
+                style={styles.forgot}
+              >
+                Quên mật khẩu
               </Text>
-              </TouchableOpacity>
+            </TouchableOpacity>
 
 
-              <Text style={styles.questionText}>Or Sign in with</Text>
+
+              <Text style={styles.questionText}>Hoặc đăng nhập với</Text>
 
               <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
                 <View style={{ flex: 2, alignItems: 'center' }} />
@@ -142,27 +183,25 @@ class Login extends Component {
                 </TouchableOpacity>
                 <View style={{ flex: 2 }} />
               </View>
-
-              <Text style={{ marginTop:10, fontSize: 16, textAlign: "center", color: "white" }}>{"Don't have an account"}</Text>
+              <Text style={{ marginTop:10, fontSize: 16, textAlign: "center", color: "white" }}>{"Không có tài khoản"}</Text>
               <Button
                 style={styles.regis}
                 onPress={() => navigation.navigate("SignUp")}
               >
-                <Text
-                  style={
-                    Platform.OS === "android"
-                      ? { fontSize: 16, textAlign: "center", color: 'white' }
-                      : { fontSize: 16, fontWeight: "900" }
-                  }
-                >
-                  Register Now
-              </Text>
-              </Button>
-            </View>
-          </Content>
+              <Text
+                style={{ fontSize:16,color:"white"}  }>
+                Đăng kí ngay
+                </Text>
+            </Button>
+          </View>
+        </Content>
         </Image>
       </Container>
     );
+  }
+  validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
   }
 }
 

@@ -24,6 +24,7 @@ export default {
     alignSelf: 'center',
     marginTop: (deviceWidth < 330) ? (deviceHeight / 15) : ((deviceHeight / 5) - 60),
   },
+
   inputGrp: {
     marginTop:12,
 		width:'80%',
@@ -35,6 +36,7 @@ export default {
 		paddingLeft: 10,
 		borderRadius: 12
   },
+
   input: {
     paddingLeft: 10,
     color: 'white',

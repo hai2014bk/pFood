@@ -1,6 +1,8 @@
 import * as  APIRequest  from '../utils/Api';
-
-
+import * as mConstants from '../utils/Constants'
+import {
+  AsyncStorage
+} from "react-native";
 export function loginSuccess(response) {
 	return {
 		type: 'LOGIN_SUCCESS',
@@ -23,6 +25,10 @@ export function loginClick(params) {
 		APIRequest.APIRequestPOST(url,params,isAuth,
 		response => {
 			console.log(response)
+			  AsyncStorage.setItem(
+        mConstants.USER_INFO,
+        JSON.stringify(response)
+      );
 			dispatch(loginSuccess(response));
 		},
 		error => {
