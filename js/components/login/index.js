@@ -43,10 +43,10 @@ class Login extends Component {
       if (!this.validateEmail(this.state.email)) {
         setTimeout(()=>{Alert.alert('', 'Đây không phải dạng email')}, 200)
     } else{
-      let params = {}
-    params.email = this.state.username
+    let params = {}
+    params.email = this.state.email
     params.password = this.state.password
-    this.props.login(params)
+    this.props.loginAction(params)
     this.setState({ isLoading: true })
   }
   }
