@@ -58,7 +58,7 @@ class SignUp extends Component {
 		if (this.state.email && this.state.firstName && this.state.lastName && this.state.password) {
 			if (!this.validateEmail(this.state.email)) {
 				Alert.alert('', 'Email is not a valid type')
-			}
+			} else {
 			let params = {}
 			params.firstName = this.state.firstName
 			params.lastName = this.state.lastName
@@ -67,6 +67,7 @@ class SignUp extends Component {
 			console.log('params', params)
 			this.props.register(params)
 			this.setState({ isLoading: true })
+			}
 		} else {
 			Alert.alert('', 'Fields are not be blank')
 		}

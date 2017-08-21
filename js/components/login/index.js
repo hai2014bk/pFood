@@ -112,19 +112,23 @@ class Login extends Component {
           barStyle="light-content"
         />
         <Spinner visible={this.state.isLoading} />
-<Image source={bgr} style={styles.background}>
-<Content scrollEnabled={true} bounces={false}>
-<Image scoure={logoF} style={ styles.logoF} />
+
+         <Image source={bgr} style={styles.background}>
+         <Content scrollEnabled={true} bounces={false}>
+<View style={{width:null,height:200}}>
+<Image source={logoF} style={{marginTop:70,marginLeft:30,marginRight:20,height:70,width:null, alignSelf: 'center',  justifyContent: "center"}} />
+</View>
+
           <View style={styles.bg}>
             <Item rounded style={styles.inputGrp}>
-              <Input
+              <Input main
               {...this.props}
           ref={ref => {
             this.email = ref;
           }}
                 placeholder="Username"
                 placeholderTextColor='#f4e6db'
-                onChangeText={username => this.setState({ username })}
+                onChangeText={email => this.setState({email })}
                 style={styles.input}
               />
             </Item>
@@ -223,7 +227,8 @@ class Login extends Component {
           </View>
 
         </Content>
-          </Image>
+        </Image>
+
       </Container>
     );
   }
