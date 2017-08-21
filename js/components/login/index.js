@@ -19,7 +19,7 @@ import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
 import { loginClick } from "../../actions/login";
 const bgr = require("../../../images/background.png");
-const logo = require("../../../images/logoFamous.png");
+const logo = require("../../../images/logoFamous.png")
 
 
 class Login extends Component {
@@ -38,7 +38,7 @@ class Login extends Component {
       password: this.state.password
     }
     Keyboard.dismiss()
-    this.setState({ isLoading: true })
+    setTimeout(() => { this.setState({ isLoading: true }) }, 100)  
     this.props.loginAction(param)
   }
   componentWillReceiveProps(props) {

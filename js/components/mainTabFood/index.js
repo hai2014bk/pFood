@@ -6,6 +6,8 @@ import { Grid, Col } from "react-native-easy-grid";
 import ScrollableTabView from "react-native-scrollable-tab-view";
 import HeaderContent from "./../headerContent/";
 import RecommendFood from "./../recomnendFood/";
+import Trending from "./../trending/";
+
 import Category from "./../category/";
 import Login from "./../login/";
 import SignUp from "./../sign-up/";
@@ -32,7 +34,7 @@ class MainTabFood extends Component {
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'bottom'} >
 					<RecommendFood navi={navigation}  tabLabel="Recommend" />
 					<Category navi={navigation} tabLabel="Categrories" />
-					<SignUp tabLabel="Trending" />
+					<Trending tabLabel="Trending" />
 				</ScrollableTabView>
 			</Container>
 		);

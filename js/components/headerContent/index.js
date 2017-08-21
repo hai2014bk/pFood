@@ -50,13 +50,13 @@ class HeaderContent extends Component {
   render() {
       return (
         <Header style={{ borderBottomWidth:0, backgroundColor: primary }}>
-          <Left style={{ flex: 1 }}>
+          <Left style={{ flex: 3 }}>
             {this.renderLeft()}
           </Left>
-          <Body style={{ flex: 2, flexDirection: 'row', marginLeft:-10 }}>
+          <Body style={{ justifyContent:'center',alignItems:'center', flex: 3, flexDirection: 'row',}}>
             <Text style={{ textAlign: 'center', flex: 1, color: 'white', fontSize: 17 }}>{this.props.title}</Text>
           </Body>
-          <Right style={{ flex: 1 }}>
+          <Right style={{ flex: 3 }}>
             {this.renderRight()}
           </Right>
         </Header>

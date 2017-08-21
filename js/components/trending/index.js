@@ -10,7 +10,7 @@ import styles from "./styles";
 const headerLogo = require("../../../images/Header-Logo.png");
 const primary = require("../../themes/variable").brandPrimary;
 
-class Category extends Component {
+class Trending extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -83,7 +83,7 @@ class Category extends Component {
         const navigation = this.props.navi;
         return (
             <Container style={styles.container}>
-                <HeaderContent rightButton={true} title="Category" textLeft="Categories" leftButton={() => navigation.navigate("Categories")}/>
+                <HeaderContent rightButton={true} title="Trending"/>
                 <Content style={styles.contentWrap}>
                     <List dataArray={this.state.data} renderRow={(item, rowID) =>
                         <ListItem>
@@ -96,7 +96,7 @@ class Category extends Component {
     }
 }
 
-export default Category;
+export default Trending;
 
 {/* <Col style={styles.buttonWrap}>
 <Button onPress={() => this.plus(id)} transparent >

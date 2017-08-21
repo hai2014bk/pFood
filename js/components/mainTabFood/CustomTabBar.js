@@ -3,6 +3,7 @@ import { TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 
 import { Icon,Text, View } from "native-base";
+const primary = require("../../themes/variable").brandPrimary;
 
 class CustomTabBar extends Component {
 	renderTabOption(name, page) {
@@ -19,8 +20,8 @@ class CustomTabBar extends Component {
 					},
 				]}
 			>
-				<Icon style={{fontSize:20,color:isTabActive? 'red': 'gray'}} active name="ios-radio-button-on" />
-				<Text style={{ fontSize:12, color:"gray"}}>
+				<Icon style={{fontSize:20,color:isTabActive? primary: 'gray'}} active name="ios-radio-button-on" />
+				<Text style={{ fontSize:10, color:"gray"}}>
 					{name}
 				</Text>
 			</TouchableOpacity>
