@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { Image, Platform, StatusBar, TouchableOpacity, Alert } from "react-native";
+
+
+import {  Keyboard, Image, Platform, StatusBar, TouchableOpacity,Alert } from "react-native";
+
 import {
   Container,
   Content,
@@ -10,16 +13,17 @@ import {
   Icon,
   View,
   Left,
-  Right
+  Right,
 } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from "react-redux";
 import styles from "./styles";
+import * as mValidate from '../../utils/validate'
 import commonColor from "../../../native-base-theme/variables/commonColor";
 import { loginClick } from "../../actions/login";
 const bgr = require("../../../images/background.png");
-const logoF = require("../../../images/logoFamous.png");
+const logo = require("../../../images/logoFamous.png")
 
 
 
@@ -34,64 +38,35 @@ class Login extends Component {
     };
   }
   loginClick() {
-    var param = {
-      email: this.state.username,
-      password: this.state.password
-    }
-    this.setState({isLoading:true})
-    this.props.loginAction(param)
+
+    if (this.state.email && this.state.password) {
+      if (!this.validateEmail(this.state.email)) {
+        setTimeout(()=>{Alert.alert('', 'Đây không phải dạng email')}, 200)
+    } else{
+      let params = {}
+    params.email = this.state.username
+    params.password = this.state.password
+    this.props.login(params)
+    this.setState({ isLoading: true })
+  }
+  }
+  else {
+   setTimeout(()=>{Alert.alert('', 'các trường không được bỏ trống')}, 200)
+ }
+
+
+    Keyboard.dismiss()
+
+  }
+  _hideloading() {
+    this.setState({
+      visible: false
+    });
   }
   showAlert(title, content, button) {
   Alert.alert(title, content, button, { cancelable: false });
 }
-  login() {
-    if (this.state.email && this.state.password) {
-      if (Utils.checkSpaceAll(this.state.email)) {
-        this.showAlert("Error", "Username bị bỏ trống", [
-          {
-            text: "OK",
-            onPress: () => {
-              this.email._root.focus(), this.setState({
-                email: "",
-                Username: ""
-              });
-            }
-          }
-        ]);
-        return;
-      } else {
 
-        this.props.loginClick(this.state.email, this.state.password);
-      }
-    } else {
-      if (!this.state.email.trim()) {
-        this.showAlert("Error", "Tên người dùng không được để trống", [
-          {
-            text: "OK",
-            onPress: () => {
-              this.email._root.focus(), this.setState({
-                email: "",
-                Username: ""
-              });
-            }
-          }
-        ]);
-        return;
-      }
-      if (!this.state.password.trim()) {
-        this.showAlert("Error", "mật khẩu người dùng không được để trống", [
-          {
-            text: "OK",
-            onPress: () => {
-              this.password._root.focus();
-            }
-          }
-        ]);
-        return;
-      }
-    }
-
-  }
   componentWillReceiveProps(props) {
     this.setState({ isLoading: false })
     if (props.login.success)
@@ -101,7 +76,6 @@ class Login extends Component {
     else {
       setTimeout(() => { alert('tài khoản hoặc mật khẩu không chính xác') }, 100)
     }
-
   }
   render() {
     const navigation = this.props.navigation;
@@ -111,54 +85,56 @@ class Login extends Component {
           backgroundColor={commonColor.statusBarColor}
           barStyle="light-content"
         />
-        <Spinner visible={this.state.isLoading} />
 
-         <Image source={bgr} style={styles.background}>
-         <Content scrollEnabled={true} bounces={false}>
-<View style={{width:null,height:200}}>
-<Image source={logoF} style={{marginTop:70,marginLeft:30,marginRight:20,height:70,width:null, alignSelf: 'center',  justifyContent: "center"}} />
-</View>
+        <Image source={bgr} style={styles.background}>
+          <Content keyboardShouldPersistTaps='handled'>
+                    <Spinner visible={this.state.isLoading} />
 
-          <View style={styles.bg}>
-            <Item rounded style={styles.inputGrp}>
-              <Input main
-              {...this.props}
+            <View style={styles.bg}>
+              <Image source={logo} resizeMode='contain' style={{marginBottom:60, marginTop:80, width:'95%'}} />
+              <Item rounded style={styles.inputGrp}>
+                <Input
+                {...this.props}
           ref={ref => {
             this.email = ref;
           }}
-                placeholder="Username"
-                placeholderTextColor='#f4e6db'
-                onChangeText={email => this.setState({email })}
-                style={styles.input}
-              />
-            </Item>
-            <Item rounded style={styles.inputGrp}>
-              <Input
-              {...this.props}
+                  placeholder="Username"
+                  placeholderTextColor='#f4e6db'
+                  onChangeText={email=> this.setState({ email })}
+                  style={styles.input}
+                />
+              </Item>
+              <Item rounded style={styles.inputGrp}>
+
+                <Input
+          {...this.props}
           ref={ref => {
-            this.email = ref;
+            this.password = ref;
           }}
-                placeholder="Password"
-                placeholderTextColor='#f4e6db'
-                secureTextEntry
-                onChangeText={password => this.setState({ password })}
-                style={styles.input}
-              />
-            </Item>
-            <Button
-              rounded
-              style={styles.loginBtn}
-              onPress={() => this.loginClick()}
-            >
+                  placeholder="Password"
+                  placeholderTextColor='#f4e6db'
+                  secureTextEntry
+                  onChangeText={password => this.setState({ password })}
+                  style={styles.input}
+
+                />
+              </Item>
+              <Button
+                rounded
+                style={styles.loginBtn}
+                onPress={() => this.loginClick()}
+              >
               <Text
-                style={{ fontSize: 16, color: "white" }}
+              style={
+              { fontSize:16,color:"white"}
+              }
               >
                 Login
-              </Text>
+                </Text>
             </Button>
             <TouchableOpacity
               style={{ marginTop: 10, marginBottom: 5 }}
-              onPress={() => navigation.navigate(" SignUp  ")}
+              onPress={() => navigation.navigate("ForgetPassword")}
             >
               <Text
                 style={styles.forgot}
@@ -208,29 +184,64 @@ class Login extends Component {
               <View style={{ flex: 2 }} />
             </View>
 
-            <Text style={{ fontSize: 16, textAlign: "center", color: "white" }}>{"Don't have an account"}</Text>
-            <Button
-                bordered
-              style={styles.regis}
-              onPress={() => navigation.navigate("SignUp")}
-            >
-              <Text
-                style={
-                  Platform.OS === "android"
-                    ? { fontSize: 16, textAlign: "center", color: 'white' }
-                    : { fontSize: 16, fontWeight: "900" }
-                }
+
+              <Text style={styles.questionText}>Or Sign in with</Text>
+
+              <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
+                <View style={{ flex: 2, alignItems: 'center' }} />
+                <TouchableOpacity
+                  bordered
+                  style={
+                    styles.button
+                  }
+                >
+                  <Icon
+                    name="logo-facebook"
+                    style={{ fontSize: 40 }}
+                  />
+                </TouchableOpacity>
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity
+                  transparent
+                  style={styles.button
+                  }
+                >
+                  <Icon
+                    name="logo-google"
+                    style={{ fontSize: 40 }}
+                  />
+                </TouchableOpacity>
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity
+                  transparent
+                  style={styles.button}
+                >
+                  <Icon
+                    name="ios-call"
+                    style={{ fontSize: 40 }}
+                  />
+                </TouchableOpacity>
+                <View style={{ flex: 2 }} />
+              </View>
+              <Text style={{ marginTop:10, fontSize: 16, textAlign: "center", color: "white" }}>{"Don't have an account"}</Text>
+              <Button
+                style={styles.regis}
+                onPress={() => navigation.navigate("SignUp")}
               >
+              <Text
+                style={{ fontSize:16,color:"white"}  }>
                 Register Now
-              </Text>
+                </Text>
             </Button>
           </View>
-
         </Content>
         </Image>
-
       </Container>
     );
+  }
+  validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
   }
 }
 
