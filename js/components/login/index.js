@@ -98,7 +98,7 @@ class Login extends Component {
           ref={ref => {
             this.email = ref;
           }}
-                  placeholder="Username"
+                  placeholder="Tên đăng nhâp"
                   placeholderTextColor='#f4e6db'
                   onChangeText={email=> this.setState({ email })}
                   style={styles.input}
@@ -111,7 +111,7 @@ class Login extends Component {
           ref={ref => {
             this.password = ref;
           }}
-                  placeholder="Password"
+                  placeholder="mật khẩu"
                   placeholderTextColor='#f4e6db'
                   secureTextEntry
                   onChangeText={password => this.setState({ password })}
@@ -129,7 +129,7 @@ class Login extends Component {
               { fontSize:16,color:"white"}
               }
               >
-                Login
+                Đăng nhập
                 </Text>
             </Button>
             <TouchableOpacity
@@ -139,53 +139,13 @@ class Login extends Component {
               <Text
                 style={styles.forgot}
               >
-                Forgot your password
+                Quên mật khẩu
               </Text>
             </TouchableOpacity>
 
 
-                   <Text style={styles.questionText}>Or Sign in with</Text>
 
-
-            <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
-              <View style={{ flex: 2, alignItems: 'center' }} />
-              <TouchableOpacity
-                bordered
-                style={
-                  styles.button
-                }
-              >
-                <Icon
-                  name="logo-facebook"
-                  style={{ fontSize: 40 }}
-                />
-              </TouchableOpacity>
-              <View style={{ flex: 1 }} />
-            <TouchableOpacity
-                transparent
-                style={styles.button
-                }
-              >
-                <Icon
-                  name="logo-google"
-                  style={{ fontSize: 40 }}
-                />
-              </TouchableOpacity>
-              <View style={{ flex: 1 }} />
-              <TouchableOpacity
-                transparent
-                style={styles.button}
-              >
-                <Icon
-                  name="ios-call"
-                  style={{ fontSize: 40 }}
-                />
-              </TouchableOpacity>
-              <View style={{ flex: 2 }} />
-            </View>
-
-
-              <Text style={styles.questionText}>Or Sign in with</Text>
+              <Text style={styles.questionText}>Hoặc đăng nhập với</Text>
 
               <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
                 <View style={{ flex: 2, alignItems: 'center' }} />
@@ -223,14 +183,14 @@ class Login extends Component {
                 </TouchableOpacity>
                 <View style={{ flex: 2 }} />
               </View>
-              <Text style={{ marginTop:10, fontSize: 16, textAlign: "center", color: "white" }}>{"Don't have an account"}</Text>
+              <Text style={{ marginTop:10, fontSize: 16, textAlign: "center", color: "white" }}>{"Không có tài khoản"}</Text>
               <Button
                 style={styles.regis}
                 onPress={() => navigation.navigate("SignUp")}
               >
               <Text
                 style={{ fontSize:16,color:"white"}  }>
-                Register Now
+                Đăng kí ngay
                 </Text>
             </Button>
           </View>
