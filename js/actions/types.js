@@ -6,6 +6,8 @@ export type Action =
 	| { type: "CREATE_ACCOUNT_FAILED"}
 	| { type : "LOGIN_SUCCESS"}
 	| { type : "LOGIN_FAILED"}
+	| { type : "FORGET_PASSWORD_SUCCESS"}
+	| { type : "FORGET_PASSWORD_FAILED"}
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;
