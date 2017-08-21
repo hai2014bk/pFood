@@ -21,7 +21,7 @@ class CustomTabBar extends Component {
 				]}
 			>
 				<Icon style={{fontSize:20,color:isTabActive? primary: 'gray'}} active name="ios-radio-button-on" />
-				<Text style={{ fontSize:10, color:"gray"}}>
+				<Text style={{ fontSize:9, color:"gray"}}>
 					{name}
 				</Text>
 			</TouchableOpacity>

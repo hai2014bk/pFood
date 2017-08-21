@@ -94,7 +94,7 @@ class RecommendFood extends Component {
 		return (
 			<Container style={styles.container}>
 				<HeaderContent leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")}
-					rightButton={true} title='Recommend'>
+					rightButton={true} title='Đề xuất'>
 				</HeaderContent>
 				<Content>
 					<View style={styles.pageBanner}>

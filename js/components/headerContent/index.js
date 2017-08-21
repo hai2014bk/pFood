@@ -54,7 +54,7 @@ class HeaderContent extends Component {
             {this.renderLeft()}
           </Left>
           <Body style={{ justifyContent:'center',alignItems:'center', flex: 3, flexDirection: 'row',}}>
-            <Text style={{ textAlign: 'center', flex: 1, color: 'white', fontSize: 17 }}>{this.props.title}</Text>
+            <Text style={{ textAlign: 'center', flex: 1, color: 'white', fontSize: 15, fontWeight:'bold' }}>{this.props.title}</Text>
           </Body>
           <Right style={{ flex: 3 }}>
             {this.renderRight()}
