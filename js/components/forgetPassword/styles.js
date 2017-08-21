@@ -13,14 +13,6 @@ export default {
 	},
 	container: {
 		flex: 1,
-		marginTop:30,
-		marginBottom:10,
-		justifyContent:'center',
-	},
-	showPassword: {
-		color: '#f4e6db',
-		backgroundColor:'transparent',
-		marginLeft: 20
 	},
 	button: {
 		height: 30,
@@ -43,27 +35,12 @@ export default {
 	questionWrap:{	
 		width:'100%',
 		marginTop:30,
-		backgroundColor:'transparent',
-
-	},
-	col: {
-		justifyContent: 'flex-end',
-		alignItems: 'center'
-	},
-	checkBoxWrap: {
-		marginTop: 15,
-		width:'60%',
-		alignSelf:'center',
-		flexDirection:'row'
+        backgroundColor:'transparent',
+        marginLeft:-10
 	},
 	textInput:{
 		color:'white',
 		borderWidth:0
-	},
-	line: {
-		height: 3,
-		width: '100%',
-		backgroundColor: '#cecece'
 	},
 	imageBackground:{
 		height:'100%',
@@ -78,10 +55,9 @@ export default {
 		paddingLeft: 10,
 		borderRadius:12,
 		borderColor:'transparent'
-	},
-	checkBox:{
-		borderColor:'#rgba(255,225,240,0.2)',
-		backgroundColor:'#rgba(255,225,240,0.2)'
-	}
-
+    },
+    iconBack:{
+        marginTop:30,
+        marginLeft:30
+    }
 };

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, StatusBar, Alert, TouchableOpacity, ScrollView } from "react-native";
+import { Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
 import { connect } from "react-redux";
 import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
@@ -30,8 +30,7 @@ class SignUp extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-		console.log(props.createAccountSuccess)
-		if (props.createAccountSuccess) {
+		if (props.creatAcount.success) {
 			this.setState({ isLoading: false })
 			Alert.alert(
 				'',
@@ -55,31 +54,31 @@ class SignUp extends Component {
 	}
 
 	createPassword() {
+		Keyboard.dismiss()
 		if (this.state.email && this.state.firstName && this.state.lastName && this.state.password) {
 			if (!this.validateEmail(this.state.email)) {
-				Alert.alert('', 'Email is not a valid type')
+				setTimeout(()=>{Alert.alert('', 'Email is not a valid type')}, 200)		
 			} else {
-			let params = {}
-			params.firstName = this.state.firstName
-			params.lastName = this.state.lastName
-			params.email = this.state.email
-			params.password = this.state.password
-			console.log('params', params)
-			this.props.register(params)
-			this.setState({ isLoading: true })
+				let params = {}
+				params.firstName = this.state.firstName
+				params.lastName = this.state.lastName
+				params.email = this.state.email
+				params.password = this.state.password
+				this.props.register(params)
+				this.setState({ isLoading: true })
 			}
 		} else {
-			Alert.alert('', 'Fields are not be blank')
+			setTimeout(()=>{Alert.alert('', 'Fields are not be blank')}, 200)		
 		}
 	}
 
 	render() {
 		const navigation = this.props.navigation;
 		return (
-			<ScrollView>
-				<Container style={styles.containerWrap}>
-					<Spinner visible={this.state.isLoading} />
-					<Image source={background} style={styles.imageBackground}>
+			<Container style={styles.containerWrap}>
+				<Spinner visible={this.state.isLoading} />
+				<Image source={background} style={styles.imageBackground}>
+					<Content keyboardShouldPersistTaps='handled' style={{ flex: 1 }} contentContainerStyle={{flexGrow: 1}}>
 						<View style={styles.container}>
 							<Form>
 								<Item style={styles.input} regular >
@@ -99,19 +98,19 @@ class SignUp extends Component {
 								<CheckBox style={styles.checkBox} onPress={() => this.showPassword()} checked={this.state.checked} />
 								<Text style={styles.showPassword}>Show password</Text>
 							</View>
-							<TouchableOpacity onPress={() => this.createPassword()} style={styles.button} >
+							<TouchableOpacity onPress={() => {this.createPassword()}} style={styles.button} >
 								<Text style={{ color: '#f4e6db' }}>Create your account</Text>
 							</TouchableOpacity>
 							<View style={styles.questionWrap}>
 								<Text style={styles.questionText}>Already have an account</Text>
 							</View>
-							<TouchableOpacity onPress={() => navigation.goBack()} style={styles.button}  >
+							<TouchableOpacity onPress={() => { navigation.goBack(); Keyboard.dismiss() }} style={styles.button}  >
 								<Text style={{ color: '#f4e6db' }}>Sign in now</Text>
 							</TouchableOpacity>
 						</View>
-					</Image>
-				</Container>
-			</ScrollView>
+					</Content>
+				</Image>
+			</Container>
 		);
 	}
 	validateEmail(email) {
@@ -126,8 +125,7 @@ function bindActions(dispatch) {
 }
 
 const mapStateToProps = state => ({
-	createAccountSuccess: state.createAccountSuccess,
-	createAccountFailed: state.createAccountFailed
+	creatAcount:state.creatAcount
 });
 
 export default connect(mapStateToProps, bindActions)(SignUp);

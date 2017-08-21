@@ -15,13 +15,13 @@ import Drawer from "./Drawer";
 const App = StackNavigator(
 	{
 		Login: { screen: Login },
-		SignUp: { screen: SignUp },
+		SignUp: { screen: SignUp, },
 		NeedHelp: { screen: NeedHelp },
 		Walkthrough: { screen: Walkthrough },
 		Story: { screen: Story },
 		Comments: { screen: Comments },
 		Channel: { screen: Channel },
-		Drawer: { screen: Drawer },
+		Drawer: { screen: Drawer,gesturesEnabled:false },
 		Categories: { screen: Categories},
 		Category: { screen: Category},
 	},
@@ -29,6 +29,9 @@ const App = StackNavigator(
 		index: 0,
 		initialRouteName: "Login",
 		headerMode: "none",
+		 navigationOptions: {
+      		gesturesEnabled: false,
+   		 },
 	}
 );
 
