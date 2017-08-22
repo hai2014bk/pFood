@@ -41,7 +41,7 @@ class Login extends Component {
 
     if (this.state.email && this.state.password) {
       if (!this.validateEmail(this.state.email)) {
-        setTimeout(()=>{Alert.alert('', 'Đây không phải dạng email')}, 200)
+        setTimeout(()=>{Alert.alert('', 'Địa chỉ email không hợp lệ')}, 200)
     } else{
     let params = {}
     params.email = this.state.email
@@ -51,11 +51,12 @@ class Login extends Component {
   }
   }
   else {
-   setTimeout(()=>{Alert.alert('', 'các trường không được bỏ trống')}, 200)
+   setTimeout(()=>{Alert.alert('', 'Các trường không được bỏ trống')}, 200)
  }
 
 
     Keyboard.dismiss()
+
 
   }
   _hideloading() {
@@ -74,7 +75,7 @@ class Login extends Component {
       this.props.navigation.navigate('Drawer')
     }
     else {
-      setTimeout(() => { alert('tài khoản hoặc mật khẩu không chính xác') }, 100)
+      setTimeout(() => { alert('Tài khoản hoặc mật khẩu không chính xác') }, 100)
     }
   }
   render() {
@@ -98,7 +99,7 @@ class Login extends Component {
           ref={ref => {
             this.email = ref;
           }}
-                  placeholder="Tên đăng nhâp"
+                  placeholder="Tên đăng nhập"
                   placeholderTextColor='#f4e6db'
                   onChangeText={email=> this.setState({ email })}
                   style={styles.input}
@@ -111,7 +112,7 @@ class Login extends Component {
           ref={ref => {
             this.password = ref;
           }}
-                  placeholder="mật khẩu"
+                  placeholder="Mật khẩu"
                   placeholderTextColor='#f4e6db'
                   secureTextEntry
                   onChangeText={password => this.setState({ password })}
@@ -183,7 +184,7 @@ class Login extends Component {
                 </TouchableOpacity>
                 <View style={{ flex: 2 }} />
               </View>
-              <Text style={{ marginTop:10, fontSize: 16, textAlign: "center", color: "white" }}>{"Không có tài khoản"}</Text>
+              <Text style={{ marginTop:10, fontSize: 16, textAlign: "center", color: "white" }}>{"Chưa có tài khoản"}</Text>
               <Button
                 style={styles.regis}
                 onPress={() => navigation.navigate("SignUp")}
