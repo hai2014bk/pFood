@@ -56,12 +56,32 @@ class SignUp extends Component {
 	checkSpace() {
 		if (this.checkSpaceAll(this.state.email)) {
 			this.setState({ email: '' })
+			this.emailInput._root.focus()
 		}
 		if (this.checkSpaceAll(this.state.firstName)) {
 			this.setState({ firstName: '' })
+			this.firstNameInput._root.focus()
 		}
 		if (this.checkSpaceAll(this.state.lastName)) {
 			this.setState({ lastName: '' })
+			this.lastNameInput._root.focus()
+		}
+	}
+	checkValue() {
+		if (this.state.email=='') {
+			this.emailInput._root.focus()
+		} else {
+			if (this.state.firstName) {
+				this.firstNameInput._root.focus()
+			} else {
+				if (this.state.lastName=='') {
+					this.lastNameInput._root.focus()
+				} else {
+					if (this.state.password=='') {
+						this.passwordInput._root.focus()
+					}
+				}
+			}
 		}
 	}
 
@@ -74,6 +94,7 @@ class SignUp extends Component {
 				} else {
 					if (this.state.password.length < 8) {
 						Alert.alert('', 'Mật khẩu tối thiểu 8 kí tự')
+						this.passwordInput._root.focus()
 					} else {
 						let params = {}
 						params.firstName = this.state.firstName
@@ -81,7 +102,7 @@ class SignUp extends Component {
 						params.email = this.state.email
 						params.password = this.state.password
 						this.props.register(params)
-						this.setState({ isLoading: true })
+						this.setState({isLoading: true })
 					}
 				}
 			} else {
@@ -90,19 +111,28 @@ class SignUp extends Component {
 						'',
 						'Một trong các trường không hợp lệ',
 						[
-							{ text: 'OK', onPress: () => this.checkSpace()},
+							{ text: 'OK', onPress: () => this.checkSpace() },
 						],
 						{ cancelable: false }
 					)
 				}, 200)
 			}
 		} else {
-			setTimeout(() => { Alert.alert('', 'Các trường không được phép trống') }, 200)
+			setTimeout(() => {
+				Alert.alert(
+					'',
+					'Các trường không được phép trống',
+					[
+						{ text: 'OK', onPress: () => this.checkValue() },
+					],
+					{ cancelable: false }
+				)
+			}, 200)
 		}
 	}
 
 	render() {
-		console.log('utils',Utils)
+		console.log('utils', Utils)
 		const navigation = this.props.navigation;
 		return (
 			<Container style={styles.containerWrap}>
@@ -112,16 +142,36 @@ class SignUp extends Component {
 						<View style={styles.container}>
 							<Form>
 								<Item style={styles.input} regular >
-									<Input style={styles.textInput} value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Địa chỉ email' placeholderTextColor='#f4e6db' />
+									<Input
+										ref={(email) => { this.emailInput = email }}
+										style={styles.textInput}
+										value={this.state.email}
+										onChangeText={text => this.setState({ email: text })}
+										placeholder='Địa chỉ email' placeholderTextColor='#f4e6db' />
 								</Item>
 								<Item style={styles.input} regular >
-									<Input style={styles.textInput} value={this.state.firstName} onChangeText={text => this.setState({ firstName: text })} placeholder='Tên của bạn' placeholderTextColor='#f4e6db' />
+									<Input
+										ref={(firstName) => { this.firstNameInput = firstName }}
+										style={styles.textInput}
+										value={this.state.firstName}
+										onChangeText={text => this.setState({ firstName: text })}
+										placeholder='Tên của bạn' placeholderTextColor='#f4e6db' />
 								</Item>
 								<Item style={styles.input} regular >
-									<Input style={styles.textInput} value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} placeholder='Họ của bạn' placeholderTextColor='#f4e6db' />
+									<Input
+										ref={(lastName) => { this.lastNameInput = lastName }}
+										style={styles.textInput}
+										value={this.state.lastName}
+										onChangeText={text => this.setState({ lastName: text })}
+										placeholder='Họ của bạn' placeholderTextColor='#f4e6db' />
 								</Item>
 								<Item style={styles.input} regular >
-									<Input style={styles.textInput} value={this.state.password} onChangeText={text => this.setState({ password: text })} secureTextEntry={this.state.showPassword} placeholder='Mật khẩu' placeholderTextColor='#f4e6db' />
+									<Input
+										ref={(password) => { this.passwordInput = password }}
+										style={styles.textInput}
+										value={this.state.password}
+										onChangeText={text => this.setState({ password: text })}
+										secureTextEntry={this.state.showPassword} placeholder='Mật khẩu' placeholderTextColor='#f4e6db' />
 								</Item>
 								<Text style={styles.passwordNote}>( Mật khẩu tối thiểu 8 kí tự )</Text>
 							</Form>
