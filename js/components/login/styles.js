@@ -83,13 +83,15 @@ export default {
   questionWrap:{
    marginTop: 10
   },
-  button:{
-    flex: 2,
-   paddingTop:10,
+  icon:{
+    flex: 3,
+
     alignItems: "center",
     justifyContent: "center",
-    height: 60,
-    backgroundColor:'transparent',
+    marginTop:10,
+    height: 100,
+    borderRadius:50,
+    backgroundColor:'white',
     borderColor:'transparent',
     aspectRatio:1
 
@@ -97,7 +99,7 @@ export default {
 
 questionText:{
   color: '#f4e6db',
-  fontSize: 16,
+  fontSize: 18,
   marginBottom:15,
   marginTop:10,
   textAlign:'center',
@@ -105,14 +107,12 @@ questionText:{
 
   },
   regis:{
-    marginTop:12,
-		width:'80%',
+
 		alignSelf:'center',
-		height: 40,
+
     justifyContent:'center',
-		backgroundColor:'rgba(255,225,240,0.2)',
-		paddingLeft: 10,
-		borderRadius: 12,
+		backgroundColor:'transparent',
+
     borderWidth:0,
   },
   forgot:{
