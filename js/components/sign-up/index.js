@@ -29,7 +29,6 @@ class SignUp extends Component {
 		};
 		this.validateEmail = this.validateEmail.bind(this)
 	}
-
 	componentWillReceiveProps(props) {
 		if (props.creatAcount.success) {
 			this.setState({ isLoading: false })
@@ -64,15 +63,12 @@ class SignUp extends Component {
 		if (this.checkSpaceAll(this.state.lastName)) {
 			this.setState({ lastName: '' })
 		}
-		if (this.checkSpaceAll(this.state.password)) {
-			this.setState({ password: '' })
-		}
 	}
 
 	createPassword() {
 		Keyboard.dismiss()
 		if (this.state.email && this.state.firstName && this.state.lastName && this.state.password) {
-			if ((!this.checkSpaceAll(this.state.email)) && (!this.checkSpaceAll(this.state.firstName)) && (!this.checkSpaceAll(this.state.lastName)) && (!this.checkSpaceAll(this.state.password))) {
+			if ((!this.checkSpaceAll(this.state.email)) && (!this.checkSpaceAll(this.state.firstName)) && (!this.checkSpaceAll(this.state.lastName))) {
 				if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
 					setTimeout(() => { Alert.alert('', 'Địa chỉ email không hợp lệ') }, 200)
 				} else {

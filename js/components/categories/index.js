@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Image, View, TouchableOpacity, Platform, Text } from "react-native";
-
+import { fetchCategories } from "../../actions/fetchCategories.js"
 import { Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Label } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
+import { connect } from "react-redux";
 
 import styles from "./styles";
 var circle = require('../../../images/greyCircle.png')
@@ -33,9 +34,13 @@ class Categories extends Component {
     }
 
     componentDidMount() {
-
+        this.props.fetch()
     }
 
+    componentWillReceiveProps(props) {
+	
+    }
+    
     renderDryFood(item) {
         return (
             <Grid style={styles.gridWrap}>
@@ -76,7 +81,7 @@ class Categories extends Component {
         const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
-                <HeaderContent title="Danh mục" leftButton={()=>navigation.goBack()} leftIcon="ios-arrow-back" />
+                <HeaderContent title="Danh mục" leftButton={() => navigation.goBack()} leftIcon="ios-arrow-back" />
                 <Content style={styles.contentWrap}>
                     <Label style={styles.title}>Thực phẩm khô</Label>
                     <List style={styles.listWrap} dataArray={dryFood} renderRow={(item) =>
@@ -95,5 +100,14 @@ class Categories extends Component {
         );
     }
 }
+function bindActions(dispatch) {
+    return {
+        fetch: () => dispatch(fetchCategories()),
+    };
+}
 
-export default Categories;
+const mapStateToProps = state => ({
+    fetchCategories: state.fetchCategories
+});
+
+export default connect(mapStateToProps, bindActions)(Categories);
