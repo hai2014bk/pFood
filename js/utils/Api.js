@@ -14,7 +14,7 @@ export function APIRequestGET(url, isAuth, successCallback, errorCallback) {
             response.json().then((responseJson) => {
                 let model = responseJson.model
                 if (model) {
-                    if (model.requestStatus == "Success") {
+                    if (responseJson.requestStatus == "Success") {
                         successCallback(responseJson)
                     } else {
                         errorCallback(responseJson.errorMessage)
@@ -29,7 +29,8 @@ export function APIRequestGET(url, isAuth, successCallback, errorCallback) {
     } else {
         var token;
         AsyncStorage.getItem(mConstants.USER_INFO, (err, result) => {
-            token = JSON.parse(result).accessToken
+            console.log(result)
+            token = JSON.parse(result).model.accessToken
             console.log('token', token)
             fetch(url, {
                 method: 'GET',
@@ -42,7 +43,7 @@ export function APIRequestGET(url, isAuth, successCallback, errorCallback) {
                 response.json().then((responseJson) => {
                     let model = responseJson.model
                     if (model) {
-                        if (model.requestStatus == "Success") {
+                        if (responseJson.requestStatus == "Success") {
                             successCallback(responseJson)
                         } else {
                             errorCallback(responseJson.errorMessage)
@@ -74,7 +75,7 @@ export function APIRequestPOST(url, param, isAuth, successCallback, errorCallbac
                 let model = responseJson.model
                 console.log('res',responseJson)
                 if (model) {
-                    if (model.requestStatus == "Success") {
+                    if (responseJson.requestStatus == "Success") {
                         successCallback(responseJson)
                     } else {
                         errorCallback(responseJson.errorMessage)
@@ -102,7 +103,7 @@ export function APIRequestPOST(url, param, isAuth, successCallback, errorCallbac
                 response.json().then((responseJson) => {
                     let model = responseJson.model
                     if (model) {
-                        if (model.requestStatus == "Success") {
+                        if (responseJson.requestStatus == "Success") {
                             successCallback(responseJson)
                         } else {
                             errorCallback(responseJson.errorMessage)

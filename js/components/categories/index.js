@@ -38,7 +38,7 @@ class Categories extends Component {
     }
 
     componentWillReceiveProps(props) {
-	
+        console.log(props.fetchCategories.data.model[1])
     }
     
     renderDryFood(item) {

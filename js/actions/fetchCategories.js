@@ -18,7 +18,7 @@ export function fetchCategories() {
 		APIRequest.APIRequestGET(url, true,
 			response => {
 				console.log('respone',response)
-				dispatch(createAccountSuccess(response));
+				dispatch(fetchCategoriesSuccess(response));
 			},
 			error => {
 				console.log('error',error)
