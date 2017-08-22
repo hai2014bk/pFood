@@ -51,7 +51,7 @@ class Login extends Component {
   }
   }
   else {
-   setTimeout(()=>{Alert.alert('', 'các trường không được bỏ trống')}, 200)
+   setTimeout(()=>{Alert.alert('', 'Các trường không được bỏ trống')}, 200)
  }
 
 
@@ -74,7 +74,7 @@ class Login extends Component {
       this.props.navigation.navigate('Drawer')
     }
     else {
-      setTimeout(() => { alert('tài khoản hoặc mật khẩu không chính xác') }, 100)
+      setTimeout(() => { alert('Tài khoản hoặc mật khẩu không chính xác') }, 100)
     }
   }
   render() {
