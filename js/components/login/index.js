@@ -24,9 +24,6 @@ import commonColor from "../../../native-base-theme/variables/commonColor";
 import { loginClick } from "../../actions/login";
 const bgr = require("../../../images/background.png");
 const logo = require("../../../images/logoFamous.png")
-
-
-
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -52,8 +49,6 @@ class Login extends Component {
 						this.passwordInput._root.focus()
 					}
 				}
-
-
 	}
   loginClick() {
 
@@ -102,14 +97,7 @@ class Login extends Component {
     this.setState({ isLoading: false })
     if (props.login.success)
     {
-      Alert.alert(
-				'',
-      'Đăng nhập thành công',
-    [
-    {text:'ok', onPress: () => this.props.navigation.navigate('Drawer')},
-    ],
-    {  cancelable: false })
-
+   this.props.navigation.navigate('Drawer')
   }
     else {
       setTimeout(() => { Alert.alert('Tài khoản hoặc mật khẩu không chính xác') }, 100)
@@ -153,21 +141,21 @@ class Login extends Component {
                   style={styles.input}
 
                 />
-              <Button
+              <TouchableOpacity
                 rounded
                 style={styles.loginBtn}
                 onPress={() => this.loginClick()}
               >
               <Text
               style={
-              { fontSize:18,color:"white"}
+              {fontSize:20,color:"white"}
               }
               >
                 Đăng Nhập
                 </Text>
-            </Button>
+            </TouchableOpacity>
             <TouchableOpacity
-              style={{ marginTop: 10, marginBottom: 5 }}
+              style={{ marginTop: 15 }}
               onPress={() => navigation.navigate("ForgetPassword")}
             >
               <Text
@@ -176,19 +164,15 @@ class Login extends Component {
                 Quên mật khẩu?
               </Text>
             </TouchableOpacity>
-
-
-
               <Text style={styles.questionText}>Hoặc đăng nhập với</Text>
-
-              <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
+              <View style={{ flex: 1, flexDirection: "row", height: 60,marginTop:15}}>
                 <View style={{ flex: 1, alignItems: 'center' }} />
                 <TouchableOpacity
                   style={
                     styles.icon
                   }
                 >
-                <Text style={{fontSize:35,fontWeight:'900',color:'#33CB82' }}>
+                <Text style={styles.fb}>
                     f
                   </Text>
                 </TouchableOpacity>
@@ -200,7 +184,7 @@ class Login extends Component {
                 >
                   <Icon
                     name="logo-googleplus"
-                    style={{ fontSize: 35 ,color:'#33CB82'}}
+                    style={styles.texticon}
                   />
                 </TouchableOpacity>
                 <View style={{ flex: 1 }} />
@@ -210,19 +194,19 @@ class Login extends Component {
                 >
                   <Icon
                     name="ios-call"
-                    style={{ fontSize: 35,color:'#33CB82' }}
+                    style={styles.texticon}
                   />
                 </TouchableOpacity>
                 <View style={{ flex: 2 }} />
               </View>
-              <View  style={{ flexDirection:'row',marginTop:10}} >
-              <Text style={{ fontSize: 16, textAlign: "center", color: "white" }}>{"Không có tài khoản?"}</Text>
+              <View  style={{ flexDirection:'row',marginTop:30}} >
+              <Text style={styles.dontac}>{"Không có tài khoản?  "}</Text>
               <TouchableOpacity
                 style={styles.regis}
                 onPress={() => navigation.navigate("SignUp")}
               >
               <Text
-                style={{ fontSize:16,color:"white"}  }>
+                style={{ fontSize:18,color:"white"}}>
                 Đăng Kí Ngay
                 </Text>
 
