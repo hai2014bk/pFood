@@ -17,7 +17,7 @@ export function loginFailed(error) {
 }
 
 export function loginClick(params) {
-	var url = "http://api.svina.net/api/user/login"
+	var url = mConstants.BASE_URL + "user/login"
 	var params = params
 	var isAuth = false
 	console.log(params)
