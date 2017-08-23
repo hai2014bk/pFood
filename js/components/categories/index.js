@@ -15,7 +15,7 @@ class Categories extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            parentChoose : ''
         };
     }
 
@@ -44,43 +44,36 @@ class Categories extends Component {
             console.log('ssaaa')
             var subCategories = props.fetchSubCategories.data.model
             if (subCategories.length > 0) {
-                this.props.navi.navigate("SubCategories", { data: subCategories })
+                this.props.navigation.navigate("SubCategories", { data: subCategories,parent:this.state.parentChoose})
             } else {
                 console.log('ddddd')
             }
         }
     }
+    choseFood(food){
+        this.props.fetchSub(food.id)
+        this.setState({parentChoose:food})
+    }
 
-    renderCell(data) {
-        console.log('11111', data)
-        // return (
-        //     <Item style={{backgroundColor:'blue', flex: 1, alignItems: 'center', borderBottomWidth: 0 }}>
-        //         <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.props.fetchSub(data.item.id) }}>
-        //             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        //                 <Thumbnail style={styles.thumnail} square size={70} source={{ uri: data.item.imageUrl }} />
-        //                 <Text style={styles.title}>{data.item.name}</Text>
-        //             </View>
-        //         </TouchableOpacity>
-        //     </Item>
-        // )
+    renderCell(data) {        
         return (
-            <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.props.fetchSub(data.item.id) }}>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => {this.choseFood(data.item) }}>
                 <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
                     <View style={styles.opacityView}>
+                        <Text style={styles.title}>{data.item.name}</Text>
                         </View>
                     </Image>
             </TouchableOpacity>
 
         )
-
     }
 
     render() {
-        const navigation = this.props.navi;
+        const navigation = this.props. screenProps.navi;
         console.log('data state', this.state.data)
         return (
             <Container style={styles.container}>
-                <HeaderContent title="Danh mục" leftButton={() => navigation.goBack()} leftIcon="ios-arrow-back" />
+                <HeaderContent title="Danh mục" leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")} />
                 <Content style={styles.contentWrap}>
                     <FlatList style={{margin:10}}
                         data={this.state.data}

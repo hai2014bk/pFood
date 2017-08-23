@@ -1,5 +1,8 @@
 import variable from "./../variables/platform";
 
+
+const primary = require("../../js/themes/variable").brandPrimary;
+
 export default (variables = variable) => {
 	const platformStyle = variables.platformStyle;
 	const platform = variables.platform;
@@ -7,6 +10,13 @@ export default (variables = variable) => {
 	const buttonTheme = {
 		".disabled": {
 			backgroundColor: variables.btnDisabledBg,
+		},
+		".addCart":{
+			backgroundColor: primary,
+			height:20,
+			borderRadius:10,
+			width:'100%'
+
 		},
 		".noBordered": {
 			backgroundColor: 'rgba(255,225,240,0.2)',

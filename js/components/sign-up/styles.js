@@ -57,8 +57,7 @@ export default {
 		flexDirection:'row'
 	},
 	textInput:{
-		color:'white',
-		borderWidth:0
+		
 	},
 	line: {
 		height: 3,
