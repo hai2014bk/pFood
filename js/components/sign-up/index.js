@@ -68,16 +68,16 @@ class SignUp extends Component {
 		}
 	}
 	checkValue() {
-		if (this.state.email == '') {
+		if (this.state.email=='') {
 			this.emailInput._root.focus()
 		} else {
 			if (this.state.firstName) {
 				this.firstNameInput._root.focus()
 			} else {
-				if (this.state.lastName == '') {
+				if (this.state.lastName=='') {
 					this.lastNameInput._root.focus()
 				} else {
-					if (this.state.password == '') {
+					if (this.state.password=='') {
 						this.passwordInput._root.focus()
 					}
 				}
@@ -102,7 +102,7 @@ class SignUp extends Component {
 						params.email = this.state.email
 						params.password = this.state.password
 						this.props.register(params)
-						this.setState({ isLoading: true })
+						this.setState({isLoading: true })
 					}
 				}
 			} else {
@@ -135,36 +135,44 @@ class SignUp extends Component {
 		console.log('utils', Utils)
 		const navigation = this.props.navigation;
 		return (
-			<Image source={background} style={styles.imageBackground}>
-				<Container style={styles.containerWrap}>
-					<Spinner visible={this.state.isLoading} />
+			<Container style={styles.containerWrap}>
+				<Spinner visible={this.state.isLoading} />
+				<Image source={background} style={styles.imageBackground}>
 					<Content keyboardShouldPersistTaps='handled' style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
 						<View style={styles.container}>
 							<Form>
-									<Input main
+								<Item style={styles.input} regular >
+									<Input
 										ref={(email) => { this.emailInput = email }}
 										style={styles.textInput}
 										value={this.state.email}
 										onChangeText={text => this.setState({ email: text })}
 										placeholder='Địa chỉ email' placeholderTextColor='#f4e6db' />
-									<Input main
+								</Item>
+								<Item style={styles.input} regular >
+									<Input
 										ref={(firstName) => { this.firstNameInput = firstName }}
 										style={styles.textInput}
 										value={this.state.firstName}
 										onChangeText={text => this.setState({ firstName: text })}
 										placeholder='Tên của bạn' placeholderTextColor='#f4e6db' />
-									<Input main
+								</Item>
+								<Item style={styles.input} regular >
+									<Input
 										ref={(lastName) => { this.lastNameInput = lastName }}
 										style={styles.textInput}
 										value={this.state.lastName}
 										onChangeText={text => this.setState({ lastName: text })}
 										placeholder='Họ của bạn' placeholderTextColor='#f4e6db' />
-									<Input main
+								</Item>
+								<Item style={styles.input} regular >
+									<Input
 										ref={(password) => { this.passwordInput = password }}
 										style={styles.textInput}
 										value={this.state.password}
 										onChangeText={text => this.setState({ password: text })}
 										secureTextEntry={this.state.showPassword} placeholder='Mật khẩu' placeholderTextColor='#f4e6db' />
+								</Item>
 								<Text style={styles.passwordNote}>( Mật khẩu tối thiểu 8 kí tự )</Text>
 							</Form>
 							<View style={styles.checkBoxWrap}>
@@ -182,8 +190,8 @@ class SignUp extends Component {
 							</TouchableOpacity>
 						</View>
 					</Content>
-				</Container>
-			</Image>
+				</Image>
+			</Container>
 		);
 	}
 	validateEmail(email) {

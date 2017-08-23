@@ -37,11 +37,31 @@ class Login extends Component {
       isLoading: false
     };
   }
+  checkSpace() {
+		if (this.checkSpaceAll(this.state.email)) {
+			this.setState({ email: '' })
+			this.emailInput._root.focus()
+		}
+	}
+	checkValue() {
+		if (this.state.email=='') {
+			this.emailInput._root.focus()
+		}
+				 else {
+					if (this.state.password=='') {
+						this.passwordInput._root.focus()
+					}
+				}
+
+
+	}
   loginClick() {
 
     if (this.state.email && this.state.password) {
-      if (!this.validateEmail(this.state.email)) {
-        setTimeout(()=>{Alert.alert('', 'Đây không phải dạng email')}, 200)
+      if ((!this.checkSpaceAll(this.state.email))) {
+        if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
+
+        setTimeout(()=>{Alert.alert('', 'Địa chỉ email không hợp lệ')}, 200)
     } else{
     let params = {}
     params.email = this.state.email
@@ -51,30 +71,48 @@ class Login extends Component {
   }
   }
   else {
-   setTimeout(()=>{Alert.alert('', 'Các trường không được bỏ trống')}, 200)
- }
-
-
-    Keyboard.dismiss()
-
+    setTimeout(() => {
+      Alert.alert(
+        '',
+        'Một trong các trường không hợp lệ',
+        [
+          { text: 'OK', onPress: () => this.checkSpace() },
+        ],
+        { cancelable: false }
+      )
+    }, 200)
   }
-  _hideloading() {
-    this.setState({
-      visible: false
-    });
-  }
-  showAlert(title, content, button) {
-  Alert.alert(title, content, button, { cancelable: false });
+} else {
+  setTimeout(() => {
+    Alert.alert(
+      '',
+      'Các trường không được phép trống',
+      [
+        { text: 'OK', onPress: () => this.checkValue() },
+      ],
+      { cancelable: false }
+    )
+  }, 200)
 }
+    Keyboard.dismiss()
+  }
 
   componentWillReceiveProps(props) {
+
     this.setState({ isLoading: false })
     if (props.login.success)
     {
-      this.props.navigation.navigate('Drawer')
-    }
+      Alert.alert(
+				'',
+      'Đăng nhập thành công',
+    [
+    {text:'ok', onPress: () => this.props.navigation.navigate('Drawer')},
+    ],
+    {  cancelable: false })
+
+  }
     else {
-      setTimeout(() => { alert('Tài khoản hoặc mật khẩu không chính xác') }, 100)
+      setTimeout(() => { Alert.alert('Tài khoản hoặc mật khẩu không chính xác') }, 100)
     }
   }
   render() {
@@ -92,33 +130,29 @@ class Login extends Component {
 
             <View style={styles.bg}>
               <Image source={logo} resizeMode='contain' style={{marginBottom:60, marginTop:80, width:'95%'}} />
-              <Item rounded style={styles.inputGrp}>
-                <Input
-                {...this.props}
-          ref={ref => {
-            this.email = ref;
-          }}
-                  placeholder="Tên đăng nhâp"
+
+                <Input main
+
+            ref={(email) => { this.emailInput = email }}
+                  placeholder="Tên đăng nhập"
                   placeholderTextColor='#f4e6db'
+                    value={this.state.email}
                   onChangeText={email=> this.setState({ email })}
                   style={styles.input}
                 />
-              </Item>
-              <Item rounded style={styles.inputGrp}>
 
-                <Input
-          {...this.props}
-          ref={ref => {
-            this.password = ref;
-          }}
-                  placeholder="mật khẩu"
+
+                <Input main
+          ref={(password) => { this.passwordInput = password }}
+                  placeholder="Mật khẩu"
                   placeholderTextColor='#f4e6db'
                   secureTextEntry
+                  style={styles.textInput}
+
                   onChangeText={password => this.setState({ password })}
                   style={styles.input}
 
                 />
-              </Item>
               <Button
                 rounded
                 style={styles.loginBtn}
@@ -126,10 +160,10 @@ class Login extends Component {
               >
               <Text
               style={
-              { fontSize:16,color:"white"}
+              { fontSize:18,color:"white"}
               }
               >
-                Đăng nhập
+                Đăng Nhập
                 </Text>
             </Button>
             <TouchableOpacity
@@ -139,7 +173,7 @@ class Login extends Component {
               <Text
                 style={styles.forgot}
               >
-                Quên mật khẩu
+                Quên mật khẩu?
               </Text>
             </TouchableOpacity>
 
@@ -148,51 +182,52 @@ class Login extends Component {
               <Text style={styles.questionText}>Hoặc đăng nhập với</Text>
 
               <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
-                <View style={{ flex: 2, alignItems: 'center' }} />
+                <View style={{ flex: 1, alignItems: 'center' }} />
                 <TouchableOpacity
-                  bordered
                   style={
-                    styles.button
+                    styles.icon
+                  }
+                >
+                <Text style={{fontSize:35,fontWeight:'900',color:'#33CB82' }}>
+                    f
+                  </Text>
+                </TouchableOpacity>
+                <View style={{ flex: 1 }} />
+                <TouchableOpacity
+                  transparent
+                  style={styles.icon
                   }
                 >
                   <Icon
-                    name="logo-facebook"
-                    style={{ fontSize: 40 }}
+                    name="logo-googleplus"
+                    style={{ fontSize: 35 ,color:'#33CB82'}}
                   />
                 </TouchableOpacity>
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
                   transparent
-                  style={styles.button
-                  }
-                >
-                  <Icon
-                    name="logo-google"
-                    style={{ fontSize: 40 }}
-                  />
-                </TouchableOpacity>
-                <View style={{ flex: 1 }} />
-                <TouchableOpacity
-                  transparent
-                  style={styles.button}
+                  style={styles.icon}
                 >
                   <Icon
                     name="ios-call"
-                    style={{ fontSize: 40 }}
+                    style={{ fontSize: 35,color:'#33CB82' }}
                   />
                 </TouchableOpacity>
                 <View style={{ flex: 2 }} />
               </View>
-              <Text style={{ marginTop:10, fontSize: 16, textAlign: "center", color: "white" }}>{"Không có tài khoản"}</Text>
-              <Button
+              <View  style={{ flexDirection:'row',marginTop:10}} >
+              <Text style={{ fontSize: 16, textAlign: "center", color: "white" }}>{"Không có tài khoản?"}</Text>
+              <TouchableOpacity
                 style={styles.regis}
                 onPress={() => navigation.navigate("SignUp")}
               >
               <Text
                 style={{ fontSize:16,color:"white"}  }>
-                Đăng kí ngay
+                Đăng Kí Ngay
                 </Text>
-            </Button>
+
+            </TouchableOpacity>
+            </View>
           </View>
         </Content>
         </Image>
@@ -202,6 +237,19 @@ class Login extends Component {
   validateEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+  }
+  validateUnicode(email) {
+		var regex = /^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/gi
+		if (regex.test(email)) {
+			return true;
+		}
+		return false;
+	}
+  checkSpaceAll(text) {
+    if (!text.replace(/\s/g, '').length) {
+      return true
+    }
+    return false
   }
 }
 
