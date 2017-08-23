@@ -14,7 +14,11 @@ export default {
     },
     title: {
         marginLeft: 20,
-        marginTop: 20
+    },
+    thumnail:{
+        borderRadius:15,
+        alignSelf:'center',
+
     },
     gridWrap: {
         flexDirection: 'row',
@@ -35,10 +39,7 @@ export default {
         color:'black'
     },
     listItem:{
-        marginTop:-15,
-        borderBottomWidth:0
     },
     listWrap:{
-        marginTop:10
     }
 };
