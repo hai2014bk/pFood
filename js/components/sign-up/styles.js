@@ -71,7 +71,7 @@ export default {
 	},
 	input:{
 		marginTop:12,
-		width:'60%',
+		width:'80%',
 		alignSelf:'center',
 		height: 40,
 		backgroundColor:'rgba(255,225,240,0.2)',

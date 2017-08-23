@@ -17,11 +17,7 @@ export default {
     },
     title: {
         marginLeft: 20,
-    },
-    thumnail:{
-        borderRadius:15,
-        alignSelf:'center',
-
+        marginTop: 20
     },
     gridWrap: {
         flexDirection: 'row',

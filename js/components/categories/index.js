@@ -15,7 +15,7 @@ class Categories extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+
         };
     }
 
@@ -74,6 +74,7 @@ class Categories extends Component {
         )
 
     }
+
     render() {
         const navigation = this.props.navi;
         console.log('data state', this.state.data)

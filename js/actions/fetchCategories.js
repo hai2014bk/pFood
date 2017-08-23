@@ -1,15 +1,7 @@
 import * as  APIRequest from '../utils/Api.js'
-import * as mConstant from '../utils/Constants'
-
 export function fetchCategoriesSuccess(data) {
 	return {
 		type: "FETCH_CATEGORIES_SUCCESS",
-		data
-	};
-}
-export function fetchSubCategoriesSuccess(data) {
-	return {
-		type: "FETCH_SUB_CATEGORIES_SUCCESS",
 		data
 	};
 }
@@ -44,7 +36,7 @@ export function fetchSubCategories(parentId) {
 }
 
 export function fetchCategories() {
-	let url = mConstant.BASE_URL + 'category/GetAllCategories'
+	let url = 'http://api.svina.net/api/category/GetAllCategories'
 	return dispatch => {
 		APIRequest.APIRequestGET(url, true,
 			response => {

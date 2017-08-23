@@ -1,5 +1,4 @@
 import * as  APIRequest from '../utils/Api.js'
-import * as mConstant from '../utils/Constants'
 export function createAccountSuccess(message) {
 	return {
 		type: "CREATE_ACCOUNT_SUCCESS",
@@ -15,7 +14,7 @@ export function createAccountFailed(error) {
 
 export function createAccount(params) {
 	console.log('params action',params)
-	let url = mConstant.BASE_URL + 'user/register'
+	let url = 'http://api.svina.net/api/user/register'
 	return dispatch => {
 		APIRequest.APIRequestPOST(url, params, false,
 			response => {
