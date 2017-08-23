@@ -98,13 +98,21 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(props) {
+
     this.setState({ isLoading: false })
     if (props.login.success)
     {
-      this.props.navigation.navigate('Drawer')
-    }
+      Alert.alert(
+				'',
+      'Đăng nhập thành công',
+    [
+    {text:'ok', onPress: () => this.props.navigation.navigate('Drawer')},
+    ],
+    {  cancelable: false })
+
+  }
     else {
-      setTimeout(() => { alert('Tài khoản hoặc mật khẩu không chính xác') }, 100)
+      setTimeout(() => { Alert.alert('Tài khoản hoặc mật khẩu không chính xác') }, 100)
     }
   }
   render() {
@@ -123,8 +131,7 @@ class Login extends Component {
             <View style={styles.bg}>
               <Image source={logo} resizeMode='contain' style={{marginBottom:60, marginTop:80, width:'95%'}} />
 
-              <Item  rounded  style={styles.inputGrp}>
-                <Input
+                <Input main
 
             ref={(email) => { this.emailInput = email }}
                   placeholder="Tên đăng nhập"
@@ -133,11 +140,9 @@ class Login extends Component {
                   onChangeText={email=> this.setState({ email })}
                   style={styles.input}
                 />
-              </Item>
 
-              <Item rounded style={styles.inputGrp}>
 
-                <Input
+                <Input main
           ref={(password) => { this.passwordInput = password }}
                   placeholder="Mật khẩu"
                   placeholderTextColor='#f4e6db'
@@ -148,7 +153,6 @@ class Login extends Component {
                   style={styles.input}
 
                 />
-              </Item>
               <Button
                 rounded
                 style={styles.loginBtn}
@@ -178,17 +182,15 @@ class Login extends Component {
               <Text style={styles.questionText}>Hoặc đăng nhập với</Text>
 
               <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
-                <View style={{ flex: 2, alignItems: 'center' }} />
+                <View style={{ flex: 1, alignItems: 'center' }} />
                 <TouchableOpacity
-
                   style={
                     styles.icon
                   }
                 >
-                  <Icon
-                    name="logo-facebook"
-                    style={{fontSize:30,color:'blue' }}
-                  />
+                <Text style={{fontSize:35,fontWeight:'900',color:'#33CB82' }}>
+                    f
+                  </Text>
                 </TouchableOpacity>
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
@@ -198,7 +200,7 @@ class Login extends Component {
                 >
                   <Icon
                     name="logo-googleplus"
-                    style={{ fontSize: 30 ,color:'blue'}}
+                    style={{ fontSize: 35 ,color:'#33CB82'}}
                   />
                 </TouchableOpacity>
                 <View style={{ flex: 1 }} />
@@ -208,7 +210,7 @@ class Login extends Component {
                 >
                   <Icon
                     name="ios-call"
-                    style={{ fontSize: 30,color:'blue' }}
+                    style={{ fontSize: 35,color:'#33CB82' }}
                   />
                 </TouchableOpacity>
                 <View style={{ flex: 2 }} />

@@ -55,7 +55,9 @@ export default {
     paddingLeft: 10,
     justifyContent:'center',
     alignItems: 'center',
-    borderRadius: 12
+    borderRadius: 20
+
+
   },
   background: {
     flex: 1,
@@ -89,8 +91,8 @@ export default {
     alignItems: "center",
     justifyContent: "center",
     marginTop:10,
-    height: 100,
-    borderRadius:50,
+    height: 80,
+    borderRadius:40,
     backgroundColor:'white',
     borderColor:'transparent',
     aspectRatio:1
@@ -100,7 +102,7 @@ export default {
 questionText:{
   color: '#f4e6db',
   fontSize: 18,
-  marginBottom:15,
+  marginBottom:8,
   marginTop:10,
   textAlign:'center',
 
