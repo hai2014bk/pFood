@@ -50,6 +50,7 @@
     "react-native-pages": "^0.5.3",
     "react-native-scrollable-tab-view": "0.7.4",
     "react-native-simple-modal": "3.0.4",
+    "react-native-star-rating": "^1.0.8",
     "react-native-swiper": "^1.5.10",
     "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^4.4.5",

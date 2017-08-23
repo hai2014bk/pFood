@@ -8,6 +8,16 @@ const primary = require("../../themes/variable").brandPrimary;
 class CustomTabBar extends Component {
 	renderTabOption(name, page) {
 		const isTabActive = this.props.activeTab === page;
+		var icon = ''
+		if(page==0){
+			icon = 'md-star'
+		}
+		if(page==1){
+			icon = 'ios-list-box-outline'
+		}
+		if(page==2){
+			icon = 'ios-megaphone'
+		}
 
 		return (
 			<TouchableOpacity
@@ -20,8 +30,8 @@ class CustomTabBar extends Component {
 					},
 				]}
 			>
-				<Icon style={{fontSize:20,color:isTabActive? primary: 'gray'}} active name="ios-radio-button-on" />
-				<Text style={{ fontSize:9, color:"gray"}}>
+				<Icon style={{fontSize:30,color:isTabActive? primary: 'gray'}} active name={icon} />
+				<Text style={{ fontSize:13, color:isTabActive? primary: 'gray'}}>
 					{name}
 				</Text>
 			</TouchableOpacity>
@@ -29,6 +39,7 @@ class CustomTabBar extends Component {
 	}
 
 	render() {
+		console.log('2212112',this.props.tabs)
 		return (
 			<View style={styles.tabs}>
 				{this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
@@ -47,7 +58,7 @@ const styles = {
 
 	tabs: {
 		flexDirection: "row",
-		height:50,
+		height:55,
 		borderTopWidth:1,
 		borderColor:'#e7e7e7'
 	},

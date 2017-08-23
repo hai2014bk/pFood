@@ -141,38 +141,30 @@ class SignUp extends Component {
 					<Content keyboardShouldPersistTaps='handled' style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
 						<View style={styles.container}>
 							<Form>
-								<Item style={styles.input} regular >
-									<Input
+									<Input main
 										ref={(email) => { this.emailInput = email }}
 										style={styles.textInput}
 										value={this.state.email}
 										onChangeText={text => this.setState({ email: text })}
 										placeholder='Địa chỉ email' placeholderTextColor='#f4e6db' />
-								</Item>
-								<Item style={styles.input} regular >
-									<Input
+									<Input main
 										ref={(firstName) => { this.firstNameInput = firstName }}
 										style={styles.textInput}
 										value={this.state.firstName}
 										onChangeText={text => this.setState({ firstName: text })}
 										placeholder='Tên của bạn' placeholderTextColor='#f4e6db' />
-								</Item>
-								<Item style={styles.input} regular >
-									<Input
+									<Input main
 										ref={(lastName) => { this.lastNameInput = lastName }}
 										style={styles.textInput}
 										value={this.state.lastName}
 										onChangeText={text => this.setState({ lastName: text })}
 										placeholder='Họ của bạn' placeholderTextColor='#f4e6db' />
-								</Item>
-								<Item style={styles.input} regular >
-									<Input
+									<Input main
 										ref={(password) => { this.passwordInput = password }}
 										style={styles.textInput}
 										value={this.state.password}
 										onChangeText={text => this.setState({ password: text })}
 										secureTextEntry={this.state.showPassword} placeholder='Mật khẩu' placeholderTextColor='#f4e6db' />
-								</Item>
 								<Text style={styles.passwordNote}>( Mật khẩu tối thiểu 8 kí tự )</Text>
 							</Form>
 							<View style={styles.checkBoxWrap}>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import { FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import { fetchCategories, fetchSubCategories } from "../../actions/fetchCategories.js"
 import { Thumbnail, Container, Header, Content, Button, Icon, Left, Right, Item, Body, List, ListItem, Label } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
@@ -29,37 +29,57 @@ class SubCategories extends Component {
             console.log('ssaaa')
             var subCategories = props.fetchSubCategories.data.model
             if (subCategories.length > 0) {
-                this.props.navi.navigate("SubCategories", { data: subCategories })
+                this.props.navigation.navigate("SubCategories", { data: subCategories })
             } else {
-                console.log('ddddd')
+                 this.props.navigation.navigate("Pruduct")
             }
         }
     }
 
     renderCell(data) {
+        console.log('11111', data)
+        // return (
+        //     <Item style={{backgroundColor:'blue', flex: 1, alignItems: 'center', borderBottomWidth: 0 }}>
+        //         <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.props.fetchSub(data.item.id) }}>
+        //             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        //                 <Thumbnail style={styles.thumnail} square size={70} source={{ uri: data.item.imageUrl }} />
+        //                 <Text style={styles.title}>{data.item.name}</Text>
+        //             </View>
+        //         </TouchableOpacity>
+        //     </Item>
+        // )
         return (
-            <Item style={{ flex: 1, alignItems: 'center', borderBottomWidth: 0 }}>
-                <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.props.fetchSub(data.id) }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Thumbnail style={styles.thumnail} square size={70} source={{ uri: data.imageUrl }} />
-                        <Text style={styles.title}>{data.name}</Text>
-                    </View>
-                </TouchableOpacity>
-            </Item>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.props.fetchSub(data.item.id) }}>
+                <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
+                    <View style={styles.opacityView}>
+                        <Text style={styles.title}>{data.item.name}</Text>
+                        </View>
+                    </Image>
+            </TouchableOpacity>
+
         )
+
     }
     render() {
         const navigation = this.props.navigation;
+        const { params } = this.props.navigation.state
         console.log('data state', this.state.data)
         return (
             <Container style={styles.container}>
-                <HeaderContent title="Danh mục" leftButton={() => navigation.goBack()} leftIcon="ios-arrow-back" />
+                <HeaderContent title={params.parent.name} leftButton={() => navigation.goBack()} leftIcon="ios-arrow-back" />
                 <Content style={styles.contentWrap}>
-                    <List style={styles.listWrap} dataArray={this.state.data} renderRow={(item) =>
-                        <ListItem style={styles.listItem}>
-                            {this.renderCell(item)}
-                        </ListItem>
-                    } />
+                    <FlatList style={{margin:10}}
+                        data={this.state.data}
+                        extraData={this.state.data}
+                        keyExtractor={(item)=> item.id}
+                        numColumns={2}
+                        renderItem={(item) => (
+                            <View style={styles.listItem} >
+                                {this.renderCell(item)}
+                            </View>
+                        )
+                        }
+                    />
                 </Content>
             </Container>
         );

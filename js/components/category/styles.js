@@ -2,61 +2,131 @@ const React = require("react-native");
 const { Dimensions, Platform } = React;
 
 const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
+
 const primary = require("../../themes/variable").brandPrimary;
 
 export default {
     container: {
         flex: 1,
-        backgroundColor:'white',
+        backgroundColor: '#e7e9e5',
     },
     content: {
         flex: 1,
     },
+    card: {
+        width: deviceWidth,
+        marginLeft: -15,
+        marginRight: -15,
+        borderTopWidth: 0,
+        borderBottomWidth: 0,
+
+    },
     imageWrap: {
-        marginLeft: -10,
-        marginRight: 10,
+        flex: 2,
+        justifyContent: 'center',
+        marginRight: 8,
+        marginLeft: -5
     },
-    image:{
-        height:80,
-        width: 80,
-        borderRadius:15
+    imageContainer: {
+        borderColor: '#d9dbd8',
+        borderWidth: 1,
+        flex: 1,
+        aspectRatio: 1,
+        padding: 5,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    infoWrap:{
-        flexDirection:'column',
-        alignItems:'flex-start',
-        flex:1.5,
-        justifyContent:'center',
-        marginLeft:15
+    image: {
+        height: 85,
+        aspectRatio: 1
     },
-    info:{
-        color:'black',
-        fontSize:14
+    infoWrap: {
+        justifyContent: 'space-between'
     },
-    buttonWrap:{
-        flexDirection:'row',
-        flex:1.5,
-        marginLeft:10,
-        justifyContent:'center',
-        paddingRight:20,
-        marginTop:20
+    unit: {
+        color: 'gray',
+        fontSize: 12,
+        fontWeight: '100',
+        textAlign: 'left'
     },
-    quantity:{
-        marginTop:3,
-        marginRight:5,
-        marginLeft:2
+    price: {
+        color: 'gray',
+        fontSize: 17,
+        fontWeight: '400',
+        textAlign: 'left',
+        marginBottom: 0,
+        alignSelf: 'baseline'
     },
-    cartWrap:{
+    shopName: {
+        color: 'gray',
+        fontSize: 13,
+        fontWeight: '100',
+        textAlign: 'left'
+    },
+    foodName: {
+        color: 'black',
+        fontSize: 15,
+        fontWeight: '400'
+    },
+    buttonWrap: {
+        flexDirection: 'row',
+        marginLeft: 10,
+        justifyContent: 'center',
+    },
+     buttonAddCard: {
         flex:1,
-        alignItems:'flex-end',
-        marginLeft:5
+        marginTop:10,
+        marginLeft:10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems:'center',
     },
-    iconWrap:{
-        height:30,
-        width:30,
-        marginLeft:10
+    buyColumn: {
+        marginLeft: 5,
+        marginRight:5,
+        justifyContent: 'center',
+        marginTop: 20,
     },
-    icon:{
-        fontSize: 25,
+    quantity: {
+        fontSize: 17,
+        alignSelf: 'center'
+    },
+    quantityContainer: {
+        width: 30,
+        aspectRatio: 1,
+        justifyContent: 'center',
+    },
+    cartWrap: {
+        flex: 1,
+        alignItems: 'flex-end',
+        marginLeft: 5
+    },
+    iconWrapPlus: {
+        width: 30,
+        aspectRatio: 1,
+        borderWidth: 1,
+        marginRight: 10,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
+        borderColor: primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+    iconWrapMinus: {
+        width: 30,
+        aspectRatio: 1,
+        borderWidth: 1,
+        marginLeft: 10,
+        borderTopRightRadius: 5,
+        borderBottomRightRadius: 5,
+        borderColor: primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    icon: {
+        fontSize: 17,
         color: primary
     }
 };

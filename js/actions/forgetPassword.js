@@ -1,4 +1,6 @@
 import * as  APIRequest from '../utils/Api.js'
+import * as mConstants from '../utils/Constants'
+
 export function forgetPasswordSuccess(message) {
 	return {
 		type: "FORGET_PASSWORD_SUCCESS",
@@ -13,7 +15,7 @@ export function forgetPasswordFailed(error) {
 }
 
 export function forgetPassword(params) {
-	let url = 'http://api.svina.net/api/user/resetpassword'
+	let url = mConstants.BASE_URL + 'user/resetpassword'
 	return dispatch => {
 		APIRequest.APIRequestPOST(url, params, false,
 			response => {
