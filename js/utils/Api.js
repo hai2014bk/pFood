@@ -37,9 +37,10 @@ export function APIRequestGET(url, isAuth, successCallback, errorCallback) {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token,
+                    'Authorization': 'bearer ' + token,
                 },
             }).then((response) => {
+                console.log('aaa',response)
                 response.json().then((responseJson) => {
                     let model = responseJson.model
                     if (model) {

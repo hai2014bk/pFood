@@ -7,8 +7,7 @@ import ScrollableTabView from "react-native-scrollable-tab-view";
 import HeaderContent from "./../headerContent/";
 import RecommendFood from "./../recomnendFood/";
 import Trending from "./../trending/";
-
-import Category from "./../category/";
+import Categories from "./../categories/";
 import Login from "./../login/";
 import SignUp from "./../sign-up/";
 import Swiper from 'react-native-swiper';
@@ -33,7 +32,7 @@ class MainTabFood extends Component {
 			<Container>
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'bottom'} >
 					<RecommendFood navi={navigation}  tabLabel="Đề xuất" />
-					<Category navi={navigation} tabLabel="Danh mục" />
+					<Categories navi={navigation} tabLabel="Danh mục" />
 					<Trending tabLabel="Xu hướng" />
 				</ScrollableTabView>
 			</Container>

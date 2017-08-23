@@ -2,9 +2,6 @@ const React = require("react-native");
 const { Dimensions, Platform } = React;
 
 const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
-const itemWidth = (deviceWidth - 25) / 2;
-
 
 export default {
     container: {
@@ -38,27 +35,11 @@ export default {
         marginTop:2,
         marginRight:10
     },
-    opacityView:{
-        backgroundColor: 'rgba(0,0,0,0.8)',
-        flex:1,
-        alignItems:'center',
-    },
     arrow:{
         color:'black'
     },
     listItem:{
-      flex: 1, 
-      margin: 3,
-      marginBottom:10,
-      justifyContent:'center',
-       minWidth: itemWidth, 
-       maxWidth: itemWidth
     },
     listWrap:{
-    },
-    imageBackgroundItem:{
-        aspectRatio:1,
-        flex:1,
     }
-    
 };

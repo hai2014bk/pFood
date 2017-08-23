@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Image, View, TouchableOpacity, Platform, Text } from "react-native";
-import { fetchCategories,fetchSubCategories } from "../../actions/fetchCategories.js"
+import { Dimensions, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import { fetchCategories, fetchSubCategories } from "../../actions/fetchCategories.js"
 import { Thumbnail, Container, Header, Content, Button, Icon, Left, Right, Item, Body, List, ListItem, Label } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
@@ -22,6 +22,7 @@ class Categories extends Component {
     componentDidMount() {
         this.props.fetch()
     }
+    _keyExtractor = (item, index) => item.id;
 
     componentWillReceiveProps(props) {
         if (props.fetchCategories.success) {
@@ -35,36 +36,63 @@ class Categories extends Component {
                 }
             }
             this.setState({ data: dataParentFood })
-        } 
-        if(!props.fetchCategories.success) {
-            setTimeout(()=>{Alert.alert('Lỗi mạng','Có vấn đề khi kết nối đến máy chủ')})
+        }
+        if (!props.fetchCategories.success) {
+            setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
+        }
+        if (props.fetchSubCategories.successSub) {
+            console.log('ssaaa')
+            var subCategories = props.fetchSubCategories.data.model
+            if (subCategories.length > 0) {
+                this.props.navi.navigate("SubCategories", { data: subCategories })
+            } else {
+                console.log('ddddd')
+            }
         }
     }
 
     renderCell(data) {
+        console.log('11111', data)
+        // return (
+        //     <Item style={{backgroundColor:'blue', flex: 1, alignItems: 'center', borderBottomWidth: 0 }}>
+        //         <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.props.fetchSub(data.item.id) }}>
+        //             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        //                 <Thumbnail style={styles.thumnail} square size={70} source={{ uri: data.item.imageUrl }} />
+        //                 <Text style={styles.title}>{data.item.name}</Text>
+        //             </View>
+        //         </TouchableOpacity>
+        //     </Item>
+        // )
         return (
-            <Item style={{flex: 1,alignItems:'center',borderBottomWidth:0}}>
-                <TouchableOpacity style={{ flex: 1 }} onPress={() => { console.log(112) }}>
-                    <View style={{flexDirection:'row', alignItems:'center'}}>
-                    <Thumbnail style={styles.thumnail} square size={70} source={{ uri: data.imageUrl }} />
-                    <Text style={styles.title}>{data.name}</Text>
-                    </View>
-                </TouchableOpacity>
-            </Item>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.props.fetchSub(data.item.id) }}>
+                <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
+                    <View style={styles.opacityView}>
+                        </View>
+                    </Image>
+            </TouchableOpacity>
+
         )
+
     }
     render() {
-        const navigation = this.props.navigation;
+        const navigation = this.props.navi;
         console.log('data state', this.state.data)
         return (
             <Container style={styles.container}>
                 <HeaderContent title="Danh mục" leftButton={() => navigation.goBack()} leftIcon="ios-arrow-back" />
                 <Content style={styles.contentWrap}>
-                    <List style={styles.listWrap} dataArray={this.state.data} renderRow={(item) =>
-                        <ListItem style={styles.listItem}>
-                            {this.renderCell(item)}
-                        </ListItem>
-                    } />
+                    <FlatList style={{margin:10}}
+                        data={this.state.data}
+                        extraData={this.state.data}
+                        keyExtractor={this._keyExtractor}
+                        numColumns={2}
+                        renderItem={(item) => (
+                            <View style={styles.listItem} >
+                                {this.renderCell(item)}
+                            </View>
+                        )
+                        }
+                    />
                 </Content>
             </Container>
         );
@@ -73,13 +101,13 @@ class Categories extends Component {
 function bindActions(dispatch) {
     return {
         fetch: () => dispatch(fetchCategories()),
-        fetchSub:(parentId) => dispatch(fetchSubCategories(parentId))
+        fetchSub: (parentId) => dispatch(fetchSubCategories(parentId))
     };
 }
 
 const mapStateToProps = state => ({
     fetchCategories: state.fetchCategories,
-    fetchSubCategories:state.fetchSubCategories
+    fetchSubCategories: state.fetchSubCategories
 });
 
 export default connect(mapStateToProps, bindActions)(Categories);

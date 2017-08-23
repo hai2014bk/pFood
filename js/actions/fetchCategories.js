@@ -27,7 +27,7 @@ export function fetchSubCategoriesFailed(error) {
 }
 
 export function fetchSubCategories(parentId) {
-	let url = mConstant.BASE_URL + 'category/GetAllCategories/' + parentId
+	let url = mConstant.BASE_URL + 'category/GetSubCategories/' + parentId
 	console.log(url)
 	return dispatch => {
 		APIRequest.APIRequestGET(url, true,

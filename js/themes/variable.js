@@ -1,7 +1,7 @@
 const color = require("color");
 
 // theme background
-const primary = color("#dd4c51");
+const primary = color("#00db9d");
 // header
 const secondary = color("#00c497");
 const info = color("#5bc0de");
