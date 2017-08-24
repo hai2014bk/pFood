@@ -25,6 +25,12 @@ export default {
     marginTop: (deviceWidth < 330) ? (deviceHeight / 15) : ((deviceHeight / 5) - 60),
   },
 
+dontac: { fontSize: 16,
+      textAlign: "center",
+       color: "#f4e6db",
+       justifyContent:"center"
+ },
+
   inputGrp: {
     marginTop:12,
 		width:'80%',
@@ -42,6 +48,7 @@ export default {
     color: 'white',
     marginLeft:5,
     borderWidth:0,
+    fontSize:14,
     borderColor:'transparent',
   },
   loginBtn:{
@@ -87,26 +94,32 @@ export default {
   },
   icon:{
     flex: 3,
-
     alignItems: "center",
     justifyContent: "center",
     marginTop:10,
-    height: 80,
-    borderRadius:40,
-    backgroundColor:'white',
-    borderColor:'transparent',
-    aspectRatio:1
+    aspectRatio:1,
+    marginLeft:15,
 
   },
 
 questionText:{
   color: '#f4e6db',
-  fontSize: 18,
-  marginBottom:8,
-  marginTop:10,
+  fontSize: 20,
+  
+  marginTop:35,
   textAlign:'center',
+  justifyContent:'center'
 
 
+  },
+  fb:{
+    fontSize:35,
+    fontWeight:'900',
+    color:'#33CB82'
+  },
+  texticon:{
+    fontSize: 35,
+    color:'#33CB82'
   },
   regis:{
 

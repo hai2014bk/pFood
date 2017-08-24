@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import {AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
-import { List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
-import { Grid, Col } from "react-native-easy-grid";
+import StarRating from 'react-native-star-rating';
+import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
+import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
 import styles from "./styles";
@@ -31,7 +32,7 @@ class RecommendFood extends Component {
 	}
 	pageBanner() {
 		return (
-			<Swiper activeDotColor={primary} height={170} autoplay={true}>
+			<Swiper activeDotColor={primary} height={130} autoplay={true}>
 				<View style={{ flex: 1 }}>
 					<Image
 						style={{ flex: 1 }}
@@ -53,16 +54,56 @@ class RecommendFood extends Component {
 			</Swiper>
 		)
 	}
+	renderStar(rate) {
+		return (
+			<StarRating
+				emptyStar={'ios-star-outline'}
+				fullStar={'ios-star'}
+				halfStar={'ios-star-half'}
+				iconSet={'Ionicons'}
+				disabled={true}
+				maxStars={5}
+				rating={rate}
+				starColor={primary}
+				selectedStar={(rating) => this.onStarRatingPress(rating)}
+				starSize={10}
+			/>
+		)
+	}
 	renderCell(food) {
 		return (
 			<View>
 				<TouchableOpacity style={{ flex: 1, alignItems: 'center' }}>
-					<View style={{ flex: 1, alignItems: 'flex-start' }}>
-						<Thumbnail style={styles.foodThumnail} square source={{ uri: 'http://www.ingredientsnetwork.com/47/pdcnewsitem/03/77/23/Cajun-Steak-with-Potatoes-_-Vegetables-cropped.jpg' }} />
-						<Text style={styles.foodNameText}> Thịt Bò </Text>
-						<Text style={styles.shopNameText}> Vin Market </Text>
-						<Text style={styles.priceText}> 200.000 VNĐ </Text>
-					</View>
+					<Grid style={styles.cellContainer}>
+						<Row style={styles.upContainer}>
+							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: 'https://36iusc2tb88y2g492si2bqd1-wpengine.netdna-ssl.com/wp-content/uploads/2016/09/meat-1.jpg' }} >
+								<View style={styles.saleView}>
+									<Text style={styles.saleText}>-10%</Text>
+									</View> 
+							</Image>
+						</Row>
+						<Row style={styles.downContainer}>
+							<Text numberOfLines={2} style={styles.foodNameText}>Thịt hun khói</Text>
+							<Row style={{ marginBottom: 0 }}>
+								<Col size={1}>
+									<Row style={{ marginTop: 6 }}>
+										<Icon name='ios-pin' style={styles.locationIcon} />
+										<Text style={styles.shopNameText}>Vinmart</Text>
+									</Row>
+									<Text style={styles.priceText}>200.000đ</Text>
+								</Col>
+								<Col style={{ marginLeft:15, justifyContent: 'space-between', alignContent:'center' }} size={1}>
+									<Text style={styles.oldPriceText}>322.000đ</Text>
+									<View style={{
+										width: 30, marginLeft: 10,
+										marginRight: 5,
+									}}>
+										{this.renderStar(3.5)}
+									</View>
+								</Col>
+							</Row>
+						</Row>
+					</Grid>
 				</TouchableOpacity>
 			</View>
 		)
@@ -73,11 +114,11 @@ class RecommendFood extends Component {
 				<View style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
 					<Text style={styles.sectionText} note>Đề xuất cho bạn</Text>
 				</View>
-				<List style={{ marginBottom: -10, marginLeft: -15, marginRight: -15 }} showsHorizontalScrollIndicator={false} horizontal={true} dataArray={foods}
+				<List style={{ marginTop: 10, marginLeft: -10, marginRight: -15 }} showsHorizontalScrollIndicator={false} horizontal={true} dataArray={foods}
 					renderRow={(item) =>
-						<ListItem style={{ borderBottomWidth: 0 }}>
+						<View style={{ borderBottomWidth: 0, marginRight: 5, marginLeft: 5 }}>
 							{this.renderCell(item)}
-						</ListItem>
+						</View>
 					}>
 				</List>
 			</View>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-
+import { Entypo } from '@expo/vector-icons';
 import {  Keyboard, Image, Platform, StatusBar, TouchableOpacity,Alert } from "react-native";
 
 import {
@@ -24,8 +24,7 @@ import commonColor from "../../../native-base-theme/variables/commonColor";
 import { loginClick } from "../../actions/login";
 const bgr = require("../../../images/background.png");
 const logo = require("../../../images/logoFamous.png")
-
-
+const primary = require("../../themes/variable").brandPrimary;
 
 class Login extends Component {
   constructor(props) {
@@ -52,8 +51,6 @@ class Login extends Component {
 						this.passwordInput._root.focus()
 					}
 				}
-
-
 	}
   loginClick() {
 
@@ -146,21 +143,21 @@ class Login extends Component {
                   style={styles.input}
 
                 />
-              <Button
+              <TouchableOpacity
                 rounded
                 style={styles.loginBtn}
                 onPress={() => this.loginClick()}
               >
               <Text
               style={
-              { fontSize:18,color:"white"}
+              {fontSize:20,color:"white"}
               }
               >
                 Đăng Nhập
                 </Text>
-            </Button>
+            </TouchableOpacity>
             <TouchableOpacity
-              style={{ marginTop: 10, marginBottom: 5 }}
+              style={{ marginTop: 15 }}
               onPress={() => navigation.navigate("ForgetPassword")}
             >
               <Text
@@ -170,48 +167,36 @@ class Login extends Component {
               </Text>
             </TouchableOpacity>
               <Text style={styles.questionText}>Hoặc đăng nhập với</Text>
-              <View style={{ flex: 1, flexDirection: "row", height: 60 }}>
-                <View style={{ flex: 1, alignItems: 'center' }} />
+              <View style={{ flex: 1, flexDirection: "row", height: 60,marginTop:15}}>
                 <TouchableOpacity
                   style={
                     styles.icon
                   }
                 >
-                <Text style={{fontSize:35,fontWeight:'900',color:'#33CB82' }}>
-                    f
-                  </Text>
+                 <Entypo name="facebook-with-circle" size={50} color='white' />
                 </TouchableOpacity>
-                <View style={{ flex: 1 }} />
                 <TouchableOpacity
                   transparent
                   style={styles.icon
                   }
                 >
-                  <Icon
-                    name="logo-googleplus"
-                    style={{ fontSize: 35 ,color:'#33CB82'}}
-                  />
+                  <Entypo name="google--with-circle" size={50} color='white' />
                 </TouchableOpacity>
-                <View style={{ flex: 1 }} />
                 <TouchableOpacity
                   transparent
                   style={styles.icon}
                 >
-                  <Icon
-                    name="ios-call"
-                    style={{ fontSize: 35,color:'#33CB82' }}
-                  />
+                  <Entypo name="flickr-with-circle" size={50} color='white' />
                 </TouchableOpacity>
-                <View style={{ flex: 2 }} />
               </View>
-              <View  style={{ flexDirection:'row',marginTop:10}} >
-              <Text style={{ fontSize: 16, textAlign: "center", color: "white" }}>{"Không có tài khoản?"}</Text>
+              <View  style={{ flexDirection:'row',marginTop:30}} >
+              <Text style={styles.dontac}>{"Không có tài khoản?  "}</Text>
               <TouchableOpacity
                 style={styles.regis}
                 onPress={() => navigation.navigate("SignUp")}
               >
               <Text
-                style={{ fontSize:16,color:"white"}  }>
+                style={{ fontSize:16,fontWeight:'bold',color:"white"}}>
                 Đăng Kí Ngay
                 </Text>
 

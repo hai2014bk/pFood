@@ -78,7 +78,7 @@ class Category extends Component {
                         <Grid >
                             <Col size={2} style={styles.imageWrap}>
                                 <View style={styles.imageContainer}>
-                                    <Thumbnail square source={{ uri: 'http://i.imgur.com/toH4mkL.jpg' }} style={styles.image} />
+                                    <Image source={{ uri: 'http://i.imgur.com/toH4mkL.jpg' }} style={styles.image} />
                                 </View>
                             </Col>
                             <Col size={3} style={styles.infoWrap}>
@@ -104,7 +104,7 @@ class Category extends Component {
                                 </Col>
                                  <Col style={styles.buttonAddCard}>
                                    <Button addCart>
-                                       <Text style={{color:'white',fontWeight:'600', fontSize:12, alignSelf:'center'}}> Thêm vào giỏ </Text>
+                                       <Text numberOfLines={1} style={{color:'white',fontWeight:'normal', fontSize:12, alignSelf:'center'}}> Thêm vào giỏ </Text>
                                        </Button>
                                 </Col>
                             </Col>
@@ -123,7 +123,7 @@ class Category extends Component {
                 leftIcon="ios-arrow-back" 
                 leftButton={() => navigation.goBack()} />
                 <Content style={styles.contentWrap}>
-                    <FlatList
+                    <FlatList style={{marginBottom:5,marginTop:5}}
                         data={this.state.data}
                         extraData={this.state.data}
                         keyExtractor={(item)=>item.id}

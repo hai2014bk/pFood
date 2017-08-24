@@ -33,12 +33,13 @@ export default {
         borderWidth: 1,
         flex: 1,
         aspectRatio: 1,
-        padding: 5,
+        padding: 2,
+        marginRight:10,
         justifyContent: 'center',
         alignItems: 'center'
     },
     image: {
-        height: 85,
+        flex:1,
         aspectRatio: 1
     },
     infoWrap: {
@@ -52,7 +53,7 @@ export default {
     },
     price: {
         color: 'gray',
-        fontSize: 17,
+        fontSize: 15,
         fontWeight: '400',
         textAlign: 'left',
         marginBottom: 0,
@@ -66,7 +67,7 @@ export default {
     },
     foodName: {
         color: 'black',
-        fontSize: 15,
+        fontSize: 13,
         fontWeight: '400'
     },
     buttonWrap: {
@@ -77,7 +78,6 @@ export default {
      buttonAddCard: {
         flex:1,
         marginTop:10,
-        marginLeft:10,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems:'center',

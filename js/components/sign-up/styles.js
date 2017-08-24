@@ -23,14 +23,13 @@ export default {
 		marginLeft: 20
 	},
 	button: {
-		height: 30,
 		marginTop: 30,
-		width:'60%',
+		width:'80%',
 		height: 40,
 		alignSelf:'center',
 		backgroundColor:'transparent',
 		borderColor:'#f4e6db',
-		borderRadius:12,
+		borderRadius:20,
 		borderWidth:0.5,
 		justifyContent:'center',
 		alignItems:'center'

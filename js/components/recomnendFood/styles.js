@@ -10,41 +10,90 @@ export default {
 		flex: 1,
 		width: null,
 		height: null,
-		backgroundColor:'white'
+        backgroundColor: '#e7e9e5',
+	},
+	cellContainer:{
+		backgroundColor:'white', 
+		flex: 1, 
+		alignItems: 'flex-start',
+		borderRadius:5,
+	},
+	upContainer:{
+		flex:1,
+		justifyContent:'center',
+		alignItems:'center',
+	},
+	downContainer:{
+		paddingLeft:5,
+		marginTop:4,
+		borderTopWidth:1,
+		borderColor:'#e7e9e5',
+		flexDirection:'column'
+	},
+	saleView:{
+		height:15,
+		width:40,
+		borderTopLeftRadius: 7.5,
+		borderBottomLeftRadius: 7.5,
+		alignSelf:'flex-end',
+		backgroundColor:'orange'
+	},
+	saleText:{
+		color:'white',
+		fontSize:10,
+		fontWeight:'900',
+		alignSelf:'center'
 	},
 	pageBanner: {
 		flex:2
 	},
 	sectionText:{
-		color:'black',
-		fontSize:13,
-		fontWeight:'normal',
+		color:primary,
+		fontSize:17,
+		fontWeight:'400',
 		textAlign:'left'
 	},
 	foodThumnail:{
+		marginTop:5,
 		height:70,
-		aspectRatio:1,
-		borderRadius:15,
+		flex:1,
+	},
+	oldPriceText: {
+		color:'gray',
+		fontSize:11,
+		marginLeft:5,
+		marginRight:5,
+		fontWeight:'100',
+		textAlign:'left',
+		textDecorationLine :'line-through',
+		marginTop:6,
 	},
 	shopNameText: {
 		color:'gray',
-		fontSize:10,
+		fontSize:11,
+		marginLeft:5,
 		fontWeight:'100',
-		textAlign:'left'
+		textAlign:'left',
+	},
+	locationIcon:{
+		fontSize: 11, 
+		color: 'gray'
 	},
 	foodNameText: {
 		marginTop:5,
 		color:'black',
-		fontWeight:'500',
-		fontSize:11,
-		textAlign:'left'
+		fontWeight:'300',
+		fontSize:13,
+		maxWidth:100,
+		textAlign:'left',
+		height:28
 	},
 	priceText: {
-		color:'black',
-		marginTop:5,
-		fontSize:12,
-		fontWeight:'bold',
-		textAlign:'left'
+		color:primary,
+		fontSize:14,
+		fontWeight:'300',
+		textAlign:'left',
+		backgroundColor:'transparent'
 	},
 	mainContent:{
 		flex:3
