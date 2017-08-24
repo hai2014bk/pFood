@@ -27,7 +27,6 @@ export default {
 
 dontac: { fontSize: 16,
       textAlign: "center",
-       color: "#f4e6db",
        justifyContent:"center"
  },
 

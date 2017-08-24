@@ -90,7 +90,16 @@ class SignUp extends Component {
 		if (this.state.email && this.state.firstName && this.state.lastName && this.state.password) {
 			if ((!this.checkSpaceAll(this.state.email)) && (!this.checkSpaceAll(this.state.firstName)) && (!this.checkSpaceAll(this.state.lastName))) {
 				if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
-					setTimeout(() => { Alert.alert('', 'Địa chỉ email không hợp lệ') }, 200)
+					setTimeout(() => {
+						Alert.alert(
+							'',
+							'Địa chỉ email không hợp lệ',
+							[
+								{ text: 'OK', onPress: () => this.emailInput._root.focus() },
+							],
+							{ cancelable: false }
+						)
+					}, 200)
 				} else {
 					if (this.state.password.length < 8) {
 						Alert.alert('', 'Mật khẩu tối thiểu 8 kí tự')

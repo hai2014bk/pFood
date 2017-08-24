@@ -32,7 +32,7 @@ class RecommendFood extends Component {
 	}
 	pageBanner() {
 		return (
-			<Swiper activeDotColor={primary} height={130} autoplay={true}>
+			<Swiper activeDotColor={primary} height={137} autoplay={true}>
 				<View style={{ flex: 1 }}>
 					<Image
 						style={{ flex: 1 }}
@@ -66,7 +66,7 @@ class RecommendFood extends Component {
 				rating={rate}
 				starColor={primary}
 				selectedStar={(rating) => this.onStarRatingPress(rating)}
-				starSize={10}
+				starSize={9}
 			/>
 		)
 	}
@@ -92,11 +92,10 @@ class RecommendFood extends Component {
 									</Row>
 									<Text style={styles.priceText}>200.000đ</Text>
 								</Col>
-								<Col style={{ marginLeft:15, justifyContent: 'space-between', alignContent:'center' }} size={1}>
+								<Col style={{ justifyContent: 'space-between', alignItems:'flex-end' }} size={1}>
 									<Text style={styles.oldPriceText}>322.000đ</Text>
 									<View style={{
-										width: 30, marginLeft: 10,
-										marginRight: 5,
+										marginRight:2,
 									}}>
 										{this.renderStar(3.5)}
 									</View>
@@ -116,7 +115,7 @@ class RecommendFood extends Component {
 				</View>
 				<List style={{ marginTop: 10, marginLeft: -10, marginRight: -15 }} showsHorizontalScrollIndicator={false} horizontal={true} dataArray={foods}
 					renderRow={(item) =>
-						<View style={{ borderBottomWidth: 0, marginRight: 5, marginLeft: 5 }}>
+						<View style={{ borderBottomWidth: 0, marginRight: 5, }}>
 							{this.renderCell(item)}
 						</View>
 					}>
@@ -127,7 +126,7 @@ class RecommendFood extends Component {
 	renderList() {
 		var items = ['Simon Mignolet', 'Nathaniel Clyne', 'Dejan Lovren', 'Mama Sakho', 'Emre Can']
 		return (
-			<List style={{ flex: 1 }} dataArray={items}
+			<List showsVerticalScrollIndicator={false} style={{ flex: 1, marginLeft:5 }} dataArray={items}
 				renderRow={(item) =>
 					<ListItem >
 						{this.renderHorizontalList(items)}

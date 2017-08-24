@@ -190,7 +190,7 @@ class Login extends Component {
                 </TouchableOpacity>
               </View>
               <View  style={{ flexDirection:'row',marginTop:30}} >
-              <Text style={styles.dontac}>{"Không có tài khoản?  "}</Text>
+              <Text  style={styles.dontac}>{"Không có tài khoản?  "}</Text>
               <TouchableOpacity
                 style={styles.regis}
                 onPress={() => navigation.navigate("SignUp")}

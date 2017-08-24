@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Dimensions, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import {Alert, Dimensions, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import { fetchCategories, fetchSubCategories } from "../../actions/fetchCategories.js"
 import { Thumbnail, Container, Header, Content, Button, Icon, Left, Right, Item, Body, List, ListItem, Label } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";

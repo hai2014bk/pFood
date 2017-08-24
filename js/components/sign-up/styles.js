@@ -84,7 +84,7 @@ export default {
 	passwordNote:{
 		textAlign:'center',
 		fontSize:12,
-		marginTop:3
+		marginTop:8
 	}
 
 };

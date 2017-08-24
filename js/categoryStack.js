@@ -1,11 +1,12 @@
-import React from "react";
+import {React} from "react";
+import { Animated, Easing } from "react-native";
 import { StackNavigator } from 'react-navigation';
 import Categories from "./components/categories";
 import Category from "./components/category";
 import SubCategories from "./components/subCategories";
 
 
-const SimpleStack = StackNavigator({
+const CategoryStack = StackNavigator({
   Categories: {
     screen: Categories,
   },
@@ -22,8 +23,8 @@ const SimpleStack = StackNavigator({
 		headerMode: "none",
 		 navigationOptions: {
       		gesturesEnabled: false,
-   		 },
+        },
 	}
 );
 
-export default SimpleStack;
+export default CategoryStack;

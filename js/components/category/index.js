@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import StarRating from 'react-native-star-rating';
+import { NavigationActions } from "react-navigation";
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
@@ -10,7 +11,10 @@ import styles from "./styles";
 
 const headerLogo = require("../../../images/Header-Logo.png");
 const primary = require("../../themes/variable").brandPrimary;
-
+const resetAction = NavigationActions.reset({
+    index: 0,
+	actions: [NavigationActions.navigate({ routeName: "Categories" })],
+});
 class Category extends Component {
     constructor(props) {
         super(props);
@@ -120,8 +124,8 @@ class Category extends Component {
         return (
             <Container style={styles.container}>
                 <HeaderContent rightButton={true} title="Thực phẩm" 
-                leftIcon="ios-arrow-back" 
-                leftButton={() => navigation.goBack()} />
+                textLeft="Danh Mục" 
+                leftButton={() => navigation.dispatch(resetAction)} />
                 <Content style={styles.contentWrap}>
                     <FlatList style={{marginBottom:5,marginTop:5}}
                         data={this.state.data}

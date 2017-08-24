@@ -55,14 +55,14 @@ export default {
 	},
 	foodThumnail:{
 		marginTop:5,
-		height:70,
+		height:60,
 		flex:1,
 	},
 	oldPriceText: {
 		color:'gray',
-		fontSize:11,
+		fontSize:10,
 		marginLeft:5,
-		marginRight:5,
+		marginRight:2,
 		fontWeight:'100',
 		textAlign:'left',
 		textDecorationLine :'line-through',
@@ -70,7 +70,7 @@ export default {
 	},
 	shopNameText: {
 		color:'gray',
-		fontSize:11,
+		fontSize:10,
 		marginLeft:5,
 		fontWeight:'100',
 		textAlign:'left',
@@ -83,15 +83,15 @@ export default {
 		marginTop:5,
 		color:'black',
 		fontWeight:'300',
-		fontSize:13,
+		fontSize:12,
 		maxWidth:100,
 		textAlign:'left',
 		height:28
 	},
 	priceText: {
 		color:primary,
-		fontSize:14,
-		fontWeight:'300',
+		fontSize:12,
+		fontWeight:'500',
 		textAlign:'left',
 		backgroundColor:'transparent'
 	},

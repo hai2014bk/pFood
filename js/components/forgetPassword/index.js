@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, StatusBar, Alert, TouchableOpacity, ScrollView } from "react-native";
+import {Linking, Image, StatusBar, Alert, TouchableOpacity, ScrollView } from "react-native";
 import { forgetPassword } from "../../actions/forgetPassword.js"
 import { connect } from "react-redux";
 import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
@@ -19,6 +19,10 @@ class ForgetPassword extends Component {
         this.validateEmail = this.validateEmail.bind(this)
     }
 
+    sendEmail(){
+        this.props.navigation.goBack()
+    }
+
     componentWillReceiveProps(props) {
         // console.log('props', props)
         if (props.forgetPassword.success) {
@@ -28,7 +32,7 @@ class ForgetPassword extends Component {
                     '',
                     'Gửi yêu cầu thành công! Vui lòng kiểm tra lại hòm thư',
                     [
-                        { text: 'OK', onPress: () => this.props.navigation.goBack() },
+                        { text: 'OK', onPress: () => this.sendEmail()  },
                     ],
                     { cancelable: false }
                 )

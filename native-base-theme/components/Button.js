@@ -1,5 +1,9 @@
 import variable from "./../variables/platform";
+const React = require("react-native");
+const { Dimensions, Platform } = React;
 
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
 
 const primary = require("../../js/themes/variable").brandPrimary;
 
@@ -13,9 +17,10 @@ export default (variables = variable) => {
 		},
 		".addCart":{
 			backgroundColor: primary,
-			height:20,
-			borderRadius:10,
-			width:'100%'
+			height: deviceHeight * 25/667,
+			borderRadius:(deviceHeight * 25/667)/2,
+			width: "100%",
+			alignItems:'center'
 
 		},
 		".noBordered": {

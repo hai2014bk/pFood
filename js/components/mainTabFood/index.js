@@ -12,7 +12,7 @@ import Login from "./../login/";
 import SignUp from "./../sign-up/";
 import Swiper from 'react-native-swiper';
 import CustomTabBar from "./CustomTabBar";
-import SimpleStack from '../../Tabs';
+import CategoryStack from '../../categoryStack';
 
 import styles from "./styles";
 
@@ -31,9 +31,9 @@ class MainTabFood extends Component {
 		return (
 			<Container>
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'bottom'} >
-					<RecommendFood icon='menu' navi={navigation}  tabLabel="Đề xuất" />
-					<SimpleStack icon='menu'  screenProps={{navi:navigation}}  tabLabel="Danh mục" />
-					<Trending icon='menu' tabLabel="Xu hướng" />
+					<RecommendFood  navi={navigation}  tabLabel="Đề xuất" />
+					<CategoryStack   screenProps={{navi:navigation}}  tabLabel="Danh mục" />
+					<Trending  tabLabel="Xu hướng" />
 				</ScrollableTabView>
 			</Container>
 		);
