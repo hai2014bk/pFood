@@ -92,21 +92,38 @@ dontac: { fontSize: 16,
   questionWrap:{
    marginTop: 10
   },
-  icon:{
-    flex: 3,
+  iconf:{
+    flex:5,
+    height:60,
     alignItems: "center",
     justifyContent: "center",
-    marginTop:10,
     aspectRatio:1,
-    marginLeft:15,
+    marginLeft:'18%',
+  },
+  icong:{
+    flex:5,
+    height:60,
+    alignItems: "center",
+    justifyContent: "center",
+    aspectRatio:1,
+    marginLeft:'5%',
+    marginRight:'5%',
+  },
+  iconc:{
+    flex:5,
+    height:60,
+    alignItems: "center",
+    justifyContent: "center",
+    aspectRatio:1,
 
+    marginRight:'18%',
   },
 
 questionText:{
   color: '#f4e6db',
-  fontSize: 20,
-  
-  marginTop:35,
+  fontSize: 18,
+  marginTop:30,
+  marginBottom:8,
   textAlign:'center',
   justifyContent:'center'
 

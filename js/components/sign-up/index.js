@@ -145,17 +145,20 @@ class SignUp extends Component {
 										ref={(email) => { this.emailInput = email }}
 										style={styles.textInput}
 										value={this.state.email}
+										 autoCapitalize = 'none'
 										onChangeText={text => this.setState({ email: text })}
 										placeholder='Địa chỉ email' placeholderTextColor='#f4e6db' />
 									<Input main
 										ref={(firstName) => { this.firstNameInput = firstName }}
 										style={styles.textInput}
+										 autoCapitalize = 'none'
 										value={this.state.firstName}
 										onChangeText={text => this.setState({ firstName: text })}
 										placeholder='Tên của bạn' placeholderTextColor='#f4e6db' />
 									<Input main
 										ref={(lastName) => { this.lastNameInput = lastName }}
 										style={styles.textInput}
+										 autoCapitalize = 'none'
 										value={this.state.lastName}
 										onChangeText={text => this.setState({ lastName: text })}
 										placeholder='Họ của bạn' placeholderTextColor='#f4e6db' />
