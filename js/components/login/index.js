@@ -86,7 +86,7 @@ if(!this.state.email){
     setTimeout(() => {
       Alert.alert(
         '',
-        'email không được chứa toàn khoảng trắng'
+        'Các trường không được phép trống'
       ,
         [
           { text: 'OK', onPress: () => this.checkSpace() },

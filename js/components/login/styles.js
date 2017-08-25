@@ -101,7 +101,7 @@ dontac: { fontSize: 16,
 questionText:{
   color: '#f4e6db',
   fontSize: 20,
-  
+
   marginTop:35,
   textAlign:'center',
   justifyContent:'center'
