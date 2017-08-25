@@ -20,8 +20,11 @@ export default (variables = variable) => {
 			height: deviceHeight * 25/667,
 			borderRadius:(deviceHeight * 25/667)/2,
 			width: "100%",
-			alignItems:'center'
-
+			alignItems:'center',
+			".large":{
+				height:  30,
+				borderRadius:15,
+			}
 		},
 		".noBordered": {
 			backgroundColor: 'rgba(255,225,240,0.2)',
