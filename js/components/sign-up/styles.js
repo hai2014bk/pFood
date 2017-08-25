@@ -11,6 +11,12 @@ export default {
 	containerWrap:{
 		flex:1,
 	},
+	iconp:
+
+		{flex:3,
+			justifyContent:'center',
+			alignItems:'center',
+		},
 	container: {
 		flex: 1,
 		marginTop:30,
@@ -23,14 +29,14 @@ export default {
 		marginLeft: 20
 	},
 	button: {
-		marginTop: 30,
+		marginTop: 15,
 		width:'80%',
 		height: 40,
 		alignSelf:'center',
 		backgroundColor:'transparent',
 		borderColor:'#f4e6db',
 		borderRadius:20,
-		borderWidth:0.5,
+		borderWidth:1,
 		justifyContent:'center',
 		alignItems:'center'
 	},
@@ -39,9 +45,21 @@ export default {
 		fontSize: 16,
 		textAlign:'center',
 	},
-	questionWrap:{	
+	pass:{ backgroundColor: 'rgba(255,225,240,0.2)',
+		borderRadius: 20,
+		flexDirection:'row',
+		borderWidth: 0,
+		width:'80%',
+		marginTop:12,
+		height:40,
+		justifyContent:'center',
+		alignItems:'center',
+		alignSelf:'center'
+	},
+
+	questionWrap:{
 		width:'100%',
-		marginTop:30,
+		marginTop:40,
 		backgroundColor:'transparent',
 
 	},
@@ -56,7 +74,11 @@ export default {
 		flexDirection:'row'
 	},
 	textInput:{
-		
+		flex:12,
+		height:40,
+		justifyContent: 'center',
+		alignItems:'center',
+		paddingLeft:15,
 	},
 	line: {
 		height: 3,

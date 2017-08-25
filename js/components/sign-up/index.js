@@ -21,7 +21,7 @@ class SignUp extends Component {
 			showPassword: true,
 			checked: false,
 			firstName: '',
-			lastName: '',
+			lastName:'',
 			email: '',
 			name: '',
 			password: '',
@@ -49,7 +49,7 @@ class SignUp extends Component {
 	showPassword() {
 		this.setState({
 			showPassword: !this.state.showPassword,
-			checked: !this.state.checked
+
 		})
 	}
 
@@ -62,33 +62,28 @@ class SignUp extends Component {
 			this.setState({ firstName: '' })
 			this.firstNameInput._root.focus()
 		}
-		if (this.checkSpaceAll(this.state.lastName)) {
-			this.setState({ lastName: '' })
-			this.lastNameInput._root.focus()
-		}
+
 	}
 	checkValue() {
 		if (this.state.email=='') {
 			this.emailInput._root.focus()
 		} else {
-			if (this.state.firstName) {
+			if (this.state.firstName=='') {
 				this.firstNameInput._root.focus()
-			} else {
-				if (this.state.lastName=='') {
-					this.lastNameInput._root.focus()
-				} else {
+			}
+				 else {
 					if (this.state.password=='') {
 						this.passwordInput._root.focus()
 					}
 				}
 			}
-		}
+
 	}
 
 	createPassword() {
 		Keyboard.dismiss()
-		if (this.state.email && this.state.firstName && this.state.lastName && this.state.password) {
-			if ((!this.checkSpaceAll(this.state.email)) && (!this.checkSpaceAll(this.state.firstName)) && (!this.checkSpaceAll(this.state.lastName))) {
+		if (this.state.email && this.state.firstName&& this.state.password) {
+			if ((!this.checkSpaceAll(this.state.email)) && (!this.checkSpaceAll(this.state.firstName))) {
 				if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
 					setTimeout(() => {
 						Alert.alert(
@@ -107,7 +102,7 @@ class SignUp extends Component {
 					} else {
 						let params = {}
 						params.firstName = this.state.firstName
-						params.lastName = this.state.lastName
+
 						params.email = this.state.email
 						params.password = this.state.password
 						this.props.register(params)
@@ -140,6 +135,7 @@ class SignUp extends Component {
 		}
 	}
 
+
 	render() {
 		console.log('utils', Utils)
 		const navigation = this.props.navigation;
@@ -156,7 +152,7 @@ class SignUp extends Component {
 										value={this.state.email}
 										 autoCapitalize = 'none'
 										onChangeText={text => this.setState({ email: text })}
-										placeholder='Địa chỉ email' placeholderTextColor='#f4e6db' />
+										placeholder='Email của bạn' placeholderTextColor='#f4e6db' />
 									<Input main
 										ref={(firstName) => { this.firstNameInput = firstName }}
 										style={styles.textInput}
@@ -164,33 +160,30 @@ class SignUp extends Component {
 										value={this.state.firstName}
 										onChangeText={text => this.setState({ firstName: text })}
 										placeholder='Tên của bạn' placeholderTextColor='#f4e6db' />
-									<Input main
-										ref={(lastName) => { this.lastNameInput = lastName }}
-										style={styles.textInput}
-										 autoCapitalize = 'none'
-										value={this.state.lastName}
-										onChangeText={text => this.setState({ lastName: text })}
-										placeholder='Họ của bạn' placeholderTextColor='#f4e6db' />
-									<Input main
+
+										<View style={styles.pass}>
+
+									<Input
 										ref={(password) => { this.passwordInput = password }}
 										style={styles.textInput}
 										value={this.state.password}
 										onChangeText={text => this.setState({ password: text })}
-										secureTextEntry={this.state.showPassword} placeholder='Mật khẩu' placeholderTextColor='#f4e6db' />
-								<Text style={styles.passwordNote}>( Mật khẩu tối thiểu 8 kí tự )</Text>
+										secureTextEntry={this.state.showPassword} placeholder='Mật khẩu của bạn' placeholderTextColor='#f4e6db' />
+                   <TouchableOpacity  style={styles.iconp} onPress={() => this.showPassword()}>
+										<Icon name="ios-eye" />
+										</TouchableOpacity>
+										</View>
+
 							</Form>
-							<View style={styles.checkBoxWrap}>
-								<CheckBox style={styles.checkBox} onPress={() => this.showPassword()} checked={this.state.checked} />
-								<Text style={styles.showPassword}>Hiện mật khẩu</Text>
-							</View>
+
 							<TouchableOpacity onPress={() => { this.createPassword() }} style={styles.button} >
-								<Text style={{ color: '#f4e6db' }}>Tạo tài khoản</Text>
+								<Text style={{ color: '#f4e6db',fontSize:18, }}>Đăng Ký</Text>
 							</TouchableOpacity>
 							<View style={styles.questionWrap}>
-								<Text style={styles.questionText}>Bạn đã có tài khoản?</Text>
+								<Text style={styles.questionText}>Đã có tài khoản</Text>
 							</View>
 							<TouchableOpacity onPress={() => { navigation.goBack(); Keyboard.dismiss() }} style={styles.button}  >
-								<Text style={{ color: '#f4e6db' }}>Đăng nhập</Text>
+								<Text style={{ color: '#f4e6db',fontSize:18 }}>Đăng Nhập</Text>
 							</TouchableOpacity>
 						</View>
 					</Content>
