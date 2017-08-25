@@ -5,18 +5,15 @@ import { Icon, Button, Footer, FooterTab, List, ListItem, Header, Container, Con
 import { Grid, Col } from "react-native-easy-grid";
 import ScrollableTabView from "react-native-scrollable-tab-view";
 import HeaderContent from "./../headerContent/";
-import Trending from "./../trending/";
-import Categories from "./../categories/";
-import Login from "./../login/";
-import SignUp from "./../sign-up/";
+import RecommendFood from "./../recomnendFood/";
+import FoodRelate from "./../foodRelate/";
 import Swiper from 'react-native-swiper';
 import CustomTabBar from "./CustomTabBar";
-import CategoryStack from '../../categoryStack';
-import RecommendStack from '../../recommendStack';
+import FoodDetail from './../foodDetail';
 
 import styles from "./styles";
 
-class MainTabFood extends Component {
+class FoodTab extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -28,16 +25,19 @@ class MainTabFood extends Component {
 	}
 	render() {
 		const navigation = this.props.navigation;
+		const { params } = this.props.navigation.state		
 		return (
 			<Container>
-				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'bottom'} >
-					<RecommendStack  screenProps={{navi:navigation}}  tabLabel="Đề xuất" />
-					<CategoryStack   screenProps={{navi:navigation}}  tabLabel="Danh mục" />
-					<Trending  tabLabel="Xu hướng" />
+				<HeaderContent leftIcon={'ios-arrow-back'} leftButton={() => navigation.goBack()}
+					rightButton={true} title={params.name}>
+				</HeaderContent>
+				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'top'} >
+					<FoodDetail   tabLabel="Danh mục" />
+					<FoodRelate  tabLabel="Liên quan" />
 				</ScrollableTabView>
 			</Container>
 		);
 	}
 }
 
-export default MainTabFood;
+export default FoodTab;

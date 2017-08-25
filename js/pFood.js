@@ -12,6 +12,7 @@ import Drawer from "./Drawer";
 import ForgetPassword from "./components/forgetPassword"
 import Category from "./components/category";
 import RecommendFood from "./components/recomnendFood/";
+import FoodDetail from "./components/foodDetail/";
 
 
 const App = StackNavigator(
@@ -25,10 +26,10 @@ const App = StackNavigator(
 		Channel: { screen: Channel },
 		Drawer: { screen: Drawer, gesturesEnabled: false },
 		ForgetPassword: { screen: ForgetPassword },
+		
 	},
 	{
 		index: 0,
-		
 		initialRouteName: "Login",
 		headerMode: "none",
 		navigationOptions: {

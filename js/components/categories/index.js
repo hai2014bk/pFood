@@ -69,7 +69,7 @@ class Categories extends Component {
     }
 
     render() {
-        const navigation = this.props. screenProps.navi;
+        const navigation = this.props.screenProps.navi;
         console.log('data state', this.state.data)
         return (
             <Container style={styles.container}>
