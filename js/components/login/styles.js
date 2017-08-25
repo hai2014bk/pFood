@@ -27,6 +27,7 @@ export default {
 
 dontac: { fontSize: 16,
       textAlign: "center",
+       color: "#f4e6db",
        justifyContent:"center"
  },
 
@@ -92,13 +93,9 @@ dontac: { fontSize: 16,
    marginTop: 10
   },
   icon:{
-    flex: 3,
-    alignItems: "center",
-    justifyContent: "center",
+    alignSelf: "center",
     marginTop:10,
     aspectRatio:1,
-    marginLeft:15,
-
   },
 
 questionText:{

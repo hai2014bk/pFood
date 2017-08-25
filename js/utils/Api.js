@@ -91,17 +91,20 @@ export function APIRequestPOST(url, param, isAuth, successCallback, errorCallbac
     } else {
         var token;
         AsyncStorage.getItem(mConstants.USER_INFO, (err, result) => {
-            token = JSON.parse(result).accessToken
+            token = JSON.parse(result).model.accessToken
+            console.log('paraaa',param,url)
             fetch(url, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token,
+                    'Authorization': 'bearer ' + token,
                 },
                 body: JSON.stringify(param)
             }).then((response) => {
+                console.log('res1',response)
                 response.json().then((responseJson) => {
+                    console.log('res',responseJson)
                     let model = responseJson.model
                     if (model) {
                         if (responseJson.requestStatus == "Success") {

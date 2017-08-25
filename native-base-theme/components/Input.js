@@ -4,7 +4,7 @@ export default (variables = variable) => {
 	const inputTheme = {
 		".main": {
 			backgroundColor: 'rgba(255,225,240,0.2)',
-			borderRadius: 12,
+			borderRadius: 20,
 			paddingLeft:15,
 			borderWidth: 0,
 			width:'80%',

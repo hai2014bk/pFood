@@ -25,8 +25,6 @@ const App = StackNavigator(
 		Channel: { screen: Channel },
 		Drawer: { screen: Drawer, gesturesEnabled: false },
 		ForgetPassword: { screen: ForgetPassword },
-
-
 	},
 	{
 		index: 0,

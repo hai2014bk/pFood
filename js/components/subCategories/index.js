@@ -31,25 +31,18 @@ class SubCategories extends Component {
             if (subCategories.length > 0) {
                 this.props.navigation.navigate("SubCategories", { data: subCategories })
             } else {
-                 this.props.navigation.navigate("Pruduct")
+                 this.props.navigation.navigate("Pruduct",{parent:this.state.parentChoose})
             }
         }
     }
+    choseFood(food){
+        this.props.fetchSub(food.id)
+        this.setState({parentChoose:food})
+    }
 
-    renderCell(data) {
-        console.log('11111', data)
-        // return (
-        //     <Item style={{backgroundColor:'blue', flex: 1, alignItems: 'center', borderBottomWidth: 0 }}>
-        //         <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.props.fetchSub(data.item.id) }}>
-        //             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        //                 <Thumbnail style={styles.thumnail} square size={70} source={{ uri: data.item.imageUrl }} />
-        //                 <Text style={styles.title}>{data.item.name}</Text>
-        //             </View>
-        //         </TouchableOpacity>
-        //     </Item>
-        // )
+    renderCell(data) {        
         return (
-            <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.props.fetchSub(data.item.id) }}>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => {this.choseFood(data.item) }}>
                 <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
                     <View style={styles.opacityView}>
                         <Text style={styles.title}>{data.item.name}</Text>
@@ -58,8 +51,9 @@ class SubCategories extends Component {
             </TouchableOpacity>
 
         )
-
     }
+
+
     render() {
         const navigation = this.props.navigation;
         const { params } = this.props.navigation.state

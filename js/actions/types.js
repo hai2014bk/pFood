@@ -10,6 +10,8 @@ export type Action =
 	| { type : "FORGET_PASSWORD_FAILED"}
 	| { type : "FETCH_CATEGORIES_SUCCESS"}
 	| { type : "FETCH_CATEGORIES_FAILED"}
+	| {type: "FETCH_PRODUCT_SUCCESS"}
+	| {type: "FETCH_PRODUCT_FAILED"}
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;

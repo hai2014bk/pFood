@@ -15,7 +15,10 @@ export default {
 	cellContainer:{
 		backgroundColor:'white', 
 		flex: 1, 
+		width: deviceWidth/3 - 5,
+		minWidth:120,				
 		alignItems: 'flex-start',
+		justifyContent:'flex-end',
 		borderRadius:5,
 	},
 	upContainer:{
@@ -24,11 +27,13 @@ export default {
 		alignItems:'center',
 	},
 	downContainer:{
-		paddingLeft:5,
 		marginTop:4,
+		flex:1,
+		width:'100%',
 		borderTopWidth:1,
 		borderColor:'#e7e9e5',
-		flexDirection:'column'
+		flexDirection:'column',
+		alignItems:'flex-end',
 	},
 	saleView:{
 		height:15,
@@ -60,7 +65,7 @@ export default {
 	},
 	oldPriceText: {
 		color:'gray',
-		fontSize:10,
+		fontSize:9,
 		marginLeft:5,
 		marginRight:2,
 		fontWeight:'100',
@@ -70,30 +75,33 @@ export default {
 	},
 	shopNameText: {
 		color:'gray',
-		fontSize:10,
-		marginLeft:5,
+		fontSize:9,
 		fontWeight:'100',
-		textAlign:'left',
+		textAlign:'center',
+		marginLeft:3,
 	},
 	locationIcon:{
-		fontSize: 11, 
-		color: 'gray'
+		fontSize: 9, 
+		color: 'gray',
+		marginLeft:3,
 	},
 	foodNameText: {
 		marginTop:5,
+		marginLeft:5,
 		color:'black',
-		fontWeight:'300',
+		fontWeight:'500',
 		fontSize:12,
 		maxWidth:100,
 		textAlign:'left',
+		alignSelf:'flex-start',
 		height:28
 	},
 	priceText: {
 		color:primary,
 		fontSize:12,
-		fontWeight:'500',
+		fontWeight:'600',
 		textAlign:'left',
-		backgroundColor:'transparent'
+		marginLeft:3,
 	},
 	mainContent:{
 		flex:3

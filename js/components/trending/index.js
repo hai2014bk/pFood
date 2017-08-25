@@ -72,16 +72,18 @@ class Trending extends Component {
     }
 
     renderItems(data) {
-        let item = data.item
-        console.log(data.item)
+        let item =  data.item
+        console.log(data.index)
         let id = item.id
         return (
-            <Card style={{ marginLeft: -15, }} >
-                <CardItem style={styles.card} >
+            <Card style={styles.card}>
+                <CardItem >
                     <Body>
                         <Grid >
                             <Col size={2} style={styles.imageWrap}>
-                                <Image source={{ uri: 'http://i.imgur.com/toH4mkL.jpg' }} style={styles.image} />
+                                <View style={styles.imageContainer}>
+                                    <Image source={{ uri: 'http://i.imgur.com/toH4mkL.jpg' }} style={styles.image} />
+                                </View>
                             </Col>
                             <Col size={3} style={styles.infoWrap}>
                                 <Text style={styles.foodName}>{item.name}</Text>
@@ -92,22 +94,22 @@ class Trending extends Component {
                                 </View>
                                 <Text style={styles.price}>{item.price}</Text>
                             </Col>
-                            <Col size={2.5} style={styles.buyColumn}>
+                            <Col size={3} style={styles.buyColumn}>
                                 <Col style={styles.buttonWrap}>
-                                    <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(id)} >
+                                    <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                         <Icon name="md-add" style={styles.icon} />
                                     </TouchableOpacity>
                                     <Col style={styles.quantityContainer}>
                                         <Text style={styles.quantity}>{item.quantity}</Text>
                                     </Col>
-                                    <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(id)} >
+                                    <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(data.index)} >
                                         <Icon style={styles.icon} name="md-remove" />
                                     </TouchableOpacity>
                                 </Col>
-                                <Col style={styles.buttonAddCard}>
-                                    <Button addCart>
-                                        <Text numberOfLines={1} style={{ color: 'white', fontWeight: 'normal', fontSize: 12, alignSelf: 'center' }}> Thêm vào giỏ </Text>
-                                    </Button>
+                                 <Col style={styles.buttonAddCard}>
+                                   <Button addCart>
+                                       <Text numberOfLines={1} style={{color:'white',fontWeight:'normal', fontSize:12, alignSelf:'center'}}> Thêm vào giỏ </Text>
+                                       </Button>
                                 </Col>
                             </Col>
                         </Grid>
@@ -121,14 +123,14 @@ class Trending extends Component {
         const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
-                <HeaderContent rightButton={true} title="Thực phẩm"
-                    textLeft="Danh Mục"
-                    leftButton={() => navigation.dispatch(resetAction)} />
+                <HeaderContent rightButton={true} title="Thực phẩm" 
+                textLeft="Danh Mục" 
+                leftButton={() => navigation.dispatch(resetAction)} />
                 <Content style={styles.contentWrap}>
-                    <FlatList style={{ marginBottom: 5, marginTop: 5 }}
+                    <FlatList style={{marginBottom:5,marginTop:5}}
                         data={this.state.data}
                         extraData={this.state.data}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item)=>item.id}
                         renderItem={(item) => (
                             <ListItem style={{ marginBottom: -25, borderBottomWidth: 0 }} >
                                 {this.renderItems(item)}

@@ -54,14 +54,20 @@ export default {
     price: {
         color: 'gray',
         fontSize: 15,
-        fontWeight: '400',
+        fontWeight: '600',
         textAlign: 'left',
         marginBottom: 0,
         alignSelf: 'baseline'
     },
+    locationIcon:{
+		fontSize: 11, 
+		color: 'gray',
+        marginLeft:3,
+        marginRight:5,
+	},
     shopName: {
         color: 'gray',
-        fontSize: 13,
+        fontSize: 11,
         fontWeight: '100',
         textAlign: 'left'
     },

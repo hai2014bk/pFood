@@ -66,7 +66,7 @@ class RecommendFood extends Component {
 				rating={rate}
 				starColor={primary}
 				selectedStar={(rating) => this.onStarRatingPress(rating)}
-				starSize={9}
+				starSize={8}
 			/>
 		)
 	}
@@ -79,28 +79,28 @@ class RecommendFood extends Component {
 							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: 'https://36iusc2tb88y2g492si2bqd1-wpengine.netdna-ssl.com/wp-content/uploads/2016/09/meat-1.jpg' }} >
 								<View style={styles.saleView}>
 									<Text style={styles.saleText}>-10%</Text>
-									</View> 
+								</View>
 							</Image>
 						</Row>
 						<Row style={styles.downContainer}>
 							<Text numberOfLines={2} style={styles.foodNameText}>Thịt hun khói</Text>
-							<Row style={{ marginBottom: 0 }}>
-								<Col size={1}>
-									<Row style={{ marginTop: 6 }}>
+							<View style={{paddingLeft:2, flex: 1,width:'100%' }}>
+								<Row style={{ justifyContent: 'space-between', marginTop: 3 }} >
+									<Row style={{alignSelf:'flex-end'}} >
 										<Icon name='ios-pin' style={styles.locationIcon} />
 										<Text style={styles.shopNameText}>Vinmart</Text>
 									</Row>
-									<Text style={styles.priceText}>200.000đ</Text>
-								</Col>
-								<Col style={{ justifyContent: 'space-between', alignItems:'flex-end' }} size={1}>
 									<Text style={styles.oldPriceText}>322.000đ</Text>
+								</Row>
+								<Row style={{ flex: 1, justifyContent: 'space-between', alignItems: 'flex-end' }} size={1}>
+									<Text style={styles.priceText}>200.000đ</Text>
 									<View style={{
-										marginRight:2,
+										marginRight: 2,
 									}}>
 										{this.renderStar(3.5)}
 									</View>
-								</Col>
-							</Row>
+								</Row>
+							</View>
 						</Row>
 					</Grid>
 				</TouchableOpacity>
@@ -126,7 +126,7 @@ class RecommendFood extends Component {
 	renderList() {
 		var items = ['Simon Mignolet', 'Nathaniel Clyne', 'Dejan Lovren', 'Mama Sakho', 'Emre Can']
 		return (
-			<List showsVerticalScrollIndicator={false} style={{ flex: 1, marginLeft:5 }} dataArray={items}
+			<List showsVerticalScrollIndicator={false} style={{ flex: 1, marginLeft: 5 }} dataArray={items}
 				renderRow={(item) =>
 					<ListItem >
 						{this.renderHorizontalList(items)}

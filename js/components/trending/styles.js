@@ -15,55 +15,59 @@ export default {
         flex: 1,
     },
     card: {
-        marginLeft:-10,        
         width: deviceWidth,
-        height: deviceHeight * 111/667,
+        marginLeft: -15,
+        marginRight: -15,
         borderTopWidth: 0,
         borderBottomWidth: 0,
 
     },
     imageWrap: {
+        flex: 2,
         justifyContent: 'center',
-        alignItems:'center',
+        marginRight: 8,
+        marginLeft: -5
     },
     imageContainer: {
-        flex:1,
-        justifyContent: 'center',
-    },
-    image: {
-        height:deviceHeight * 82/667,
-        aspectRatio: 1,
         borderColor: '#d9dbd8',
         borderWidth: 1,
-
+        flex: 1,
+        aspectRatio: 1,
+        padding: 2,
+        marginRight:10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    image: {
+        flex:1,
+        aspectRatio: 1
     },
     infoWrap: {
-        justifyContent: 'flex-start',
-        marginLeft:5,
+        justifyContent: 'space-between'
     },
     unit: {
         color: 'gray',
-        fontSize: deviceHeight * 12/667,
+        fontSize: 12,
         fontWeight: '100',
         textAlign: 'left'
     },
     price: {
         color: 'gray',
-        fontSize: deviceHeight * 18/667,
+        fontSize: 15,
         fontWeight: '400',
         textAlign: 'left',
+        marginBottom: 0,
+        alignSelf: 'baseline'
     },
     shopName: {
         color: 'gray',
-        fontSize: deviceHeight * 12/667,
-        marginTop:5,
+        fontSize: 13,
         fontWeight: '100',
-        textAlign: 'left',
-        alignSelf:'flex-start'
+        textAlign: 'left'
     },
     foodName: {
         color: 'black',
-        fontSize: deviceHeight * 14/667,
+        fontSize: 13,
         fontWeight: '400'
     },
     buttonWrap: {

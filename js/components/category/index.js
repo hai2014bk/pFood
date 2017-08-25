@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import {FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
+import { fetchProduct } from "../../actions/fetchProduct.js"
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
-import { Grid, Col } from "react-native-easy-grid";
+import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
+import { connect } from "react-redux";
 
 import styles from "./styles";
 
@@ -13,28 +15,47 @@ const headerLogo = require("../../../images/Header-Logo.png");
 const primary = require("../../themes/variable").brandPrimary;
 const resetAction = NavigationActions.reset({
     index: 0,
-	actions: [NavigationActions.navigate({ routeName: "Categories" })],
+    actions: [NavigationActions.navigate({ routeName: "Categories" })],
 });
 class Category extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [
-                { id: 0, name: 'Thit bo 1', unit: '50g', rate: 3.5, shopName: 'Shop 1', price: '20.0000đ', quantity: 0 },
-                { id: 1, name: 'Thit bo 2', unit: '50g', rate: 1, shopName: 'Shop 2', price: '25.0000đ', quantity: 0 },
-                { id: 2, name: 'Thit bo 3', unit: '50g', rate: 5, shopName: 'Shop 3', price: '10.0000đ', quantity: 0 },
-                { id: 3, name: 'Thit bo 4', unit: '50g', rate: 4, shopName: 'Shop 4', price: '15.0000đ', quantity: 0 },
-                { id: 4, name: 'Thit bo 5', unit: '50g', rate: 2.5, shopName: 'Shop 5', price: '10.0000đ', quantity: 0 },
-            ]
+            data: [],
+            index: 1
         };
     }
 
     componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            const { params } = this.props.navigation.state
+            var parameter = {
+                "PageSize": 100,
+                "PageIndex": this.state.index,
+                "CategoryId": params.parent.id
+            }
+            this.props.fetch(parameter)
+        })
 
+    }
+
+    componentWillReceiveProps(props) {
+        if (props.fetchProduct.success) {
+            var listFood = props.fetchProduct.data.model
+            console.log(listFood)
+            for (i in listFood) {
+                listFood[i].quantity = 0
+            }
+            this.setState({ data: listFood })
+        }
+        if (!props.fetchProduct.success) {
+            setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
+        }
     }
 
     plus(rowID) {
         let newArray = this.state.data.slice(0);
+        console.log(rowID, this.state.data[rowID], newArray[rowID])
         newArray[rowID] = {
             ...this.state.data[rowID],
             quantity: this.state.data[rowID].quantity + 1
@@ -71,10 +92,27 @@ class Category extends Component {
         )
     }
 
+    priceHandle(price) {
+        var count = 0
+        for (var i = price.length; i--; i > 0) {
+            count += 1
+            if (count == 4) {
+                price = this.insertString(price, i + 1, ',')
+                count = 0
+            }
+        }
+        return price
+    }
+    insertString(str, index, value) {
+        return str.substr(0, index) + value + str.substr(index);
+    }
+
+
     renderItems(data) {
-        let item =  data.item
-        console.log(data.item)
+        let item = data.item
+        console.log(data.item.productMetaData[0])
         let id = item.id
+        let price = this.priceHandle(item.price.toString())
         return (
             <Card style={styles.card}>
                 <CardItem >
@@ -82,34 +120,37 @@ class Category extends Component {
                         <Grid >
                             <Col size={2} style={styles.imageWrap}>
                                 <View style={styles.imageContainer}>
-                                    <Image source={{ uri: 'http://i.imgur.com/toH4mkL.jpg' }} style={styles.image} />
+                                    <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
                                 </View>
                             </Col>
                             <Col size={3} style={styles.infoWrap}>
                                 <Text style={styles.foodName}>{item.name}</Text>
-                                <Text style={styles.unit}>{item.unit}</Text>
-                                <Text style={styles.shopName}>{item.shopName}</Text>
+                                <Text style={styles.unit}> {item.minOrderedItems} {item.unitType}</Text>
+                                <Row style={{ alignItems: 'flex-end' }} >
+                                    <Icon name='ios-pin' style={styles.locationIcon} />
+                                    <Text style={styles.shopName}>{item.cities}</Text>
+                                </Row>
                                 <View style={{ width: 50 }}>
                                     {this.renderStar(item.rate)}
                                 </View>
-                                <Text style={styles.price}>{item.price}</Text>
+                                <Text style={styles.price}>{price}đ</Text>
                             </Col>
                             <Col size={3} style={styles.buyColumn}>
                                 <Col style={styles.buttonWrap}>
-                                    <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(id)} >
+                                    <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                         <Icon name="md-add" style={styles.icon} />
                                     </TouchableOpacity>
                                     <Col style={styles.quantityContainer}>
                                         <Text style={styles.quantity}>{item.quantity}</Text>
                                     </Col>
-                                    <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(id)} >
+                                    <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(data.index)} >
                                         <Icon style={styles.icon} name="md-remove" />
                                     </TouchableOpacity>
                                 </Col>
-                                 <Col style={styles.buttonAddCard}>
-                                   <Button addCart>
-                                       <Text numberOfLines={1} style={{color:'white',fontWeight:'normal', fontSize:12, alignSelf:'center'}}> Thêm vào giỏ </Text>
-                                       </Button>
+                                <Col style={styles.buttonAddCard}>
+                                    <Button addCart >
+                                        <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
+                                    </Button>
                                 </Col>
                             </Col>
                         </Grid>
@@ -123,14 +164,14 @@ class Category extends Component {
         const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
-                <HeaderContent rightButton={true} title="Thực phẩm" 
-                textLeft="Danh Mục" 
-                leftButton={() => navigation.dispatch(resetAction)} />
+                <HeaderContent rightButton={true} title="Thực phẩm"
+                    textLeft="Danh Mục"
+                    leftButton={() => navigation.dispatch(resetAction)} />
                 <Content style={styles.contentWrap}>
-                    <FlatList style={{marginBottom:5,marginTop:5}}
+                    <FlatList style={{ marginBottom: 5, marginTop: 5 }}
                         data={this.state.data}
                         extraData={this.state.data}
-                        keyExtractor={(item)=>item.id}
+                        keyExtractor={(item) => item.id}
                         renderItem={(item) => (
                             <ListItem style={{ marginBottom: -25, borderBottomWidth: 0 }} >
                                 {this.renderItems(item)}
@@ -143,8 +184,17 @@ class Category extends Component {
         );
     }
 }
+function bindActions(dispatch) {
+    return {
+        fetch: (parameter) => dispatch(fetchProduct(parameter)),
+    };
+}
 
-export default Category;
+const mapStateToProps = state => ({
+    fetchProduct: state.fetchProduct,
+});
+
+export default connect(mapStateToProps, bindActions)(Category);
 
 {/* <Col style={styles.buttonWrap}>
 <Button onPress={() => this.plus(id)} transparent >

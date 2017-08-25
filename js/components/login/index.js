@@ -41,16 +41,25 @@ class Login extends Component {
 			this.setState({ email: '' })
 			this.emailInput._root.focus()
 		}
+    if (!this.validateEmail(this.state.email)){
+      this.setState({ email: '' })
+      this.emailInput._root.focus()
+    }
+
 	}
 	checkValue() {
-		if (this.state.email=='') {
-			this.emailInput._root.focus()
-		}
-				 else {
-					if (this.state.password=='') {
-						this.passwordInput._root.focus()
-					}
-				}
+if(!this.state.email){
+   this.emailInput._root.focus()
+}
+        if (!this.state.email &&!this.state.password)
+        {  this.emailInput._root.focus()}
+      else{
+        if(!this.state.password){
+           this.passwordInput._root.focus()
+        }
+      }
+
+
 	}
   loginClick() {
 
@@ -58,7 +67,13 @@ class Login extends Component {
       if ((!this.checkSpaceAll(this.state.email))) {
         if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
 
-        setTimeout(()=>{Alert.alert('', 'Địa chỉ email không hợp lệ')}, 200)
+        setTimeout(()=>{Alert.alert('', 'Địa chỉ email không hợp lệ',
+        [
+          { text: 'OK', onPress: () => this.checkSpace() },
+        ],
+        { cancelable: false }
+      )
+    }, 200)
     } else{
     let params = {}
     params.email = this.state.email
@@ -71,7 +86,8 @@ class Login extends Component {
     setTimeout(() => {
       Alert.alert(
         '',
-        'Một trong các trường không hợp lệ',
+        'email không được chứa toàn khoảng trắng'
+      ,
         [
           { text: 'OK', onPress: () => this.checkSpace() },
         ],
@@ -126,6 +142,7 @@ class Login extends Component {
             ref={(email) => { this.emailInput = email }}
                   placeholder="Tên đăng nhập"
                   placeholderTextColor='#f4e6db'
+                   autoCapitalize = 'none'
                     value={this.state.email}
                   onChangeText={email=> this.setState({ email })}
                   style={styles.input}
@@ -167,21 +184,29 @@ class Login extends Component {
               </Text>
             </TouchableOpacity>
               <Text style={styles.questionText}>Hoặc đăng nhập với</Text>
-              <View style={{ flex: 1, flexDirection: "row", height: 60,marginTop:15}}>
+              <View style={
+                {flex:1,flexDirection: "row",
+                justifyContent: 'space-between',
+                height:60,
+                width:'60%'}
+              }>
+
                 <TouchableOpacity
                   style={
                     styles.icon
                   }
                 >
-                 <Entypo name="facebook-with-circle" size={50} color='white' />
+                 <Entypo name="google--with-circle" size={50} color='white' />
                 </TouchableOpacity>
                 <TouchableOpacity
                   transparent
                   style={styles.icon
                   }
                 >
-                  <Entypo name="google--with-circle" size={50} color='white' />
+
+                  <Entypo name="facebook-with-circle" size={50} color='white' />
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   transparent
                   style={styles.icon}
@@ -189,8 +214,8 @@ class Login extends Component {
                   <Entypo name="flickr-with-circle" size={50} color='white' />
                 </TouchableOpacity>
               </View>
-              <View  style={{ flexDirection:'row',marginTop:30}} >
-              <Text  style={styles.dontac}>{"Không có tài khoản?  "}</Text>
+              <View  style={{ flexDirection:'row',marginTop:20}} >
+              <Text style={styles.dontac}>{"Không có tài khoản?  "}</Text>
               <TouchableOpacity
                 style={styles.regis}
                 onPress={() => navigation.navigate("SignUp")}
@@ -199,12 +224,12 @@ class Login extends Component {
                 style={{ fontSize:16,fontWeight:'bold',color:"white"}}>
                 Đăng Kí Ngay
                 </Text>
-
-            </TouchableOpacity>
+          </TouchableOpacity>
             </View>
-          </View>
+              </View>
         </Content>
         </Image>
+
       </Container>
     );
   }
