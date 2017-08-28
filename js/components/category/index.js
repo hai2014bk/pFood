@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
@@ -42,7 +42,7 @@ class Category extends Component {
     componentWillReceiveProps(props) {
         if (props.fetchProduct.success) {
             var listFood = props.fetchProduct.data.model
-            console.log(listFood)
+            console.log('listFood', listFood)
             for (i in listFood) {
                 listFood[i].quantity = 0
             }
@@ -55,7 +55,6 @@ class Category extends Component {
 
     plus(rowID) {
         let newArray = this.state.data.slice(0);
-        console.log(rowID, this.state.data[rowID], newArray[rowID])
         newArray[rowID] = {
             ...this.state.data[rowID],
             quantity: this.state.data[rowID].quantity + 1
@@ -107,6 +106,43 @@ class Category extends Component {
         return str.substr(0, index) + value + str.substr(index);
     }
 
+    async add(item, rowID) {
+        let food = this.state.data
+        let data = [];
+        if (item.quantity == 0) {
+            Alert.alert('', 'Hãy chọn số lượng')
+        } else {
+            try {
+                const value = await AsyncStorage.getItem('cartUser');
+                if (value !== null) {
+                    data = JSON.parse(value);
+                }
+
+            } catch (error) {
+            }
+
+            var temp = []
+            for (i = 0; i < data.length; i++) {
+                temp.push(data[i].id)
+            }
+            var a = temp.indexOf(item.id)
+            if (a >= 0) {
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].id == item.id) {
+                        let quantity = item.quantity
+                        data[i].quantity = item.quantity + quantity
+                    }
+                }
+            } else {
+                data.push(item);
+            }
+            console.log('data', data)
+            try {
+                await AsyncStorage.setItem('cartUser', JSON.stringify(data));
+            } catch (error) {
+            }
+        }
+    }
 
     renderItems(data) {
         let item = data.item
@@ -148,7 +184,7 @@ class Category extends Component {
                                     </TouchableOpacity>
                                 </Col>
                                 <Col style={styles.buttonAddCard}>
-                                    <Button addCart >
+                                    <Button addCart onPress={() => this.add(item, item.index)} >
                                         <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
                                     </Button>
                                 </Col>
@@ -161,13 +197,15 @@ class Category extends Component {
     }
 
     render() {
-        const navigation = this.props.navigation;
-        const { params } = this.props.navigation.state        
+        const navigation = this.props.screenProps.navi;
+        const { params } = this.props.navigation.state
         return (
             <Container style={styles.container}>
                 <HeaderContent rightButton={true} title={params.parent.name}
                     textLeft="Danh Mục"
-                    leftButton={() => navigation.dispatch(resetAction)} />
+                    leftButton={() => navigation.navigate(resetAction)}
+                    rightButton={() => navigation.navigate("Cart")}
+                />
                 <Content style={styles.contentWrap}>
                     <FlatList style={{ marginBottom: 5, marginTop: 5 }}
                         data={this.state.data}
@@ -196,18 +234,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, bindActions)(Category);
-
-{/* <Col style={styles.buttonWrap}>
-<Button onPress={() => this.plus(id)} transparent >
-    <Icon name="md-add" />
-</Button>
-<Text style={styles.quantity}>{item.quantity}</Text>
-<Button onPress={() => this.minus(id)} transparent >
-    <Icon name="md-remove" />
-</Button>
-</Col>
-<Col style={styles.cartWrap}>
-<Button transparent >
-    <Icon active name="md-cart" />
-</Button>
-</Col> */}
