@@ -18,8 +18,8 @@ export default {
         width: '100%',
         borderTopWidth: 0,
         borderBottomWidth: 0,
-        marginBottom:10
-
+        marginBottom: 20,
+        backgroundColor: 'white'
     },
     imageWrap: {
         flex: 2,
@@ -30,19 +30,20 @@ export default {
     imageContainer: {
         borderColor: '#d9dbd8',
         borderWidth: 1,
-        flex: 1,
+        height: 90,
+        width: 90,
         aspectRatio: 1,
         padding: 2,
-        marginRight:10,
+        marginRight: 10,
         justifyContent: 'center',
         alignItems: 'center'
     },
     image: {
-        flex:1,
-        aspectRatio: 1
+        flex: 1,
+        aspectRatio: 1,
     },
     infoWrap: {
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     },
     unit: {
         color: 'gray',
@@ -52,11 +53,11 @@ export default {
     },
     price: {
         color: 'gray',
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: '400',
         textAlign: 'left',
         marginBottom: 0,
-        alignSelf: 'baseline'
+        alignSelf: 'baseline',
     },
     shopName: {
         color: 'gray',
@@ -67,29 +68,55 @@ export default {
     foodName: {
         color: 'black',
         fontSize: 13,
-        fontWeight: '400'
+        fontWeight: '400',
     },
-    buttonWrap: {
-        flexDirection: 'row',
-        marginLeft: 10,
+    buttonAdd: {
+        height: 30,
+        width: 30,
+        borderWidth: 1,
+        borderColor: primary,
         justifyContent: 'center',
+        alignItems: 'center',
+        borderTopLeftRadius: 3,
+        borderBottomLeftRadius: 3
     },
-     buttonAddCard: {
-        flex:1,
-        marginTop:10,
+    buttonMinus: {
+        height: 30,
+        width: 30,
+        borderColor: primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderTopRightRadius: 3,
+        borderBottomRightRadius: 3,
+        borderWidth: 1
+    },
+    buttonAddCard: {
+        flex: 1,
+        marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
     },
     buyColumn: {
         marginLeft: 5,
-        marginRight:5,
+        marginRight: 5,
         justifyContent: 'center',
         marginTop: 20,
     },
+    x: {
+        fontSize: 13,
+        alignSelf: 'flex-end',
+        color: '#A9A9A9',
+        marginLeft: 10,
+        fontWeight: 'bold',
+        marginBottom: 5
+    },
     quantity: {
         fontSize: 17,
-        alignSelf: 'center'
+        color: '#A9A9A9',
+        fontWeight: 'bold',
+        alignSelf: 'flex-end',
+        marginBottom: 4
     },
     quantityContainer: {
         width: 30,
@@ -127,5 +154,53 @@ export default {
     icon: {
         fontSize: 17,
         color: primary
-    }
+    },
+    line: {
+        height: 3,
+        width: '90%',
+        alignSelf: 'center',
+        backgroundColor: '#cecece',
+        marginTop: 20
+    },
+    footer: {
+        width: '90%',
+        marginTop: 10,
+        flexDirection:'row'
+    },
+    totalPrice: {
+        fontSize: 17,
+        color: 'grey',
+        fontWeight: 'bold'
+    },
+    checkoutWrap: {
+        backgroundColor: primary,
+        width: '90%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 40,
+        alignSelf: 'center',
+        borderRadius: 20,
+        marginTop: 10
+    },
+    checkout: {
+        color: 'white',
+        fontSize: 16
+    },
+    removeButton: {
+        backgroundColor: primary,
+        width: '100%',
+        height: 25,
+        borderRadius: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 10
+
+    },
+    locationIcon: {
+        fontSize: 11,
+        color: 'gray',
+        marginLeft: 3,
+        marginRight: 5,
+        marginBottom: 2
+    },
 };

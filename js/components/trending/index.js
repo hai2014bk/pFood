@@ -72,50 +72,46 @@ class Trending extends Component {
     }
 
     renderItems(data) {
-        let item =  data.item
+        let item = data.item
         console.log(data.index)
         let id = item.id
         return (
-            <Card style={styles.card}>
-                <CardItem >
-                    <Body>
-                        <Grid >
-                            <Col size={2} style={styles.imageWrap}>
-                                <View style={styles.imageContainer}>
-                                    <Image source={{ uri: 'http://i.imgur.com/toH4mkL.jpg' }} style={styles.image} />
-                                </View>
+            <View style={styles.card}>
+                <Grid >
+                    <Col size={2} style={styles.imageWrap}>
+                        <View style={styles.imageContainer}>
+                            <Image source={{ uri: 'http://i.imgur.com/toH4mkL.jpg' }} style={styles.image} />
+                        </View>
+                    </Col>
+                    <Col size={3} style={styles.infoWrap}>
+                        <Text style={styles.foodName}>{item.name}</Text>
+                        <Text style={styles.unit}>{item.unit}</Text>
+                        <Text style={styles.shopName}>{item.shopName}</Text>
+                        <View style={{ width: 50 }}>
+                            {this.renderStar(item.rate)}
+                        </View>
+                        <Text style={styles.price}>{item.price}</Text>
+                    </Col>
+                    <Col size={3} style={styles.buyColumn}>
+                        <Col style={styles.buttonWrap}>
+                            <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
+                                <Icon name="md-add" style={styles.icon} />
+                            </TouchableOpacity>
+                            <Col style={styles.quantityContainer}>
+                                <Text style={styles.quantity}>{item.quantity}</Text>
                             </Col>
-                            <Col size={3} style={styles.infoWrap}>
-                                <Text style={styles.foodName}>{item.name}</Text>
-                                <Text style={styles.unit}>{item.unit}</Text>
-                                <Text style={styles.shopName}>{item.shopName}</Text>
-                                <View style={{ width: 50 }}>
-                                    {this.renderStar(item.rate)}
-                                </View>
-                                <Text style={styles.price}>{item.price}</Text>
-                            </Col>
-                            <Col size={3} style={styles.buyColumn}>
-                                <Col style={styles.buttonWrap}>
-                                    <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
-                                        <Icon name="md-add" style={styles.icon} />
-                                    </TouchableOpacity>
-                                    <Col style={styles.quantityContainer}>
-                                        <Text style={styles.quantity}>{item.quantity}</Text>
-                                    </Col>
-                                    <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(data.index)} >
-                                        <Icon style={styles.icon} name="md-remove" />
-                                    </TouchableOpacity>
-                                </Col>
-                                 <Col style={styles.buttonAddCard}>
-                                   <Button addCart>
-                                       <Text numberOfLines={1} style={{color:'white',fontWeight:'normal', fontSize:12, alignSelf:'center'}}> Thêm vào giỏ </Text>
-                                       </Button>
-                                </Col>
-                            </Col>
-                        </Grid>
-                    </Body>
-                </CardItem>
-            </Card>
+                            <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(data.index)} >
+                                <Icon style={styles.icon} name="md-remove" />
+                            </TouchableOpacity>
+                        </Col>
+                        <Col style={styles.buttonAddCard}>
+                            <Button addCart>
+                                <Text numberOfLines={1} style={{ color: 'white', fontWeight: 'normal', fontSize: 12, alignSelf: 'center' }}> Thêm vào giỏ </Text>
+                            </Button>
+                        </Col>
+                    </Col>
+                </Grid>
+            </View>
         )
     }
 
@@ -123,14 +119,15 @@ class Trending extends Component {
         const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
-                <HeaderContent rightButton={true} title="Thực phẩm" 
-                textLeft="Danh Mục" 
-                leftButton={() => navigation.dispatch(resetAction)} />
-                <Content style={styles.contentWrap}>
-                    <FlatList style={{marginBottom:5,marginTop:5}}
+                <HeaderContent rightButton={true} title="Thực phẩm"
+                    textLeft="Danh Mục"
+                    leftButton={() => navigation.dispatch(resetAction)}
+                />
+                <Content style={styles.content}>
+                    <FlatList style={{ marginBottom: 5, marginTop: 5, flex: 1, width: '100%' }}
                         data={this.state.data}
                         extraData={this.state.data}
-                        keyExtractor={(item)=>item.id}
+                        keyExtractor={(item) => item.id}
                         renderItem={(item) => (
                             <ListItem style={{ marginBottom: -25, borderBottomWidth: 0 }} >
                                 {this.renderItems(item)}
@@ -145,19 +142,3 @@ class Trending extends Component {
 }
 
 export default Trending;
-
-
-{/* <Col style={styles.buttonWrap}>
-<Button onPress={() => this.plus(id)} transparent >
-    <Icon name="md-add" />
-</Button>
-<Text style={styles.quantity}>{item.quantity}</Text>
-<Button onPress={() => this.minus(id)} transparent >
-    <Icon name="md-remove" />
-</Button>
-</Col>
-<Col style={styles.cartWrap}>
-<Button transparent >
-    <Icon active name="md-cart" />
-</Button>
-</Col> */}
