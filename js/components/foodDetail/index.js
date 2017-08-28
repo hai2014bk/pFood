@@ -2,11 +2,14 @@ import React, { Component } from "react";
 import { Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
-import {Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
+import { Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
+import { connect } from "react-redux";
 import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
 import styles from "./styles";
+import { fetchDetail } from "../../actions/fetchDetail.js"
+
 const primary = require("../../themes/variable").brandPrimary;
 
 const deviceHeight = Dimensions.get("window").height;
@@ -21,18 +24,25 @@ class FoodDetail extends Component {
 		this.state = {
 			username: "",
 			password: "",
-			quantity:1,
-			seeMore:false,
+			quantity: 1,
+			seeMore: false,
+			food: ''
 		};
 	}
 	componentDidMount() {
-		console.log('mounted')
-		this.test()
+		console.log('mountedssasasa', this.props.food)
+		this.props.fetch(this.props.food.id)
+
 	}
-	async test() {
-		var result = await AsyncStorage.getItem(mConstants.USER_INFO)
-		var token = JSON.parse(result)
-		console.log(token)
+	componentWillReceiveProps(props) {
+		if (props.fetchDetail.success) {
+			console.log('po rop', props.fetchDetail.data.model)
+			this.setState({ food: props.fetchDetail.data.model })
+		}
+		if (!props.fetchDetail.success) {
+			setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
+		}
+
 	}
 	pageBanner() {
 		return (
@@ -74,96 +84,120 @@ class FoodDetail extends Component {
 			/>
 		)
 	}
-	renderDescriptionContent(){
-		if(this.state.seeMore){
-			
+	renderDescriptionContent() {
+		if (this.state.seeMore) {
+
 		}
 	}
-	renderDecription(){
-		return(
+	renderDecription() {
+		var food = this.state.food
+		var description=''
+		if(food.description){
+			description = food.description
+		}
+		return (
 			<Card>
-			<View style={styles.cardContainer}>
-				<Row style={{alignItems:'center',flex:1,borderBottomWidth:1, borderColor:'#e7e9e5'}}>
-					<Text style={styles.headerText}> Mô tả </Text>
-				</Row>
-				<Row style={{margin:10}}>
-					<Text style={styles.contentText}>{testText}</Text>
+				<View style={styles.cardContainer}>
+					<Row style={{ alignItems: 'center', flex: 1, borderBottomWidth: 1, borderColor: '#e7e9e5' }}>
+						<Text style={styles.headerText}> Mô tả </Text>
+					</Row>
+					<Row style={{ margin: 10 }}>
+						<Text style={styles.contentText}>{description}</Text>
 					</Row>
 				</View>
-				</Card>
+			</Card>
 		)
 	}
-	renderContentInfo(header,content){
-		return(
-		<Grid style={{borderColor:'#e7e9e5',borderTopWidth:1}}>
-			<Row style={{margin:10,flex:1,justifyContent:'space-between'}}>
-				<Text style={styles.contentText}>{header}</Text>
-				<Text style={styles.contentText}>{content}</Text>
+	renderContentInfo(header, content) {
+		return (
+			<Grid style={{ borderColor: '#e7e9e5', borderTopWidth: 1 }}>
+				<Row style={{ margin: 10, flex: 1, justifyContent: 'space-between' }}>
+					<Text style={styles.contentText}>{header}</Text>
+					<Text style={styles.contentText}>{content}</Text>
 				</Row>
 			</Grid>
 		)
 	}
-	renderFoodContent(){
-		return(
-			<Card style={{marginBottom:15}}>
-			<View style={styles.cardContainer}>
-				<Row style={{alignItems:'center',flex:1,borderBottomWidth:1, borderColor:'#e7e9e5'}}>
-					<Text style={styles.headerText}> Hàm Lượng </Text>
-				</Row>
-				{this.renderContentInfo('Diệp lục', '1000')}
-				{this.renderContentInfo('Vitamin A', '10%')}
+	renderFoodContent() {
+		return (
+			<Card style={{ marginBottom: 15 }}>
+				<View style={styles.cardContainer}>
+					<Row style={{ alignItems: 'center', flex: 1, borderBottomWidth: 1, borderColor: '#e7e9e5' }}>
+						<Text style={styles.headerText}> Hàm Lượng </Text>
+					</Row>
+					{this.renderContentInfo('Diệp lục', '1000')}
+					{this.renderContentInfo('Vitamin A', '10%')}
 				</View>
-				</Card>
+			</Card>
 		)
 	}
-	renderInfo(){
-		return(
+	renderInfo() {
+		return (
 			<Card>
-			<View style={styles.cardContainer}>
-				<Row style={{alignItems:'center',flex:1,borderBottomWidth:1, borderColor:'#e7e9e5'}}>
-					<Text style={styles.headerText}> Thông Tin Sản Phẩm </Text>
-				</Row>
-				{this.renderContentInfo('Store', 'Vinmart')}
-				{this.renderContentInfo('Khu vực', 'Hà Nội')}
-				{this.renderContentInfo('Danh Mục', 'Thực phẩm sạch')}
-				{this.renderContentInfo('Số lượng tối thiểu', '500g')}
-				{this.renderContentInfo('Thời gian ship', '1 - 2 giờ')}
+				<View style={styles.cardContainer}>
+					<Row style={{ alignItems: 'center', flex: 1, borderBottomWidth: 1, borderColor: '#e7e9e5' }}>
+						<Text style={styles.headerText}> Thông Tin Sản Phẩm </Text>
+					</Row>
+					{this.renderContentInfo('Store', 'Vinmart')}
+					{this.renderContentInfo('Khu vực', 'Hà Nội')}
+					{this.renderContentInfo('Danh Mục', 'Thực phẩm sạch')}
+					{this.renderContentInfo('Số lượng tối thiểu', '500g')}
+					{this.renderContentInfo('Thời gian ship', '1 - 2 giờ')}
 				</View>
-				</Card>
+			</Card>
 		)
 	}
-	plus(){
-		this.setState({quantity:this.state.quantity + 1})
+	plus() {
+		this.setState({ quantity: this.state.quantity + 1 })
 	}
-	minus(){
-		this.setState({quantity:this.state.quantity - 1})
+	minus() {
+		this.setState({ quantity: this.state.quantity - 1 })
+	}
+	priceHandle(price) {
+		var count = 0
+		for (var i = price.length; i--; i > 0) {
+			count += 1
+			if (count == 4) {
+				price = this.insertString(price, i + 1, '.')
+				count = 0
+			}
+		}
+		return price
+	}
+	insertString(str, index, value) {
+		return str.substr(0, index) + value + str.substr(index);
 	}
 	renderPriceAndBuy() {
 		var quantity = (this.state.quantity * 200)
 		var unit = 'g'
-		if(quantity >= 1000){
-			quantity =  quantity/1000
+		if (quantity >= 1000) {
+			quantity = quantity / 1000
 			unit = 'kg'
+		}
+		var food = this.state.food
+		var price = ''
+		if (food.price) {
+			price = this.priceHandle(food.price.toString())
 		}
 		return (
 			<Grid>
-				<Col  style={{ margin: 10 }}>
+				<Col style={{ margin: 10 }}>
 					<Row>
-						<Text style={styles.price} > 35.000đ</Text>
+						<Text style={styles.price} > {price}đ</Text>
 					</Row>
 				</Col>
-				<Col  style={{ margin: 10 }}>
-						<Row style={{marginLeft:'20%',flex: 1, justifyContent: 'flex-end' }}>
-							<TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus()} >
-								<Icon name="md-add" style={styles.icon} />
-							</TouchableOpacity>
-							<Col style={styles.quantityContainer}>
-								<Text style={styles.quantity}>{quantity} {unit}</Text>
-							</Col>
-							<TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus()} >
-								<Icon style={styles.icon} name="md-remove" />
-							</TouchableOpacity>
-						</Row>
+				<Col style={{ margin: 10 }}>
+					<Row style={{ marginLeft: '20%', flex: 1, justifyContent: 'flex-end' }}>
+					<TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus()} >
+							<Icon style={styles.icon} name="md-remove" />
+						</TouchableOpacity>
+						<Col style={styles.quantityContainer}>
+							<Text style={styles.quantity}>{quantity} {unit}</Text>
+						</Col>
+						<TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus()} >
+							<Icon name="md-add" style={styles.icon} />
+						</TouchableOpacity>
+					</Row>
 					<Col style={styles.buttonAddCard}>
 						<Button addCart large >
 							<Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
@@ -175,15 +209,23 @@ class FoodDetail extends Component {
 	}
 
 	render() {
+		var imageUrl = 'https://hlfppt.org/wp-content/uploads/2017/04/placeholder.png'
+		if (this.state.food.productMetaData) {
+			imageUrl = this.state.food.productMetaData[0].value
+		}
 		const navigation = this.props.navi;
 		return (
 			<Container style={styles.container}>
 				<Content>
-					<Image source={{ uri: bbq }} style={styles.foodImage} />
+					<Image source={{ uri: imageUrl }} style={styles.foodImage} />
 					{this.renderPriceAndBuy()}
 					{this.renderDecription()}
-					{this.renderInfo()}
-					{this.renderFoodContent()}
+					<View style={{ marginTop: 10 }}>
+						{this.renderInfo()}
+					</View>
+					<View style={{ marginTop: 25}}>
+						{this.renderFoodContent()}
+					</View>
 				</Content>
 				<View style={styles.pageBanner}>
 					{this.pageBanner()}
@@ -193,4 +235,14 @@ class FoodDetail extends Component {
 	}
 }
 
-export default FoodDetail;
+function bindActions(dispatch) {
+	return {
+		fetch: (id) => dispatch(fetchDetail(id)),
+	};
+}
+
+const mapStateToProps = state => ({
+	fetchDetail: state.fetchDetail,
+});
+
+export default connect(mapStateToProps, bindActions)(FoodDetail);

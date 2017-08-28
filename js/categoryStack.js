@@ -4,6 +4,7 @@ import { StackNavigator } from 'react-navigation';
 import Categories from "./components/categories";
 import Category from "./components/category";
 import SubCategories from "./components/subCategories";
+import FoodTab from "./components/foodTab";
 
 
 const CategoryStack = StackNavigator({
@@ -15,6 +16,9 @@ const CategoryStack = StackNavigator({
   },
   SubCategories: {
     screen: SubCategories,
+  },
+  FoodTab: {
+    screen: FoodTab,
   },
 },
 {

@@ -10,6 +10,7 @@ import styles from "./styles";
 var circle = require('../../../images/greyCircle.png')
 const headerLogo = require("../../../images/Header-Logo.png");
 const primary = require("../../themes/variable").brandPrimary;
+const iconFood = require("../../../images/vegeterian_food1600.png")
 
 class SubCategories extends Component {
     constructor(props) {
@@ -45,6 +46,7 @@ class SubCategories extends Component {
             <TouchableOpacity style={{ flex: 1 }} onPress={() => {this.choseFood(data.item) }}>
                 <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
                     <View style={styles.opacityView}>
+                    <Image style={{width:'40%', marginBottom:5}} resizeMode='contain' source={iconFood}/>
                         <Text style={styles.title}>{data.item.name}</Text>
                         </View>
                     </Image>

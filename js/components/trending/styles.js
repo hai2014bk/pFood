@@ -15,12 +15,11 @@ export default {
         flex: 1,
     },
     card: {
-        width: deviceWidth,
-        marginLeft: -15,
-        marginRight: -15,
+        flex:1,
         borderTopWidth: 0,
         borderBottomWidth: 0,
-
+        marginBottom: 10,
+        backgroundColor:'white',
     },
     imageWrap: {
         flex: 2,
@@ -54,14 +53,20 @@ export default {
     price: {
         color: 'gray',
         fontSize: 15,
-        fontWeight: '400',
+        fontWeight: '600',
         textAlign: 'left',
         marginBottom: 0,
         alignSelf: 'baseline'
     },
+    locationIcon:{
+		fontSize: 11, 
+		color: 'gray',
+        marginLeft:3,
+        marginRight:5,
+	},
     shopName: {
         color: 'gray',
-        fontSize: 13,
+        fontSize: 11,
         fontWeight: '100',
         textAlign: 'left'
     },
@@ -106,9 +111,9 @@ export default {
         width: 30,
         aspectRatio: 1,
         borderWidth: 1,
-        marginRight: 10,
-        borderTopLeftRadius: 5,
-        borderBottomLeftRadius: 5,
+        marginLeft: 10,
+        borderTopRightRadius: 5,
+        borderBottomRightRadius: 5,
         borderColor: primary,
         justifyContent: 'center',
         alignItems: 'center',
@@ -118,12 +123,13 @@ export default {
         width: 30,
         aspectRatio: 1,
         borderWidth: 1,
-        marginLeft: 10,
-        borderTopRightRadius: 5,
-        borderBottomRightRadius: 5,
+        marginRight: 10,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
         borderColor: primary,
         justifyContent: 'center',
         alignItems: 'center',
+
     },
     icon: {
         fontSize: 17,

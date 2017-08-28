@@ -11,6 +11,10 @@ export default {
         flex: 1,
         backgroundColor:'white'
     },
+    iconFood:{
+        width:10,
+        aspectRatio:1
+    },
     content: {
         flex: 1,
         padding: 20
@@ -18,7 +22,8 @@ export default {
     title: {
        color:'white',
        fontSize:20,
-       fontWeight:'bold'
+       fontWeight:'bold',
+       textAlign:'center'
     },
     gridWrap: {
         flexDirection: 'row',
