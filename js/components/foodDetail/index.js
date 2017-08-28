@@ -22,6 +22,7 @@ class FoodDetail extends Component {
 			username: "",
 			password: "",
 			quantity:1,
+			seeMore:false,
 		};
 	}
 	componentDidMount() {
@@ -72,6 +73,11 @@ class FoodDetail extends Component {
 				starSize={8}
 			/>
 		)
+	}
+	renderDescriptionContent(){
+		if(this.state.seeMore){
+			
+		}
 	}
 	renderDecription(){
 		return(

@@ -60,7 +60,8 @@ class SubCategories extends Component {
         console.log('data state', this.state.data)
         return (
             <Container style={styles.container}>
-                <HeaderContent title={params.parent.name} leftButton={() => navigation.goBack()} leftIcon="ios-arrow-back" />
+                <HeaderContent title={params.parent.name} leftButton={() => navigation.goBack()} 
+                    leftIcon="ios-arrow-back" />
                 <Content style={styles.contentWrap}>
                     <FlatList style={{margin:10}}
                         data={this.state.data}

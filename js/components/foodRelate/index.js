@@ -108,7 +108,7 @@ class FoodRelate extends Component {
                                 </Col>
                                  <Col style={styles.buttonAddCard}>
                                    <Button addCart>
-                                       <Text numberOfLines={1} style={{color:'white',fontWeight:'normal', fontSize:12, alignSelf:'center'}}> Thêm vào giỏ </Text>
+                                       <Text numberOfLines={1} style={{color:'white',fontWeight:'normal',textAlign:'center', fontSize:12, alignSelf:'center'}}> Thêm vào giỏ </Text>
                                        </Button>
                                 </Col>
                             </Col>
