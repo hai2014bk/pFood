@@ -71,8 +71,15 @@ class Trending extends Component {
         )
     }
 
+    openDetail(food){
+        console.log('open')
+        const { params } = this.props.navigation.state
+        food.parrentId = params.parent.id
+        this.props.navigation.navigate('FoodTab',{parrent:food})
+    }
+
     renderItems(data) {
-        let item =  data.item
+        let item = data.item
         console.log(data.index)
         let id = item.id
         return (
@@ -120,17 +127,16 @@ class Trending extends Component {
     }
 
     render() {
-        const navigation = this.props.navigation;
+		const navigation = this.props.screenProps.navi;
         return (
             <Container style={styles.container}>
-                <HeaderContent rightButton={true} title="Thực phẩm" 
-                textLeft="Danh Mục" 
-                leftButton={() => navigation.dispatch(resetAction)} />
-                <Content style={styles.contentWrap}>
-                    <FlatList style={{marginBottom:5,marginTop:5}}
+                <HeaderContent navi={navigation} rightButton={true} title="Xu hướng"
+                />
+                <Content style={styles.content}>
+                    <FlatList style={{ marginBottom: 5, marginTop: 5, flex: 1, width: '100%' }}
                         data={this.state.data}
                         extraData={this.state.data}
-                        keyExtractor={(item)=>item.id}
+                        keyExtractor={(item) => item.id}
                         renderItem={(item) => (
                             <View style={{ flex:1, borderBottomWidth: 0 }} >
                                 {this.renderItems(item)}
@@ -145,19 +151,3 @@ class Trending extends Component {
 }
 
 export default Trending;
-
-
-{/* <Col style={styles.buttonWrap}>
-<Button onPress={() => this.plus(id)} transparent >
-    <Icon name="md-add" />
-</Button>
-<Text style={styles.quantity}>{item.quantity}</Text>
-<Button onPress={() => this.minus(id)} transparent >
-    <Icon name="md-remove" />
-</Button>
-</Col>
-<Col style={styles.cartWrap}>
-<Button transparent >
-    <Icon active name="md-cart" />
-</Button>
-</Col> */}

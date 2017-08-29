@@ -64,7 +64,7 @@ class Categories extends Component {
             <TouchableOpacity style={{ flex: 1 }} onPress={() => {this.choseFood(data.item) }}>
                 <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
                     <View style={styles.opacityView}>
-                    <Image style={{width:'40%', marginBottom:5}} resizeMode='contain' source={icon}/>
+                    <Image style={{width:'40%', marginBottom:5}} resizeMode='contain' source={{uri:icon}}/>
                         <Text style={styles.title}>{data.item.name}</Text>
                         </View>
                     </Image>

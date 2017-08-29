@@ -139,7 +139,7 @@ class RecommendFood extends Component {
 		const navigation = this.props.screenProps.navi;
 		return (
 			<Container style={styles.container}>
-				<HeaderContent leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")}
+				<HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")}
 					rightButton={true} title='Đề xuất'>
 				</HeaderContent>
 				<Content>

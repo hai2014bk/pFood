@@ -29,7 +29,7 @@ class FoodTab extends Component {
 		console.log(params.parrent)		
 		return (
 			<Container>
-				<HeaderContent leftIcon={'ios-arrow-back'} leftButton={() => navigation.goBack()}
+				<HeaderContent navi={this.props.screenProps.navi} leftIcon={'ios-arrow-back'} leftButton={() => navigation.goBack()}
 					rightButton={true} title={params.parrent.name}>
 				</HeaderContent>
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'top'} >

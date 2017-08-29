@@ -18,6 +18,8 @@ const testText = "\Thịt gà là món ăn được xếp vào hàng “sang ch�
 const steak = 'http://www.chadwicksbutchers.com/wp-content/uploads/fillet-steak-banner-e1485792041266.jpg'
 const pizza = 'http://bijespizza.com/Site/themed_images/pizza_1_lg.png'
 const bbq = 'http://nutright.com/blog/wp-content/uploads/2017/01/bbq-islamabad.jpg'
+const money = require("../../../images/money.png");
+
 class FoodDetail extends Component {
 	constructor(props) {
 		super(props);
@@ -183,6 +185,7 @@ class FoodDetail extends Component {
 			<Grid>
 				<Col style={{ margin: 10 }}>
 					<Row>
+					<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain' />
 						<Text style={styles.price} > {price}đ</Text>
 					</Row>
 				</Col>
