@@ -15,7 +15,7 @@ export default {
 	cellContainer:{
 		backgroundColor:'white', 
 		flex: 1, 
-		width: deviceWidth/3 - 5,
+		width: deviceWidth/3 - 15,
 		minWidth:120,				
 		alignItems: 'flex-start',
 		justifyContent:'flex-end',

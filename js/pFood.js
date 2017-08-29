@@ -13,6 +13,8 @@ import ForgetPassword from "./components/forgetPassword"
 import Category from "./components/category";
 import RecommendFood from "./components/recomnendFood/";
 import FoodDetail from "./components/foodDetail/";
+import Trending from "./components/trending"
+import Cart from "./components/cart"
 
 
 const App = StackNavigator(
@@ -26,6 +28,11 @@ const App = StackNavigator(
 		Channel: { screen: Channel },
 		Drawer: { screen: Drawer, gesturesEnabled: false },
 		ForgetPassword: { screen: ForgetPassword },
+		Trending: { screen: Trending },
+		Cart: { screen: Cart },
+		
+		
+		
 		
 	},
 	{

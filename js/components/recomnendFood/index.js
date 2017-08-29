@@ -95,7 +95,7 @@ class RecommendFood extends Component {
 								<Row style={{ flex: 1, justifyContent: 'space-between', alignItems: 'flex-end' }} size={1}>
 									<Text style={styles.priceText}>200.000đ</Text>
 									<View style={{
-										marginRight: 2,
+										marginRight: 2, marginRight:5
 									}}>
 										{this.renderStar(3.5)}
 									</View>
@@ -113,7 +113,7 @@ class RecommendFood extends Component {
 				<View style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
 					<Text style={styles.sectionText} note>Đề xuất cho bạn</Text>
 				</View>
-				<List style={{ marginTop: 10, marginLeft: -10, marginRight: -15 }} showsHorizontalScrollIndicator={false} horizontal={true} dataArray={foods}
+				<List style={{ marginTop: 10, marginRight: -15 }} showsHorizontalScrollIndicator={false} horizontal={true} dataArray={foods}
 					renderRow={(item) =>
 						<View style={{ borderBottomWidth: 0, marginRight: 5, }}>
 							{this.renderCell(item)}
@@ -139,7 +139,7 @@ class RecommendFood extends Component {
 		const navigation = this.props.screenProps.navi;
 		return (
 			<Container style={styles.container}>
-				<HeaderContent leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")}
+				<HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")}
 					rightButton={true} title='Đề xuất'>
 				</HeaderContent>
 				<Content>

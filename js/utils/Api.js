@@ -62,7 +62,7 @@ export function APIRequestGET(url, isAuth, successCallback, errorCallback) {
 }
 
 export function APIRequestPOST(url, param, isAuth, successCallback, errorCallback) {
-
+    console.log('2222121',param)
     if (!isAuth) {
         fetch(url, {
             method: 'POST',
@@ -113,7 +113,11 @@ export function APIRequestPOST(url, param, isAuth, successCallback, errorCallbac
                             errorCallback(responseJson.errorMessage)
                         }
                     } else {
-                        errorCallback(responseJson.errorMessage)
+                        if (responseJson.requestStatus == "Success") {
+                            successCallback(responseJson)
+                        } else {
+                            errorCallback(responseJson.errorMessage)
+                        }
                     }
                 })
             })

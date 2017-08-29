@@ -10,7 +10,7 @@ import styles from "./styles";
 var circle = require('../../../images/greyCircle.png')
 const headerLogo = require("../../../images/Header-Logo.png");
 const primary = require("../../themes/variable").brandPrimary;
-
+const iconFood = require("../../../images/vegeterian_food1600.png")
 class Categories extends Component {
     constructor(props) {
         super(props);
@@ -55,11 +55,16 @@ class Categories extends Component {
         this.setState({parentChoose:food})
     }
 
-    renderCell(data) {        
+    renderCell(data) {
+        var icon = '' 
+        if(data.item.icon) {
+            icon = data.item.icon
+        }        
         return (
             <TouchableOpacity style={{ flex: 1 }} onPress={() => {this.choseFood(data.item) }}>
                 <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
                     <View style={styles.opacityView}>
+                    <Image style={{width:'40%', marginBottom:5}} resizeMode='contain' source={{uri:icon}}/>
                         <Text style={styles.title}>{data.item.name}</Text>
                         </View>
                     </Image>

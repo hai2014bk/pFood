@@ -10,7 +10,8 @@ const headerLogo = require("../../../images/Header-Logo.png");
 class HeaderContent extends Component {
 
   openCart() {
-    console.log('Open Cart')
+    this.props.navi.navigate('Cart')
+    console.log(this.props.navi)
   }
   renderLeft() {
     if (this.props.leftButton != null) {

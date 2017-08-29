@@ -6,6 +6,8 @@ import {login} from "./login";
 import { forgetPassword } from "./forgetPassword"
 import { fetchCategories ,fetchSubCategories} from "./fetchCategories"
 import { fetchProduct} from "./fetchProduct"
+import { fetchDetail} from "./fetchDetail"
+
 
 
 
@@ -18,6 +20,7 @@ export default combineReducers({
 	forgetPassword,
 	fetchCategories,
 	fetchSubCategories,
-	fetchProduct
+	fetchProduct,
+	fetchDetail
 
 });

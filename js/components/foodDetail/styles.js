@@ -29,15 +29,14 @@ export default {
 	},
 	iconWrapPlus: {
 		flex:1,
-		maxWidth:30,		
+		maxWidth:30,
         aspectRatio: 1,
         borderWidth: 1,
-        borderTopLeftRadius: 5,
-        borderBottomLeftRadius: 5,
+        borderTopRightRadius: 5,
+        borderBottomRightRadius: 5,
         borderColor: primary,
         justifyContent: 'center',
-        alignItems: 'center',
-
+		alignItems: 'center',
 	},
 	buttonAddCard: {
         flex:1,
@@ -48,11 +47,11 @@ export default {
     },
     iconWrapMinus: {
 		flex:1,
-		maxWidth:30,
+		maxWidth:30,		
         aspectRatio: 1,
         borderWidth: 1,
-        borderTopRightRadius: 5,
-        borderBottomRightRadius: 5,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
         borderColor: primary,
         justifyContent: 'center',
         alignItems: 'center',
@@ -76,6 +75,7 @@ export default {
 	cardContainer:{
 		width:deviceWidth,
 		backgroundColor:'white',
+		marginBottom:30,
 	},
 	headerText:{
 		color:primary,

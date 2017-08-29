@@ -195,8 +195,7 @@ class Cart extends Component {
             <Container style={styles.container}>
                 <HeaderContent title="Giỏ hàng"
                     leftButton={() => navigation.goBack()}
-                    leftIcon='ios-arrow-back'
-                />
+                    leftIcon="ios-arrow-back" />
                 <Content style={styles.contentWrap}>
                     <FlatList style={styles.listViewWrap}
                         data={this.state.data}

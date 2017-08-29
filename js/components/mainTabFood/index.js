@@ -13,6 +13,8 @@ import Swiper from 'react-native-swiper';
 import CustomTabBar from "./CustomTabBar";
 import CategoryStack from '../../categoryStack';
 import RecommendStack from '../../recommendStack';
+import TrendingStack from '../../trendingStack';
+
 
 import styles from "./styles";
 
@@ -31,9 +33,9 @@ class MainTabFood extends Component {
 		return (
 			<Container>
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'bottom'} >
-					<RecommendStack  screenProps={{navi:navigation}}  tabLabel="Đề xuất" />
-					<CategoryStack   screenProps={{navi:navigation}}  tabLabel="Danh mục" />
-					<Trending  tabLabel="Xu hướng" />
+					<RecommendStack screenProps={{ navi: navigation }} tabLabel="Đề xuất" />
+					<CategoryStack screenProps={{ navi: navigation }} tabLabel="Danh mục" />
+					<TrendingStack screenProps={{ navi: navigation }} tabLabel="Xu hướng" />
 				</ScrollableTabView>
 			</Container>
 		);

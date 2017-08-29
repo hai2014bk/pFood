@@ -106,6 +106,12 @@ class Category extends Component {
         return str.substr(0, index) + value + str.substr(index);
     }
 
+    openDetail(food){
+        console.log('open')
+        const { params } = this.props.navigation.state
+        food.parrentId = params.parent.id
+        this.props.navigation.navigate('FoodTab',{parrent:food})
+    }
     async add(item, rowID) {
         let food = this.state.data
         let data = [];
@@ -150,6 +156,7 @@ class Category extends Component {
         let id = item.id
         let price = this.priceHandle(item.price.toString())
         return (
+            <TouchableOpacity onPress={()=>{this.openDetail(item)}}>            
             <Card style={styles.card}>
                 <CardItem >
                     <Body>
@@ -173,14 +180,15 @@ class Category extends Component {
                             </Col>
                             <Col size={3} style={styles.buyColumn}>
                                 <Col style={styles.buttonWrap}>
-                                    <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
-                                        <Icon name="md-add" style={styles.icon} />
+                                <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(data.index)} >
+                                        <Icon style={styles.icon} name="md-remove" />
                                     </TouchableOpacity>
+                                   
                                     <Col style={styles.quantityContainer}>
                                         <Text style={styles.quantity}>{item.quantity}</Text>
                                     </Col>
-                                    <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(data.index)} >
-                                        <Icon style={styles.icon} name="md-remove" />
+                                    <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
+                                        <Icon name="md-add" style={styles.icon} />
                                     </TouchableOpacity>
                                 </Col>
                                 <Col style={styles.buttonAddCard}>
@@ -193,6 +201,7 @@ class Category extends Component {
                     </Body>
                 </CardItem>
             </Card>
+            </TouchableOpacity>
         )
     }
 
@@ -201,20 +210,19 @@ class Category extends Component {
         const { params } = this.props.navigation.state
         return (
             <Container style={styles.container}>
-                <HeaderContent rightButton={true} title={params.parent.name}
+                <HeaderContent navi={navigation} rightButton={true} title={params.parent.name}
                     textLeft="Danh Mục"
-                    leftButton={() => navigation.navigate(resetAction)}
-                    rightButton={() => navigation.navigate("Cart")}
+                    leftButton={() => {this.props.navigation.dispatch(resetAction)}}
                 />
                 <Content style={styles.contentWrap}>
-                    <FlatList style={{ marginBottom: 5, marginTop: 5 }}
+                    <FlatList style={{marginBottom:5,marginTop:5}}
                         data={this.state.data}
                         extraData={this.state.data}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item)=>item.id}
                         renderItem={(item) => (
-                            <ListItem style={{ marginBottom: -25, borderBottomWidth: 0 }} >
+                            <View style={{ flex:1, borderBottomWidth: 0 }} >
                                 {this.renderItems(item)}
-                            </ListItem>
+                            </View>
                         )
                         }
                     />
