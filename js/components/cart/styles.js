@@ -15,11 +15,11 @@ export default {
         flex: 1,
     },
     card: {
+        height: '100%',
         width: '100%',
-        borderTopWidth: 0,
-        borderBottomWidth: 0,
-        marginBottom: 20,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        padding: 10
     },
     imageWrap: {
         flex: 2,
@@ -77,8 +77,8 @@ export default {
         borderColor: primary,
         justifyContent: 'center',
         alignItems: 'center',
-        borderTopLeftRadius: 3,
-        borderBottomLeftRadius: 3
+        borderTopRightRadius: 3,
+        borderBottomRightRadius: 3,
     },
     buttonMinus: {
         height: 30,
@@ -86,8 +86,8 @@ export default {
         borderColor: primary,
         justifyContent: 'center',
         alignItems: 'center',
-        borderTopRightRadius: 3,
-        borderBottomRightRadius: 3,
+        borderTopLeftRadius: 3,
+        borderBottomLeftRadius: 3,
         borderWidth: 1
     },
     buttonAddCard: {
@@ -165,7 +165,7 @@ export default {
     footer: {
         width: '90%',
         marginTop: 10,
-        flexDirection:'row'
+        flexDirection: 'row'
     },
     totalPrice: {
         fontSize: 17,
@@ -203,4 +203,32 @@ export default {
         marginRight: 5,
         marginBottom: 2
     },
+    listViewWrap: {
+        marginBottom: 5,
+        marginTop: 15,
+        backgroundColor: 'white'
+    },
+    moneyIcon: {
+        height: 30,
+        width: 30
+    },
+    footerRightWrap: {
+        flexDirection: 'row',
+        width: '85%',
+        justifyContent: 'flex-end'
+    },
+    listItem: {
+        borderBottomWidth: 0,
+        flex: 1
+    },
+    trashWrap: {
+        width: '50%',
+        height: '100%',
+        backgroundColor: '#F57463',
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    iconTrash:{
+        fontSize:35
+    }
 };

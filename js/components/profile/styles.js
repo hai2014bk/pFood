@@ -1,93 +1,79 @@
 const React = require("react-native");
 
-const { Platform, Dimensions } = React;
+const { Dimensions, Platform } = React;
 
+const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
+
 const primary = require("../../themes/variable").brandPrimary;
 
 export default {
-	container: {
+	containerWrap: {
 		flex: 1,
-		width: null,
-		height: null,
 	},
-	profileInfoContainer: {
-		backgroundColor: primary,
+	content: {
+		flex: 1,
+		paddingLeft: 30,
 		paddingTop: 10,
+		paddingRight: 30,
 	},
-	profileUser: {
-		alignSelf: "center",
-		fontSize: 22,
-		fontWeight: "bold",
-		paddingBottom: 5,
-	},
-	profileUserInfo: {
-		alignSelf: "center",
-		opacity: 0.8,
-		fontWeight: "bold",
-		color: "#FFF",
-	},
-	profilePic: {
-		width: 80,
-		height: 80,
-		borderRadius: 40,
-	},
-	profileInfo: {
-		alignSelf: "center",
-		paddingTop: 5,
-		paddingBottom: 10,
-	},
-	linkTabs: {
-		backgroundColor: "#fff",
-	},
-	linkTabs_header: {
-		padding: 15,
-		alignSelf: "center",
-	},
-	linkTabs_tabCounts: {
-		fontSize: 22,
-		fontWeight: "bold",
-		color: primary,
-		alignSelf: "center",
-		paddingBottom: Platform.OS === "android" ? 3 : 0,
-	},
-	linkTabs_tabName: {
-		color: "#444",
-		fontWeight: "bold",
-		fontSize: deviceWidth < 330 ? 13 : 15,
-	},
-	newsImage: {
-		width: 100,
-		height: 120,
-	},
-	newsContent: {
-		flexDirection: "column",
-		paddingTop: 20,
+	textInput: {
+		width: '100%',
+		height: 55,
+		backgroundColor: 'white',
+		borderWidth: 1,
+		borderColor: '#F6F6F6',
 		paddingLeft: 20,
-		paddingRight: 20,
-		flex: 1,
-		borderTopWidth: 1,
-		borderTopColor: "#ddd",
+		borderRadius: 2,
+		marginTop: 10
 	},
-	newsHeader: {
-		color: "#444",
-		fontWeight: "bold",
+	infoDetail: {
+		fontSize: 16,
+		color: '#A0A0A0',
+		marginTop: 5,
+		marginLeft: 10
 	},
-	newsLink: {
-		color: "#666",
-		fontSize: 12,
-		alignSelf: "flex-start",
-		fontWeight: "bold",
+	userIcon: {
+		color: 'gray',
+		fontSize: 30
 	},
-	newsTypeView: {
-		borderBottomWidth: 1,
-		borderBottomColor: "#666",
-		alignSelf: "flex-end",
+	headerTitle: {
+		flexDirection: 'row',
+		marginTop: 20
 	},
-	newsTypeText: {
-		color: "#666",
-		fontSize: 12,
-		fontWeight: "bold",
-		paddingBottom: 5,
+	pickerWrap: {
+		flexDirection: 'row',
+		marginLeft: -10,
+		marginTop: 7
 	},
+	checkboxText: {
+		marginLeft: 20,
+		color: '#A0A0A0',
+	},
+	moneyIcon: {
+		height: 30,
+		width: 30,
+		marginLeft: -3
+	},
+	checkBox: {
+		borderRadius: 13,
+		borderWidth: 1,
+		borderColor: '#A0A0A0',
+	},
+	updateButtonWrap: {
+        backgroundColor: primary,
+        width: '90%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 40,
+        alignSelf: 'center',
+        borderRadius: 20,
+		marginTop: 20,
+		marginBottom:20
+    },
+    updateButtonText: {
+        color: 'white',
+		fontSize: 18,
+		fontWeight:'bold'
+    },
 };
