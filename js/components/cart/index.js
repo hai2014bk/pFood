@@ -3,7 +3,7 @@ import { FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage }
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 
-import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
+import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail, SwipeRow } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 
@@ -35,8 +35,9 @@ class Cart extends Component {
         this.setState({ totalPrice })
         try {
             const value = await AsyncStorage.getItem('cartUser');
-            if (value !== null) {
+            if (value !== null) {      
                 data = JSON.parse(value)
+                console.log('value',data)
                 this.setState({ data })
                 for (i = 0; i < data.length; i++) {
                     totalPrice += data[i].price * data[i].quantity
@@ -48,7 +49,7 @@ class Cart extends Component {
         }
     }
 
-    plus(rowID) {
+    async plus(rowID) {
         let newArray = this.state.data.slice(0);
         newArray[rowID] = {
             ...this.state.data[rowID],
@@ -57,10 +58,14 @@ class Cart extends Component {
         this.setState({
             data: newArray,
         });
+        try {
+            await AsyncStorage.setItem('cartUser', JSON.stringify(newArray));
+        } catch (error) {
+        }
         this.totalPrice(newArray)
     }
 
-    minus(rowID) {
+    async minus(rowID) {
         let newArray = this.state.data.slice(0);
         newArray[rowID] = {
             ...this.state.data[rowID],
@@ -69,6 +74,10 @@ class Cart extends Component {
         this.setState({
             data: newArray
         });
+        try {
+            await AsyncStorage.setItem('cartUser', JSON.stringify(newArray));
+        } catch (error) {
+        }
         this.totalPrice(newArray)
     }
     renderStar(rate) {
@@ -88,12 +97,16 @@ class Cart extends Component {
         )
     }
 
-    remove(rowID) {
+    async remove(rowID) {
         let tempArray = this.state.data
         tempArray.splice(rowID, 1)
         this.setState({
             data: tempArray,
         })
+        try {
+            await AsyncStorage.setItem('cartUser', JSON.stringify(newArray));
+        } catch (error) {
+        }
     }
 
     priceHandle(price) {
@@ -113,49 +126,41 @@ class Cart extends Component {
 
     renderItems(data) {
         let item = data.item
-        console.log('data', data.item.productMetaData[0].value)
         let id = item.id
         let price = this.priceHandle(item.price.toString())
         return (
-            <View style={styles.card}>
-                <Grid >
-                    <View style={styles.imageContainer}>
-                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
-                    </View>
-                    <View style={styles.infoWrap}>
-                        <Text style={styles.foodName}>{item.name}</Text>
-                        <Text style={styles.price}>{price}đ</Text>
-                        <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                            <TouchableOpacity onPress={() => this.plus(data.index)} style={styles.buttonAdd}>
-                                <Icon name="md-add" style={styles.icon} />
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.minus(data.index)} style={styles.buttonMinus}>
-                                <Icon style={styles.icon} name="md-remove" />
-                            </TouchableOpacity>
-                            <Text style={styles.x}>X</Text>
-                            <Text style={styles.quantity}>{item.quantity}</Text>
+            <SwipeRow
+                list={true}
+                disableRightSwipe={true}
+                stopRightSwipe={-100}
+                rightOpenValue={-100}
+                body={
+                    <View style={styles.card}>
+                        <View style={styles.imageContainer}>
+                            <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
+                        </View>
+                        <View style={styles.infoWrap}>
+                            <Text style={styles.foodName}>{item.name}</Text>
+                            <Text style={styles.price}>{price}đ</Text>
+                            <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                                <TouchableOpacity onPress={() => this.plus(data.index)} style={styles.buttonAdd}>
+                                    <Icon name="md-add" style={styles.icon} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.minus(data.index)} style={styles.buttonMinus}>
+                                    <Icon style={styles.icon} name="md-remove" />
+                                </TouchableOpacity>
+                                <Text style={styles.x}>X</Text>
+                                <Text style={styles.quantity}>{item.quantity}</Text>
+                            </View>
                         </View>
                     </View>
-                    {/* <Col size={3} style={styles.buyColumn}>
-                        <Col style={styles.buttonWrap}>
-                            <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
-                                <Icon name="md-add" style={styles.icon} />
-                            </TouchableOpacity>
-                            <Col style={styles.quantityContainer}>
-                                <Text style={styles.quantity}>{item.quantity}</Text>
-                            </Col>
-                            <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(data.index)} >
-                                <Icon style={styles.icon} name="md-remove" />
-                            </TouchableOpacity>
-                        </Col>
-                        <Col style={styles.buttonAddCard}>
-                            <TouchableOpacity onPress={() => this.remove(data.index)} style={styles.removeButton}>
-                                <Text numberOfLines={1} style={{ color: 'white', fontWeight: 'normal', fontSize: 12, alignSelf: 'center' }}> Xóa </Text>
-                            </TouchableOpacity>
-                        </Col>
-                    </Col> */}
-                </Grid>
-            </View>
+                }
+                right={
+                    <TouchableOpacity style={styles.trashWrap} onPress={() => this.remove(data.index)}>
+                        <Icon active name="trash" style={styles.iconTrash} />
+                    </TouchableOpacity>
+                }
+            />
         )
     }
 
@@ -169,29 +174,31 @@ class Cart extends Component {
 
     render() {
         let num = this.state.totalPrice
-        num = num.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+        let price = this.priceHandle(num.toString())
         const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
-                <HeaderContent rightButton={true} title="Giỏ hàng"
-                    leftButton={() => navigation.dispatch(resetAction)} />
+                <HeaderContent title="Giỏ hàng"
+                    leftButton={() => navigation.goBack()}
+                    leftIcon='ios-arrow-back'
+                />
                 <Content style={styles.contentWrap}>
-                    <FlatList style={{ marginBottom: 5, marginTop: 15, backgroundColor: 'white' }}
+                    <FlatList style={styles.listViewWrap}
                         data={this.state.data}
                         extraData={this.state.data}
                         keyExtractor={(item) => item.id}
                         renderItem={(item) => (
-                            <ListItem style={{ marginBottom: -25, borderBottomWidth: 0 }} >
+                            <View style={styles.listItem} >
                                 {this.renderItems(item)}
-                            </ListItem>
+                            </View>
                         )
                         }
                     />
                     <View style={styles.footer}>
-                        <Text style={[styles.totalPrice, {marginLeft:20}]}>Tổng: </Text>
-                        <View style={{flexDirection:'row',width:'85%', justifyContent:'flex-end', }}>
-                            <Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain' />
-                            <Text style={[styles.totalPrice, {fontSize:20}]}> {num}đ</Text>
+                        <Text style={[styles.totalPrice, { marginLeft: 20 }]}>Tổng: </Text>
+                        <View style={styles.footerRightWrap}>
+                            <Image source={money} style={styles.moneyIcon} resizeMode='contain' />
+                            <Text style={[styles.totalPrice, { fontSize: 20 }]}> {price}đ</Text>
                         </View>
                     </View>
                     <TouchableOpacity style={styles.checkoutWrap}>

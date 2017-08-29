@@ -1,214 +1,121 @@
 import React, { Component } from "react";
-import { Image, View, TouchableOpacity } from "react-native";
-
-import { Container, Content, Text, Thumbnail } from "native-base";
-import { Grid, Col } from "react-native-easy-grid";
+import { Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard } from "react-native";
+import { createAccount } from "../../actions/createAccount.js"
+import { connect } from "react-redux";
+import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
+import Spinner from 'react-native-loading-spinner-overlay';
 import HeaderContent from "./../headerContent/";
-
 import styles from "./styles";
+import commonColor from "../../../native-base-theme/variables/commonColor";
+import Utils from "../../utils/validate.js"
+var background = require('../../../images/background.png')
+var money = require('../../../images/money.png')
 
 class Profile extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			checked: false,
+			shipServices: {
+				vPost: true,
+				aDayroi: false,
+				grab: false,
+				uber: false
+			},
+			pay: {
+				cash: true,
+				bankCard: false,
+				creditCard: false
+			}
+		};
+
+	}
+	componentWillReceiveProps(props) {
+
+	}
+
+	updateStatus(key, type) {
+		let shipStatus = type === 'ship' ? Object.assign({}, this.state.shipServices) : Object.assign({}, this.state.pay);
+		for (let k in shipStatus) {
+			if (shipStatus.hasOwnProperty(k)) {
+				shipStatus[k] = false;
+				if (k === key) {
+					shipStatus[k] = true;
+				}
+			}
+		}
+		if (type === 'ship') {
+            this.setState({ shipServices: shipStatus });
+        } else {
+            this.setState({ pay: shipStatus });
+        }
+	}
+
+	pickerWrap(text, key, type) {
+		let shipServices = type === 'ship' ? this.state.shipServices : this.state.pay;
+		let checked = shipServices[key] ? true : false;
+		return (
+			<View style={styles.pickerWrap}>
+				<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
+				<Text style={styles.checkboxText}>{text}</Text>
+			</View>
+		)
+	}
 	render() {
 		const navigation = this.props.navigation;
 		return (
-			<Container>
-				<Image source={require("../../../images/glow2.png")} style={styles.container}>
-					<HeaderContent navigation={navigation} />
-
-					<Content showsVerticalScrollIndicator={false}>
-						<View style={styles.profileInfoContainer}>
-							<TouchableOpacity style={{ alignSelf: "center" }}>
-								<Thumbnail
-									source={require("../../../images/contacts/sanket.png")}
-									style={styles.profilePic}
-								/>
-							</TouchableOpacity>
-							<View style={styles.profileInfo}>
-								<TouchableOpacity>
-									<Text style={styles.profileUser}>Kumar Sanket</Text>
-								</TouchableOpacity>
-								<TouchableOpacity>
-									<Text note style={styles.profileUserInfo}>
-										CEO, GeekyAnts
-									</Text>
-								</TouchableOpacity>
-							</View>
+			<Container style={styles.containerWrap}>
+				<Spinner visible={this.state.isLoading} />
+				<HeaderContent title="Thông tin"
+					leftButton={() => navigation.goBack()}
+					leftIcon='ios-arrow-back'
+				/>
+				<Content keyboardShouldPersistTaps='handled' style={styles.content} contentContainerStyle={{ flexGrow: 1 }}>
+					<View style={styles.headerTitle}>
+						<Icon name="ios-contact" style={styles.userIcon} />
+						<Text style={styles.infoDetail}>Thông tin chi tiết</Text>
+					</View>
+					<Form>
+						<View style={{ flexDirection: 'row' }}>
+							<Input style={styles.textInput} placeholder="Họ" placeholderTextColor='#C6C6C6' />
+							<Input style={styles.textInput} placeholder="Tên" placeholderTextColor='#C6C6C6' />
 						</View>
-
-						<View style={styles.linkTabs}>
-							<Grid>
-								<Col>
-									<TouchableOpacity style={styles.linkTabs_header}>
-										<Text style={styles.linkTabs_tabCounts}>13</Text>
-										<Text note style={styles.linkTabs_tabName}>
-											Comments
-										</Text>
-									</TouchableOpacity>
-								</Col>
-								<Col>
-									<TouchableOpacity style={styles.linkTabs_header}>
-										<Text style={styles.linkTabs_tabCounts}>12</Text>
-										<Text note style={styles.linkTabs_tabName}>
-											Channels
-										</Text>
-									</TouchableOpacity>
-								</Col>
-								<Col>
-									<TouchableOpacity style={styles.linkTabs_header}>
-										<Text style={styles.linkTabs_tabCounts}>52</Text>
-										<Text note style={styles.linkTabs_tabName}>
-											Bookmarks
-										</Text>
-									</TouchableOpacity>
-								</Col>
-							</Grid>
-						</View>
-						<View style={{ backgroundColor: "#fff" }}>
-							<TouchableOpacity
-								style={{ flexDirection: "row" }}
-								onPress={() => navigation.navigate("Story")}
-							>
-								<Image source={require("../../../images/NewsIcons/1.jpg")} style={styles.newsImage} />
-								<View style={styles.newsContent}>
-									<Text numberOfLines={2} style={styles.newsHeader}>
-										Flat App is focussed on a minimal use of simple elements.
-									</Text>
-									<Grid style={{ marginTop: 25 }}>
-										<Col>
-											<TouchableOpacity>
-												<Text style={styles.newsLink}>CDC</Text>
-											</TouchableOpacity>
-										</Col>
-										<Col>
-											<TouchableOpacity style={styles.newsTypeView}>
-												<Text style={styles.newsTypeText}>ENVIRONMENT</Text>
-											</TouchableOpacity>
-										</Col>
-									</Grid>
-								</View>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={{ flexDirection: "row" }}
-								onPress={() => navigation.navigate("Story")}
-							>
-								<Image source={require("../../../images/NewsIcons/3.jpg")} style={styles.newsImage} />
-								<View style={styles.newsContent}>
-									<Text numberOfLines={2} style={styles.newsHeader}>
-										So that the applications are able to load faster and reaize easily.
-									</Text>
-									<Grid style={{ marginTop: 25 }}>
-										<Col>
-											<TouchableOpacity>
-												<Text style={styles.newsLink}>SPACE.com</Text>
-											</TouchableOpacity>
-										</Col>
-										<Col>
-											<TouchableOpacity style={styles.newsTypeView}>
-												<Text style={styles.newsTypeText}>SCIENCE</Text>
-											</TouchableOpacity>
-										</Col>
-									</Grid>
-								</View>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={{ flexDirection: "row" }}
-								onPress={() => navigation.navigate("Story")}
-							>
-								<Image source={require("../../../images/NewsIcons/4.jpg")} style={styles.newsImage} />
-								<View style={styles.newsContent}>
-									<Text numberOfLines={2} style={styles.newsHeader}>
-										But still look sharp on high-definition screens.
-									</Text>
-									<Grid style={{ marginTop: 25 }}>
-										<Col>
-											<TouchableOpacity>
-												<Text style={styles.newsLink}>SKY.com</Text>
-											</TouchableOpacity>
-										</Col>
-										<Col>
-											<TouchableOpacity style={styles.newsTypeView}>
-												<Text style={styles.newsTypeText}>WORLD</Text>
-											</TouchableOpacity>
-										</Col>
-									</Grid>
-								</View>
-							</TouchableOpacity>
-
-							<TouchableOpacity
-								style={{ flexDirection: "row" }}
-								onPress={() => navigation.navigate("Story")}
-							>
-								<Image source={require("../../../images/NewsIcons/10.jpg")} style={styles.newsImage} />
-								<View style={styles.newsContent}>
-									<Text numberOfLines={2} style={styles.newsHeader}>
-										Highly customizable widgets are part of our never ending mission.
-									</Text>
-									<Grid style={{ marginTop: 25 }}>
-										<Col>
-											<TouchableOpacity>
-												<Text style={styles.newsLink}>ANI.com</Text>
-											</TouchableOpacity>
-										</Col>
-										<Col>
-											<TouchableOpacity style={styles.newsTypeView}>
-												<Text style={styles.newsTypeText}>ANIMATION</Text>
-											</TouchableOpacity>
-										</Col>
-									</Grid>
-								</View>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={{ flexDirection: "row" }}
-								onPress={() => navigation.navigate("Story")}
-							>
-								<Image source={require("../../../images/NewsIcons/9.jpg")} style={styles.newsImage} />
-								<View style={styles.newsContent}>
-									<Text numberOfLines={2} style={styles.newsHeader}>
-										Ready to use components built using NativeBase.
-									</Text>
-									<Grid style={{ marginTop: 25 }}>
-										<Col>
-											<TouchableOpacity>
-												<Text style={styles.newsLink}>STYLE.com</Text>
-											</TouchableOpacity>
-										</Col>
-										<Col>
-											<TouchableOpacity style={styles.newsTypeView}>
-												<Text style={styles.newsTypeText}>FASHION</Text>
-											</TouchableOpacity>
-										</Col>
-									</Grid>
-								</View>
-							</TouchableOpacity>
-							<TouchableOpacity
-								style={{ flexDirection: "row" }}
-								onPress={() => navigation.navigate("Story")}
-							>
-								<Image source={require("../../../images/NewsIcons/12.jpg")} style={styles.newsImage} />
-								<View style={styles.newsContent}>
-									<Text numberOfLines={2} style={styles.newsHeader}>
-										Theme your app with one single file.
-									</Text>
-									<Grid style={{ marginTop: 25 }}>
-										<Col>
-											<TouchableOpacity>
-												<Text style={styles.newsLink}>ART.com</Text>
-											</TouchableOpacity>
-										</Col>
-										<Col>
-											<TouchableOpacity style={styles.newsTypeView}>
-												<Text style={styles.newsTypeText}>ART</Text>
-											</TouchableOpacity>
-										</Col>
-									</Grid>
-								</View>
-							</TouchableOpacity>
-						</View>
-					</Content>
-				</Image>
+						<Input style={styles.textInput} placeholder="Địa chỉ hiện tại" placeholderTextColor='#C6C6C6' />
+						<Input style={styles.textInput} placeholder="Số điện thoại" placeholderTextColor='#C6C6C6' />
+						<Input style={styles.textInput} placeholder="Email" placeholderTextColor='#C6C6C6' />
+					</Form>
+					<View style={styles.headerTitle}>
+						<Icon name="ios-bus" style={styles.userIcon} />
+						<Text style={styles.infoDetail}>Dịch vụ shipper</Text>
+					</View>
+					{this.pickerWrap('Viettel Post', 'vPost', 'ship')}
+					{this.pickerWrap('Adayroi', 'aDayroi', 'ship')}
+					{this.pickerWrap('Grab', 'grab', 'ship')}
+					{this.pickerWrap('Uber', 'uber', 'ship')}
+					<View style={styles.headerTitle}>
+						<Image source={money} style={styles.moneyIcon} resizeMode='contain' />
+						<Text style={styles.infoDetail}>Hình thức thanh toán</Text>
+					</View>
+					{this.pickerWrap('Tiền mặt', 'cash', 'pay')}
+					{this.pickerWrap('Thẻ ngân hàng', 'bankCard', 'pay')}
+					{this.pickerWrap('Thẻ tín dụng', 'creditCard', 'pay')}
+					<TouchableOpacity style={styles.updateButtonWrap}>
+                        <Text style={styles.updateButtonText}> Cập nhật </Text>
+                    </TouchableOpacity>
+				</Content>
 			</Container>
 		);
 	}
+
+}
+function bindActions(dispatch) {
+	return {
+		register: (params) => dispatch(createAccount(params)),
+	};
 }
 
-export default Profile;
+const mapStateToProps = state => ({
+	creatAcount: state.creatAcount
+});
+
+export default connect(mapStateToProps, bindActions)(Profile);
