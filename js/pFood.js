@@ -15,29 +15,19 @@ import RecommendFood from "./components/recomnendFood/";
 import FoodDetail from "./components/foodDetail/";
 import Trending from "./components/trending"
 import Cart from "./components/cart"
+import LoginStack from "./loginStack"
 
 
-const App = StackNavigator(
+const Main = StackNavigator(
 	{
-		Login: { screen: Login },
-		SignUp: { screen: SignUp, },
-		NeedHelp: { screen: NeedHelp },
-		Walkthrough: { screen: Walkthrough },
-		Story: { screen: Story },
-		Comments: { screen: Comments },
-		Channel: { screen: Channel },
 		Drawer: { screen: Drawer, gesturesEnabled: false },
-		ForgetPassword: { screen: ForgetPassword },
-		Trending: { screen: Trending },
 		Cart: { screen: Cart },
-		
-		
-		
+		LoginStack: { screen: LoginStack },		
 		
 	},
 	{
 		index: 0,
-		initialRouteName: "Login",
+		initialRouteName: "Drawer",
 		headerMode: "none",
 		navigationOptions: {
 			gesturesEnabled: false,
@@ -45,4 +35,4 @@ const App = StackNavigator(
 	}
 );
 
-export default App;
+export default Main;

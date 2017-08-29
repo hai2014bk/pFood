@@ -39,7 +39,9 @@ class FoodDetail extends Component {
 	componentWillReceiveProps(props) {
 		if (props.fetchDetail.success) {
 			console.log('po rop', props.fetchDetail.data.model)
-			this.setState({ food: props.fetchDetail.data.model })
+			var food = props.fetchDetail.data.model
+			food.quantity = 1
+			this.setState({ food: food })
 		}
 		if (!props.fetchDetail.success) {
 			setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
@@ -70,6 +72,43 @@ class FoodDetail extends Component {
 			</Swiper>
 		)
 	}
+	async add() {
+        let food = this.state.food
+        let data = [];
+        if (this.state.quantity == 0) {
+            Alert.alert('', 'Hãy chọn số lượng')
+        } else {
+            try {
+                const value = await AsyncStorage.getItem('cartUser');
+                if (value !== null) {
+                    data = JSON.parse(value);
+                }
+
+            } catch (error) {
+            }
+
+            var temp = []
+            for (i = 0; i < data.length; i++) {
+                temp.push(data[i].id)
+            }
+            var a = temp.indexOf(food.id)
+            if (a >= 0) {
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].id == food.id) {
+                        let quantity = this.state.quantity
+                        data[i].quantity = food.quantity + quantity
+                    }
+                }
+            } else {
+                data.push(food);
+            }
+            console.log('data save', data)
+            try {
+                await AsyncStorage.setItem('cartUser', JSON.stringify(data));
+            } catch (error) {
+            }
+        }
+    }
 	renderStar(rate) {
 		return (
 			<StarRating
@@ -150,10 +189,14 @@ class FoodDetail extends Component {
 		)
 	}
 	plus() {
-		this.setState({ quantity: this.state.quantity + 1 })
+		var food = this.state.food
+		food.quantity += 1 
+		this.setState({ food:food })
 	}
 	minus() {
-		this.setState({ quantity: this.state.quantity - 1 })
+		var food = this.state.food
+		food.quantity -= 1 
+		this.setState({ food:food })
 	}
 	priceHandle(price) {
 		var count = 0
@@ -170,7 +213,7 @@ class FoodDetail extends Component {
 		return str.substr(0, index) + value + str.substr(index);
 	}
 	renderPriceAndBuy() {
-		var quantity = (this.state.quantity * 200)
+		var quantity = (this.state.food.quantity * 200)
 		var unit = 'g'
 		if (quantity >= 1000) {
 			quantity = quantity / 1000
@@ -202,7 +245,7 @@ class FoodDetail extends Component {
 						</TouchableOpacity>
 					</Row>
 					<Col style={styles.buttonAddCard}>
-						<Button addCart large >
+						<Button onPress={()=> this.add()} addCart large >
 							<Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
 						</Button>
 					</Col>
@@ -230,9 +273,6 @@ class FoodDetail extends Component {
 						{this.renderFoodContent()}
 					</View>
 				</Content>
-				<View style={styles.pageBanner}>
-					{this.pageBanner()}
-				</View>
 			</Container>
 		);
 	}
