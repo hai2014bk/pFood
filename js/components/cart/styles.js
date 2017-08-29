@@ -77,8 +77,8 @@ export default {
         borderColor: primary,
         justifyContent: 'center',
         alignItems: 'center',
-        borderTopLeftRadius: 3,
-        borderBottomLeftRadius: 3
+        borderTopRightRadius: 3,
+        borderBottomRightRadius: 3,
     },
     buttonMinus: {
         height: 30,
@@ -86,8 +86,8 @@ export default {
         borderColor: primary,
         justifyContent: 'center',
         alignItems: 'center',
-        borderTopRightRadius: 3,
-        borderBottomRightRadius: 3,
+        borderTopLeftRadius: 3,
+        borderBottomLeftRadius: 3,
         borderWidth: 1
     },
     buttonAddCard: {

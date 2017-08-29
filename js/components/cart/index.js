@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage } from "react-native";
+import { FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 
@@ -35,9 +35,9 @@ class Cart extends Component {
         this.setState({ totalPrice })
         try {
             const value = await AsyncStorage.getItem('cartUser');
-            if (value !== null) {      
+            if (value !== null) {
                 data = JSON.parse(value)
-                console.log('value',data)
+                console.log('value', data)
                 this.setState({ data })
                 for (i = 0; i < data.length; i++) {
                     totalPrice += data[i].price * data[i].quantity
@@ -65,21 +65,35 @@ class Cart extends Component {
         this.totalPrice(newArray)
     }
 
-    async minus(rowID) {
-        let newArray = this.state.data.slice(0);
-        newArray[rowID] = {
-            ...this.state.data[rowID],
-            quantity: this.state.data[rowID].quantity - 1 > 0 ? this.state.data[rowID].quantity - 1 : 1,
-        };
-        this.setState({
-            data: newArray
-        });
-        try {
-            await AsyncStorage.setItem('cartUser', JSON.stringify(newArray));
-        } catch (error) {
+    async minus(data, rowID) {
+        console.log('data', data)
+        if (data.item.quantity == 1) {
+            Alert.alert(
+                '',
+                'Bạn có muốn xóa sản phẩm này khỏi giỏ hàng',
+                [
+                    { text: 'Chắc chắn', onPress: () => this.remove(rowID) },
+                    { text: 'Không', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                ],
+                { cancelable: false }
+            )
+        } else {
+            let newArray = this.state.data.slice(0);
+            newArray[rowID] = {
+                ...this.state.data[rowID],
+                quantity: this.state.data[rowID].quantity - 1 > 0 ? this.state.data[rowID].quantity - 1 : 1,
+            };
+            this.setState({
+                data: newArray
+            });
+            try {
+                await AsyncStorage.setItem('cartUser', JSON.stringify(newArray));
+            } catch (error) {
+            }
+            this.totalPrice(newArray)
         }
-        this.totalPrice(newArray)
     }
+
     renderStar(rate) {
         return (
             <StarRating
@@ -104,9 +118,10 @@ class Cart extends Component {
             data: tempArray,
         })
         try {
-            await AsyncStorage.setItem('cartUser', JSON.stringify(newArray));
+            await AsyncStorage.setItem('cartUser', JSON.stringify(tempArray));
         } catch (error) {
         }
+        this.totalPrice(tempArray)
     }
 
     priceHandle(price) {
@@ -143,11 +158,11 @@ class Cart extends Component {
                             <Text style={styles.foodName}>{item.name}</Text>
                             <Text style={styles.price}>{price}đ</Text>
                             <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                                <TouchableOpacity onPress={() => this.minus(data, data.index)} style={styles.buttonMinus}>
+                                    <Icon style={styles.icon} name="md-remove" />
+                                </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.plus(data.index)} style={styles.buttonAdd}>
                                     <Icon name="md-add" style={styles.icon} />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.minus(data.index)} style={styles.buttonMinus}>
-                                    <Icon style={styles.icon} name="md-remove" />
                                 </TouchableOpacity>
                                 <Text style={styles.x}>X</Text>
                                 <Text style={styles.quantity}>{item.quantity}</Text>
