@@ -26,7 +26,13 @@ class Profile extends Component {
 				cash: true,
 				bankCard: false,
 				creditCard: false
-			}
+			},
+			firstName: '',
+			lastName: '',
+			address: '',
+			phone: '',
+			email: ''
+
 		};
 
 	}
@@ -45,10 +51,10 @@ class Profile extends Component {
 			}
 		}
 		if (type === 'ship') {
-            this.setState({ shipServices: shipStatus });
-        } else {
-            this.setState({ pay: shipStatus });
-        }
+			this.setState({ shipServices: shipStatus });
+		} else {
+			this.setState({ pay: shipStatus });
+		}
 	}
 
 	pickerWrap(text, key, type) {
@@ -77,12 +83,12 @@ class Profile extends Component {
 					</View>
 					<Form>
 						<View style={{ flexDirection: 'row' }}>
-							<Input style={styles.textInput} placeholder="Họ" placeholderTextColor='#C6C6C6' />
-							<Input style={styles.textInput} placeholder="Tên" placeholderTextColor='#C6C6C6' />
+							<Input style={styles.textInput} placeholder="Họ" placeholderTextColor='#C6C6C6' value={this.state.firstName} onChangeText={text => this.setState({ firstName: text })} />
+							<Input style={styles.textInput} placeholder="Tên" placeholderTextColor='#C6C6C6' value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} />
 						</View>
-						<Input style={styles.textInput} placeholder="Địa chỉ hiện tại" placeholderTextColor='#C6C6C6' />
-						<Input style={styles.textInput} placeholder="Số điện thoại" placeholderTextColor='#C6C6C6' />
-						<Input style={styles.textInput} placeholder="Email" placeholderTextColor='#C6C6C6' />
+						<Input style={styles.textInput} placeholder="Địa chỉ hiện tại" placeholderTextColor='#C6C6C6' value={this.state.address} onChangeText={text => this.setState({ address: text })} />
+						<Input style={styles.textInput} placeholder="Số điện thoại" placeholderTextColor='#C6C6C6' value={this.state.phone} onChangeText={text => this.setState({ phone: text })} />
+						<Input style={styles.textInput} placeholder="Email" placeholderTextColor='#C6C6C6' value={this.state.email} onChangeText={text => this.setState({ email: text })} />
 					</Form>
 					<View style={styles.headerTitle}>
 						<Icon name="ios-bus" style={styles.userIcon} />
@@ -100,8 +106,8 @@ class Profile extends Component {
 					{this.pickerWrap('Thẻ ngân hàng', 'bankCard', 'pay')}
 					{this.pickerWrap('Thẻ tín dụng', 'creditCard', 'pay')}
 					<TouchableOpacity style={styles.updateButtonWrap}>
-                        <Text style={styles.updateButtonText}> Cập nhật </Text>
-                    </TouchableOpacity>
+						<Text style={styles.updateButtonText}> Cập nhật </Text>
+					</TouchableOpacity>
 				</Content>
 			</Container>
 		);
