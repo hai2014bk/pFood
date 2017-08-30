@@ -3,6 +3,7 @@ import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, 
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
+import * as appFunction from "../../utils/function"
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -44,8 +45,12 @@ class FoodRelate extends Component {
             var listFood = props.fetchProduct.data.model
             console.log(listFood)
             for (i in listFood) {
+                if(this.props.food.id == listFood[i].id){
+                    listFood.splice(i,1)
+                }
                 listFood[i].quantity = 0
             }
+            console.log(listFood)
             this.setState({ data: listFood })
         }
         if (!props.fetchProduct.success) {
@@ -94,13 +99,7 @@ class FoodRelate extends Component {
 
     priceHandle(price) {
         var count = 0
-        for (var i = price.length; i--; i > 0) {
-            count += 1
-            if (count == 4) {
-                price = this.insertString(price, i + 1, '.')
-                count = 0
-            }
-        }
+        price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
         return price
     }
     insertString(str, index, value) {
@@ -145,14 +144,14 @@ class FoodRelate extends Component {
                                         <Icon style={styles.icon} name="md-remove" />
                                     </TouchableOpacity>
                                     <Col style={styles.quantityContainer}>
-                                        <Text style={styles.quantity}>{item.quantity}</Text>
+                                        <Text style={styles.quantity}>{item.quantity} {item.unitType}</Text>
                                     </Col>
                                     <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                         <Icon name="md-add" style={styles.icon} />
                                     </TouchableOpacity>
                                 </Col>
                                 <Col style={styles.buttonAddCard}>
-                                    <Button addCart >
+                                    <Button addCart onPress={()=>{appFunction.add(item)}} >
                                         <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
                                     </Button>
                                 </Col>

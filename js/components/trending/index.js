@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import { FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
-
+import { fetchTrending } from "../../actions/fetchTrending.js"
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
-import { Grid, Col } from "react-native-easy-grid";
+import { Grid, Col,Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
+import { connect } from "react-redux";
+import * as appFunction from "../../utils/function"
+
 
 import styles from "./styles";
 
@@ -19,18 +22,32 @@ class Trending extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [
-                { id: 0, name: 'Thit bo 1', unit: '50g', rate: 3.5, shopName: 'Shop 1', price: '20.0000đ', quantity: 0 },
-                { id: 1, name: 'Thit bo 2', unit: '50g', rate: 1, shopName: 'Shop 2', price: '25.0000đ', quantity: 0 },
-                { id: 2, name: 'Thit bo 3', unit: '50g', rate: 5, shopName: 'Shop 3', price: '10.0000đ', quantity: 0 },
-                { id: 3, name: 'Thit bo 4', unit: '50g', rate: 4, shopName: 'Shop 4', price: '15.0000đ', quantity: 0 },
-                { id: 4, name: 'Thit bo 5', unit: '50g', rate: 2.5, shopName: 'Shop 5', price: '10.0000đ', quantity: 0 },
-            ]
+            data: []
         };
     }
 
     componentDidMount() {
+        var params = {
+            "PageSize":"20",
+            "PageIndex":"1",
+            "LastViewedDate":"2017-08-20T15:20:34.8699498"
+        }
+        this.props.fetch(params)
+    }
 
+    componentWillReceiveProps(props){
+        if (props.fetchTrending.success) {
+            if(props.fetchTrending.data.model.length > 0) {
+            var listFood = this.state.data.concat( props.fetchTrending.data.model)
+            for (i in listFood) {
+                listFood[i].quantity = 0
+            }
+            this.setState({ data: listFood })
+        } 
+        }
+        if (!props.fetchTrending.success) {
+            setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
+        }
     }
 
     plus(rowID) {
@@ -71,58 +88,69 @@ class Trending extends Component {
         )
     }
 
+    priceHandle(price) {
+        var count = 0
+        price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+        return price
+    }
+    
     openDetail(food){
-        console.log('open')
-        const { params } = this.props.navigation.state
-        food.parrentId = params.parent.id
+        console.log('open',food)
+        // const { params } = this.props.navigation.state
+        // food.parrentId = params.parent.id
         this.props.navigation.navigate('FoodTab',{parrent:food})
     }
-
     renderItems(data) {
         let item = data.item
-        console.log(data.index)
         let id = item.id
+        let price = this.priceHandle(item.price.toString())
         return (
+            <TouchableOpacity onPress={()=>{this.openDetail(item)}}>            
             <Card style={styles.card}>
-                <CardItem>
+                <CardItem >
                     <Body>
                         <Grid >
                             <Col size={2} style={styles.imageWrap}>
                                 <View style={styles.imageContainer}>
-                                    <Image source={{ uri: 'http://i.imgur.com/toH4mkL.jpg' }} style={styles.image} />
+                                    <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
                                 </View>
                             </Col>
                             <Col size={3} style={styles.infoWrap}>
                                 <Text style={styles.foodName}>{item.name}</Text>
-                                <Text style={styles.unit}>{item.unit}</Text>
-                                <Text style={styles.shopName}>{item.shopName}</Text>
+                                <Text style={styles.unit}> {item.minOrderedItems} {item.unitType}</Text>
+                                <Row style={{ alignItems: 'flex-end' }} >
+                                    <Icon name='ios-pin' style={styles.locationIcon} />
+                                    <Text style={styles.shopName}>{item.cities}</Text>
+                                </Row>
                                 <View style={{ width: 50 }}>
                                     {this.renderStar(item.rate)}
                                 </View>
-                                <Text style={styles.price}>{item.price}</Text>
+                                <Text style={styles.price}>{price}đ</Text>
                             </Col>
                             <Col size={3} style={styles.buyColumn}>
                                 <Col style={styles.buttonWrap}>
                                 <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(data.index)} >
                                         <Icon style={styles.icon} name="md-remove" />
                                     </TouchableOpacity>
+                                   
                                     <Col style={styles.quantityContainer}>
-                                        <Text style={styles.quantity}>{item.quantity}</Text>
+                                        <Text style={styles.quantity}>{item.quantity} {item.unitType}</Text>
                                     </Col>
                                     <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                         <Icon name="md-add" style={styles.icon} />
                                     </TouchableOpacity>
                                 </Col>
-                                 <Col style={styles.buttonAddCard}>
-                                   <Button addCart>
-                                       <Text numberOfLines={1} style={{color:'white',fontWeight:'normal', fontSize:12, alignSelf:'center'}}> Thêm vào giỏ </Text>
-                                       </Button>
+                                <Col style={styles.buttonAddCard}>
+                                    <Button addCart onPress={() => {appFunction.add(item)}} >
+                                        <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
+                                    </Button>
                                 </Col>
                             </Col>
                         </Grid>
-                        </Body>
-                        </CardItem>
+                    </Body>
+                </CardItem>
             </Card>
+            </TouchableOpacity>
         )
     }
 
@@ -149,5 +177,15 @@ class Trending extends Component {
         );
     }
 }
+function bindActions(dispatch) {
+    return {
+        fetch: (params) => dispatch(fetchTrending(params)),
+    };
+}
 
-export default Trending;
+const mapStateToProps = state => ({
+    fetchTrending: state.fetchTrending,
+});
+
+export default connect(mapStateToProps, bindActions)(Trending);
+

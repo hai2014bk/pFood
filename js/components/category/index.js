@@ -3,6 +3,7 @@ import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, 
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
+import * as appFunction from "../../utils/function"
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -22,7 +23,8 @@ class Category extends Component {
         super(props);
         this.state = {
             data: [],
-            index: 1
+            index: 1,
+            loadedAll:false,
         };
     }
 
@@ -30,23 +32,40 @@ class Category extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { params } = this.props.navigation.state
             var parameter = {
-                "PageSize": 100,
+                "PageSize": 10,
                 "PageIndex": this.state.index,
                 "CategoryId": params.parent.id
             }
             this.props.fetch(parameter)
         })
+    }
 
+    loadMore(){
+        console.log('loaded44444 more')
+        if(!this.state.loadedAll){
+            var index = this.state.index + 1
+            const { params } = this.props.navigation.state
+            var parameter = {
+                "PageSize": 10,
+                "PageIndex": index,
+                "CategoryId": params.parent.id
+            }
+            this.setState({index:this.state.index  + 1})
+            this.props.fetch(parameter)
+        }
     }
 
     componentWillReceiveProps(props) {
         if (props.fetchProduct.success) {
-            var listFood = props.fetchProduct.data.model
-            console.log('listFood', listFood)
+            if(props.fetchProduct.data.model.length > 0) {
+            var listFood = this.state.data.concat( props.fetchProduct.data.model)
             for (i in listFood) {
                 listFood[i].quantity = 0
             }
             this.setState({ data: listFood })
+        } else {
+            this.setState({loadedAll:true})
+        }
         }
         if (!props.fetchProduct.success) {
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
@@ -93,66 +112,18 @@ class Category extends Component {
 
     priceHandle(price) {
         var count = 0
-        for (var i = price.length; i--; i > 0) {
-            count += 1
-            if (count == 4) {
-                price = this.insertString(price, i + 1, '.')
-                count = 0
-            }
-        }
+        price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
         return price
     }
-    insertString(str, index, value) {
-        return str.substr(0, index) + value + str.substr(index);
-    }
-
+    
     openDetail(food){
         console.log('open')
         const { params } = this.props.navigation.state
         food.parrentId = params.parent.id
         this.props.navigation.navigate('FoodTab',{parrent:food})
     }
-    async add(item, rowID) {
-        let food = this.state.data
-        let data = [];
-        if (item.quantity == 0) {
-            Alert.alert('', 'Hãy chọn số lượng')
-        } else {
-            try {
-                const value = await AsyncStorage.getItem('cartUser');
-                if (value !== null) {
-                    data = JSON.parse(value);
-                }
-
-            } catch (error) {
-            }
-
-            var temp = []
-            for (i = 0; i < data.length; i++) {
-                temp.push(data[i].id)
-            }
-            var a = temp.indexOf(item.id)
-            if (a >= 0) {
-                for (i = 0; i < data.length; i++) {
-                    if (data[i].id == item.id) {
-                        let quantity = item.quantity
-                        data[i].quantity = item.quantity + quantity
-                    }
-                }
-            } else {
-                data.push(item);
-            }
-            console.log('data', data)
-            try {
-                await AsyncStorage.setItem('cartUser', JSON.stringify(data));
-            } catch (error) {
-            }
-        }
-    }
-
     renderItems(data) {
         let item = data.item
-        console.log(data.item.productMetaData[0])
         let id = item.id
         let price = this.priceHandle(item.price.toString())
         return (
@@ -185,14 +156,14 @@ class Category extends Component {
                                     </TouchableOpacity>
                                    
                                     <Col style={styles.quantityContainer}>
-                                        <Text style={styles.quantity}>{item.quantity}</Text>
+                                        <Text style={styles.quantity}>{item.quantity} {item.unitType}</Text>
                                     </Col>
                                     <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                         <Icon name="md-add" style={styles.icon} />
                                     </TouchableOpacity>
                                 </Col>
                                 <Col style={styles.buttonAddCard}>
-                                    <Button addCart onPress={() => this.add(item, item.index)} >
+                                    <Button addCart onPress={() => {appFunction.add(item)}} >
                                         <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
                                     </Button>
                                 </Col>
@@ -214,8 +185,10 @@ class Category extends Component {
                     textLeft="Danh Mục"
                     leftButton={() => {this.props.navigation.dispatch(resetAction)}}
                 />
-                <Content style={styles.contentWrap}>
-                    <FlatList style={{marginBottom:5,marginTop:5}}
+                <View style={{marginBottom:60}}>
+                    <FlatList style={{marginTop:5}}
+                    onEndReached={(distanceFromEnd)=>this.loadMore()}
+                    onEndReachedThreshold = {0}
                         data={this.state.data}
                         extraData={this.state.data}
                         keyExtractor={(item)=>item.id}
@@ -226,7 +199,7 @@ class Category extends Component {
                         )
                         }
                     />
-                </Content>
+                </View>
             </Container>
         );
     }
