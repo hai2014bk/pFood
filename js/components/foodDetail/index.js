@@ -174,6 +174,7 @@ class FoodDetail extends Component {
 		var quantity = this.state.food.quantity 
 		var food = this.state.food
 		var price = ''
+		console.log(food.unitType)
 		if (food.price) {
 			price = this.priceHandle(food.price.toString())
 		}

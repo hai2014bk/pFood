@@ -73,7 +73,7 @@ class RecommendFood extends Component {
 	renderCell(food) {
 		return (
 			<View>
-				<TouchableOpacity style={{ flex: 1, alignItems: 'center' }} onPress={()=>{this.props.navigation.navigate('FoodTab',{name:'Thịt Hun Khói'})}} >
+				<TouchableOpacity style={{ flex: 1, alignItems: 'center' }} >
 					<Grid style={styles.cellContainer}>
 						<Row style={styles.upContainer}>
 							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: 'https://36iusc2tb88y2g492si2bqd1-wpengine.netdna-ssl.com/wp-content/uploads/2016/09/meat-1.jpg' }} >
