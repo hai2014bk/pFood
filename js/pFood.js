@@ -14,16 +14,15 @@ import Category from "./components/category";
 import RecommendFood from "./components/recomnendFood/";
 import FoodDetail from "./components/foodDetail/";
 import Trending from "./components/trending"
-import Cart from "./components/cart"
 import LoginStack from "./loginStack"
+import Cart from "./components/cart"
 
 
 const Main = StackNavigator(
 	{
 		Drawer: { screen: Drawer, gesturesEnabled: false },
-		Cart: { screen: Cart },
-		LoginStack: { screen: LoginStack },		
-		
+		LoginStack: { screen: LoginStack },	
+		Cart: { screen: Cart },	
 	},
 	{
 		index: 0,

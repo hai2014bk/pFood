@@ -33,6 +33,7 @@ export function fetchSubCategories(parentId) {
 		APIRequest.APIRequestGET(url, true,
 			response => {
 				console.log('respone',response)
+				response.checkId = parentId
 				dispatch(fetchSubCategoriesSuccess(response));
 			},
 			error => {

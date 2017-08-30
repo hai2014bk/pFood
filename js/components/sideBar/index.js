@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Image, TouchableOpacity, View } from "react-native";
-
+import { Image, TouchableOpacity, View ,AsyncStorage} from "react-native";
+import * as mConstants from '../../utils/Constants'
 import { NavigationActions } from "react-navigation";
 import { Container, Content, Text, Icon, ListItem, Thumbnail } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
@@ -11,6 +11,12 @@ const resetAction = NavigationActions.reset({
 	actions: [NavigationActions.navigate({ routeName: "LoginStack" })],
 });
 class SideBar extends Component {
+
+	async logOut(){
+		let keys = [mConstants.CART,mConstants.USER_INFO];
+		await AsyncStorage.multiRemove(keys)
+			this.props.navigation.dispatch(resetAction);
+	   }
 	render() {
 		const navigation = this.props.navigation;
 		return (
@@ -123,7 +129,7 @@ class SideBar extends Component {
 									<Col>
 										<TouchableOpacity
 											onPress={() => {
-												navigation.dispatch(resetAction);
+												this.logOut()
 											}}
 											style={{ alignSelf: "flex-start" }}
 										>

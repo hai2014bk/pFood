@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
+import * as mConstants from '../../utils/Constants'
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail, SwipeRow } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -12,18 +13,11 @@ import styles from "./styles";
 const headerLogo = require("../../../images/Header-Logo.png");
 const primary = require("../../themes/variable").brandPrimary;
 const money = require("../../../images/money.png");
-const resetAction = NavigationActions.reset({
-    index: 0,
-    actions: [NavigationActions.navigate({ routeName: "Categories" })],
-});
 class Cart extends Component {
     constructor(props) {
         super(props);
         this.state = {
             data: [
-                // { id: 0, name: 'Thit bo 1', unit: '50g', rate: 3.5, shopName: 'Shop 1', price: '20000', quantity: 1 },
-                // { id: 1, name: 'Thit bo 2', unit: '50g', rate: 1, shopName: 'Shop 2', price: '25000', quantity: 2 },
-                // { id: 2, name: 'Thit bo 3', unit: '50g', rate: 5, shopName: 'Shop 3', price: '10000', quantity: 3 },
             ],
             totalPrice: 0
         };
@@ -34,7 +28,7 @@ class Cart extends Component {
         let data = []
         this.setState({ totalPrice })
         try {
-            const value = await AsyncStorage.getItem('cartUser');
+            const value = await AsyncStorage.getItem(mConstants.CART);
             if (value !== null) {
                 data = JSON.parse(value)
                 console.log('value', data)
@@ -59,7 +53,7 @@ class Cart extends Component {
             data: newArray,
         });
         try {
-            await AsyncStorage.setItem('cartUser', JSON.stringify(newArray));
+            await AsyncStorage.setItem(mConstants.CART, JSON.stringify(newArray));
         } catch (error) {
         }
         this.totalPrice(newArray)
@@ -87,7 +81,7 @@ class Cart extends Component {
                 data: newArray
             });
             try {
-                await AsyncStorage.setItem('cartUser', JSON.stringify(newArray));
+                await AsyncStorage.setItem(mConstants.CART, JSON.stringify(newArray));
             } catch (error) {
             }
             this.totalPrice(newArray)
@@ -114,11 +108,12 @@ class Cart extends Component {
     async remove(rowID) {
         let tempArray = this.state.data
         tempArray.splice(rowID, 1)
+        console.log('wwqwqqw', rowID, tempArray)
         this.setState({
             data: tempArray,
         })
         try {
-            await AsyncStorage.setItem('cartUser', JSON.stringify(tempArray));
+            await AsyncStorage.setItem(mConstants.CART, JSON.stringify(tempArray));
         } catch (error) {
         }
         this.totalPrice(tempArray)
@@ -186,10 +181,33 @@ class Cart extends Component {
         }
         this.setState({ totalPrice })
     }
+    renderList() {
+        if (this.state.data.length > 0) {
+            return (
+                <FlatList style={styles.listViewWrap}
+                    data={this.state.data}
+                    extraData={this.state.data}
+                    keyExtractor={(item) => item.id}
+                    renderItem={(item) => (
+                        <View style={styles.listItem} >
+                            {this.renderItems(item)}
+                        </View>
+                    )
+                    }
+                />
+            )
+        } else {
+            return (
+                <View>
+                </View>
+            )
+        }
+    }
 
     render() {
         let num = this.state.totalPrice
         let price = this.priceHandle(num.toString())
+        console.log('styate', this.state.data)
         const navigation = this.props.navigation;
         return (
             <Container style={styles.container}>
@@ -197,17 +215,9 @@ class Cart extends Component {
                     leftButton={() => navigation.goBack()}
                     leftIcon="ios-arrow-back" />
                 <Content style={styles.contentWrap}>
-                    <FlatList style={styles.listViewWrap}
-                        data={this.state.data}
-                        extraData={this.state.data}
-                        keyExtractor={(item) => item.id}
-                        renderItem={(item) => (
-                            <View style={styles.listItem} >
-                                {this.renderItems(item)}
-                            </View>
-                        )
-                        }
-                    />
+                    <View>
+                        {this.renderList()}
+                    </View>
                     <View style={styles.footer}>
                         <Text style={[styles.totalPrice, { marginLeft: 20 }]}>Tổng: </Text>
                         <View style={styles.footerRightWrap}>

@@ -43,7 +43,6 @@ export default class Setup extends Component {
 			return <Expo.AppLoading />;
 		}
 		if (this.state.isLogined) {
-			console.log('login 12111')
 			return (
 				<StyleProvider style={getTheme(variables)}>
 					<Provider store={this.state.store}>
