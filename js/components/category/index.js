@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import { FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
-import { fetchTrending } from "../../actions/fetchTrending.js"
+import { fetchProduct } from "../../actions/fetchProduct.js"
+
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import { connect } from "react-redux";
-import * as appFunction from "../../utils/function"
-
 
 import styles from "./styles";
 
@@ -18,34 +17,37 @@ const resetAction = NavigationActions.reset({
     index: 0,
     actions: [NavigationActions.navigate({ routeName: "Categories" })],
 });
-class Trending extends Component {
+class Category extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            index: 1
         };
     }
 
     componentDidMount() {
-        var params = {
-            "PageSize": "20",
-            "PageIndex": "1",
-            "LastViewedDate": "2017-08-20T15:20:34.8699498"
-        }
-        this.props.fetch(params)
+        InteractionManager.runAfterInteractions(() => {
+            const { params } = this.props.navigation.state
+            var parameter = {
+                "PageSize": 100,
+                "PageIndex": this.state.index,
+                "CategoryId": params.parent.id
+            }
+            this.props.fetch(parameter)
+        })
+
     }
 
     componentWillReceiveProps(props) {
-        if (props.fetchTrending.success) {
-            if (props.fetchTrending.data.model.length > 0) {
-                var listFood = this.state.data.concat(props.fetchTrending.data.model)
-                for (i in listFood) {
-                    listFood[i].quantity = 0
-                }
-                this.setState({ data: listFood })
+        if (props.fetchProduct.success) {
+            var listFood = props.fetchProduct.data.model
+            for (i in listFood) {
+                listFood[i].quantity = 0
             }
+            this.setState({ data: listFood })
         }
-        if (!props.fetchTrending.success) {
+        if (!props.fetchProduct.success) {
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
         }
     }
@@ -90,16 +92,60 @@ class Trending extends Component {
 
     priceHandle(price) {
         var count = 0
-        price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+        for (var i = price.length; i--; i > 0) {
+            count += 1
+            if (count == 4) {
+                price = this.insertString(price, i + 1, '.')
+                count = 0
+            }
+        }
         return price
+    }
+    insertString(str, index, value) {
+        return str.substr(0, index) + value + str.substr(index);
     }
 
     openDetail(food) {
-        console.log('open', food)
-        // const { params } = this.props.navigation.state
-        // food.parrentId = params.parent.id
+        const { params } = this.props.navigation.state
+        food.parrentId = params.parent.id
         this.props.navigation.navigate('FoodTab', { parrent: food })
     }
+    async add(item, rowID) {
+        let food = this.state.data
+        let data = [];
+        if (item.quantity == 0) {
+            Alert.alert('', 'Hãy chọn số lượng')
+        } else {
+            try {
+                const value = await AsyncStorage.getItem('cartUser');
+                if (value !== null) {
+                    data = JSON.parse(value);
+                }
+
+            } catch (error) {
+            }
+            var temp = []
+            for (i = 0; i < data.length; i++) {
+                temp.push(data[i].id)
+            }
+            var a = temp.indexOf(item.id)
+            if (a >= 0) {
+                for (i = 0; i < data.length; i++) {
+                    if (data[i].id == item.id) {
+                        let quantity = item.quantity
+                        data[i].quantity += quantity
+                    }
+                }
+            } else {
+                data.push(item);
+            }
+            try {
+                await AsyncStorage.setItem('cartUser', JSON.stringify(data));
+            } catch (error) {
+            }
+        }
+    }
+
     renderItems(data) {
         let item = data.item
         let active = 0
@@ -138,19 +184,19 @@ class Trending extends Component {
                                 </Col>
                                 <Col size={3} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity activeOpacity={active}  style={[styles.iconWrapMinus,{borderColor:color}]} onPress={() => this.minus(data.index)} >
-                                            <Icon style={[styles.icon, {color:color}]} name="md-remove" />
+                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
+                                            <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
-                                            <Text style={styles.quantity}>{item.quantity} {item.unitType}</Text>
+                                            <Text style={styles.quantity}>{item.quantity}</Text>
                                         </Col>
                                         <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />
                                         </TouchableOpacity>
                                     </Col>
                                     <Col style={styles.buttonAddCard}>
-                                        <Button addCart onPress={() => { appFunction.add(item) }} >
+                                        <Button addCart onPress={() => this.add(item, item.index)} >
                                             <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
                                         </Button>
                                     </Col>
@@ -165,12 +211,15 @@ class Trending extends Component {
 
     render() {
         const navigation = this.props.screenProps.navi;
+        const { params } = this.props.navigation.state
         return (
             <Container style={styles.container}>
-                <HeaderContent navi={navigation} rightButton={true} title="Xu hướng"
+                <HeaderContent navi={navigation} rightButton={true} title={params.parent.name}
+                    textLeft="Danh Mục"
+                    leftButton={() => { this.props.navigation.dispatch(resetAction) }}
                 />
-                <Content style={styles.content}>
-                    <FlatList style={{ marginBottom: 5, marginTop: 5, flex: 1, width: '100%' }}
+                <Content style={styles.contentWrap}>
+                    <FlatList style={{ marginBottom: 5, marginTop: 5 }}
                         data={this.state.data}
                         extraData={this.state.data}
                         keyExtractor={(item) => item.id}
@@ -188,13 +237,12 @@ class Trending extends Component {
 }
 function bindActions(dispatch) {
     return {
-        fetch: (params) => dispatch(fetchTrending(params)),
+        fetch: (parameter) => dispatch(fetchProduct(parameter)),
     };
 }
 
 const mapStateToProps = state => ({
-    fetchTrending: state.fetchTrending,
+    fetchProduct: state.fetchProduct,
 });
 
-export default connect(mapStateToProps, bindActions)(Trending);
-
+export default connect(mapStateToProps, bindActions)(Category);

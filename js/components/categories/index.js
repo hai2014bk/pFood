@@ -44,9 +44,9 @@ class Categories extends Component {
             console.log('ssaaa')
             var subCategories = props.fetchSubCategories.data.model
             if (subCategories.length > 0) {
-                console.log(this.state.parentChoose.id,"vassssaas",subCategories[0])
-                if(subCategories[0].parentId == this.state.parentChoose.id)
+                if(subCategories[0].parentId == this.state.parentChoose.id) {
                     this.props.navigation.navigate("SubCategories", { data: subCategories,parent:this.state.parentChoose})
+                }
             } else {
                 console.log('ddddd')
             }
