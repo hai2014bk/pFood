@@ -4,11 +4,11 @@ import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
 
-import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
+import {CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import { connect } from "react-redux";
-import PopupDialog from 'react-native-popup-dialog';
+import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
 import styles from "./styles";
 
@@ -24,6 +24,19 @@ class Category extends Component {
         this.state = {
             data: [],
             index: 1,
+            sortBy:'',
+            sortDirection:'',
+            changeSort:false,
+            field: {
+				Id: true,
+				Name: false,
+				Price: false,
+				Rate: false
+			},
+			direction: {
+				Desc: true,
+				Asc: false,
+			},
         };
     }
 
@@ -34,11 +47,11 @@ class Category extends Component {
             var parameter = {
                 "PageSize": 10,
                 "PageIndex": this.state.index,
-                "OrderBy":"Id",
-                "OrderDirection":"Desc",
+                "OrderBy":"",
+                "OrderDirection":"",
                 "CategoryId": params.parent.id
             }
-            console.log('load 1 ')            
+            console.log('load 1')            
             this.props.fetch(parameter)
         })
 
@@ -69,7 +82,7 @@ class Category extends Component {
             var parameter = {
                 "PageSize": 10,
                 "PageIndex": index,
-                "OrderBy":"Id",
+                "OrderBy":"Price",
                 "OrderDirection":"Desc",
                 "CategoryId": params.parent.id
             }
@@ -77,6 +90,32 @@ class Category extends Component {
             this.props.fetch(parameter)
         }
     }
+    pickerWrap(text, key, type) {
+		let boxType = type === 'field' ? this.state.field : this.state.direction;
+		let checked = boxType[key] ? true : false;
+		return (
+			<View style={styles.pickerWrap}>
+				<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
+				<Text style={styles.checkboxText}>{text}</Text>
+			</View>
+		)
+    }
+    updateStatus(key, type) {
+		let boxType = type === 'field' ? Object.assign({}, this.state.field) : Object.assign({}, this.state.direction);
+		for (let k in boxType) {
+			if (boxType.hasOwnProperty(k)) {
+				boxType[k] = false;
+				if (k === key) {
+					boxType[k] = true;
+				}
+			}
+		}
+		if (type === 'field') {
+			this.setState({ sortBy: boxType });
+		} else {
+			this.setState({ sortDirection: boxType });
+		}
+	}
 
     plus(rowID) {
         let newArray = this.state.data.slice(0);
@@ -88,6 +127,7 @@ class Category extends Component {
             data: newArray,
         });
     }
+    
 
     minus(rowID) {
         let newArray = this.state.data.slice(0);
@@ -171,6 +211,43 @@ class Category extends Component {
             }
         }
     }
+    renderSort(){
+        return (
+            <View style={{flex:1, marginLeft:10}}>
+                {this.pickerWrap('Mã sản phẩm','Id','field')}
+                {this.pickerWrap('Tên sản phẩm','Name','field')}
+                {this.pickerWrap('Giá sản phẩmm','Price','field')}
+                {this.pickerWrap('Đánh giá','Rate','field')}
+                </View>
+        )
+    }
+
+    renderSortPopup(){
+        return(
+            <PopupDialog
+            dialogTitle={<DialogTitle title="Job Rating" />}
+            ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+            onDismissed={() => this.onDismissed()}
+            dialogStyle={{marginTop:-300}}
+            width={300}
+            height={300}
+            actions={[
+              <DialogButton
+                text="Rate"
+                onPress={() => {
+                  this.rateButton()
+                }}
+                key="button-1"
+              />,
+            ]}
+          >
+          <View style={{flex:1,backgroundColor:'red'}}>
+                {this.renderSort()}
+            </View>
+            
+          </PopupDialog>
+        )
+    }
 
     renderItems(data) {
         let item = data.item
@@ -235,13 +312,16 @@ class Category extends Component {
             </TouchableOpacity>
         )
     }
+    openSort(){
+        this.popupDialog.show();
+    }
 
     render() {
         const navigation = this.props.screenProps.navi;
         const { params } = this.props.navigation.state
         return (
             <Container style={styles.container}>
-                <HeaderContent navi={navigation} rightButton={true} title={params.parent.name}
+                <HeaderContent navi={navigation} customRight={()=>this.openSort()} rightButton={true} title={params.parent.name}
                     textLeft="Danh Mục"
                     leftButton={() => { this.props.navigation.dispatch(resetAction) }}
                 />
@@ -259,6 +339,7 @@ class Category extends Component {
                         )
                         }
                     />
+                        {this.renderSortPopup()}
                 </View>
             </Container>
         );

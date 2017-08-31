@@ -36,11 +36,17 @@ class HeaderContent extends Component {
   }
   renderRight() {
     if (this.props.rightButton) {
+      if(this.props.customRight) {
       return (
-        <Button transparent onPress={() => this.openCart()}>
-          <Icon style={{color:'white'}} active name="cart" />
+        <Button transparent onPress={this.props.customRight}>
+          <Icon style={{color:'white'}} active name={this.props.rightIcon} />
         </Button>
       )
+    } else {
+      <Button transparent onPress={() => this.openCart()}>
+      <Icon style={{color:'white'}} active name="cart" />
+    </Button>
+    }
     } else {
       return (
         <View>
