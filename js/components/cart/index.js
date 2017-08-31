@@ -225,7 +225,7 @@ class Cart extends Component {
                             <Text style={[styles.totalPrice, { fontSize: 20 }]}> {price}đ</Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.checkoutWrap}>
+                    <TouchableOpacity style={styles.checkoutWrap} onPress={() => navigation.navigate("Billing")}>
                         <Text style={styles.checkout}> Thanh toán </Text>
                     </TouchableOpacity>
                 </Content>

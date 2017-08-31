@@ -115,7 +115,7 @@ class FoodDetail extends Component {
 	}
 	renderContentInfo(header, content) {
 		return (
-			<Grid style={{ borderColor: '#e7e9e5', borderTopWidth: 1 }}>
+			<Grid style={{flex:1, borderColor: '#e7e9e5', borderTopWidth: 1 }}>
 				<Row style={{ margin: 10, flex: 1, justifyContent: 'space-between' }}>
 					<Text style={styles.contentText}>{header}</Text>
 					<Text style={styles.contentText}>{content}</Text>
@@ -125,11 +125,9 @@ class FoodDetail extends Component {
 	}
 	renderFoodContent() {
 		return (
-			<Card style={{ marginBottom: 15 }}>
+			<Card style={{padding:0, flex:1, marginBottom: 15 }}>
 				<View style={styles.cardContainer}>
-					<Row style={{ alignItems: 'center', flex: 1, borderBottomWidth: 1, borderColor: '#e7e9e5' }}>
 						<Text style={styles.headerText}> Hàm Lượng </Text>
-					</Row>
 					{this.renderContentInfo('Diệp lục', '1000')}
 					{this.renderContentInfo('Vitamin A', '10%')}
 				</View>
