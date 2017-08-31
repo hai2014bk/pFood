@@ -170,7 +170,8 @@ export default {
     totalPrice: {
         fontSize: 17,
         color: 'grey',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        alignSelf:'flex-end'
     },
     checkoutWrap: {
         backgroundColor: primary,

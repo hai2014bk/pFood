@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Linking, Image, StatusBar, Alert, TouchableOpacity, ScrollView } from "react-native";
+import { Linking, Image, StatusBar, Alert, TouchableOpacity, ScrollView } from "react-native";
 import { forgetPassword } from "../../actions/forgetPassword.js"
 import { connect } from "react-redux";
 import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
@@ -19,7 +19,7 @@ class ForgetPassword extends Component {
         this.validateEmail = this.validateEmail.bind(this)
     }
 
-    sendEmail(){
+    sendEmail() {
         this.props.navigation.goBack()
     }
 
@@ -32,7 +32,7 @@ class ForgetPassword extends Component {
                     '',
                     'Gửi yêu cầu thành công! Vui lòng kiểm tra lại hòm thư',
                     [
-                        { text: 'OK', onPress: () => this.sendEmail()  },
+                        { text: 'OK', onPress: () => this.sendEmail() },
                     ],
                     { cancelable: false }
                 )
@@ -47,15 +47,22 @@ class ForgetPassword extends Component {
     onSend() {
         if (this.state.email) {
             if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
-                Alert.alert('', 'Địa chỉ email không hợp lệ')
+                if (this.checkSpaceAll(this.state.email)) {
+                    Alert.alert('', 'Hãy nhập địa chỉ email')
+                    this.setState({ email: '' })
+                } else {
+                    Alert.alert('', 'Địa chỉ email không hợp lệ')
+                }
+                this.passwordInput._root.focus()
             } else {
                 let params = {}
                 params.email = this.state.email
                 this.props.forget(params)
-                this.setState({isLoading:true})
+                this.setState({ isLoading: true })
             }
         } else {
             Alert.alert('', 'Hãy nhập địa chỉ email')
+            this.passwordInput._root.focus()
         }
     }
 
@@ -73,7 +80,7 @@ class ForgetPassword extends Component {
                             </View>
                             <Form>
                                 <Item style={styles.input} regular >
-                                    <Input style={styles.textInput} value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Địa chỉ email' placeholderTextColor='#f4e6db' />
+                                    <Input ref={(password) => { this.passwordInput = password }} style={styles.textInput} value={this.state.email} onChangeText={text => this.setState({ email: text })} placeholder='Địa chỉ email' placeholderTextColor='#f4e6db' />
                                 </Item>
                             </Form>
                             <View style={styles.questionWrap}>
@@ -98,6 +105,12 @@ class ForgetPassword extends Component {
             return true;
         }
         return false;
+    }
+    checkSpaceAll(text) {
+        if (!text.replace(/\s/g, '').length) {
+            return true
+        }
+        return false
     }
 }
 function bindActions(dispatch) {

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard } from "react-native";
+import { Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, AsyncStorage } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
+import * as mConstants from '../../utils/Constants'
 import { connect } from "react-redux";
 import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -38,6 +39,19 @@ class Profile extends Component {
 	}
 	componentWillReceiveProps(props) {
 
+	}
+
+	async componentDidMount() {
+		try {
+			const value = await AsyncStorage.getItem(mConstants.USER_INFO);
+			if (value !== null) {
+				console.log('value',value)
+				let lastName = ''
+				let email = ''
+			}
+		} catch (error) {
+
+		}
 	}
 
 	updateStatus(key, type) {

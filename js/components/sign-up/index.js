@@ -47,10 +47,16 @@ class SignUp extends Component {
 	}
 
 	showPassword() {
-		this.setState({
-			showPassword: !this.state.showPassword,
+		if (this.state.password.length > 0) {
+			this.setState({
+				showPassword: !this.state.showPassword,
+			})
+		} else {
+			this.setState({
+				showPassword: true,
+			})
+		}
 
-		})
 	}
 
 	checkSpace() {
