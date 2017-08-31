@@ -14,6 +14,8 @@ export type Action =
 	| { type: "FETCH_PRODUCT_FAILED" }
 	| {type: "FETCH_PRODUCTDETAIL_SUCCESS"
 	| { type: "FETCH_PRODUCTDETAIL_FAILED" }
+	| {type :"FETCH_TRENDING_SUCCESS"}
+	| {type :"FETCH_TRENDING_FAILED"}
 	}
 	;
 

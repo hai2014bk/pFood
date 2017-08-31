@@ -9,6 +9,7 @@ import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
 import styles from "./styles";
 import { fetchDetail } from "../../actions/fetchDetail.js"
+import * as appFunction from "../../utils/function"
 
 const primary = require("../../themes/variable").brandPrimary;
 
@@ -72,43 +73,6 @@ class FoodDetail extends Component {
 			</Swiper>
 		)
 	}
-	async add() {
-        let food = this.state.food
-        let data = [];
-        if (this.state.quantity == 0) {
-            Alert.alert('', 'Hãy chọn số lượng')
-        } else {
-            try {
-                const value = await AsyncStorage.getItem('cartUser');
-                if (value !== null) {
-                    data = JSON.parse(value);
-                }
-
-            } catch (error) {
-            }
-
-            var temp = []
-            for (i = 0; i < data.length; i++) {
-                temp.push(data[i].id)
-            }
-            var a = temp.indexOf(food.id)
-            if (a >= 0) {
-                for (i = 0; i < data.length; i++) {
-                    if (data[i].id == food.id) {
-                        let quantity = this.state.quantity
-                        data[i].quantity = food.quantity + quantity
-                    }
-                }
-            } else {
-                data.push(food);
-            }
-            console.log('data save', data)
-            try {
-                await AsyncStorage.setItem('cartUser', JSON.stringify(data));
-            } catch (error) {
-            }
-        }
-    }
 	renderStar(rate) {
 		return (
 			<StarRating
@@ -202,27 +166,17 @@ class FoodDetail extends Component {
 	}
 	priceHandle(price) {
 		var count = 0
-		for (var i = price.length; i--; i > 0) {
-			count += 1
-			if (count == 4) {
-				price = this.insertString(price, i + 1, '.')
-				count = 0
-			}
-		}
-		return price
+		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+        return price
 	}
 	insertString(str, index, value) {
 		return str.substr(0, index) + value + str.substr(index);
 	}
 	renderPriceAndBuy() {
-		var quantity = (this.state.food.quantity * 200)
-		var unit = 'g'
-		if (quantity >= 1000) {
-			quantity = quantity / 1000
-			unit = 'kg'
-		}
+		var quantity = this.state.food.quantity 
 		var food = this.state.food
 		var price = ''
+		console.log(food.unitType)
 		if (food.price) {
 			price = this.priceHandle(food.price.toString())
 		}
@@ -247,14 +201,14 @@ class FoodDetail extends Component {
 							<Icon style={[styles.icon, {color:color}]} name="md-remove" />
 						</TouchableOpacity>
 						<Col style={styles.quantityContainer}>
-							<Text style={styles.quantity}>{quantity} {unit}</Text>
+							<Text style={styles.quantity}>{quantity} {food.unitType}</Text>
 						</Col>
 						<TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus()} >
 							<Icon name="md-add" style={styles.icon} />
 						</TouchableOpacity>
 					</Row>
 					<Col style={styles.buttonAddCard}>
-						<Button onPress={()=> this.add()} addCart large >
+						<Button onPress={()=> {appFunction.add(this.state.food)}} addCart large >
 							<Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
 						</Button>
 					</Col>

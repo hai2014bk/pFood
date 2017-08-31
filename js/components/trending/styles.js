@@ -94,11 +94,11 @@ export default {
         marginTop: 20,
     },
     quantity: {
-        fontSize: 17,
+        fontSize: 15,
         alignSelf: 'center'
     },
     quantityContainer: {
-        width: 30,
+        flex:1,
         aspectRatio: 1,
         justifyContent: 'center',
     },
