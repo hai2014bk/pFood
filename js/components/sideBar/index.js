@@ -8,7 +8,7 @@ import { Grid, Col } from "react-native-easy-grid";
 import styles from "./style";
 const resetAction = NavigationActions.reset({
 	index: 0,
-	actions: [NavigationActions.navigate({ routeName: "LoginStack" })],
+	actions: [NavigationActions.navigate({ routeName: "Login" })],
 });
 class SideBar extends Component {
 

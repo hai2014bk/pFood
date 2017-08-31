@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
+import {Animated, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
@@ -54,6 +54,8 @@ class Category extends Component {
             this.props.fetch(parameter)
         }
     }
+
+    
 
     componentWillReceiveProps(props) {
         if (props.fetchProduct.success) {
@@ -126,6 +128,12 @@ class Category extends Component {
         let item = data.item
         let id = item.id
         let price = this.priceHandle(item.price.toString())
+        let style = {
+            height:this.state.height,
+            width: this.state.width,
+            marginLeft:this.state.marginLeft,
+            marginTop: this.state.marginTop
+        }
         return (
             <TouchableOpacity onPress={()=>{this.openDetail(item)}}>            
             <Card style={styles.card}>
@@ -134,8 +142,8 @@ class Category extends Component {
                         <Grid >
                             <Col size={2} style={styles.imageWrap}>
                                 <View style={styles.imageContainer}>
-                                    <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
-                                </View>
+                                    <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image}/>
+                                                            </View>
                             </Col>
                             <Col size={3} style={styles.infoWrap}>
                                 <Text style={styles.foodName}>{item.name}</Text>

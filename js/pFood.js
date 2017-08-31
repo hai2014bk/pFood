@@ -1,4 +1,5 @@
 import { StackNavigator } from "react-navigation";
+import React, { Component } from "react";
 
 import Login from "./components/login/";
 import NeedHelp from "./components/needhelp";
@@ -14,24 +15,28 @@ import Category from "./components/category";
 import RecommendFood from "./components/recomnendFood/";
 import FoodDetail from "./components/foodDetail/";
 import Trending from "./components/trending"
-import LoginStack from "./loginStack"
 import Cart from "./components/cart"
 
 
+const App = ({ initialRouteName }) => {
 const Main = StackNavigator(
 	{
 		Drawer: { screen: Drawer, gesturesEnabled: false },
-		LoginStack: { screen: LoginStack },	
+		Login : {screen: Login},
+		SignUp: {screen:SignUp},
+		ForgetPassword: {screen:ForgetPassword},
 		Cart: { screen: Cart },	
 	},
 	{
 		index: 0,
-		initialRouteName: "Drawer",
+		initialRouteName: initialRouteName,
 		headerMode: "none",
 		navigationOptions: {
 			gesturesEnabled: false,
 		},
 	}
 );
+ return <Main/>
+}
 
-export default Main;
+export default App;

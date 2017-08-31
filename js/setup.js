@@ -6,8 +6,7 @@ import * as mConstants from './utils/Constants'
 import {
 	AsyncStorage
   } from "react-native";
-import Main from "./pFood";
-import LoginStack from "./loginStack"
+import App from "./pFood";
 import configureStore from "./configureStore";
 import getTheme from "../native-base-theme/components";
 import variables from "../native-base-theme/variables/commonColor";
@@ -42,21 +41,14 @@ export default class Setup extends Component {
 		if (!this.state.isReady) {
 			return <Expo.AppLoading />;
 		}
-		if (this.state.isLogined) {
+		var initialRoute = this.state.isLogined ? "Drawer":"Login"
 			return (
 				<StyleProvider style={getTheme(variables)}>
 					<Provider store={this.state.store}>
-						<Main />
+						<App initialRouteName={initialRoute} />
 					</Provider>
 				</StyleProvider>
 			);
-		}
-		return (
-			<StyleProvider style={getTheme(variables)}>
-				<Provider store={this.state.store}>
-					<LoginStack />
-				</Provider>
-			</StyleProvider>
-		);
+		
 	}
 }
