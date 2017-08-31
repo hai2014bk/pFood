@@ -8,6 +8,7 @@ import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, 
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import { connect } from "react-redux";
+import PopupDialog from 'react-native-popup-dialog';
 
 import styles from "./styles";
 
@@ -22,18 +23,22 @@ class Category extends Component {
         super(props);
         this.state = {
             data: [],
-            index: 1
+            index: 1,
         };
     }
 
     componentDidMount() {
+        console.log('load 1 ')
         InteractionManager.runAfterInteractions(() => {
             const { params } = this.props.navigation.state
             var parameter = {
-                "PageSize": 100,
+                "PageSize": 10,
                 "PageIndex": this.state.index,
+                "OrderBy":"Id",
+                "OrderDirection":"Desc",
                 "CategoryId": params.parent.id
             }
+            console.log('load 1 ')            
             this.props.fetch(parameter)
         })
 
@@ -41,14 +46,35 @@ class Category extends Component {
 
     componentWillReceiveProps(props) {
         if (props.fetchProduct.success) {
-            var listFood = props.fetchProduct.data.model
+            if(props.fetchProduct.data.model.length > 0) {
+            var listFood = this.state.data.concat( props.fetchProduct.data.model)
             for (i in listFood) {
-                listFood[i].quantity = 0
+                listFood[i].quantity = 1
             }
             this.setState({ data: listFood })
+        } else {
+            this.setState({loadedAll:true})
+        }
         }
         if (!props.fetchProduct.success) {
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
+        }
+    }
+
+    loadMore(){
+        console.log('load 2 ')            
+        if(!this.state.loadedAll){
+            var index = this.state.index + 1
+            const { params } = this.props.navigation.state
+            var parameter = {
+                "PageSize": 10,
+                "PageIndex": index,
+                "OrderBy":"Id",
+                "OrderDirection":"Desc",
+                "CategoryId": params.parent.id
+            }
+            this.setState({index:this.state.index  + 1})
+            this.props.fetch(parameter)
         }
     }
 
@@ -150,6 +176,7 @@ class Category extends Component {
         let item = data.item
         let active = 0
         let color = ''
+        var quantity = item.quantity * item.quantityStep        
         if (item.quantity > 0) {
             active = 0.2,
                 color = primary
@@ -189,7 +216,7 @@ class Category extends Component {
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
-                                            <Text style={styles.quantity}>{item.quantity}</Text>
+                                            <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
                                         </Col>
                                         <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />
@@ -218,19 +245,21 @@ class Category extends Component {
                     textLeft="Danh Mục"
                     leftButton={() => { this.props.navigation.dispatch(resetAction) }}
                 />
-                <Content style={styles.contentWrap}>
-                    <FlatList style={{ marginBottom: 5, marginTop: 5 }}
+                <View style={{marginBottom:60}}>
+                    <FlatList style={{marginTop:5}}
+                    onEndReached={(distanceFromEnd)=>this.loadMore()}
+                    onEndReachedThreshold = {0.5}
                         data={this.state.data}
                         extraData={this.state.data}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item)=>item.id}
                         renderItem={(item) => (
-                            <View style={{ flex: 1, borderBottomWidth: 0 }} >
+                            <View style={{ flex:1, borderBottomWidth: 0 }} >
                                 {this.renderItems(item)}
                             </View>
                         )
                         }
                     />
-                </Content>
+                </View>
             </Container>
         );
     }
