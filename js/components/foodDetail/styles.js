@@ -76,6 +76,7 @@ export default {
 		width:deviceWidth,
 		backgroundColor:'white',
 		marginBottom:30,
+		flex:1,
 	},
 	headerText:{
 		color:primary,
