@@ -157,8 +157,10 @@ class FoodDetail extends Component {
 	}
 	minus() {
 		var food = this.state.food
-		food.quantity -= 1 
-		this.setState({ food:food })
+		if(food.quantity > 0){
+			food.quantity -= 1 
+			this.setState({ food:food })
+		}
 	}
 	priceHandle(price) {
 		var count = 0
@@ -176,6 +178,13 @@ class FoodDetail extends Component {
 		if (food.price) {
 			price = this.priceHandle(food.price.toString())
 		}
+		if (food.quantity > 0) {
+            active = 0.2,
+            color = primary
+        } else {
+            active = 1,
+            color = '#cecece'
+        }
 		return (
 			<Grid>
 				<Col style={{ margin: 10 }}>
@@ -186,8 +195,8 @@ class FoodDetail extends Component {
 				</Col>
 				<Col style={{ margin: 10 }}>
 					<Row style={{ marginLeft: '20%', flex: 1, justifyContent: 'flex-end' }}>
-					<TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus()} >
-							<Icon style={styles.icon} name="md-remove" />
+					<TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, {borderColor:color}]} onPress={() => this.minus()} >
+							<Icon style={[styles.icon, {color:color}]} name="md-remove" />
 						</TouchableOpacity>
 						<Col style={styles.quantityContainer}>
 							<Text style={styles.quantity}>{quantity} {food.unitType}</Text>

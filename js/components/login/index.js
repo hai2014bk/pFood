@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { Entypo } from '@expo/vector-icons';
-import {  Keyboard, Image, Platform, StatusBar, TouchableOpacity,Alert } from "react-native";
+import { Keyboard, Image, Platform, StatusBar, TouchableOpacity, Alert, Animated } from "react-native";
 
 import {
   Container,
@@ -37,86 +37,84 @@ class Login extends Component {
     };
   }
   checkSpace() {
-		if (this.checkSpaceAll(this.state.email)) {
-			this.setState({ email: '' })
-			this.emailInput._root.focus()
-		}
-    if (!this.validateEmail(this.state.email)){
-      this.setState({ email: '' })
+    if (this.checkSpaceAll(this.state.email)) {
+      this.emailInput._root.focus()
+    }
+    if (!this.validateEmail(this.state.email)) {
       this.emailInput._root.focus()
     }
 
-	}
-	checkValue() {
-if(!this.state.email){
-   this.emailInput._root.focus()
-}
-        if (!this.state.email &&!this.state.password)
-        {  this.emailInput._root.focus()}
-      else{
-        if(!this.state.password){
-           this.passwordInput._root.focus()
-        }
+  }
+  checkValue() {
+    if (!this.state.email) {
+      this.emailInput._root.focus()
+    }
+    if (!this.state.email && !this.state.password)
+    { this.emailInput._root.focus() }
+    else {
+      if (!this.state.password) {
+        this.passwordInput._root.focus()
       }
+    }
 
 
-	}
+  }
   loginClick() {
 
     if (this.state.email && this.state.password) {
       if ((!this.checkSpaceAll(this.state.email))) {
         if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
 
-        setTimeout(()=>{Alert.alert('', 'Địa chỉ email không hợp lệ',
-        [
-          { text: 'OK', onPress: () => this.checkSpace() },
-        ],
-        { cancelable: false }
-      )
-    }, 200)
-    } else{
-    let params = {}
-    params.email = this.state.email
-    params.password = this.state.password
-    this.props.loginAction(params)
-    this.setState({ isLoading: true })
-  }
-  }
-  else {
-    setTimeout(() => {
-      Alert.alert(
-        '',
-        'Các trường không được phép trống'
-      ,
-        [
-          { text: 'OK', onPress: () => this.checkSpace() },
-        ],
-        { cancelable: false }
-      )
-    }, 200)
-  }
-} else {
-  setTimeout(() => {
-    Alert.alert(
-      '',
-      'Các trường không được phép trống',
-      [
-        { text: 'OK', onPress: () => this.checkValue() },
-      ],
-      { cancelable: false }
-    )
-  }, 200)
-}
+          setTimeout(() => {
+            Alert.alert('', 'Địa chỉ email không hợp lệ',
+              [
+                { text: 'OK', onPress: () => this.checkSpace() },
+              ],
+              { cancelable: false }
+            )
+          }, 200)
+        } else {
+          let params = {}
+          params.email = this.state.email
+          params.password = this.state.password
+          this.props.loginAction(params)
+          this.setState({ isLoading: true })
+        }
+      }
+      else {
+        setTimeout(() => {
+          Alert.alert(
+            '',
+            'Các trường không được phép trống'
+            ,
+            [
+              { text: 'OK', onPress: () => this.checkSpace() },
+            ],
+            { cancelable: false }
+          )
+        }, 200)
+      }
+    } else {
+      setTimeout(() => {
+        Alert.alert(
+          '',
+          'Các trường không được phép trống',
+          [
+            { text: 'OK', onPress: () => this.checkValue() },
+          ],
+          { cancelable: false }
+        )
+      }, 200)
+    }
     Keyboard.dismiss()
   }
 
   componentWillReceiveProps(props) {
 
     this.setState({ isLoading: false })
-    if (props.login.success)
-    {
-   this.props.navigation.navigate('Drawer')
-  }
+    if (props.login.success) {
+      this.props.navigation.navigate('Drawer')
+    }
     else {
       setTimeout(() => { Alert.alert('Tài khoản hoặc mật khẩu không chính xác') }, 100)
     }
@@ -132,63 +130,65 @@ if(!this.state.email){
 
         <Image source={bgr} style={styles.background}>
           <Content keyboardShouldPersistTaps='handled'>
-                    <Spinner visible={this.state.isLoading} />
+            <Spinner visible={this.state.isLoading} />
 
             <View style={styles.bg}>
-              <Image source={logo} resizeMode='contain' style={{marginBottom:60, marginTop:80, width:'95%'}} />
+              <Image source={logo} resizeMode='contain' style={{ marginBottom: 60, marginTop: 80, width: '95%' }} />
 
-                <Input main
+              <Input main
 
-            ref={(email) => { this.emailInput = email }}
-                  placeholder="Tên đăng nhập"
-                  placeholderTextColor='#f4e6db'
-                   autoCapitalize = 'none'
-                    value={this.state.email}
-                  onChangeText={email=> this.setState({ email })}
-                  style={styles.input}
-                />
+                ref={(email) => { this.emailInput = email }}
+                placeholder="Tên đăng nhập"
+                placeholderTextColor='#f4e6db'
+                autoCapitalize='none'
+                value={this.state.email}
+                onChangeText={email => this.setState({ email })}
+                style={styles.input}
+              />
 
 
-                <Input main
-          ref={(password) => { this.passwordInput = password }}
-                  placeholder="Mật khẩu"
-                  placeholderTextColor='#f4e6db'
-                  secureTextEntry
-                  style={styles.textInput}
+              <Input main
+                ref={(password) => { this.passwordInput = password }}
+                placeholder="Mật khẩu"
+                placeholderTextColor='#f4e6db'
+                secureTextEntry
+                style={styles.textInput}
 
-                  onChangeText={password => this.setState({ password })}
-                  style={styles.input}
+                onChangeText={password => this.setState({ password })}
+                style={styles.input}
 
-                />
+              />
               <TouchableOpacity
                 rounded
                 style={styles.loginBtn}
                 onPress={() => this.loginClick()}
               >
-              <Text
-              style={
-              {fontSize:20,color:"white"}
-              }
-              >
-                Đăng Nhập
+                <Text
+                  style={
+                    { fontSize: 20, color: "white" }
+                  }
+                >
+                  Đăng Nhập
                 </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ marginTop: 15 }}
-              onPress={() => navigation.navigate("ForgetPassword")}
-            >
-              <Text
-                style={styles.forgot}
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ marginTop: 15 }}
+                onPress={() => navigation.navigate("ForgetPassword")}
               >
-                Quên mật khẩu?
+                <Text
+                  style={styles.forgot}
+                >
+                  Quên mật khẩu?
               </Text>
-            </TouchableOpacity>
+              </TouchableOpacity>
               <Text style={styles.questionText}>Hoặc đăng nhập với</Text>
               <View style={
-                {flex:1,flexDirection: "row",
-                justifyContent: 'space-between',
-                height:60,
-                width:'60%'}
+                {
+                  flex: 1, flexDirection: "row",
+                  justifyContent: 'space-between',
+                  height: 60,
+                  width: '60%'
+                }
               }>
 
                 <TouchableOpacity
@@ -196,7 +196,7 @@ if(!this.state.email){
                     styles.icon
                   }
                 >
-                 <Entypo name="google--with-circle" size={50} color='white' />
+                  <Entypo name="google--with-circle" size={50} color='white' />
                 </TouchableOpacity>
                 <TouchableOpacity
                   transparent
@@ -214,20 +214,20 @@ if(!this.state.email){
                   <Entypo name="flickr-with-circle" size={50} color='white' />
                 </TouchableOpacity>
               </View>
-              <View  style={{ flexDirection:'row',marginTop:20}} >
-              <Text style={styles.dontac}>{"Không có tài khoản?  "}</Text>
-              <TouchableOpacity
-                style={styles.regis}
-                onPress={() => navigation.navigate("SignUp")}
-              >
-              <Text
-                style={{ fontSize:16,fontWeight:'bold',color:"white"}}>
-                Đăng Kí Ngay
+              <View style={{ flexDirection: 'row', marginTop: 20 }} >
+                <Text style={styles.dontac}>{"Không có tài khoản?  "}</Text>
+                <TouchableOpacity
+                  style={styles.regis}
+                  onPress={() => navigation.navigate("SignUp")}
+                >
+                  <Text
+                    style={{ fontSize: 16, fontWeight: 'bold', color: "white" }}>
+                    Đăng Kí Ngay
                 </Text>
-          </TouchableOpacity>
-            </View>
+                </TouchableOpacity>
               </View>
-        </Content>
+            </View>
+          </Content>
         </Image>
 
       </Container>
@@ -238,12 +238,12 @@ if(!this.state.email){
     return re.test(email);
   }
   validateUnicode(email) {
-		var regex = /^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/gi
-		if (regex.test(email)) {
-			return true;
-		}
-		return false;
-	}
+    var regex = /^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/gi
+    if (regex.test(email)) {
+      return true;
+    }
+    return false;
+  }
   checkSpaceAll(text) {
     if (!text.replace(/\s/g, '').length) {
       return true

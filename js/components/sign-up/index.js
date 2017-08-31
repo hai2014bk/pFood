@@ -47,10 +47,16 @@ class SignUp extends Component {
 	}
 
 	showPassword() {
-		this.setState({
-			showPassword: !this.state.showPassword,
+		if (this.state.password.length > 0) {
+			this.setState({
+				showPassword: !this.state.showPassword,
+			})
+		} else {
+			this.setState({
+				showPassword: true,
+			})
+		}
 
-		})
 	}
 
 	checkSpace() {
@@ -61,6 +67,10 @@ class SignUp extends Component {
 		if (this.checkSpaceAll(this.state.firstName)) {
 			this.setState({ firstName: '' })
 			this.firstNameInput._root.focus()
+		}
+		if (this.checkSpaceAll(this.state.password)) {
+			this.setState({ password: '' })
+			this.passwordInput._root.focus()
 		}
 
 	}
@@ -83,7 +93,7 @@ class SignUp extends Component {
 	createPassword() {
 		Keyboard.dismiss()
 		if (this.state.email && this.state.firstName && this.state.password) {
-			if ((!this.checkSpaceAll(this.state.email)) && (!this.checkSpaceAll(this.state.firstName))) {
+			if ((!this.checkSpaceAll(this.state.email)) && (!this.checkSpaceAll(this.state.firstName) && (!this.checkSpaceAll(this.state.password)))) {
 				if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
 					setTimeout(() => {
 						Alert.alert(
@@ -97,8 +107,14 @@ class SignUp extends Component {
 					}, 200)
 				} else {
 					if (this.state.password.length < 8) {
-						Alert.alert('', 'Mật khẩu tối thiểu 8 kí tự')
-						this.passwordInput._root.focus()
+						Alert.alert(
+							'',
+							'Mật khẩu tối thiểu 8 kí tự',
+							[
+								{ text: 'OK', onPress: () => this.passwordInput._root.focus() },
+							],
+							{ cancelable: false }
+						)	
 					} else {
 						let params = {}
 						params.firstName = this.state.firstName

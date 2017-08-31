@@ -10,7 +10,7 @@ import styles from "./styles";
 var circle = require('../../../images/greyCircle.png')
 const headerLogo = require("../../../images/Header-Logo.png");
 const primary = require("../../themes/variable").brandPrimary;
-const iconFood = require("../../../images/vegeterian_food1600.png")
+const iconFood = ''
 class Categories extends Component {
     constructor(props) {
         super(props);
