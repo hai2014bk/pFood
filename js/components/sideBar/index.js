@@ -19,10 +19,23 @@ class SideBar extends Component {
 	}
 	render() {
 		const navigation = this.props.navigation;
+		console.log('side bar', navigation)
 		return (
 			<Container>
 				<Image source={require("../../../images/sid.png")} style={styles.background}>
 					<Content style={styles.drawerContent}>
+					<ListItem
+							navigation={navigation}
+							button
+							onPress={() => {
+								navigation.navigate("MainTabFood");
+							}}
+							iconLeft
+							style={styles.links}
+						>
+							<Icon name="logo-apple" />
+							<Text style={styles.linkText}> Thực Phẩm</Text>
+						</ListItem>
 						<ListItem
 							navigation={navigation}
 							button
@@ -39,25 +52,13 @@ class SideBar extends Component {
 							navigation={navigation}
 							button
 							onPress={() => {
-								navigation.navigate("Store");
+								navigation.navigate("History");
 							}}
 							iconLeft
 							style={styles.links}
 						>
 							<Icon name="ios-paper" />
 							<Text style={styles.linkText}>Lịch Sử</Text>
-						</ListItem>
-						<ListItem
-							navigation={navigation}
-							button
-							onPress={() => {
-								navigation.navigate("Overview");
-							}}
-							iconLeft
-							style={styles.links}
-						>
-							<Icon name="ios-stats" />
-							<Text style={styles.linkText}> OVERVIEW</Text>
 						</ListItem>
 						<ListItem
 							navigation={navigation}

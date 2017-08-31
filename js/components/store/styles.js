@@ -11,6 +11,7 @@ export default {
         width: null,
         height: null,
         backgroundColor: '#e7e9e5',
+        paddingBottom:10
     },
     cellContainer: {
         backgroundColor: 'white',
