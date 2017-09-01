@@ -11,7 +11,7 @@ export default {
         width: null,
         height: null,
         backgroundColor: '#e7e9e5',
-        paddingBottom:10
+        paddingBottom: 10
     },
     cellContainer: {
         backgroundColor: 'white',
@@ -115,57 +115,69 @@ export default {
         borderColor: 'white',
         borderRadius: 5,
     },
-    listItemWrap:{
-        width:'50%',
-        paddingHorizontal:5
+    listItemWrap: {
+        width: '50%',
+        paddingHorizontal: 5
     },
-    imageWrap:{
-        width:'100%',
-        height:120,
+    imageWrap: {
+        width: '100%',
+        height: 120,
         borderBottomWidth: 1,
-        borderColor:'#E1E1E1'
+        borderColor: '#E1E1E1'
     },
-    image:{
-        width:'100%',
-        height:'100%'
+    image: {
+        width: '100%',
+        height: '100%'
     },
-    descriptionWrap:{
-        flexDirection:'column',
-        paddingTop:10,
-        paddingLeft:10,
-        paddingBottom:10,
-        paddingRight:5,
+    descriptionWrap: {
+        flexDirection: 'column',
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingBottom: 10,
+        paddingRight: 5,
     },
-    products:{
-        color:'#AAAAAA',
-        fontSize:12
+    products: {
+        color: '#AAAAAA',
+        fontSize: 12
     },
-    starWrap:{
-        width:50,
-        marginTop:3
+    starWrap: {
+        width: 50,
+        marginTop: 3
     },
-    address:{
-        color:'#555555',
-        fontSize:10,
-        marginTop:3
+    address: {
+        color: '#555555',
+        fontSize: 10,
     },
-    bodyWrap:{
-         flex: 1,
-          padding: 10 
+    bodyWrap: {
+        flex: 1,
+        padding: 10
     },
-    titleWrap:{
-        flexDirection:'row',
-        marginTop:5,
-        marginLeft:2
+    titleWrap: {
+        flexDirection: 'row',
+        marginTop: 5,
+        marginLeft: 2
     },
-    moneyIcon:{
-        width:30,
-        height:30
+    moneyIcon: {
+        width: 30,
+        height: 30
     },
-    title:{
-        color:primary,
-        fontSize:17,
-        marginLeft:8,
-        fontWeight:'bold'
+    title: {
+        color: primary,
+        fontSize: 17,
+        marginLeft: 8,
+        fontWeight: 'bold'
+    },
+    hotlineWrap: {
+        flexDirection: 'row'
+    },
+    phoneIcon: {
+        fontSize: 18,
+        color: 'gray'
+    },
+    hotline: {
+        color: '#555555',
+        fontSize: 10,
+        marginTop: 3,
+        marginLeft: 5
     }
 };

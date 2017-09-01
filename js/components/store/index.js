@@ -6,31 +6,40 @@ import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "nat
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
+import { connect } from "react-redux";
 import styles from "./styles";
-const primary = require("../../themes/variable").brandPrimary;
-const items = [
-    { id: 1, image: '', products: 50, address: '160 Nguyễn Trãi, quận Thanh Xuân, thành phố Hà Nội' },
-    { id: 2, image: '', products: 72, address: '200 Khâm Thiên, quận Đống Đa, thành phố Hà Nội' },
-    { id: 3, image: '', products: 34, address: '250 Hà Đông, quận Thanh Xuân, thành phố Hà Nội' },
-    { id: 4, image: '', products: 23, address: '199 Đường Láng, quận Thanh Xuân, thành phố Hà Nội' },
-    { id: 5, image: '', products: 20, address: '250 Bà Triệu, quận Thanh Xuân, thành phố Hà Nội' },
-    { id: 6, image: '', products: 11, address: '199 Nguyễn Trãi, quận Thanh Xuân, thành phố Hà Nội' },
-]
-
+import { fetchStores } from "../../actions/fetchStores.js"
+import Spinner from 'react-native-loading-spinner-overlay';
 const steak = 'http://www.chadwicksbutchers.com/wp-content/uploads/fillet-steak-banner-e1485792041266.jpg'
 const pizza = 'http://bijespizza.com/Site/themed_images/pizza_1_lg.png'
 const bbq = 'http://nutright.com/blog/wp-content/uploads/2017/01/bbq-islamabad.jpg'
+const primary = require("../../themes/variable").brandPrimary;
 const money = require("../../../images/money.png");
-const storeBanner = require("../../../images/storeBanner.png");
 class Store extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            items: [],
+            isLoading: true
         };
     }
     componentDidMount() {
+        let params = {}
+        params.city = 'Hanoi'
+        params.pageSize = 100
+        params.pageIndex = 1
+        this.props.fetch(params)
+    }
 
+    componentWillReceiveProps(props) {
+        let items = []
+        if (props.fetchStores.success) {
+            this.setState({items: props.fetchStores.data.model, isLoading:false})
+        }
+        if (!props.fetchStores.success) {
+            this.setState({isLoading:false})
+            setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') }, 200)
+        }
     }
 
     pageBanner() {
@@ -75,18 +84,23 @@ class Store extends Component {
     }
 
     renderStoreList(item) {
+        console.log('item',item)
         return (
             <TouchableOpacity style={styles.listItemWrap}>
                 <View style={styles.itemWrap}>
                     <View style={styles.imageWrap}>
-                        <Image source={storeBanner} style={styles.image} resizeMode='contain' />
+                        <Image source={{uri: item.storeImageUrl}} style={styles.image} resizeMode='contain' />
                     </View>
                     <View style={styles.descriptionWrap}>
-                        <Text style={styles.products}>{item.products} sản phẩm</Text>
+                        <Text style={styles.products}>{item.name}</Text>
                         <View style={styles.starWrap}>
                             {this.renderStar(4)}
                         </View>
-                        <Text style={styles.address}>{item.address}</Text>
+                        <View style={styles.hotlineWrap}>
+                            <Icon name = 'ios-call' style={styles.phoneIcon} />
+                            <Text style={styles.hotline}>{item.hotline}</Text>
+                        </View>
+                        <Text style={styles.address}>{item.hqAddress}</Text>          
                     </View>
                 </View>
             </TouchableOpacity>
@@ -113,16 +127,26 @@ class Store extends Component {
                             flexDirection: 'row',
                             flexWrap: 'wrap'
                         }}
-                            showsVerticalScrollIndicator={false} dataArray={items}
+                            showsVerticalScrollIndicator={false} dataArray={this.state.items}
                             renderRow={(item) =>
                                 this.renderStoreList(item)
                             }>
                         </List>
                     </View>
                 </Content>
+                <Spinner visible={this.state.isLoading} />
             </Container>
         );
     }
 }
+function bindActions(dispatch) {
+    return {
+        fetch: (params) => dispatch(fetchStores(params)),
+    };
+}
 
-export default Store;
+const mapStateToProps = state => ({
+    fetchStores: state.fetchStores,
+});
+
+export default connect(mapStateToProps, bindActions)(Store);

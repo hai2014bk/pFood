@@ -1,9 +1,9 @@
 import { AsyncStorage } from 'react-native'
 import * as mConstants from './Constants';
+import {  Alert } from "react-native";
 
 export async function add(item) {   
     let data = [];
-    console.log(item)
     if (item.quantity == 0) {
         Alert.alert('', 'Hãy chọn số lượng')
     } else {
