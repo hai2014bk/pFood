@@ -76,10 +76,11 @@ class Profile extends Component {
 	pickerWrap(text, key, type) {
 		let shipServices = type === 'ship' ? this.state.shipServices : this.state.pay;
 		let checked = shipServices[key] ? true : false;
+		let fontWeight = shipServices[key] ? { fontWeight:'500' } : null;
 		return (
 			<View style={styles.pickerWrap}>
 				<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
-				<Text style={styles.checkboxText}>{text}</Text>
+				<Text style={[styles.checkboxText, fontWeight]}>{text}</Text>
 			</View>
 		)
 	}
@@ -88,7 +89,7 @@ class Profile extends Component {
 		return (
 			<Container style={styles.containerWrap}>
 				<Spinner visible={this.state.isLoading} />
-				<HeaderContent title="Thông tin"
+				<HeaderContent title="Thông tin cá nhân"
 				leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")}
 				/>
 				<Content keyboardShouldPersistTaps='handled' style={styles.content} contentContainerStyle={{ flexGrow: 1 }}>
@@ -102,7 +103,7 @@ class Profile extends Component {
 							<Input style={styles.textInput} placeholder="Tên" placeholderTextColor='#C6C6C6' value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} />
 						</View>
 						<Input style={styles.textInput} placeholder="Địa chỉ hiện tại" placeholderTextColor='#C6C6C6' value={this.state.address} onChangeText={text => this.setState({ address: text })} />
-						<Input style={styles.textInput} placeholder="Số điện thoại" placeholderTextColor='#C6C6C6' value={this.state.phone} onChangeText={text => this.setState({ phone: text })} />
+						<Input keyboardType='phone-pad' style={styles.textInput} placeholder="Số điện thoại" placeholderTextColor='#C6C6C6' value={this.state.phone} onChangeText={text => this.setState({ phone: text })} />
 						<Input style={styles.textInput} placeholder="Email" placeholderTextColor='#C6C6C6' value={this.state.email} onChangeText={text => this.setState({ email: text })} />
 					</Form>
 					<View style={styles.headerTitle}>

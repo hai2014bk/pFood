@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image } from "react-native";
+import { InteractionManager,Image } from "react-native";
 import { View, Text, Icon, Button, Left, Right, Body, Header } from "native-base";
 
 import styles from "./styles";
@@ -9,9 +9,15 @@ const headerLogo = require("../../../images/Header-Logo.png");
 
 class HeaderContent extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      disabled:false
+    };
+}
   openCart() {
+    this.setState({disabled:true})
     this.props.navi.navigate('Cart')
-    console.log(this.props.navi)
   }
   renderLeft() {
     if (this.props.leftButton != null) {
@@ -40,13 +46,13 @@ class HeaderContent extends Component {
       console.log('right butrton')
       if (this.props.customRight) {
         return (
-          <Button transparent onPress={this.props.customRight}>
+          <Button disabled={this.state.disabled} transparent onPress={this.props.customRight}>
             <Icon style={{ color: 'white' }} active name={this.props.rightIcon} />
           </Button>
         )
       } else {
         return (
-          <Button transparent onPress={() => this.openCart()}>
+          <Button transparent onPress={()=>{this.openCart()}}>
             <Icon style={{ color: 'white' }} active name="cart" />
           </Button>
         )

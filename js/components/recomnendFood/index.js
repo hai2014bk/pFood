@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { InteractionManager,AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
-import { fetchTrending } from "../../actions/fetchTrending.js"
+import { fetchTrendingRecomend } from "../../actions/fetchTrendingRecomend.js"
 import Swiper from 'react-native-swiper';
 import styles from "./styles";
 import { connect } from "react-redux";
@@ -21,8 +21,7 @@ class RecommendFood extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			username: "",
-			password: "",
+			disabled:false,
 			dataSection:[]
 		};
 	}
@@ -39,9 +38,9 @@ class RecommendFood extends Component {
     }
 
     componentWillReceiveProps(props){
-        if (props.fetchTrending.success) {
-            if(props.fetchTrending.data.model.length > 0) {
-            var listFood = props.fetchTrending.data.model
+        if (props.fetchTrendingRecomend.success) {
+            if(props.fetchTrendingRecomend.data.model.length > 0) {
+            var listFood = props.fetchTrendingRecomend.data.model
             for (i in listFood) {
                 listFood[i].quantity = 0
 			}
@@ -53,7 +52,7 @@ class RecommendFood extends Component {
             this.setState({ dataSection: dataSection })
         } 
         }
-        if (!props.fetchTrending.success) {
+        if (!props.fetchTrendingRecomend.success) {
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
         }
     }
@@ -98,13 +97,17 @@ class RecommendFood extends Component {
 		)
 	}
 	openDetail(food){
-        console.log('open',food)
-        this.props.navigation.navigate('FoodTab',{parrent:food})
+		this.setState({disabled:true})
+		setTimeout(()=>{
+			console.log('open distsa',this.state.disabled)
+			this.props.navigation.navigate('FoodTab',{parrent:food})
+		},500)
+        
     }
 	renderCell(food) {
 		return (
 			<View>
-				<TouchableOpacity onPress={()=>this.openDetail(food)} style={{ flex: 1, alignItems: 'center' }} >
+				<TouchableOpacity disabled={this.state.disabled} onPress={() => {this.openDetail(food)}} style={{ flex: 1, alignItems: 'center' }} >
 					<Grid style={styles.cellContainer}>
 						<Row style={styles.upContainer}>
 							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: food.productMetaData[0].value }} >
@@ -128,7 +131,7 @@ class RecommendFood extends Component {
 									<View style={{
 										marginRight: 2, marginRight:5
 									}}>
-										{this.renderStar(3.5)}
+										{this.renderStar(food.rate)}
 									</View>
 								</Row>
 							</View>
@@ -187,12 +190,12 @@ class RecommendFood extends Component {
 
 function bindActions(dispatch) {
     return {
-        fetch: (params) => dispatch(fetchTrending(params)),
+        fetch: (params) => dispatch(fetchTrendingRecomend(params)),
     };
 }
 
 const mapStateToProps = state => ({
-    fetchTrending: state.fetchTrending,
+    fetchTrendingRecomend: state.fetchTrendingRecomend,
 });
 
 export default connect(mapStateToProps, bindActions)(RecommendFood);

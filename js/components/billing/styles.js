@@ -113,6 +113,10 @@ export default {
 	},
 	productText:{
 		color: '#A0A0A0',
+		fontWeight:'400'		
+	},
+	shopText:{
+		color: '#A0A0A0',
 	},
 	footer: { height: 20, 
 		width: 50, 
@@ -129,7 +133,8 @@ export default {
 	},
 	totalPriceText:{
 		color: 'black',
-		fontSize: 25,
+		fontSize: 18,
+		fontWeight:'500'
 	},
 	totalPrice:{
 		flexDirection: 'row',

@@ -67,14 +67,12 @@ export default {
     sortDirectionWrap:{
         flex: 1, 
         marginLeft: 10, 
-        marginTop:80, 
         borderTopColor:'gray', 
         borderTopWidth:0.5,
-        paddingTop:10,
     },
     sortFieldWrap:{
-        flex: 1,
-         marginLeft: 10
+        flex: 2,
+         marginLeft: 10,
     },
     sortWrap:{
         flex:1, 
@@ -116,7 +114,6 @@ export default {
 	},
     pickerWrap: {
 		flexDirection: 'row',
-		marginLeft: -10,
 		marginTop: 7
 	},
     buyColumn: {

@@ -172,6 +172,7 @@ class FoodDetail extends Component {
 	}
 	renderPriceAndBuy() {
 		var food = this.state.food
+		console.log('step', food)
 		var quantity = food.quantity  * food.quantityStep
 		var price = ''
 		console.log(food.unitType)

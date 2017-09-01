@@ -9,6 +9,10 @@ import { fetchProduct} from "./fetchProduct"
 import { fetchDetail} from "./fetchDetail"
 import { fetchTrending} from "./fetchTrending"
 import { fetchStores } from "./fetchStores"
+import  {addOrder}  from "./addOrder"
+import { fetchStoresDetail} from "./fetchStoresDetail"
+import { fetchTrendingRecomend} from "./fetchTrendingRecomend"
+
 
 
 export default combineReducers({
@@ -23,6 +27,9 @@ export default combineReducers({
 	fetchProduct,
 	fetchDetail,
 	fetchTrending,
-	fetchStores
+	fetchStores,
+	addOrder,
+	fetchStoresDetail,
+	fetchTrendingRecomend
 
 });

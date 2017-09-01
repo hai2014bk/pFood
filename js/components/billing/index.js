@@ -67,7 +67,7 @@ class Billing extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-		console.log('thanh');
+		console.log('propsss',props);
 		if (props.addOrder.success == true) {
 			console.log('thanh doan')
 			alert(props.addOrder.message);
@@ -78,17 +78,8 @@ class Billing extends Component {
 
 	priceHandle(price) {
 		var count = 0
-		for (var i = price.length; i--; i > 0) {
-			count += 1
-			if (count == 4) {
-				price = this.insertString(price, i + 1, '.')
-				count = 0
-			}
-		}
-		return price
-	}
-	insertString(str, index, value) {
-		return str.substr(0, index) + value + str.substr(index);
+		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+        return price
 	}
 
 	addOrderClick(data) {
@@ -109,7 +100,7 @@ class Billing extends Component {
 		param.DeliveryAddress = "thuy khue";
 		param.DeliveryMethod = this.state.shipKey;
 		param.PaymentMethod = this.state.payKey;
-		this.props.addOrder(param)
+		this.props.add(param)
 
 	}
 
@@ -140,26 +131,27 @@ class Billing extends Component {
 		return (
 			<FlatList
 				data={this.state.data}
-				keyExtractor={item => item.key}
+				keyExtractor={item => item.id}
 				renderItem={({ item }) => this.renderItem(item)}
 			></FlatList>
 		);
 	}
 	renderItem(item) {
 		let price = this.priceHandle(item.price.toString())
+		let quantity = item.quantity * item.quantityStep
 		return (
 			<View style={styles.proDetail}>
 				<View style={styles.textProInput}>
 					<Left>
-						<Text style={styles.productBlackText}>{item.description}</Text>
+						<Text style={styles.productBlackText}>{item.name}</Text>
 					</Left>
 					<Right>
 						<Text style={styles.productText}>{price}đ</Text>
 					</Right>
 				</View>
 				<View style={styles.textProInput}>
-					<Text style={styles.productText}>Vinmart</Text>
-					<Text style={styles.proNumber}>Số lượng: {item.quantity}{item.unitType}</Text>
+					<Text style={styles.shopText}>Vinmart</Text>
+					<Text style={styles.proNumber}>Số lượng: {quantity} {item.unitType}</Text>
 				</View>
 
 			</View>
@@ -251,7 +243,7 @@ class Billing extends Component {
 }
 function bindActions(dispatch) {
 	return {
-		addOrder: (params) => dispatch(addOrder(params)),
+		add: (params) => dispatch(addOrder(params)),
 	};
 }
 

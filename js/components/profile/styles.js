@@ -31,7 +31,8 @@ export default {
 		fontSize: 16,
 		color: '#A0A0A0',
 		marginTop: 5,
-		marginLeft: 10
+		marginLeft: 10,
+		fontWeight:'500'
 	},
 	userIcon: {
 		color: 'gray',
