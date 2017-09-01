@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Alert, Dimensions, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import {InteractionManager,Alert, Dimensions, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import { fetchCategories, fetchSubCategories } from "../../actions/fetchCategories.js"
 import { Thumbnail, Container, Header, Content, Button, Icon, Left, Right, Item, Body, List, ListItem, Label } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
@@ -15,7 +15,9 @@ class Categories extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            parentChoose : ''
+            parentChoose : '',
+            disabled:false
+            
         };
     }
 
@@ -46,6 +48,9 @@ class Categories extends Component {
             if (subCategories.length > 0) {
                 if(subCategories[0].parentId == this.state.parentChoose.id) {
                     this.props.navigation.navigate("SubCategories", { data: subCategories,parent:this.state.parentChoose})
+                    InteractionManager.runAfterInteractions(() => {
+                        this.setState({disabled:false})            
+                })
                 }
             } else {
                 console.log('ddddd')
@@ -59,14 +64,15 @@ class Categories extends Component {
 
     renderCell(data) {
         var icon = '' 
-        if(data.item.icon) {
-            icon = data.item.icon
+        if(data.item.iconUrl) {
+            icon = data.item.iconUrl
         }        
+        console.log('jkhofdgjkdfsjkre', data.item)
         return (
-            <TouchableOpacity style={{ flex: 1 }} onPress={() => {this.choseFood(data.item) }}>
+            <TouchableOpacity disabled={this.state.disabled} style={{ flex: 1 }} onPress={() => {this.setState({disabled:true}),this.choseFood(data.item) }}>
                 <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
                     <View style={styles.opacityView}>
-                    <Image style={{width:'40%', marginBottom:5}} resizeMode='contain' source={{uri:icon}}/>
+                    <Image style={{width:'40%',aspectRatio:1, marginBottom:5}} resizeMode='contain' source={{uri:icon}}/>
                         <Text style={styles.title}>{data.item.name}</Text>
                         </View>
                     </Image>

@@ -17,8 +17,7 @@ class Cart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [
-            ],
+            data: [],
             totalPrice: 0
         };
     }
@@ -137,6 +136,7 @@ class Cart extends Component {
     renderItems(data) {
         let item = data.item
         let id = item.id
+        let quantity = item.quantity * item.quantityStep
         let price = this.priceHandle(item.price.toString())
         return (
             <SwipeRow
@@ -160,7 +160,7 @@ class Cart extends Component {
                                     <Icon name="md-add" style={styles.icon} />
                                 </TouchableOpacity>
                                 <Text style={styles.x}>X</Text>
-                                <Text style={styles.quantity}>{item.quantity}</Text>
+                                <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
                             </View>
                         </View>
                     </View>
@@ -203,6 +203,12 @@ class Cart extends Component {
             )
         }
     }
+    openBilling(){
+        if(this.state.data.length > 0) {
+            const navigation = this.props.navigation;
+            navigation.navigate("Billing")
+        }
+    }
 
     render() {
         let content = null
@@ -223,7 +229,7 @@ class Cart extends Component {
                             <Text style={[styles.totalPrice, { fontSize: 20 }]}> {price}đ</Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.checkoutWrap} onPress={() => navigation.navigate("Billing")}>
+                    <TouchableOpacity style={styles.checkoutWrap} onPress={() => {this.openBilling()}}>
                         <Text style={styles.checkout}> Thanh toán </Text>
                     </TouchableOpacity>
                 </Content>

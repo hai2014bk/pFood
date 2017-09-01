@@ -25,14 +25,17 @@ class StoreTab extends Component {
 	}
 	render() {
 		const navigation = this.props.navigation;
+		const { params } = this.props.navigation.state
+		console.log('2321321321',params)
+		
 		return (
 			<Container>
 				<HeaderContent navi={navigation} leftIcon={'ios-arrow-back'} leftButton={() => navigation.goBack()}
-					rightButton={true} title='BigC'>
+					 title='BigC'>
 				</HeaderContent>
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'top'} >
-					<StoreProduct screenProps={{navi:navigation}}   tabLabel="Sản phẩm" />
-					<StoreInfo screenProps={{navi:navigation}}  tabLabel="Thông tin" />
+					<StoreProduct screenProps={{navi:navigation}} storeParrent={params.parrent}   tabLabel="Sản phẩm" />
+					<StoreInfo screenProps={{navi:navigation}} storeParrent={params.parrent}  tabLabel="Thông tin" />
 				</ScrollableTabView>
 			</Container>
 		);

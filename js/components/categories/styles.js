@@ -22,6 +22,7 @@ export default {
     title: {
        color:'white',
        fontSize:20,
+       marginTop:10,
        fontWeight:'bold',
        textAlign:'center'
     },

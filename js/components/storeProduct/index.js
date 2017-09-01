@@ -17,7 +17,7 @@ const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const testText = "\Thịt gà là món ăn được xếp vào hàng “sang chảnh” trong thế giới ẩm thực. Mặc dù có rất nhiều món ăn mới, hấp dẫn hơn nhưng trong mâm cỗ thì thịt gà là món ăn không thể thiếu. Vì không chỉ ngon miệng mà nó còn có giá trị dinh dưỡng cao, thậm chí các bài thuốc từ thịt gà cũng chữa bệnh rất tốt "
 const steak = 'http://www.chadwicksbutchers.com/wp-content/uploads/fillet-steak-banner-e1485792041266.jpg'
-const pizza = 'http://bijespizza.com/Site/themed_images/pizza_1_lg.png'
+const pizza = 'http://media.bizwebmedia.net/Sites/99161/data/upload/2016/t2/than_bo_uc_1.jpg?20'
 const bbq = 'http://nutright.com/blog/wp-content/uploads/2017/01/bbq-islamabad.jpg'
 const money = require("../../../images/money.png");
 
@@ -29,6 +29,7 @@ class StoreProduct extends Component {
 		};
 	}
 	componentDidMount() {
+		console.log('jknvfkdfjlsa',this.props)
 
 	}
 	componentWillReceiveProps(props) {
@@ -84,13 +85,53 @@ class StoreProduct extends Component {
 		)
 	}
 	_keyExtractor = (item, index) => item;
+	openDetail(food){
+		var foodFixed = {
+			"avgRate": 0,
+			"cities": "Hanoi",
+			"createdBy": "Admin10@gmail.com",
+			"createdDate": "2017-08-24T10:18:08.5660451",
+			"description": "Thăn bò Úc",
+			"id": 29,
+			"lastViewedDate": "2017-08-31T03:59:41.8666643",
+			"minOrderedItems": 1,
+			"modifiedBy": null,
+			"modifiedDate": null,
+			"name": "Thăn",
+			"noInStock": 500,
+			"parrentId": 16,
+			"price": 380000,
+			"productCategories":  [],
+			"productMetaData":  [
+			   {
+				"dataGroup": null,
+				"id": 29,
+				"name": "ImageUrl",
+				"order": 0,
+				"productId": 29,
+				"value": "http://media.bizwebmedia.net/Sites/99161/data/upload/2016/t2/than_bo_uc_1.jpg?20",
+			  },
+			],
+			"productView": 16,
+			"purveyor": null,
+			"purveyorId": 0,
+			"quantity": 1,
+			"quantityStep": 200,
+			"rateCount": 0,
+			"status": null,
+			"unitType": "g",
+		  }
+		  console.log(this.props)
+		  this.props.screenProps.navi.navigate('FoodTab',{parrent:foodFixed})
+		  
+	}
 	renderCell(food) {
 		return (
 			<View>
-				<TouchableOpacity style={{ flex: 1,  alignItems: 'center' }} >
+				<TouchableOpacity onPress={()=>{this.openDetail(food)}} style={{ flex: 1,  alignItems: 'center' }} >
 					<Grid style={styles.cellContainer}>
 						<Row style={styles.upContainer}>
-							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: 'https://hlfppt.org/wp-content/uploads/2017/04/placeholder.png' }} >
+							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: pizza }} >
 								<View style={styles.saleView}>
 									<Text style={styles.saleText}>-10%</Text>
 								</View>
@@ -126,16 +167,16 @@ class StoreProduct extends Component {
 	}
 
 	render() {
-		var imageUrl = 'https://hlfppt.org/wp-content/uploads/2017/04/placeholder.png'
-		// if (this.state.food.productMetaData) {
-		// 	imageUrl = this.state.food.productMetaData[0].value
-		// }
+		var imageUrl = bbq
+		if (this.props.storeParrent.storeImageUrl) {
+			imageUrl = this.props.storeParrent.storeImageUrl
+		}
 		const navigation = this.props.navi;
 		return (
 			<Container style={styles.container}>
 				<Content style={{ flex: 1 }}>
 					<View style={{flexDirection:'row'}}>
-						<Image resizeMode='cover' source={{ uri: imageUrl }} style={styles.foodImage} />
+						<Image resizeMode='contain' source={{ uri: imageUrl }} style={styles.foodImage} />
 					</View>
 					<View style={{ marginLeft: 10, flexDirection: 'row' }}>
 						<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain' />

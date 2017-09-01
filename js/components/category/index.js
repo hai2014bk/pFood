@@ -29,6 +29,7 @@ class Category extends Component {
             sortDirection: 'Asc',
             changeSort: false,
             shouldLoadMore:false,
+            disabled:false,
             field: {
                 Id: true,
                 Name: false,
@@ -205,6 +206,12 @@ class Category extends Component {
         const { params } = this.props.navigation.state
         food.parrentId = params.parent.id
         this.props.navigation.navigate('FoodTab', { parrent: food })
+        InteractionManager.runAfterInteractions(() => {
+                this.setState({disabled:false})            
+        })
+
+       
+        
     }
     async add(item, rowID) {
         let food = this.state.data
@@ -247,7 +254,7 @@ class Category extends Component {
                 <View style={styles.sortFieldWrap}>
                     {this.pickerWrap('Mã sản phẩm', 'Id', 'field')}
                     {this.pickerWrap('Tên sản phẩm', 'Name', 'field')}
-                    {this.pickerWrap('Giá sản phẩmm', 'Price', 'field')}
+                    {this.pickerWrap('Giá sản phẩm', 'Price', 'field')}
                     {this.pickerWrap('Đánh giá', 'Rate', 'field')}
                 </View>
                 <View style={styles.sortDirectionWrap}>
@@ -285,7 +292,7 @@ class Category extends Component {
                 height={300}
                 actions={[
                     <DialogButton
-                        text="Ok"
+                        text="OK"t
                         onPress={() => {
                             this.sortButton()
                         }}
@@ -316,7 +323,7 @@ class Category extends Component {
         let id = item.id
         let price = this.priceHandle(item.price.toString())
         return (
-            <TouchableOpacity onPress={() => { this.openDetail(item) }}>
+            <TouchableOpacity disabled={this.state.disabled} onPress={() => {this.setState({disabled:true}), this.openDetail(item) }}>
                 <Card style={styles.card}>
                     <CardItem >
                         <Body>

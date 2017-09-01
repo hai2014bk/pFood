@@ -18,6 +18,9 @@ export default {
 	logoutContainer: {
 		padding: 30,
 	},
+	iconStyle:{
+		fontSize:30
+	},
 	logoutbtn: {
 		paddingTop: 30,
 		flexDirection: "row",

@@ -9,6 +9,7 @@ import commonColor from "../../../native-base-theme/variables/commonColor";
 import Utils from "../../utils/validate.js"
 import * as mConstants from '../../utils/Constants';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { addOrder } from "../../actions/addOrder.js"
 var background = require('../../../images/background.png')
 var money = require('../../../images/money.png')
 var food = ''
@@ -18,9 +19,11 @@ class Billing extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			shipKey: 'vPost',
+			payKey: 'cash',
 			visible: true,
 			totalPrice: 0,
-			data:[],
+			data: [],
 			checked: false,
 			shipServices: {
 				vPost: true,
@@ -49,7 +52,7 @@ class Billing extends Component {
 		try {
 			const value = await AsyncStorage.getItem(mConstants.CART);
 			if (value !== null) {
-				this.setState({visible:false})
+				this.setState({ visible: false })
 				data = JSON.parse(value)
 				console.log('value', data)
 				this.setState({ data })
@@ -64,24 +67,42 @@ class Billing extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-
+		console.log('propsss',props);
+		if (props.addOrder.success == true) {
+			console.log('thanh doan')
+			alert(props.addOrder.message);
+		} else {
+			alert(props.addOrder.message);
+		}
 	}
 
 	priceHandle(price) {
 		var count = 0
-		for (var i = price.length; i--; i > 0) {
-			count += 1
-			if (count == 4) {
-				price = this.insertString(price, i + 1, '.')
-				count = 0
-			}
-		}
-		return price
-	}
-	insertString(str, index, value) {
-		return str.substr(0, index) + value + str.substr(index);
+		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+        return price
 	}
 
+	addOrderClick(data) {
+
+		var param = {};
+		param.OrderedProducts = [];
+		for (i = 0; i < data.length; i++) {
+			var product = {
+				ProductId: data[i].id,
+				Quantity: data[i].quantity,
+			}
+			param.OrderedProducts.push(product);
+		}
+		param.UserId = 1;
+		param.Status = "Submitted";
+		param.TotalPrice = this.state.totalPrice;
+		param.BillingAddress = "thuy khue";
+		param.DeliveryAddress = "thuy khue";
+		param.DeliveryMethod = this.state.shipKey;
+		param.PaymentMethod = this.state.payKey;
+		this.props.add(param)
+
+	}
 
 	updateStatus(key, type) {
 		let shipStatus = type === 'ship' ? Object.assign({}, this.state.shipServices) : Object.assign({}, this.state.pay);
@@ -90,6 +111,12 @@ class Billing extends Component {
 				shipStatus[k] = false;
 				if (k === key) {
 					shipStatus[k] = true;
+					console.log(type);
+					if (type === 'ship') {
+						this.setState({ shipKey: key })
+					} else {
+						this.setState({ payKey: key })
+					}
 				}
 			}
 		}
@@ -104,28 +131,29 @@ class Billing extends Component {
 		return (
 			<FlatList
 				data={this.state.data}
-				keyExtractor={item => item.key}
+				keyExtractor={item => item.id}
 				renderItem={({ item }) => this.renderItem(item)}
 			></FlatList>
 		);
 	}
 	renderItem(item) {
 		let price = this.priceHandle(item.price.toString())
+		let quantity = item.quantity * item.quantityStep
 		return (
 			<View style={styles.proDetail}>
 				<View style={styles.textProInput}>
 					<Left>
-						<Text style={styles.productBlackText}>{item.description}</Text>
+						<Text style={styles.productBlackText}>{item.name}</Text>
 					</Left>
 					<Right>
 						<Text style={styles.productText}>{price}đ</Text>
 					</Right>
 				</View>
 				<View style={styles.textProInput}>
-					<Text style={styles.productText}>Vinmart</Text>
-					<Text style={styles.proNumber}>Số lượng: {item.quantity}{item.unitType}</Text>
+					<Text style={styles.shopText}>Vinmart</Text>
+					<Text style={styles.proNumber}>Số lượng: {quantity} {item.unitType}</Text>
 				</View>
-				
+
 			</View>
 		)
 	}
@@ -133,15 +161,26 @@ class Billing extends Component {
 	pickerWrap(text, key, type) {
 		let shipServices = type === 'ship' ? this.state.shipServices : this.state.pay;
 		let checked = shipServices[key] ? true : false;
-		return (
-			<View style={styles.pickerWrap}>
-				<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
-				<Text style={styles.checkboxText}>{text}</Text>
-			</View>
-		)
+		if (key !== 'cash' && type !=='ship') {
+			return (
+				<TouchableOpacity style={styles.pickerWrap}>
+					<CheckBox style={styles.checkBoxDisable} color= '#f2f4f4' checked={false} />
+					<Text style={styles.checkboxTextDisable}>{text}</Text>
+				</TouchableOpacity>
+			)
+		}else{
+			return (
+				<TouchableOpacity onPress={() => this.updateStatus(key, type)} style={styles.pickerWrap}>
+					<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
+					<Text style={styles.checkboxText}>{text}</Text>
+				</TouchableOpacity>
+			)
+		}
 	}
 	render() {
-		let total=this.state.totalPrice;
+		console.log('adjf', this.state.shipKey)
+		console.log('pay', this.state.payKey)
+		let total = this.state.totalPrice;
 		let totalPrice = this.priceHandle(total.toString());
 		var mdh = "F001"
 		const navigation = this.props.navigation;
@@ -193,10 +232,10 @@ class Billing extends Component {
 					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#C6C6C6' />
 					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#C6C6C6' />
 					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#C6C6C6' />
-					<Button block style={styles.button}><Text style={styles.updateButtonText} >Thanh Toán</Text></Button>
+					<Button block style={styles.button}><Text style={styles.updateButtonText} onPress={() => this.addOrderClick(this.state.data)} >Thanh Toán</Text></Button>
 					<View style={styles.footer}></View>
 				</Content>
-				
+
 			</Container>
 		);
 	}
@@ -204,12 +243,12 @@ class Billing extends Component {
 }
 function bindActions(dispatch) {
 	return {
-		register: (params) => dispatch(createAccount(params)),
+		add: (params) => dispatch(addOrder(params)),
 	};
 }
 
 const mapStateToProps = state => ({
-	creatAcount: state.creatAcount
+	addOrder: state.addOrder,
 });
 
 export default connect(mapStateToProps, bindActions)(Billing);

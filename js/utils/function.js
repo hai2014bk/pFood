@@ -1,9 +1,9 @@
-import { AsyncStorage } from 'react-native'
+import {Platform, AsyncStorage } from 'react-native'
 import * as mConstants from './Constants';
 import {  Alert } from "react-native";
 import {  Toast } from "native-base";
 const primary = require("../themes/variable").brandPrimary;
-
+const platform = Platform.OS
 export async function add(item) {   
     let data = [];
     if (item.quantity == 0) {
@@ -21,8 +21,8 @@ export async function add(item) {
                 justifyContent:'center',
                 alignItems:'center',
                 alignSelf:'center',
-                marginBottom:60,
-                borderRadius:5
+                borderRadius:5,
+                marginBottom:platform === "ios" ? 0 : 60,
             }
           })
         try {

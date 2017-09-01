@@ -77,6 +77,12 @@ export default {
 		backgroundColor:'white',
 		marginBottom:5,
 		flex:1,
+    },
+    locationIcon:{
+		fontSize: 14, 
+		color: 'gray',
+        marginLeft:3,
+        marginRight:8,
 	},
 	headerText:{
 		color:primary,

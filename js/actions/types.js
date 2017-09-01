@@ -12,14 +12,14 @@ export type Action =
 	| { type: "FETCH_CATEGORIES_FAILED" }
 	| { type: "FETCH_PRODUCT_SUCCESS" }
 	| { type: "FETCH_PRODUCT_FAILED" }
-	| {
-		type: "FETCH_PRODUCTDETAIL_SUCCESS"
-		| { type: "FETCH_PRODUCTDETAIL_FAILED" }
-		| { type: "FETCH_TRENDING_SUCCESS" }
-		| { type: "FETCH_TRENDING_FAILED" }
-	}
+	| {type: "FETCH_PRODUCTDETAIL_SUCCESS"}
+	| { type: "FETCH_PRODUCTDETAIL_FAILED" }
+	| { type: "FETCH_TRENDING_SUCCESS" }
+	| { type: "FETCH_TRENDING_FAILED" }
 	| { type: "FETCH_STORES_SUCCESS" }
 	| { type: "FETCH_STORES_FAILED" }
+	| { type: "ADD_ORDER_SUCCESS" }
+	| { type: "ADD_ORDER_FAILED" }
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;

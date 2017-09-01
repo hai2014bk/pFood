@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import {InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import { fetchCategories, fetchSubCategories } from "../../actions/fetchCategories.js"
 import { Thumbnail, Container, Header, Content, Button, Icon, Left, Right, Item, Body, List, ListItem, Label } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
@@ -19,7 +19,6 @@ class SubCategories extends Component {
         this.state = {
             data: [],
             disabled: false,
-            isLoading: false,
         };
     }
 
@@ -35,11 +34,17 @@ class SubCategories extends Component {
             if (subCategories.length > 0) {
                 if (subCategories[0].parentId == this.state.parentChoose.id) {
                     this.props.navigation.navigate("SubCategories", { data: subCategories, parent: this.state.parentChoose })
+                    InteractionManager.runAfterInteractions(() => {
+                        this.setState({disabled:false})            
+                })
                 }
             } else {
                 console.log('22222', props.fetchSubCategories.data.checkId, this.state.parentChoose.id)
                 if (props.fetchSubCategories.data.checkId == this.state.parentChoose.id) {
                     this.props.navigation.navigate("Pruduct", { parent: this.state.parentChoose })
+                    InteractionManager.runAfterInteractions(() => {
+                        this.setState({disabled:false})            
+                })
                 }
             }
         }
@@ -50,26 +55,23 @@ class SubCategories extends Component {
     }
 
     renderCell(data) {
-        var icon = ''
-        if (data.item.icon) {
-            icon = data.item.icon
-        }
+        var icon = '' 
+        if(data.item.iconUrl) {
+            icon = data.item.iconUrl
+        }        
+        console.log('jkhofdgjkdfsjkre', data.item)
         return (
-            <TouchableOpacity disabled={this.state.disabled} style={{ flex: 1 }} onPress={() => {
-                this.setState({ isLoading: true }),
-                this.choseFood(data.item)
-            }}>
+            <TouchableOpacity disabled={this.state.disabled} style={{ flex: 1 }} onPress={() => {this.setState({disabled:true}),this.choseFood(data.item) }}>
                 <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
                     <View style={styles.opacityView}>
-                        <Image style={{ width: '40%', marginBottom: 5 }} resizeMode='contain' source={{ uri: icon }} />
+                    <Image style={{width:'40%',aspectRatio:1, marginBottom:5}} resizeMode='contain' source={{uri:icon}}/>
                         <Text style={styles.title}>{data.item.name}</Text>
-                    </View>
-                </Image>
+                        </View>
+                    </Image>
             </TouchableOpacity>
 
         )
     }
-
     render() {
         const navigation = this.props.navigation;
         const { params } = this.props.navigation.state

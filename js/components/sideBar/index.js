@@ -33,8 +33,8 @@ class SideBar extends Component {
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="logo-apple" />
-							<Text style={styles.linkText}> Thực Phẩm</Text>
+							<Icon style={styles.iconStyle} name="logo-apple" />
+							<Text style={styles.linkText}>Thực Phẩm</Text>
 						</ListItem>
 						<ListItem
 							navigation={navigation}
@@ -45,7 +45,7 @@ class SideBar extends Component {
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="ios-basket" />
+							<Icon style={styles.iconStyle} name="ios-basket" />
 							<Text style={styles.linkText}>Cửa Hàng</Text>
 						</ListItem>
 						<ListItem
@@ -57,7 +57,7 @@ class SideBar extends Component {
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="ios-paper" />
+							<Icon style={styles.iconStyle} name="ios-paper" />
 							<Text style={styles.linkText}>Lịch Sử</Text>
 						</ListItem>
 						<ListItem
@@ -69,8 +69,8 @@ class SideBar extends Component {
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="ios-contact" />
-							<Text style={styles.linkText}> Thông Tin</Text>
+							<Icon style={styles.iconStyle} name="ios-contact" />
+							<Text style={styles.linkText}>Thông Tin</Text>
 						</ListItem>
 
 
