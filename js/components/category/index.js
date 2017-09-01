@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
+import { InteractionManager, FlatList, Image, View, TouchableOpacity, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
-
-import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
+import { Card, CardItem, Container, Header, Content, Button, Icon, Body, Toast } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import { connect } from "react-redux";
-
 import styles from "./styles";
 
 const headerLogo = require("../../../images/Header-Logo.png");

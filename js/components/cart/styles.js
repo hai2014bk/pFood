@@ -165,7 +165,8 @@ export default {
     footer: {
         width: '90%',
         marginTop: 10,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignSelf:'center'
     },
     totalPrice: {
         fontSize: 17,
@@ -215,8 +216,9 @@ export default {
     },
     footerRightWrap: {
         flexDirection: 'row',
-        width: '85%',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        alignSelf:'flex-end',
+        flex:3
     },
     listItem: {
         borderBottomWidth: 0,

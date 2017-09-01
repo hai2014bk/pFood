@@ -55,12 +55,14 @@ class Profile extends Component {
 	}
 
 	updateStatus(key, type) {
+
 		let shipStatus = type === 'ship' ? Object.assign({}, this.state.shipServices) : Object.assign({}, this.state.pay);
 		for (let k in shipStatus) {
 			if (shipStatus.hasOwnProperty(k)) {
 				shipStatus[k] = false;
 				if (k === key) {
 					shipStatus[k] = true;
+
 				}
 			}
 		}
