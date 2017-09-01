@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Image } from "react-native";
-import {View, Text, Icon, Button, Left, Right, Body, Header } from "native-base";
+import { View, Text, Icon, Button, Left, Right, Body, Header } from "native-base";
 
 import styles from "./styles";
 const primary = require("../../themes/variable").brandPrimary;
@@ -15,18 +15,19 @@ class HeaderContent extends Component {
   }
   renderLeft() {
     if (this.props.leftButton != null) {
-      if(this.props.textLeft) {
+      if (this.props.textLeft) {
         return (
-        <Button transparent onPress={this.props.leftButton}>
-          <Text style={{color:'white', fontSize:15}}>{this.props.textLeft}</Text>
-        </Button>
-      )
+          <Button transparent onPress={this.props.leftButton}>
+            <Text style={{ color: 'white', fontSize: 13 }}>{this.props.textLeft}</Text>
+          </Button>
+        )
       } else {
-      return (
-        <Button transparent onPress={this.props.leftButton}>
-          <Icon style={{color:'white'}} active name={this.props.leftIcon} />
-        </Button>
-      )}
+        return (
+          <Button transparent onPress={this.props.leftButton}>
+            <Icon style={{ color: 'white' }} active name={this.props.leftIcon} />
+          </Button>
+        )
+      }
     } else {
       return (
         <View>
@@ -36,11 +37,20 @@ class HeaderContent extends Component {
   }
   renderRight() {
     if (this.props.rightButton) {
-      return (
-        <Button transparent onPress={() => this.openCart()}>
-          <Icon style={{color:'white'}} active name="cart" />
-        </Button>
-      )
+      console.log('right butrton')
+      if (this.props.customRight) {
+        return (
+          <Button transparent onPress={this.props.customRight}>
+            <Icon style={{ color: 'white' }} active name={this.props.rightIcon} />
+          </Button>
+        )
+      } else {
+        return (
+          <Button transparent onPress={() => this.openCart()}>
+            <Icon style={{ color: 'white' }} active name="cart" />
+          </Button>
+        )
+      }
     } else {
       return (
         <View>
@@ -49,19 +59,19 @@ class HeaderContent extends Component {
     }
   }
   render() {
-      return (
-        <Header style={{ borderBottomWidth:0, backgroundColor: primary }}>
-          <Left style={{ flex: 1 }}>
-            {this.renderLeft()}
-          </Left>
-          <Body style={{ justifyContent:'center',alignItems:'center', flex: 2, flexDirection: 'row',}}>
-            <Text style={{ textAlign: 'center', flex: 1, color: 'white', fontSize: 15, fontWeight:'bold' }}>{this.props.title}</Text>
-          </Body>
-          <Right style={{ flex: 1 }}>
-            {this.renderRight()}
-          </Right>
-        </Header>
-      );
+    return (
+      <Header style={{ borderBottomWidth: 0, backgroundColor: primary }}>
+        <Left style={{ flex: 1 }}>
+          {this.renderLeft()}
+        </Left>
+        <Body style={{ justifyContent: 'center', alignItems: 'center', flex: 2, flexDirection: 'row', }}>
+          <Text style={{ textAlign: 'center', flex: 1, color: 'white', fontSize: 15, fontWeight: 'bold' }}>{this.props.title}</Text>
+        </Body>
+        <Right style={{ flex: 1 }}>
+          {this.renderRight()}
+        </Right>
+      </Header>
+    );
   }
 }
 

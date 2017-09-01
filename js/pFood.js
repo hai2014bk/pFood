@@ -18,6 +18,12 @@ import Trending from "./components/trending"
 import Cart from "./components/cart"
 import History from "./components/history"
 import Store from "./components/store"
+import Billing from "./components/billing"
+import StoreProduct from "./components/storeProduct"
+import StoreInfo from "./components/storeInfo"
+import StoreTab from "./components/storeTab";
+
+
 
 
 
@@ -30,9 +36,7 @@ const Main = StackNavigator(
 		SignUp: {screen:SignUp},
 		ForgetPassword: {screen:ForgetPassword},
 		Cart: { screen: Cart },	
-		History: { screen: History },	
-		Store : { screen: Store },
-		MainTabFood : { screen: MainTabFood }
+		Billing : { screen: Billing },	
 	},
 	{
 		index: 0,

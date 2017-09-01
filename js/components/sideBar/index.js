@@ -15,11 +15,11 @@ class SideBar extends Component {
 	async logOut() {
 		let keys = [mConstants.CART, mConstants.USER_INFO];
 		await AsyncStorage.multiRemove(keys)
+		console.log('side bar1111', this.props.navigation)
 		this.props.navigation.dispatch(resetAction);
 	}
 	render() {
 		const navigation = this.props.navigation;
-		console.log('side bar', navigation)
 		return (
 			<Container>
 				<Image source={require("../../../images/sid.png")} style={styles.background}>
@@ -40,7 +40,7 @@ class SideBar extends Component {
 							navigation={navigation}
 							button
 							onPress={() => {
-								navigation.navigate("Store");
+								navigation.navigate("MainStore");
 							}}
 							iconLeft
 							style={styles.links}

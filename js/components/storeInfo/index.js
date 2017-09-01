@@ -21,7 +21,7 @@ const pizza = 'http://bijespizza.com/Site/themed_images/pizza_1_lg.png'
 const bbq = 'http://nutright.com/blog/wp-content/uploads/2017/01/bbq-islamabad.jpg'
 const money = require("../../../images/money.png");
 
-class FoodDetail extends Component {
+class StoreInfo extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -33,8 +33,7 @@ class FoodDetail extends Component {
 		};
 	}
 	componentDidMount() {
-		console.log('mountedssasasa', this.props.food)
-		this.props.fetch(this.props.food.id)
+		//this.props.fetch(this.props.food.id)
 
 	}
 	componentWillReceiveProps(props) {
@@ -107,7 +106,7 @@ class FoodDetail extends Component {
 						<Text style={styles.headerText}> Mô tả </Text>
 					</Row>
 					<Row style={{ margin: 10 }}>
-						<Text style={styles.contentText}>{description}</Text>
+						<Text style={styles.contentText}>description</Text>
 					</Row>
 				</View>
 			</Card>
@@ -123,29 +122,15 @@ class FoodDetail extends Component {
 			</Grid>
 		)
 	}
-	renderFoodContent() {
-		return (
-			<Card style={{padding:0, flex:1, marginBottom: 15 }}>
-				<View style={styles.cardContainer}>
-						<Text style={styles.headerText}> Hàm Lượng </Text>
-					{this.renderContentInfo('Diệp lục', '1000')}
-					{this.renderContentInfo('Vitamin A', '10%')}
-				</View>
-			</Card>
-		)
-	}
 	renderInfo() {
 		return (
 			<Card>
 				<View style={styles.cardContainer}>
 					<Row style={{ alignItems: 'center', flex: 1, borderBottomWidth: 1, borderColor: '#e7e9e5' }}>
-						<Text style={styles.headerText}> Thông Tin Sản Phẩm </Text>
+						<Text style={styles.headerText}> Giờ mở cửa </Text>
 					</Row>
-					{this.renderContentInfo('Store', 'Vinmart')}
-					{this.renderContentInfo('Khu vực', 'Hà Nội')}
-					{this.renderContentInfo('Danh Mục', 'Thực phẩm sạch')}
-					{this.renderContentInfo('Số lượng tối thiểu', '500g')}
-					{this.renderContentInfo('Thời gian ship', '1 - 2 giờ')}
+					{this.renderContentInfo('Cả tuần', '07:00 AM - 22:00 PM')}
+					
 				</View>
 			</Card>
 		)
@@ -170,51 +155,7 @@ class FoodDetail extends Component {
 	insertString(str, index, value) {
 		return str.substr(0, index) + value + str.substr(index);
 	}
-	renderPriceAndBuy() {
-		var food = this.state.food
-		var quantity = food.quantity  * food.quantityStep
-		var price = ''
-		console.log(food.unitType)
-		if (food.price) {
-			price = this.priceHandle(food.price.toString())
-		}
-		if (quantity > 0) {
-            active = 0.2,
-            color = primary
-        } else {
-            active = 1,
-            color = '#cecece'
-        }
-		return (
-			<Grid>
-				<Col style={{ margin: 10 }}>
-					<Row>
-					<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain' />
-						<Text style={styles.price} > {price}đ</Text>
-					</Row>
-				</Col>
-				<Col style={{ margin: 10 }}>
-					<Row style={{ marginLeft: '20%', flex: 1, justifyContent: 'flex-end' }}>
-					<TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, {borderColor:color}]} onPress={() => this.minus()} >
-							<Icon style={[styles.icon, {color:color}]} name="md-remove" />
-						</TouchableOpacity>
-						<Col style={styles.quantityContainer}>
-							<Text style={styles.quantity}>{quantity} {food.unitType}</Text>
-						</Col>
-						<TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus()} >
-							<Icon name="md-add" style={styles.icon} />
-						</TouchableOpacity>
-					</Row>
-					<Col style={styles.buttonAddCard}>
-						<Button onPress={()=> {appFunction.add(this.state.food)}} addCart large >
-							<Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
-						</Button>
-					</Col>
-				</Col>
-			</Grid>
-		)
-	}
-
+	
 	render() {
 		var imageUrl = 'https://hlfppt.org/wp-content/uploads/2017/04/placeholder.png'
 		if (this.state.food.productMetaData) {
@@ -223,16 +164,14 @@ class FoodDetail extends Component {
 		const navigation = this.props.navi;
 		return (
 			<Container style={styles.container}>
-				<Content>
+				<Content scrollEnabled={false}>
+                    <View>
 					<Image resizeMode='cover' source={{ uri: imageUrl }} style={styles.foodImage} />
-					{this.renderPriceAndBuy()}
 					{this.renderDecription()}
 					<View style={{ marginTop: 10 }}>
 						{this.renderInfo()}
 					</View>
-					<View style={{ marginTop: 25}}>
-						{this.renderFoodContent()}
-					</View>
+                    </View>
 				</Content>
 			</Container>
 		);
@@ -249,4 +188,4 @@ const mapStateToProps = state => ({
 	fetchDetail: state.fetchDetail,
 });
 
-export default connect(mapStateToProps, bindActions)(FoodDetail);
+export default connect(mapStateToProps, bindActions)(StoreInfo);

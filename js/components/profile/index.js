@@ -89,8 +89,7 @@ class Profile extends Component {
 			<Container style={styles.containerWrap}>
 				<Spinner visible={this.state.isLoading} />
 				<HeaderContent title="Thông tin"
-					leftButton={() => navigation.goBack()}
-					leftIcon='ios-arrow-back'
+				leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")}
 				/>
 				<Content keyboardShouldPersistTaps='handled' style={styles.content} contentContainerStyle={{ flexGrow: 1 }}>
 					<View style={styles.headerTitle}>

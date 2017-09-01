@@ -27,6 +27,9 @@ class Trending extends Component {
     }
 
     componentDidMount() {
+        var date = new Date()
+        let isoDate = date.toISOString().slice(0,-1)
+        console.log('2321321',isoDate)
         var params = {
             "PageSize": "20",
             "PageIndex": "1",
@@ -104,6 +107,7 @@ class Trending extends Component {
         let item = data.item
         let active = 0
         let color = ''
+        var quantity = item.quantity * item.quantityStep
         if (item.quantity > 0) {
             active = 0.2,
                 color = primary
@@ -143,7 +147,7 @@ class Trending extends Component {
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
-                                            <Text style={styles.quantity}>{item.quantity} {item.unitType}</Text>
+                                            <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
                                         </Col>
                                         <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />

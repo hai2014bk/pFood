@@ -63,7 +63,25 @@ export default {
 		color: 'gray',
         marginLeft:3,
         marginRight:5,
-	},
+    },
+    sortDirectionWrap:{
+        flex: 1, 
+        marginLeft: 10, 
+        marginTop:80, 
+        borderTopColor:'gray', 
+        borderTopWidth:0.5,
+        paddingTop:10,
+    },
+    sortFieldWrap:{
+        flex: 1,
+         marginLeft: 10
+    },
+    sortWrap:{
+        flex:1, 
+        marginLeft:5,
+        marginTop:10,
+        justifyContent:'center'
+    },
     shopName: {
         color: 'gray',
         fontSize: 11,
@@ -87,6 +105,20 @@ export default {
         justifyContent: 'center',
         alignItems:'center',
     },
+    checkboxText: {
+		marginLeft: 20,
+		color: '#A0A0A0',
+    },
+    checkBox: {
+		borderRadius: 13,
+		borderWidth: 1,
+		borderColor: '#A0A0A0',
+	},
+    pickerWrap: {
+		flexDirection: 'row',
+		marginLeft: -10,
+		marginTop: 7
+	},
     buyColumn: {
         marginLeft: 5,
         marginRight:5,
@@ -94,12 +126,12 @@ export default {
         marginTop: 20,
     },
     quantity: {
-        fontSize: 15,
-        alignSelf: 'center'
+        fontSize: 13,
+        alignSelf: 'center',
+        textAlign:'center'
     },
     quantityContainer: {
-       flex:1,
-        aspectRatio: 1,
+       width:40,
         justifyContent: 'center',
     },
     cartWrap: {
