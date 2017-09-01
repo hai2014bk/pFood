@@ -83,10 +83,14 @@ class Store extends Component {
         )
     }
 
+    openStoreDetail(store){
+        this.props.navigation.navigate('StoreTab',{parrent:store})
+        
+    }
     renderStoreList(item) {
         console.log('item',item)
         return (
-            <TouchableOpacity style={styles.listItemWrap}>
+            <TouchableOpacity onPress={()=>this.openStoreDetail(item)} style={styles.listItemWrap}>
                 <View style={styles.itemWrap}>
                     <View style={styles.imageWrap}>
                         <Image source={{uri: item.storeImageUrl}} style={styles.image} resizeMode='contain' />
@@ -108,7 +112,7 @@ class Store extends Component {
     }
 
     render() {
-        const navigation = this.props.navigation
+        const navigation = this.props.screenProps.navi;
         return (
             <Container style={styles.container}>
                 <HeaderContent leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}

@@ -18,7 +18,7 @@ class HeaderContent extends Component {
       if (this.props.textLeft) {
         return (
           <Button transparent onPress={this.props.leftButton}>
-            <Text style={{ color: 'white', fontSize: 15 }}>{this.props.textLeft}</Text>
+            <Text style={{ color: 'white', fontSize: 13 }}>{this.props.textLeft}</Text>
           </Button>
         )
       } else {

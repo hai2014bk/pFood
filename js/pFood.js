@@ -19,6 +19,11 @@ import Cart from "./components/cart"
 import History from "./components/history"
 import Store from "./components/store"
 import Billing from "./components/billing"
+import StoreProduct from "./components/storeProduct"
+import StoreInfo from "./components/storeInfo"
+import StoreTab from "./components/storeTab";
+
+
 
 
 
@@ -31,8 +36,7 @@ const Main = StackNavigator(
 		SignUp: {screen:SignUp},
 		ForgetPassword: {screen:ForgetPassword},
 		Cart: { screen: Cart },	
-		Billing : { screen: Billing }
-		
+		Billing : { screen: Billing },	
 	},
 	{
 		index: 0,
