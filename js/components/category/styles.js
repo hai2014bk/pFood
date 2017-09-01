@@ -87,6 +87,20 @@ export default {
         justifyContent: 'center',
         alignItems:'center',
     },
+    checkboxText: {
+		marginLeft: 20,
+		color: '#A0A0A0',
+    },
+    checkBox: {
+		borderRadius: 13,
+		borderWidth: 1,
+		borderColor: '#A0A0A0',
+	},
+    pickerWrap: {
+		flexDirection: 'row',
+		marginLeft: -10,
+		marginTop: 7
+	},
     buyColumn: {
         marginLeft: 5,
         marginRight:5,

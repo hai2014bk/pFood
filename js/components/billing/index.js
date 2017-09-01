@@ -11,8 +11,10 @@ import * as mConstants from '../../utils/Constants';
 import Spinner from 'react-native-loading-spinner-overlay';
 var background = require('../../../images/background.png')
 var money = require('../../../images/money.png')
-var food = require('../../../images/vegeterian_food1600.png')
-class Profile extends Component {
+var food = ''
+
+
+class Billing extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -210,4 +212,4 @@ const mapStateToProps = state => ({
 	creatAcount: state.creatAcount
 });
 
-export default connect(mapStateToProps, bindActions)(Profile);
+export default connect(mapStateToProps, bindActions)(Billing);

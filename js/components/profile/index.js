@@ -83,14 +83,18 @@ class Profile extends Component {
 			</View>
 		)
 	}
+
+	onUpdate(){
+
+	}
+
 	render() {
 		const navigation = this.props.navigation;
 		return (
 			<Container style={styles.containerWrap}>
 				<Spinner visible={this.state.isLoading} />
-				<HeaderContent title="Thông tin"
-					leftButton={() => navigation.goBack()}
-					leftIcon='ios-arrow-back'
+				<HeaderContent title="Thông tin cá nhân"
+				leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")}
 				/>
 				<Content keyboardShouldPersistTaps='handled' style={styles.content} contentContainerStyle={{ flexGrow: 1 }}>
 					<View style={styles.headerTitle}>
@@ -103,7 +107,7 @@ class Profile extends Component {
 							<Input style={styles.textInput} placeholder="Tên" placeholderTextColor='#C6C6C6' value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} />
 						</View>
 						<Input style={styles.textInput} placeholder="Địa chỉ hiện tại" placeholderTextColor='#C6C6C6' value={this.state.address} onChangeText={text => this.setState({ address: text })} />
-						<Input style={styles.textInput} placeholder="Số điện thoại" placeholderTextColor='#C6C6C6' value={this.state.phone} onChangeText={text => this.setState({ phone: text })} />
+						<Input keyboardType='numeric' style={styles.textInput} placeholder="Số điện thoại" placeholderTextColor='#C6C6C6' value={this.state.phone} onChangeText={text => this.setState({ phone: text })} />
 						<Input style={styles.textInput} placeholder="Email" placeholderTextColor='#C6C6C6' value={this.state.email} onChangeText={text => this.setState({ email: text })} />
 					</Form>
 					<View style={styles.headerTitle}>
@@ -121,7 +125,7 @@ class Profile extends Component {
 					{this.pickerWrap('Tiền mặt', 'cash', 'pay')}
 					{this.pickerWrap('Thẻ ngân hàng', 'bankCard', 'pay')}
 					{this.pickerWrap('Thẻ tín dụng', 'creditCard', 'pay')}
-					<TouchableOpacity style={styles.updateButtonWrap}>
+					<TouchableOpacity onPress={() => this.onUpdate()} style={styles.updateButtonWrap}>
 						<Text style={styles.updateButtonText}> Cập nhật </Text>
 					</TouchableOpacity>
 				</Content>

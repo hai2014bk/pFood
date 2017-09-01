@@ -24,7 +24,7 @@ class SideBar extends Component {
 			<Container>
 				<Image source={require("../../../images/sid.png")} style={styles.background}>
 					<Content style={styles.drawerContent}>
-					<ListItem
+						<ListItem
 							navigation={navigation}
 							button
 							onPress={() => {
@@ -33,8 +33,10 @@ class SideBar extends Component {
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="logo-apple" />
-							<Text style={styles.linkText}> Thực Phẩm</Text>
+							<View style={{ width: 40 }}>
+								<Icon name="logo-apple" />
+							</View>
+							<Text style={styles.linkText}>Thực Phẩm</Text>
 						</ListItem>
 						<ListItem
 							navigation={navigation}
@@ -45,7 +47,9 @@ class SideBar extends Component {
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="ios-basket" />
+							<View style={{ width: 40 }}>
+								<Icon name="ios-basket" />
+							</View>
 							<Text style={styles.linkText}>Cửa Hàng</Text>
 						</ListItem>
 						<ListItem
@@ -57,7 +61,9 @@ class SideBar extends Component {
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="ios-paper" />
+							<View style={{ width: 40 }}>
+								<Icon name="ios-paper" />
+							</View>
 							<Text style={styles.linkText}>Lịch Sử</Text>
 						</ListItem>
 						<ListItem
@@ -69,8 +75,10 @@ class SideBar extends Component {
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="ios-contact" />
-							<Text style={styles.linkText}> Thông Tin</Text>
+							<View style={{ width: 40 }}>
+								<Icon name="ios-contact" />
+							</View>
+							<Text style={styles.linkText}>Thông Tin</Text>
 						</ListItem>
 
 

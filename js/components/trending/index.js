@@ -27,6 +27,9 @@ class Trending extends Component {
     }
 
     componentDidMount() {
+        var date = new Date()
+        let isoDate = date.toISOString().slice(0,-1)
+        console.log('2321321',isoDate)
         var params = {
             "PageSize": "20",
             "PageIndex": "1",
