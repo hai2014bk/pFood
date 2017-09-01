@@ -36,15 +36,11 @@ const Main = StackNavigator(
 		SignUp: {screen:SignUp},
 		ForgetPassword: {screen:ForgetPassword},
 		Cart: { screen: Cart },	
-		Billing : { screen: Billing },
-		StoreInfo : { screen: StoreInfo },
-		StoreTab : { screen: StoreTab }
-		
-		
+		Billing : { screen: Billing },	
 	},
 	{
 		index: 0,
-		initialRouteName: "StoreTab",
+		initialRouteName: initialRouteName,
 		headerMode: "none",
 		navigationOptions: {
 			gesturesEnabled: false,

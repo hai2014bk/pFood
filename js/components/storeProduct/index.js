@@ -133,7 +133,7 @@ class StoreProduct extends Component {
 		const navigation = this.props.navi;
 		return (
 			<Container style={styles.container}>
-				<View style={{ flex: 1 }}>
+				<Content style={{ flex: 1 }}>
 					<View style={{flexDirection:'row'}}>
 						<Image resizeMode='cover' source={{ uri: imageUrl }} style={styles.foodImage} />
 					</View>
@@ -155,7 +155,7 @@ class StoreProduct extends Component {
 						)
 						}
 					/>
-				</View>
+				</Content>
 			</Container>
 		);
 	}

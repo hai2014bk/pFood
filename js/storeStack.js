@@ -5,7 +5,7 @@ import Store from "./components/store";
 import StoreTab from "./components/storeTab";
 
 
-const TrendingStack = StackNavigator({
+const StoreStack = StackNavigator({
   Store: {
     screen: Store,
   },
@@ -23,4 +23,4 @@ const TrendingStack = StackNavigator({
 	}
 );
 
-export default TrendingStack;
+export default StoreStack;

@@ -40,7 +40,19 @@ class ForgetPassword extends Component {
 
         } else {
             this.setState({ isLoading: false })
-            setTimeout(() => { Alert.alert('', 'Gửi yêu cầu thất bại! Vui lòng thử lại') }, 200)
+            setTimeout(() => {
+                Alert.alert(
+                    '',
+                    'Gửi yêu cầu thất bại! Vui lòng thử lại',
+                    [
+                        {
+                            text: 'OK', onPress: () => this.passwordInput._root.focus()
+                        },
+                    ],
+                    { cancelable: false }
+                )
+            }, 200)
+
         }
     }
 
@@ -48,12 +60,29 @@ class ForgetPassword extends Component {
         if (this.state.email) {
             if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
                 if (this.checkSpaceAll(this.state.email)) {
-                    Alert.alert('', 'Hãy nhập địa chỉ email')
+                    Alert.alert(
+                        '',
+                        'Hãy nhập địa chỉ email',
+                        [
+                            {
+                                text: 'OK', onPress: () => this.passwordInput._root.focus()
+                            },
+                        ],
+                        { cancelable: false }
+                    )
                     this.setState({ email: '' })
                 } else {
-                    Alert.alert('', 'Địa chỉ email không hợp lệ')
+                    Alert.alert(
+                        '',
+                        'Địa chỉ email không hợp lệ',
+                        [
+                            {
+                                text: 'OK', onPress: () => this.passwordInput._root.focus()
+                            },
+                        ],
+                        { cancelable: false }
+                    )
                 }
-                this.passwordInput._root.focus()
             } else {
                 let params = {}
                 params.email = this.state.email
@@ -61,8 +90,16 @@ class ForgetPassword extends Component {
                 this.setState({ isLoading: true })
             }
         } else {
-            Alert.alert('', 'Hãy nhập địa chỉ email')
-            this.passwordInput._root.focus()
+            Alert.alert(
+                '',
+                'Hãy nhập địa chỉ email',
+                [
+                    {
+                        text: 'OK', onPress: () => this.passwordInput._root.focus()
+                    },
+                ],
+                { cancelable: false }
+            )
         }
     }
 
