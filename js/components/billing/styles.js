@@ -135,5 +135,14 @@ export default {
 		flexDirection: 'row',
 		paddingLeft:5,
 	},
+	checkboxTextDisable:{
+		marginLeft: 20,
+		color: '#d6dbdf',
+	},
+	checkBoxDisable: {
+		borderRadius: 13,
+		borderWidth: 1,
+		borderColor: '#d6dbdf',
+	},
 
 };
