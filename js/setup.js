@@ -1,7 +1,7 @@
 import * as Expo from "expo";
 import React, { Component } from "react";
 import { Provider } from "react-redux";
-import { StyleProvider } from "native-base";
+import { StyleProvider, Root  } from "native-base";
 import * as mConstants from './utils/Constants'
 import {
 	AsyncStorage
@@ -45,7 +45,9 @@ export default class Setup extends Component {
 			return (
 				<StyleProvider style={getTheme(variables)}>
 					<Provider store={this.state.store}>
-						<App initialRouteName={initialRoute} />
+						<Root>
+							<App initialRouteName={initialRoute} />
+						</Root>
 					</Provider>
 				</StyleProvider>
 			);
