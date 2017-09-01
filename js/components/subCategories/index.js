@@ -5,6 +5,7 @@ import { Thumbnail, Container, Header, Content, Button, Icon, Left, Right, Item,
 import { Grid, Col } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import { connect } from "react-redux";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import styles from "./styles";
 var circle = require('../../../images/greyCircle.png')
@@ -16,7 +17,9 @@ class SubCategories extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            disabled: false,
+            isLoading: false,
         };
     }
 
@@ -26,38 +29,42 @@ class SubCategories extends Component {
     }
 
     componentWillReceiveProps(props) {
+        this.setState({ isLoading: false })
         if (props.fetchSubCategories.successSub) {
             var subCategories = props.fetchSubCategories.data.model
             if (subCategories.length > 0) {
-                if(subCategories[0].parentId == this.state.parentChoose.id) {
-                    this.props.navigation.navigate("SubCategories", { data: subCategories,parent:this.state.parentChoose})
+                if (subCategories[0].parentId == this.state.parentChoose.id) {
+                    this.props.navigation.navigate("SubCategories", { data: subCategories, parent: this.state.parentChoose })
                 }
             } else {
-                console.log('22222',props.fetchSubCategories.data.checkId, this.state.parentChoose.id)
-                if(props.fetchSubCategories.data.checkId == this.state.parentChoose.id){
-                 this.props.navigation.navigate("Pruduct",{parent:this.state.parentChoose})
+                console.log('22222', props.fetchSubCategories.data.checkId, this.state.parentChoose.id)
+                if (props.fetchSubCategories.data.checkId == this.state.parentChoose.id) {
+                    this.props.navigation.navigate("Pruduct", { parent: this.state.parentChoose })
                 }
             }
         }
     }
-    choseFood(food){
+    choseFood(food) {
         this.props.fetchSub(food.id)
-        this.setState({parentChoose:food})
+        this.setState({ parentChoose: food })
     }
 
     renderCell(data) {
-        var icon = '' 
-        if(data.item.icon) {
+        var icon = ''
+        if (data.item.icon) {
             icon = data.item.icon
-        }        
+        }
         return (
-            <TouchableOpacity style={{ flex: 1 }} onPress={() => {this.choseFood(data.item) }}>
+            <TouchableOpacity disabled={this.state.disabled} style={{ flex: 1 }} onPress={() => {
+                this.setState({ isLoading: true }),
+                this.choseFood(data.item)
+            }}>
                 <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
                     <View style={styles.opacityView}>
-                    <Image style={{width:'40%', marginBottom:5}} resizeMode='contain' source={{uri:icon}}/>
+                        <Image style={{ width: '40%', marginBottom: 5 }} resizeMode='contain' source={{ uri: icon }} />
                         <Text style={styles.title}>{data.item.name}</Text>
-                        </View>
-                    </Image>
+                    </View>
+                </Image>
             </TouchableOpacity>
 
         )
@@ -69,13 +76,14 @@ class SubCategories extends Component {
         console.log('data state', this.state.data)
         return (
             <Container style={styles.container}>
-                <HeaderContent title={params.parent.name} leftButton={() => navigation.goBack()} 
+                <HeaderContent title={params.parent.name} leftButton={() => navigation.goBack()}
                     leftIcon="ios-arrow-back" />
+                <Spinner visible={this.state.isLoading} />
                 <Content style={styles.contentWrap}>
-                    <FlatList style={{margin:10}}
+                    <FlatList style={{ margin: 10 }}
                         data={this.state.data}
                         extraData={this.state.data}
-                        keyExtractor={(item)=> item.id}
+                        keyExtractor={(item) => item.id}
                         numColumns={2}
                         renderItem={(item) => (
                             <View style={styles.listItem} >

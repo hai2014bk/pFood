@@ -3,10 +3,10 @@ import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, 
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
-
-import {CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
-import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
+import { CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
+import { Grid, Col, Row } from "react-native-easy-grid";
+import Spinner from "react-native-loading-spinner-overlay";
 import { connect } from "react-redux";
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
@@ -24,19 +24,21 @@ class Category extends Component {
         this.state = {
             data: [],
             index: 1,
-            sortBy:'',
-            sortDirection:'',
-            changeSort:false,
+            isSort:false,
+            sortBy: 'Id',
+            sortDirection: 'Asc',
+            changeSort: false,
+            shouldLoadMore:false,
             field: {
-				Id: true,
-				Name: false,
-				Price: false,
-				Rate: false
-			},
-			direction: {
-				Desc: true,
-				Asc: false,
-			},
+                Id: true,
+                Name: false,
+                Price: false,
+                Rate: false
+            },
+            direction: {
+                Desc: true,
+                Asc: false,
+            },
         };
     }
 
@@ -47,75 +49,103 @@ class Category extends Component {
             var parameter = {
                 "PageSize": 10,
                 "PageIndex": this.state.index,
-                "OrderBy":"",
-                "OrderDirection":"",
+                "OrderBy":this.state.sortBy,
+                "OrderDirection":this.state.sortDirection,
                 "CategoryId": params.parent.id
             }
-            console.log('load 1')            
+            console.log('load 1')
             this.props.fetch(parameter)
         })
 
     }
+    uniq(a) {
+        var seen = [];
+        var out = [];
+        var len = a.length;
+        var j = 0;
+        for(var i = 0; i < len; i++) {
+             var item = a[i];
+             console.log('item bbasw', seen.indexOf(item.id))
+             if(seen.indexOf(item.id) == -1) {
+                   seen.push(item.id)
+                   out[j++] = item;
+                   console.log('bnmfvf',item.id,seen,out.length)
+                   
+             }
+        }
+        return out;
+    }
 
     componentWillReceiveProps(props) {
         if (props.fetchProduct.success) {
-            if(props.fetchProduct.data.model.length > 0) {
-            var listFood = this.state.data.concat( props.fetchProduct.data.model)
-            for (i in listFood) {
-                listFood[i].quantity = 1
+            if (props.fetchProduct.data.model.length > 0) {
+                var listFood = []
+                if(this.state.isSort){
+                    listFood = props.fetchProduct.data.model
+                } else {
+                    listFood = this.state.data.concat(props.fetchProduct.data.model)
+                    if(props.fetchProduct.data.model.length == 10){
+                        this.setState({shouldLoadMore:true})
+                    }
+                }
+                for (i in listFood) {
+                    if(!listFood[i].quantity) {
+                        listFood[i].quantity = 1
+                    }
+                }
+                listFood = this.uniq(listFood)
+                console.log('27321kdfa',listFood)
+                this.setState({ data: listFood })
+            } else {
+                this.setState({ loadedAll: true })
             }
-            this.setState({ data: listFood })
-        } else {
-            this.setState({loadedAll:true})
-        }
         }
         if (!props.fetchProduct.success) {
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
         }
     }
 
-    loadMore(){
-        console.log('load 2 ')            
-        if(!this.state.loadedAll){
+    loadMore() {
+        if (!this.state.loadedAll && this.state.shouldLoadMore) {
             var index = this.state.index + 1
             const { params } = this.props.navigation.state
             var parameter = {
                 "PageSize": 10,
                 "PageIndex": index,
-                "OrderBy":"Price",
-                "OrderDirection":"Desc",
+                "OrderBy":this.state.sortBy,
+                "OrderDirection":this.state.sortDirection,
                 "CategoryId": params.parent.id
             }
-            this.setState({index:this.state.index  + 1})
+            this.setState({isSort:false, index: this.state.index + 1 })
             this.props.fetch(parameter)
         }
     }
     pickerWrap(text, key, type) {
-		let boxType = type === 'field' ? this.state.field : this.state.direction;
-		let checked = boxType[key] ? true : false;
-		return (
-			<View style={styles.pickerWrap}>
-				<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
-				<Text style={styles.checkboxText}>{text}</Text>
-			</View>
-		)
+        let boxType = type === 'field' ? this.state.field : this.state.direction;
+        let checked = boxType[key] ? true : false;
+        return (
+            <View style={styles.pickerWrap}>
+                <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
+                <Text style={styles.checkboxText}>{text}</Text>
+            </View>
+        )
     }
     updateStatus(key, type) {
-		let boxType = type === 'field' ? Object.assign({}, this.state.field) : Object.assign({}, this.state.direction);
-		for (let k in boxType) {
-			if (boxType.hasOwnProperty(k)) {
-				boxType[k] = false;
-				if (k === key) {
-					boxType[k] = true;
-				}
-			}
-		}
-		if (type === 'field') {
-			this.setState({ sortBy: boxType });
-		} else {
-			this.setState({ sortDirection: boxType });
-		}
-	}
+        let boxType = type === 'field' ? Object.assign({}, this.state.field) : Object.assign({}, this.state.direction);
+        for (let k in boxType) {
+            if (boxType.hasOwnProperty(k)) {
+                boxType[k] = false;
+                if (k === key) {
+                    boxType[k] = true;
+                }
+            }
+        }
+        if (type === 'field') {
+            this.setState({ field: boxType, sortBy: key });
+        } else {
+            this.setState({ direction: boxType, sortDirection: key });
+        }
+    }
 
     plus(rowID) {
         let newArray = this.state.data.slice(0);
@@ -127,7 +157,7 @@ class Category extends Component {
             data: newArray,
         });
     }
-    
+
 
     minus(rowID) {
         let newArray = this.state.data.slice(0);
@@ -211,41 +241,63 @@ class Category extends Component {
             }
         }
     }
-    renderSort(){
+    renderSort() {
         return (
-            <View style={{flex:1, marginLeft:10}}>
-                {this.pickerWrap('Mã sản phẩm','Id','field')}
-                {this.pickerWrap('Tên sản phẩm','Name','field')}
-                {this.pickerWrap('Giá sản phẩmm','Price','field')}
-                {this.pickerWrap('Đánh giá','Rate','field')}
+            <View style={styles.sortWrap}>
+                <View style={styles.sortFieldWrap}>
+                    {this.pickerWrap('Mã sản phẩm', 'Id', 'field')}
+                    {this.pickerWrap('Tên sản phẩm', 'Name', 'field')}
+                    {this.pickerWrap('Giá sản phẩmm', 'Price', 'field')}
+                    {this.pickerWrap('Đánh giá', 'Rate', 'field')}
                 </View>
+                <View style={styles.sortDirectionWrap}>
+                    {this.pickerWrap('Tăng dần', 'Asc', 'direction')}
+                    {this.pickerWrap('Giảm dần', 'Desc', 'direction')}
+                </View>
+            </View>
         )
     }
+    sortButton(){
+        this.popupDialog.dismiss()
+        const { params } = this.props.navigation.state
+        var parameter = {
+            "PageSize": 10,
+            "PageIndex": this.state.index,
+            "OrderBy":this.state.sortBy,
+            "OrderDirection":this.state.sortDirection,
+            "CategoryId": params.parent.id
+        }
+        this.setState({ isSort:true })
+        this.props.fetch(parameter)
+    }
+    onDismissed(){
 
-    renderSortPopup(){
-        return(
+    }
+
+    renderSortPopup() {
+        return (
             <PopupDialog
-            dialogTitle={<DialogTitle title="Job Rating" />}
-            ref={(popupDialog) => { this.popupDialog = popupDialog; }}
-            onDismissed={() => this.onDismissed()}
-            dialogStyle={{marginTop:-300}}
-            width={300}
-            height={300}
-            actions={[
-              <DialogButton
-                text="Rate"
-                onPress={() => {
-                  this.rateButton()
-                }}
-                key="button-1"
-              />,
-            ]}
-          >
-          <View style={{flex:1,backgroundColor:'red'}}>
-                {this.renderSort()}
-            </View>
-            
-          </PopupDialog>
+                dialogTitle={<DialogTitle title="Sắp xếp" />}
+                ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+                onDismissed={() => this.onDismissed()}
+                dialogStyle={{ marginTop: -200 }}
+                width={300}
+                height={300}
+                actions={[
+                    <DialogButton
+                        text="Ok"
+                        onPress={() => {
+                            this.sortButton()
+                        }}
+                        key="button-1"
+                    />,
+                ]}
+            >
+                <View style={{ flex: 1 }}>
+                    {this.renderSort()}
+                </View>
+
+            </PopupDialog>
         )
     }
 
@@ -253,7 +305,7 @@ class Category extends Component {
         let item = data.item
         let active = 0
         let color = ''
-        var quantity = item.quantity * item.quantityStep        
+        var quantity = item.quantity * item.quantityStep
         if (item.quantity > 0) {
             active = 0.2,
                 color = primary
@@ -312,7 +364,7 @@ class Category extends Component {
             </TouchableOpacity>
         )
     }
-    openSort(){
+    openSort() {
         this.popupDialog.show();
     }
 
@@ -321,25 +373,26 @@ class Category extends Component {
         const { params } = this.props.navigation.state
         return (
             <Container style={styles.container}>
-                <HeaderContent navi={navigation} customRight={()=>this.openSort()} rightButton={true} title={params.parent.name}
+                <HeaderContent navi={navigation} rightIcon={'md-funnel'} customRight={() => this.openSort()} rightButton={true} title={params.parent.name}
                     textLeft="Danh Mục"
                     leftButton={() => { this.props.navigation.dispatch(resetAction) }}
                 />
-                <View style={{marginBottom:60}}>
-                    <FlatList style={{marginTop:5}}
-                    onEndReached={(distanceFromEnd)=>this.loadMore()}
-                    onEndReachedThreshold = {0.5}
+                <Spinner visible={this.state.isLoading} />
+                <View style={{flex:1}}>
+                    <FlatList style={{ marginTop: 5 }}
+                        onEndReached={(distanceFromEnd) => this.loadMore()}
+                        onEndReachedThreshold={0.5}
                         data={this.state.data}
                         extraData={this.state.data}
-                        keyExtractor={(item)=>item.id}
+                        keyExtractor={(item) => item.id}
                         renderItem={(item) => (
-                            <View style={{ flex:1, borderBottomWidth: 0 }} >
+                            <View style={{ flex: 1, borderBottomWidth: 0 }} >
                                 {this.renderItems(item)}
                             </View>
                         )
                         }
                     />
-                        {this.renderSortPopup()}
+                    {this.renderSortPopup()}
                 </View>
             </Container>
         );

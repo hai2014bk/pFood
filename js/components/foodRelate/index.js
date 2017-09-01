@@ -50,13 +50,13 @@ class FoodRelate extends Component {
                 }
                 listFood[i].quantity = 0
             }
-            console.log(listFood)
             this.setState({ data: listFood })
         }
         if (!props.fetchProduct.success) {
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
         }
     }
+   
 
     plus(rowID) {
         let newArray = this.state.data.slice(0);
@@ -115,6 +115,7 @@ class FoodRelate extends Component {
         let id = item.id
         let active = 0
         let color = ''
+        var quantity = item.quantity * item.quantityStep        
         if (item.quantity > 0) {
             active = 0.2,
                 color = primary
@@ -152,7 +153,7 @@ class FoodRelate extends Component {
                                             <Icon style={[styles.icon, {color:color}]} name="md-remove" />
                                         </TouchableOpacity>
                                         <Col style={styles.quantityContainer}>
-                                            <Text style={styles.quantity}>{item.quantity} {item.unitType}</Text>
+                                            <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
                                         </Col>
                                         <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />

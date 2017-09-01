@@ -94,8 +94,9 @@ export default {
         marginTop: 20,
     },
     quantity: {
-        fontSize: 15,
-        alignSelf: 'center'
+        fontSize: 13,
+        alignSelf: 'center',
+        textAlign:'center'
     },
     quantityContainer: {
         flex:1,
