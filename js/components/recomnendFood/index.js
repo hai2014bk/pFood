@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InteractionManager,AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {FlatList, InteractionManager,AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -9,6 +9,7 @@ import { fetchTrendingRecomend } from "../../actions/fetchTrendingRecomend.js"
 import Swiper from 'react-native-swiper';
 import styles from "./styles";
 import { connect } from "react-redux";
+import Spinner from "react-native-loading-spinner-overlay";
 const primary = require("../../themes/variable").brandPrimary;
 
 
@@ -22,7 +23,8 @@ class RecommendFood extends Component {
 		super(props);
 		this.state = {
 			disabled:false,
-			dataSection:[]
+			dataSection:[],
+			isLoading:false
 		};
 	}
 	componentDidMount() {
@@ -97,14 +99,17 @@ class RecommendFood extends Component {
 		)
 	}
 	openDetail(food){
-		this.setState({disabled:true})
+		this.setState({isLoading:true})
 		setTimeout(()=>{
 			console.log('open distsa',this.state.disabled)
 			this.props.navigation.navigate('FoodTab',{parrent:food})
+			this.setState({isLoading:false})
+			
 		},500)
         
     }
-	renderCell(food) {
+	renderCell(data) {
+		var food = data.item
 		return (
 			<View>
 				<TouchableOpacity disabled={this.state.disabled} onPress={() => {this.openDetail(food)}} style={{ flex: 1, alignItems: 'center' }} >
@@ -127,7 +132,7 @@ class RecommendFood extends Component {
 									<Text style={styles.oldPriceText}>322.000đ</Text>
 								</Row>
 								<Row style={{ flex: 1, justifyContent: 'space-between', alignItems: 'flex-end' }} size={1}>
-									<Text style={styles.priceText}>{food.price}</Text>
+									<Text style={styles.priceText}>{food.price} đ</Text>
 									<View style={{
 										marginRight: 2, marginRight:5
 									}}>
@@ -141,19 +146,26 @@ class RecommendFood extends Component {
 			</View>
 		)
 	}
+	_keyExtractor = (item, index) => item.id;	
 	renderHorizontalList(section) {
 		return (
 			<View style={{ flex: 1 }}>
 				<View style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
 					<Text style={styles.sectionText} note>{section.sectionName}</Text>
 				</View>
-				<List style={{ marginTop: 10, marginRight: -15 }} showsHorizontalScrollIndicator={false} horizontal={true} dataArray={section.food}
-					renderRow={(item) =>
+				<FlatList style={{ marginTop: 10, marginRight: -15 }}
+				 showsHorizontalScrollIndicator={false} 
+				 horizontal={true}
+				 data={section.food}
+                extraData={section.food}
+                keyExtractor={this._keyExtractor}
+				  dataArray={section.food}
+				  renderItem={(item) =>
 						<View style={{ borderBottomWidth: 0, marginRight: 5, }}>
 							{this.renderCell(item)}
 						</View>
 					}>
-				</List>
+				</FlatList>
 			</View>
 		)
 	}
@@ -172,6 +184,7 @@ class RecommendFood extends Component {
 		const navigation = this.props.screenProps.navi;
 		return (
 			<Container style={styles.container}>
+				<Spinner visible={this.state.isLoading} />
 				<HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")}
 					rightButton={true} title='Đề xuất'>
 				</HeaderContent>
