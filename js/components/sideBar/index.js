@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, TouchableOpacity, View ,AsyncStorage} from "react-native";
+import { Image, TouchableOpacity, View, AsyncStorage } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import { NavigationActions } from "react-navigation";
 import { Container, Content, Text, Icon, ListItem, Thumbnail } from "native-base";
@@ -12,73 +12,56 @@ const resetAction = NavigationActions.reset({
 });
 class SideBar extends Component {
 
-	async logOut(){
-		let keys = [mConstants.CART,mConstants.USER_INFO];
+	async logOut() {
+		let keys = [mConstants.CART, mConstants.USER_INFO];
 		await AsyncStorage.multiRemove(keys)
-			this.props.navigation.dispatch(resetAction);
-	   }
+		this.props.navigation.dispatch(resetAction);
+	}
 	render() {
 		const navigation = this.props.navigation;
+		console.log('side bar', navigation)
 		return (
 			<Container>
 				<Image source={require("../../../images/sid.png")} style={styles.background}>
 					<Content style={styles.drawerContent}>
-						<ListItem
+					<ListItem
+							navigation={navigation}
 							button
 							onPress={() => {
-								navigation.navigate("Home");
+								navigation.navigate("MainTabFood");
 							}}
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="ios-grid-outline" />
-							<Text style={styles.linkText}>NEWS</Text>
+							<Icon name="logo-apple" />
+							<Text style={styles.linkText}> Thực Phẩm</Text>
 						</ListItem>
 						<ListItem
+							navigation={navigation}
 							button
 							onPress={() => {
-								navigation.navigate("Channels");
+								navigation.navigate("Store");
 							}}
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="ios-keypad-outline" />
-							<Text style={styles.linkText}>CHANNELS</Text>
+							<Icon name="ios-basket" />
+							<Text style={styles.linkText}>Cửa Hàng</Text>
 						</ListItem>
 						<ListItem
+							navigation={navigation}
 							button
 							onPress={() => {
-								navigation.navigate("Overview");
+								navigation.navigate("History");
 							}}
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="ios-stats" />
-							<Text style={styles.linkText}> OVERVIEW</Text>
+							<Icon name="ios-paper" />
+							<Text style={styles.linkText}>Lịch Sử</Text>
 						</ListItem>
 						<ListItem
-							button
-							onPress={() => {
-								navigation.navigate("Calendar");
-							}}
-							iconLeft
-							style={styles.links}
-						>
-							<Icon name="ios-calendar-outline" />
-							<Text style={styles.linkText}>CALENDAR</Text>
-						</ListItem>
-						<ListItem
-							button
-							onPress={() => {
-								navigation.navigate("Timeline");
-							}}
-							iconLeft
-							style={styles.links}
-						>
-							<Icon name="ios-timer-outline" />
-							<Text style={styles.linkText}>TIMELINE</Text>
-						</ListItem>
-						<ListItem
+							navigation={navigation}
 							button
 							onPress={() => {
 								navigation.navigate("Profile");
@@ -86,42 +69,11 @@ class SideBar extends Component {
 							iconLeft
 							style={styles.links}
 						>
-							<Icon name="ios-person-outline" />
-							<Text style={styles.linkText}> PROFILE</Text>
+							<Icon name="ios-contact" />
+							<Text style={styles.linkText}> Thông Tin</Text>
 						</ListItem>
-						<ListItem
-							button
-							onPress={() => {
-								navigation.navigate("Widgets");
-							}}
-							iconLeft
-							style={styles.links}
-						>
-							<Icon name="ios-grid" />
-							<Text style={styles.linkText}>WIDGETS</Text>
-						</ListItem>
-						<ListItem
-							button
-							onPress={() => {
-								navigation.navigate("Settings");
-							}}
-							iconLeft
-							style={styles.links}
-						>
-							<Icon name="ios-settings-outline" />
-							<Text style={styles.linkText}>SETTINGS</Text>
-						</ListItem>
-						<ListItem
-							button
-							onPress={() => {
-								navigation.navigate("Feedback");
-							}}
-							iconLeft
-							style={styles.links}
-						>
-							<Icon name="ios-paper-outline" />
-							<Text style={styles.linkText}>FEEDBACK</Text>
-						</ListItem>
+
+
 
 						<View style={styles.logoutContainer}>
 							<View style={styles.logoutbtn} foregroundColor={"white"}>

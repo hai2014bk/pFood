@@ -16,6 +16,11 @@ import RecommendFood from "./components/recomnendFood/";
 import FoodDetail from "./components/foodDetail/";
 import Trending from "./components/trending"
 import Cart from "./components/cart"
+import History from "./components/history"
+import Store from "./components/store"
+import Billing from "./components/billing"
+
+
 
 
 const App = ({ initialRouteName }) => {
@@ -26,6 +31,8 @@ const Main = StackNavigator(
 		SignUp: {screen:SignUp},
 		ForgetPassword: {screen:ForgetPassword},
 		Cart: { screen: Cart },	
+		Billing : { screen: Billing }
+		
 	},
 	{
 		index: 0,

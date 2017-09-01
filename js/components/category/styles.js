@@ -140,13 +140,14 @@ export default {
         marginRight: 10,
         borderTopLeftRadius: 5,
         borderBottomLeftRadius: 5,
-        borderColor: primary,
         justifyContent: 'center',
         alignItems: 'center',
-
     },
     icon: {
         fontSize: 17,
-        color: primary
+        color:primary
+    },
+    animated:{
+        position:'absolute'
     }
 };

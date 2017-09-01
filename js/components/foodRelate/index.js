@@ -45,8 +45,8 @@ class FoodRelate extends Component {
             var listFood = props.fetchProduct.data.model
             console.log(listFood)
             for (i in listFood) {
-                if(this.props.food.id == listFood[i].id){
-                    listFood.splice(i,1)
+                if (this.props.food.id == listFood[i].id) {
+                    listFood.splice(i, 1)
                 }
                 listFood[i].quantity = 0
             }
@@ -106,60 +106,68 @@ class FoodRelate extends Component {
         return str.substr(0, index) + value + str.substr(index);
     }
 
-    openDetail(food){
+    openDetail(food) {
         console.log('open')
-        this.props.screenProps.navi.navigate('FoodTab',{parrent:food})
+        this.props.screenProps.navi.navigate('FoodTab', { parrent: food })
     }
     renderItems(data) {
         let item = data.item
-        console.log(data.item.productMetaData[0])
         let id = item.id
+        let active = 0
+        let color = ''
+        if (item.quantity > 0) {
+            active = 0.2,
+                color = primary
+        } else {
+            active = 1,
+                color = '#cecece'
+        }
         let price = this.priceHandle(item.price.toString())
         return (
-            <TouchableOpacity onPress={()=>{this.openDetail(item)}}>            
-            <Card style={styles.card}>
-                <CardItem >
-                    <Body>
-                        <Grid >
-                            <Col size={2} style={styles.imageWrap}>
-                                <View style={styles.imageContainer}>
-                                    <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
-                                </View>
-                            </Col>
-                            <Col size={3} style={styles.infoWrap}>
-                                <Text style={styles.foodName}>{item.name}</Text>
-                                <Text style={styles.unit}> {item.minOrderedItems} {item.unitType}</Text>
-                                <Row style={{ alignItems: 'flex-end' }} >
-                                    <Icon name='ios-pin' style={styles.locationIcon} />
-                                    <Text style={styles.shopName}>{item.cities}</Text>
-                                </Row>
-                                <View style={{ width: 50 }}>
-                                    {this.renderStar(item.rate)}
-                                </View>
-                                <Text style={styles.price}>{price}đ</Text>
-                            </Col>
-                            <Col size={3} style={styles.buyColumn}>
-                                <Col style={styles.buttonWrap}>
-                                <TouchableOpacity style={styles.iconWrapMinus} onPress={() => this.minus(data.index)} >
-                                        <Icon style={styles.icon} name="md-remove" />
-                                    </TouchableOpacity>
-                                    <Col style={styles.quantityContainer}>
-                                        <Text style={styles.quantity}>{item.quantity} {item.unitType}</Text>
+            <TouchableOpacity onPress={() => { this.openDetail(item) }}>
+                <Card style={styles.card}>
+                    <CardItem >
+                        <Body>
+                            <Grid >
+                                <Col size={2} style={styles.imageWrap}>
+                                    <View style={styles.imageContainer}>
+                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
+                                    </View>
+                                </Col>
+                                <Col size={3} style={styles.infoWrap}>
+                                    <Text style={styles.foodName}>{item.name}</Text>
+                                    <Text style={styles.unit}> {item.minOrderedItems} {item.unitType}</Text>
+                                    <Row style={{ alignItems: 'flex-end' }} >
+                                        <Icon name='ios-pin' style={styles.locationIcon} />
+                                        <Text style={styles.shopName}>{item.cities}</Text>
+                                    </Row>
+                                    <View style={{ width: 50 }}>
+                                        {this.renderStar(item.rate)}
+                                    </View>
+                                    <Text style={styles.price}>{price}đ</Text>
+                                </Col>
+                                <Col size={3} style={styles.buyColumn}>
+                                    <Col style={styles.buttonWrap}>
+                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, {borderColor:color}]} onPress={() => this.minus(data.index)} >
+                                            <Icon style={[styles.icon, {color:color}]} name="md-remove" />
+                                        </TouchableOpacity>
+                                        <Col style={styles.quantityContainer}>
+                                            <Text style={styles.quantity}>{item.quantity} {item.unitType}</Text>
+                                        </Col>
+                                        <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
+                                            <Icon name="md-add" style={styles.icon} />
+                                        </TouchableOpacity>
                                     </Col>
-                                    <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
-                                        <Icon name="md-add" style={styles.icon} />
-                                    </TouchableOpacity>
+                                    <Col style={styles.buttonAddCard}>
+                                        <Button addCart onPress={() => { appFunction.add(item) }} >
+                                            <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
+                                        </Button>
+                                    </Col>
                                 </Col>
-                                <Col style={styles.buttonAddCard}>
-                                    <Button addCart onPress={()=>{appFunction.add(item)}} >
-                                        <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
-                                    </Button>
-                                </Col>
-                            </Col>
-                        </Grid>
-                    </Body>
-                </CardItem>
-            </Card>
+                            </Grid>
+                        </Body>
+                    </CardItem>
+                </Card>
             </TouchableOpacity>
         )
     }
@@ -169,12 +177,12 @@ class FoodRelate extends Component {
         return (
             <Container style={styles.container}>
                 <Content style={styles.contentWrap}>
-                    <FlatList style={{marginBottom:5,marginTop:5}}
+                    <FlatList style={{ marginBottom: 5, marginTop: 5 }}
                         data={this.state.data}
                         extraData={this.state.data}
-                        keyExtractor={(item)=>item.id}
+                        keyExtractor={(item) => item.id}
                         renderItem={(item) => (
-                            <View style={{ flex:1, borderBottomWidth: 0 }} >
+                            <View style={{ flex: 1, borderBottomWidth: 0 }} >
                                 {this.renderItems(item)}
                             </View>
                         )
