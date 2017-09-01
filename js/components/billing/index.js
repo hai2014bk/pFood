@@ -9,6 +9,7 @@ import commonColor from "../../../native-base-theme/variables/commonColor";
 import Utils from "../../utils/validate.js"
 import * as mConstants from '../../utils/Constants';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { addOrder } from "../../actions/addOrder.js"
 var background = require('../../../images/background.png')
 var money = require('../../../images/money.png')
 var food = require('../../../images/vegeterian_food1600.png')
@@ -18,9 +19,11 @@ class Billing extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			shipKey: 'vPost',
+			payKey: 'cash',
 			visible: true,
 			totalPrice: 0,
-			data:[],
+			data: [],
 			checked: false,
 			shipServices: {
 				vPost: true,
@@ -49,7 +52,7 @@ class Billing extends Component {
 		try {
 			const value = await AsyncStorage.getItem(mConstants.CART);
 			if (value !== null) {
-				this.setState({visible:false})
+				this.setState({ visible: false })
 				data = JSON.parse(value)
 				console.log('value', data)
 				this.setState({ data })
@@ -64,7 +67,13 @@ class Billing extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-
+		console.log('thanh');
+		if (props.addOrder.success == true) {
+			console.log('thanh doan')
+			alert(props.addOrder.message);
+		} else {
+			alert(props.addOrder.message);
+		}
 	}
 
 	priceHandle(price) {
@@ -82,6 +91,27 @@ class Billing extends Component {
 		return str.substr(0, index) + value + str.substr(index);
 	}
 
+	addOrderClick(data) {
+
+		var param = {};
+		param.OrderedProducts = [];
+		for (i = 0; i < data.length; i++) {
+			var product = {
+				ProductId: data[i].id,
+				Quantity: data[i].quantity,
+			}
+			param.OrderedProducts.push(product);
+		}
+		param.UserId = 1;
+		param.Status = "Submitted";
+		param.TotalPrice = this.state.totalPrice;
+		param.BillingAddress = "thuy khue";
+		param.DeliveryAddress = "thuy khue";
+		param.DeliveryMethod = this.state.shipKey;
+		param.PaymentMethod = this.state.payKey;
+		this.props.addOrder(param)
+
+	}
 
 	updateStatus(key, type) {
 		let shipStatus = type === 'ship' ? Object.assign({}, this.state.shipServices) : Object.assign({}, this.state.pay);
@@ -90,6 +120,12 @@ class Billing extends Component {
 				shipStatus[k] = false;
 				if (k === key) {
 					shipStatus[k] = true;
+					console.log(type);
+					if (type === 'ship') {
+						this.setState({ shipKey: key })
+					} else {
+						this.setState({ payKey: key })
+					}
 				}
 			}
 		}
@@ -125,7 +161,7 @@ class Billing extends Component {
 					<Text style={styles.productText}>Vinmart</Text>
 					<Text style={styles.proNumber}>Số lượng: {item.quantity}{item.unitType}</Text>
 				</View>
-				
+
 			</View>
 		)
 	}
@@ -133,15 +169,26 @@ class Billing extends Component {
 	pickerWrap(text, key, type) {
 		let shipServices = type === 'ship' ? this.state.shipServices : this.state.pay;
 		let checked = shipServices[key] ? true : false;
-		return (
-			<View style={styles.pickerWrap}>
-				<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
-				<Text style={styles.checkboxText}>{text}</Text>
-			</View>
-		)
+		if (key !== 'cash' && type !=='ship') {
+			return (
+				<TouchableOpacity style={styles.pickerWrap}>
+					<CheckBox style={styles.checkBoxDisable} color= '#f2f4f4' checked={false} />
+					<Text style={styles.checkboxTextDisable}>{text}</Text>
+				</TouchableOpacity>
+			)
+		}else{
+			return (
+				<TouchableOpacity onPress={() => this.updateStatus(key, type)} style={styles.pickerWrap}>
+					<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
+					<Text style={styles.checkboxText}>{text}</Text>
+				</TouchableOpacity>
+			)
+		}
 	}
 	render() {
-		let total=this.state.totalPrice;
+		console.log('adjf', this.state.shipKey)
+		console.log('pay', this.state.payKey)
+		let total = this.state.totalPrice;
 		let totalPrice = this.priceHandle(total.toString());
 		var mdh = "F001"
 		const navigation = this.props.navigation;
@@ -193,10 +240,10 @@ class Billing extends Component {
 					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#C6C6C6' />
 					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#C6C6C6' />
 					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#C6C6C6' />
-					<Button block style={styles.button}><Text style={styles.updateButtonText} >Thanh Toán</Text></Button>
+					<Button block style={styles.button}><Text style={styles.updateButtonText} onPress={() => this.addOrderClick(this.state.data)} >Thanh Toán</Text></Button>
 					<View style={styles.footer}></View>
 				</Content>
-				
+
 			</Container>
 		);
 	}
@@ -204,12 +251,12 @@ class Billing extends Component {
 }
 function bindActions(dispatch) {
 	return {
-		register: (params) => dispatch(createAccount(params)),
+		addOrder: (params) => dispatch(addOrder(params)),
 	};
 }
 
 const mapStateToProps = state => ({
-	creatAcount: state.creatAcount
+	addOrder: state.addOrder,
 });
 
 export default connect(mapStateToProps, bindActions)(Billing);
