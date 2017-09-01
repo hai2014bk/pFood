@@ -64,7 +64,7 @@ class Cart extends Component {
         if (data.item.quantity == 1) {
             Alert.alert(
                 '',
-                'Bạn có muốn xóa sản phẩm này khỏi giỏ hàng',
+                'Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?',
                 [
                     { text: 'Chắc chắn', onPress: () => this.remove(rowID) },
                     { text: 'Không', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },

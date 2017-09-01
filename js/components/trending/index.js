@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import { FlatList, Image, View, TouchableOpacity, Platform, Text, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchTrending } from "../../actions/fetchTrending.js"
@@ -141,8 +141,8 @@ class Trending extends Component {
                                 </Col>
                                 <Col size={3} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity activeOpacity={active}  style={[styles.iconWrapMinus,{borderColor:color}]} onPress={() => this.minus(data.index)} >
-                                            <Icon style={[styles.icon, {color:color}]} name="md-remove" />
+                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
+                                            <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
@@ -153,7 +153,7 @@ class Trending extends Component {
                                         </TouchableOpacity>
                                     </Col>
                                     <Col style={styles.buttonAddCard}>
-                                        <Button addCart onPress={() => { appFunction.add(item) }} >
+                                        <Button ref={(animated) => { this.animation = animated }} addCart onPress={() => { appFunction.add(item) }} >
                                             <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
                                         </Button>
                                     </Col>
