@@ -233,5 +233,17 @@ export default {
     },
     iconTrash:{
         fontSize:35
+    },
+    alert:{
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    alertText:{
+        color:primary,
+        fontSize:18,
+        marginTop:50,
+        fontWeight:'500',
+        textAlign:'center'
     }
 };

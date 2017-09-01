@@ -12,7 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { addOrder } from "../../actions/addOrder.js"
 var background = require('../../../images/background.png')
 var money = require('../../../images/money.png')
-var food = require('../../../images/vegeterian_food1600.png')
+var food = ''
 
 
 class Billing extends Component {
