@@ -7,6 +7,7 @@ import HeaderContent from "./../headerContent/";
 import { CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import Spinner from "react-native-loading-spinner-overlay";
+import * as appFunction from "../../utils/function"
 import { connect } from "react-redux";
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
@@ -24,9 +25,15 @@ class Category extends Component {
         this.state = {
             data: [],
             index: 1,
+<<<<<<< HEAD
             isSort: false,
             sortBy: 'Id',
             sortDirection: 'Asc',
+=======
+            isSort:false,
+            sortBy: '',
+            sortDirection: '',
+>>>>>>> 784ac8d0ef4b66bce0a8d99d47594592a167b7f8
             changeSort: false,
             shouldLoadMore: false,
             disabled: false,
@@ -213,41 +220,7 @@ class Category extends Component {
 
 
     }
-    async add(item, rowID) {
-        let food = this.state.data
-        let data = [];
-        if (item.quantity == 0) {
-            Alert.alert('', 'Hãy chọn số lượng')
-        } else {
-            try {
-                const value = await AsyncStorage.getItem('cartUser');
-                if (value !== null) {
-                    data = JSON.parse(value);
-                }
 
-            } catch (error) {
-            }
-            var temp = []
-            for (i = 0; i < data.length; i++) {
-                temp.push(data[i].id)
-            }
-            var a = temp.indexOf(item.id)
-            if (a >= 0) {
-                for (i = 0; i < data.length; i++) {
-                    if (data[i].id == item.id) {
-                        let quantity = item.quantity
-                        data[i].quantity += quantity
-                    }
-                }
-            } else {
-                data.push(item);
-            }
-            try {
-                await AsyncStorage.setItem('cartUser', JSON.stringify(data));
-            } catch (error) {
-            }
-        }
-    }
     renderSort() {
         return (
             <View style={styles.sortWrap}>
@@ -370,7 +343,7 @@ class Category extends Component {
                                         </TouchableOpacity>
                                     </Col>
                                     <Col style={styles.buttonAddCard}>
-                                        {buttonAdd}
+                                        {buttonAdd}                             
                                     </Col>
                                 </TouchableOpacity>
                             </Grid>
@@ -394,7 +367,7 @@ class Category extends Component {
                     leftButton={() => { this.props.navigation.dispatch(resetAction) }}
                 />
                 <Spinner visible={this.state.isLoading} />
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1 }}>    
                     <FlatList style={{ marginTop: 5 }}
                         onEndReached={(distanceFromEnd) => this.loadMore()}
                         onEndReachedThreshold={0.5}

@@ -120,13 +120,7 @@ class Cart extends Component {
 
     priceHandle(price) {
         var count = 0
-        for (var i = price.length; i--; i > 0) {
-            count += 1
-            if (count == 4) {
-                price = this.insertString(price, i + 1, '.')
-                count = 0
-            }
-        }
+		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
         return price
     }
     insertString(str, index, value) {

@@ -53,7 +53,7 @@ class Categories extends Component {
                 })
                 }
             } else {
-                console.log('ddddd')
+                this.setState({disabled:false})
             }
         }
     }
