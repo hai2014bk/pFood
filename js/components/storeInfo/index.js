@@ -141,13 +141,12 @@ class StoreInfo extends Component {
         if(this.state.store.storeLocations){
            storeLocations = this.state.store.storeLocations
         }
-        
-         
+          
         return (
             <Card>
                 <View style={styles.cardContainer}>
                     <Row style={{ alignItems: 'center', flex: 1, borderBottomWidth: 1, borderColor: '#e7e9e5' }}>
-                        <Text style={styles.headerText}> Giờ mở cửa </Text>
+                        <Text style={styles.headerText}> Địa chỉ </Text>
                     </Row>
                         {storeLocations.map((location) => {
                             return (

@@ -57,7 +57,7 @@ class Billing extends Component {
 				console.log('value', data)
 				this.setState({ data })
 				for (i = 0; i < data.length; i++) {
-					totalPrice += data[i].price * data[i].quantity
+					totalPrice += data[i].price * data[i].quantity/data[i].quantityStep
 					this.setState({ totalPrice })
 				}
 			}
@@ -70,7 +70,7 @@ class Billing extends Component {
 		console.log('propsss',props);
 		if (props.addOrder.success == true) {
 			console.log('thanh doan')
-			alert(props.addOrder.message);
+			alert('Thanh toán thành công');
 		} else {
 			alert(props.addOrder.message);
 		}
@@ -89,7 +89,7 @@ class Billing extends Component {
 		for (i = 0; i < data.length; i++) {
 			var product = {
 				ProductId: data[i].id,
-				Quantity: data[i].quantity,
+				Quantity: data[i].quantity/data[i].quantityStep,
 			}
 			param.OrderedProducts.push(product);
 		}
@@ -138,7 +138,7 @@ class Billing extends Component {
 	}
 	renderItem(item) {
 		let price = this.priceHandle(item.price.toString())
-		let quantity = item.quantity * item.quantityStep
+		let quantity = item.quantity 
 		return (
 			<View style={styles.proDetail}>
 				<View style={styles.textProInput}>

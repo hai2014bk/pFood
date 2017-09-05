@@ -74,6 +74,17 @@ export default {
         flex: 2,
          marginLeft: 10,
     },
+    loadMoreCell :{
+        flex:1,
+        height:50,
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'#ccc'
+    },
+    loadMoreText:{
+        color:'white',
+        textAlign:'center'
+    },
     sortWrap:{
         flex:1, 
         marginLeft:5,

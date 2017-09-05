@@ -43,7 +43,7 @@ class Trending extends Component {
             if (props.fetchTrending.data.model.length > 0) {
                 var listFood = this.state.data.concat(props.fetchTrending.data.model)
                 for (i in listFood) {
-                    listFood[i].quantity = 0
+                    listFood[i].quantity = listFood[i].quantityStep
                 }
                 this.setState({ data: listFood })
             }
@@ -57,7 +57,7 @@ class Trending extends Component {
         let newArray = this.state.data.slice(0);
         newArray[rowID] = {
             ...this.state.data[rowID],
-            quantity: this.state.data[rowID].quantity + 1
+            quantity: this.state.data[rowID].quantity + this.state.data[rowID].quantityStep
         }
         this.setState({
             data: newArray,
@@ -68,7 +68,7 @@ class Trending extends Component {
         let newArray = this.state.data.slice(0);
         newArray[rowID] = {
             ...this.state.data[rowID],
-            quantity: this.state.data[rowID].quantity - 1 > 0 ? this.state.data[rowID].quantity - 1 : 0,
+            quantity: this.state.data[rowID].quantity - this.state.data[rowID].quantityStep > 0 ? this.state.data[rowID].quantity - this.state.data[rowID].quantityStep : 0,
         };
         this.setState({
             data: newArray
@@ -107,7 +107,7 @@ class Trending extends Component {
         let item = data.item
         let active = 0
         let color = ''
-        var quantity = item.quantity * item.quantityStep
+        var quantity = item.quantity
         let buttonAdd = null
         if (item.quantity > 0) {
             active = 0.2,
@@ -180,7 +180,7 @@ class Trending extends Component {
         const navigation = this.props.screenProps.navi;
         return (
             <Container style={styles.container}>
-                <HeaderContent navi={navigation} rightButton={true} title="Xu hướng"
+                <HeaderContent navi={navigation} leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} rightButton={true} title="Xu hướng"
                 />
                 <Content style={styles.content}>
                     <FlatList style={{ marginBottom: 5, marginTop: 5, flex: 1, width: '100%' }}
