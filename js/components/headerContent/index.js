@@ -17,7 +17,10 @@ class HeaderContent extends Component {
 }
   openCart() {
     this.setState({disabled:true})
-    this.props.navi.navigate('Cart')
+      this.props.navi.navigate('Cart')  
+      InteractionManager.runAfterInteractions(() => {
+        this.setState({disabled:false})            
+})  
   }
   renderLeft() {
     if (this.props.leftButton != null) {
@@ -52,7 +55,7 @@ class HeaderContent extends Component {
         )
       } else {
         return (
-          <Button transparent onPress={()=>{this.openCart()}}>
+          <Button transparent disabled={this.state.disabled}  onPress={()=>{this.openCart()}}>
             <Icon style={{ color: 'white' }} active name="cart" />
           </Button>
         )
@@ -65,6 +68,7 @@ class HeaderContent extends Component {
     }
   }
   render() {
+    console.log('mvgfdmsnkvbjswero')
     return (
       <Header style={{ borderBottomWidth: 0, backgroundColor: primary }}>
         <Left style={{ flex: 1 }}>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -20,7 +20,8 @@ class Store extends Component {
         super(props);
         this.state = {
             items: [],
-            isLoading: true
+            isLoading: true,
+            disabled:false
         };
     }
     componentDidMount() {
@@ -84,13 +85,18 @@ class Store extends Component {
     }
 
     openStoreDetail(store){
-        this.props.navigation.navigate('StoreTab',{parrent:store})
+        this.setState({disabled:true})
+        this.props.navigation.navigate('StoreTab',{parrent:store})        
+        InteractionManager.runAfterInteractions(() => {
+			this.setState({ disabled: false })
+        })            
+        
         
     }
     renderStoreList(item) {
         console.log('item',item)
         return (
-            <TouchableOpacity onPress={()=>this.openStoreDetail(item)} style={styles.listItemWrap}>
+            <TouchableOpacity disabled={this.state.disabled} onPress={()=>this.openStoreDetail(item)} style={styles.listItemWrap}>
                 <View style={styles.itemWrap}>
                     <View style={styles.imageWrap}>
                         <Image source={{uri: item.storeImageUrl}} style={styles.image} resizeMode='contain' />
@@ -138,7 +144,6 @@ class Store extends Component {
                         </List>
                     </View>
                 </Content>
-                <Spinner visible={this.state.isLoading} />
             </Container>
         );
     }
