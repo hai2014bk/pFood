@@ -48,7 +48,7 @@ class FoodRelate extends Component {
                 if (this.props.food.id == listFood[i].id) {
                     listFood.splice(i, 1)
                 }
-                listFood[i].quantity = 0
+                listFood[i].quantity = listFood[i].quantityStep
             }
             this.setState({ data: listFood })
         }
@@ -63,7 +63,7 @@ class FoodRelate extends Component {
         console.log(rowID, this.state.data[rowID], newArray[rowID])
         newArray[rowID] = {
             ...this.state.data[rowID],
-            quantity: this.state.data[rowID].quantity + 1
+            quantity: this.state.data[rowID].quantity + this.state.data[rowID].quantityStep
         }
         this.setState({
             data: newArray,
@@ -74,7 +74,7 @@ class FoodRelate extends Component {
         let newArray = this.state.data.slice(0);
         newArray[rowID] = {
             ...this.state.data[rowID],
-            quantity: this.state.data[rowID].quantity - 1 > 0 ? this.state.data[rowID].quantity - 1 : 0,
+            quantity: this.state.data[rowID].quantity - this.state.data[rowID].quantityStep > 0 ? this.state.data[rowID].quantity - this.state.data[rowID].quantityStep : 0,
         };
         this.setState({
             data: newArray
@@ -115,7 +115,7 @@ class FoodRelate extends Component {
         let id = item.id
         let active = 0
         let color = ''
-        var quantity = item.quantity * item.quantityStep        
+        var quantity = item.quantity        
         if (item.quantity > 0) {
             active = 0.2,
                 color = primary

@@ -75,7 +75,7 @@ class Cart extends Component {
             let newArray = this.state.data.slice(0);
             newArray[rowID] = {
                 ...this.state.data[rowID],
-                quantity: this.state.data[rowID].quantity - this.state.data[rowID].quantityStep > 0 ? this.state.data[rowID].quantity - 1 : this.state.data[rowID].quantityStep,
+                quantity: this.state.data[rowID].quantity - this.state.data[rowID].quantityStep > 0 ? this.state.data[rowID].quantity - this.state.data[rowID].quantityStep : this.state.data[rowID].quantityStep,
             };
             this.setState({
                 data: newArray

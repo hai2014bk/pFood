@@ -19,7 +19,7 @@ export function addOrder(params) {
     return dispatch => {
         APIRequest.APIRequestPOST(url, params, true,
             response => {
-                console.log('respone', response)
+                console.log('respone billing', response,params)
                 dispatch(addOrderSuccess(response));
             },
             error => {
