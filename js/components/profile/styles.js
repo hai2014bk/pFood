@@ -45,7 +45,8 @@ export default {
 	pickerWrap: {
 		flexDirection: 'row',
 		marginLeft: -10,
-		marginTop: 7
+		marginTop: 7,
+		width:'60%'
 	},
 	checkboxText: {
 		marginLeft: 20,

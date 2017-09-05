@@ -15,11 +15,11 @@ export default {
         flex: 1,
     },
     card: {
-        flex:1,
+        flex: 1,
         borderTopWidth: 0,
         borderBottomWidth: 0,
         marginBottom: 10,
-        backgroundColor:'white',
+        backgroundColor: 'white',
     },
     imageWrap: {
         flex: 2,
@@ -33,12 +33,12 @@ export default {
         flex: 1,
         aspectRatio: 1,
         padding: 2,
-        marginRight:10,
+        marginRight: 10,
         justifyContent: 'center',
         alignItems: 'center'
     },
     image: {
-        flex:1,
+        flex: 1,
         aspectRatio: 1
     },
     infoWrap: {
@@ -58,12 +58,12 @@ export default {
         marginBottom: 0,
         alignSelf: 'baseline'
     },
-    locationIcon:{
-		fontSize: 11, 
-		color: 'gray',
-        marginLeft:3,
-        marginRight:5,
-	},
+    locationIcon: {
+        fontSize: 11,
+        color: 'gray',
+        marginLeft: 3,
+        marginRight: 5,
+    },
     shopName: {
         color: 'gray',
         fontSize: 11,
@@ -77,29 +77,28 @@ export default {
     },
     buttonWrap: {
         flexDirection: 'row',
-        marginLeft: 10,
         justifyContent: 'center',
+        marginTop: 20,
     },
-     buttonAddCard: {
-        flex:1,
-        marginTop:10,
+    buttonAddCard: {
+        flex: 1,
+        marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems:'center',
+        alignItems: 'center',
     },
     buyColumn: {
         marginLeft: 5,
-        marginRight:5,
-        justifyContent: 'center',
-        marginTop: 20,
+        marginRight: 5,
+        flex: 3.5,
     },
     quantity: {
         fontSize: 13,
         alignSelf: 'center',
-        textAlign:'center'
+        textAlign: 'center'
     },
     quantityContainer: {
-        flex:1,
+        flex: 1,
         aspectRatio: 1,
         justifyContent: 'center',
     },
@@ -135,5 +134,12 @@ export default {
     icon: {
         fontSize: 17,
         color: primary
+    },
+    textAdd: {
+        width: '100%',
+        color: 'white',
+        fontWeight: 'normal',
+        fontSize: 12,
+        textAlign: 'center'
     }
 };
