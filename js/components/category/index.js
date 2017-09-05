@@ -224,8 +224,6 @@ class Category extends Component {
         this.setState({disabled:false})            
         })
 
-       
-        
     }
 
     renderSort() {
@@ -335,7 +333,7 @@ class Category extends Component {
                                 </Col>
                                 <Col size={3} style={styles.infoWrap}>
                                     <Text style={styles.foodName}>{item.name}</Text>
-                                    <Text style={styles.unit}> {item.minOrderedItems} {item.unitType}</Text>
+                                    <Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
                                     <Row style={{ alignItems: 'flex-end' }} >
                                         <Icon name='ios-pin' style={styles.locationIcon} />
                                         <Text style={styles.shopName}>{item.cities}</Text>

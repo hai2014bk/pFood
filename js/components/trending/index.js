@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import {InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchTrending } from "../../actions/fetchTrending.js"
@@ -102,6 +102,10 @@ class Trending extends Component {
         // const { params } = this.props.navigation.state
         // food.parrentId = params.parent.id
         this.props.navigation.navigate('FoodTab', { parrent: food })
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({disabled:false})            
+            })
+    
     }
     renderItems(data) {
         let item = data.item
@@ -129,7 +133,7 @@ class Trending extends Component {
         let id = item.id
         let price = this.priceHandle(item.price.toString())
         return (
-            <TouchableOpacity onPress={() => { this.openDetail(item) }}>
+            <TouchableOpacity disabled={this.state.disabled} onPress={() =>  {this.setState({disabled:true}), this.openDetail(item) }}>
                 <Card style={styles.card}>
                     <CardItem >
                         <Body>
@@ -141,7 +145,7 @@ class Trending extends Component {
                                 </Col>
                                 <Col size={3} style={styles.infoWrap}>
                                     <Text style={styles.foodName}>{item.name}</Text>
-                                    <Text style={styles.unit}> {item.minOrderedItems} {item.unitType}</Text>
+                                    <Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
                                     <Row style={{ alignItems: 'flex-end' }} >
                                         <Icon name='ios-pin' style={styles.locationIcon} />
                                         <Text style={styles.shopName}>{item.cities}</Text>

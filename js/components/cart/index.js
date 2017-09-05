@@ -3,6 +3,7 @@ import { FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, 
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import * as mConstants from '../../utils/Constants'
+import { connect } from "react-redux";
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail, SwipeRow } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -42,6 +43,12 @@ class Cart extends Component {
         } catch (error) {
         }
     }
+    componentWillReceiveProps(props) {
+		if (props.addOrder.success == true) {
+			this.setState({data:[]})
+		} 
+	}
+
 
     async plus(rowID) {
         let newArray = this.state.data.slice(0);
@@ -155,7 +162,7 @@ class Cart extends Component {
                                     <Icon name="md-add" style={styles.icon} />
                                 </TouchableOpacity>
                                 <Text style={styles.x}>X</Text>
-                                <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
+                                <Text style={styles.quantity}>{quantity/item.quantityStep} {item.unitType}</Text>
                             </View>
                         </View>
                     </View>
@@ -180,7 +187,7 @@ class Cart extends Component {
     renderList() {
         if (this.state.data.length > 0) {
             return (
-                <FlatList style={styles.listViewWrap}
+                <FlatList scrollEnabled={false} style={styles.listViewWrap}
                     data={this.state.data}
                     extraData={this.state.data}
                     keyExtractor={(item) => item.id}
@@ -214,7 +221,7 @@ class Cart extends Component {
         const navigation = this.props.navigation;
         if (this.state.data.length > 0) {
             content = (
-                <Content style={styles.contentWrap}>
+                <Content bounces={false} style={styles.contentWrap}>
                     <View>
                         {this.renderList()}
                     </View>
@@ -250,4 +257,8 @@ class Cart extends Component {
     }
 }
 
-export default Cart;
+const mapStateToProps = state => ({
+	addOrder: state.addOrder,
+});
+
+export default connect(mapStateToProps)(Cart);

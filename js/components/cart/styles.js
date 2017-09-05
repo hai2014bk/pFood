@@ -182,11 +182,12 @@ export default {
         height: 40,
         alignSelf: 'center',
         borderRadius: 20,
-        marginTop: 10
+        marginTop: 10,
+        marginBottom:20,
     },
     checkout: {
         color: 'white',
-        fontSize: 16
+        fontSize: 16,
     },
     removeButton: {
         backgroundColor: primary,

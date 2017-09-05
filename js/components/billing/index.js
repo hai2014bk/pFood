@@ -68,9 +68,12 @@ class Billing extends Component {
 
 	componentWillReceiveProps(props) {
 		console.log('propsss',props);
+		this.setState({visible:false})
 		if (props.addOrder.success == true) {
 			console.log('thanh doan')
 			alert('Thanh toán thành công');
+			let keys = [mConstants.CART];
+			 AsyncStorage.multiRemove(keys)
 		} else {
 			alert(props.addOrder.message);
 		}
@@ -82,9 +85,9 @@ class Billing extends Component {
         return price
 	}
 
-	addOrderClick(data) {
-
+	addOrderClick() {
 		var param = {};
+		data = this.state.data
 		param.OrderedProducts = [];
 		for (i = 0; i < data.length; i++) {
 			var product = {
@@ -101,6 +104,7 @@ class Billing extends Component {
 		param.DeliveryMethod = this.state.shipKey;
 		param.PaymentMethod = this.state.payKey;
 		this.props.add(param)
+		this.setState({visible:true})
 
 	}
 
@@ -232,7 +236,7 @@ class Billing extends Component {
 					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#C6C6C6' />
 					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#C6C6C6' />
 					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#C6C6C6' />
-					<Button block style={styles.button}><Text style={styles.updateButtonText} onPress={() => this.addOrderClick(this.state.data)} >Thanh Toán</Text></Button>
+					<Button block style={styles.button}><Text style={styles.updateButtonText} onPress={() => this.addOrderClick()} >Thanh Toán</Text></Button>
 					<View style={styles.footer}></View>
 				</Content>
 

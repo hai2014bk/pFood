@@ -86,7 +86,7 @@ class Categories extends Component {
         console.log('data state', this.state.data)
         return (
             <Container style={styles.container}>
-                <HeaderContent title="Danh mục" leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")} />
+                <HeaderContent rightButton={true} navi={navigation} title="Danh mục" leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")} />
                 <Content style={styles.contentWrap}>
                     <FlatList style={{margin:10}}
                         data={this.state.data}

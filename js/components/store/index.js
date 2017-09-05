@@ -21,7 +21,7 @@ class Store extends Component {
         super(props);
         this.state = {
             items: [],
-            isLoading: true,
+            isLoading: false,
             disabled:false
         };
     }
@@ -86,13 +86,11 @@ class Store extends Component {
     }
 
     openStoreDetail(store){
-        this.setState({disabled:true})
-        this.props.navigation.navigate('StoreTab',{parrent:store})        
-        InteractionManager.runAfterInteractions(() => {
-			this.setState({ disabled: false })
-        })            
-        
-        
+        this.setState({isLoading:true})       
+        setTimeout(()=>{
+            this.props.navigation.navigate('StoreTab',{parrent:store})   
+            this.setState({ isLoading: false })
+        },500)
     }
     renderStoreList(item) {
         console.log('item',item)
@@ -122,10 +120,11 @@ class Store extends Component {
         const navigation = this.props.screenProps.navi;
         return (
             <Container style={styles.container}>
-                <HeaderContent leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
-                    rightButton={false} title='Cửa hàng'>
+                <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
+                    rightButton={true} title='Cửa hàng'>
                 </HeaderContent>
                 <Content>
+                    <Spinner visible={this.state.isLoading}/>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
                     </View>
