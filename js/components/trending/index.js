@@ -28,8 +28,8 @@ class Trending extends Component {
 
     componentDidMount() {
         var date = new Date()
-        let isoDate = date.toISOString().slice(0,-1)
-        console.log('2321321',isoDate)
+        let isoDate = date.toISOString().slice(0, -1)
+        console.log('2321321', isoDate)
         var params = {
             "PageSize": "20",
             "PageIndex": "1",
@@ -108,12 +108,23 @@ class Trending extends Component {
         let active = 0
         let color = ''
         var quantity = item.quantity * item.quantityStep
+        let buttonAdd = null
         if (item.quantity > 0) {
             active = 0.2,
-                color = primary
+                color = primary,
+                buttonAdd = (
+                    <Button addCart onPress={() => { appFunction.add(item) }} >
+                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                    </Button>
+                )
         } else {
             active = 1,
-                color = '#cecece'
+                color = '#cecece',
+                buttonAdd = (
+                    <Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
+                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                    </Button>
+                )
         }
         let id = item.id
         let price = this.priceHandle(item.price.toString())
@@ -140,25 +151,23 @@ class Trending extends Component {
                                     </View>
                                     <Text style={styles.price}>{price}đ</Text>
                                 </Col>
-                                <Col size={3} style={styles.buyColumn}>
+                                <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity activeOpacity={active}  style={[styles.iconWrapMinus,{borderColor:color}]} onPress={() => this.minus(data.index)} >
-                                            <Icon style={[styles.icon, {color:color}]} name="md-remove" />
+                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color, marginLeft: 10 }]} onPress={() => this.minus(data.index)} >
+                                            <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
                                             <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
                                         </Col>
-                                        <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
+                                        <TouchableOpacity style={[styles.iconWrapPlus, { marginRight: 10 }]} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />
                                         </TouchableOpacity>
                                     </Col>
                                     <Col style={styles.buttonAddCard}>
-                                        <Button addCart onPress={() => { appFunction.add(item) }} >
-                                            <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
-                                        </Button>
+                                        {buttonAdd}
                                     </Col>
-                                </Col>
+                                </TouchableOpacity>
                             </Grid>
                         </Body>
                     </CardItem>
