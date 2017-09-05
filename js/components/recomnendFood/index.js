@@ -171,7 +171,7 @@ class RecommendFood extends Component {
 	}
 	renderList() {
 		return (
-			<List showsVerticalScrollIndicator={false} style={{ flex: 1, marginLeft: 0 }} dataArray={this.state.dataSection}
+			<List showsVerticalScrollIndicator={false} style={{ flex: 1, marginLeft: -10 }} dataArray={this.state.dataSection}
 				renderRow={(item) =>
 					<ListItem >
 						{this.renderHorizontalList(item)}

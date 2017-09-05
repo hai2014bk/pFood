@@ -347,7 +347,7 @@ class Category extends Component {
         const { params } = this.props.navigation.state
         return (
             <Container style={styles.container}>
-                <HeaderContent navi={navigation} rightIcon={'md-funnel'} customRight={() => this.openSort()} rightButton={true} title={params.parent.name}
+                <HeaderContent navi={navigation} rightButton={true} secondRightBtnIcon={'md-funnel'} secondRightBtn={() => this.openSort()} rightButton={true} title={params.parent.name}
                     textLeft="Danh Mục"
                     leftButton={() => { this.props.navigation.dispatch(resetAction) }}
                 />

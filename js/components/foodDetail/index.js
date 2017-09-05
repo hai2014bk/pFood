@@ -41,7 +41,7 @@ class FoodDetail extends Component {
 		if (props.fetchDetail.success) {
 			console.log('po rop', props.fetchDetail.data.model)
 			var food = props.fetchDetail.data.model
-			food.quantity = 1
+			food.quantity = food.quantityStep
 			this.setState({ food: food })
 		}
 		if (!props.fetchDetail.success) {
@@ -152,13 +152,13 @@ class FoodDetail extends Component {
 	}
 	plus() {
 		var food = this.state.food
-		food.quantity += 1 
+		food.quantity += food.quantityStep 
 		this.setState({ food:food })
 	}
 	minus() {
 		var food = this.state.food
 		if(food.quantity > 0){
-			food.quantity -= 1 
+			food.quantity -= food.quantityStep
 			this.setState({ food:food })
 		}
 	}
@@ -173,7 +173,7 @@ class FoodDetail extends Component {
 	renderPriceAndBuy() {
 		var food = this.state.food
 		console.log('step', food)
-		var quantity = food.quantity  * food.quantityStep
+		var quantity = food.quantity
 		var price = ''
 		console.log(food.unitType)
 		if (food.price) {

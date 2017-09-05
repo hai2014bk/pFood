@@ -6,7 +6,8 @@ const primary = require("../themes/variable").brandPrimary;
 const platform = Platform.OS
 export async function add(item) {   
     let data = [];
-    if (item.quantity == 0) {
+    var quantity = item.quantity - item.quantityStep
+    if (quantity  <= 0) {
         Alert.alert('', 'Hãy chọn số lượng')
     } else {
         Toast.show({
