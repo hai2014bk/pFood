@@ -153,7 +153,7 @@ class RecommendFood extends Component {
 				<View style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
 					<Text style={styles.sectionText} note>{section.sectionName}</Text>
 				</View>
-				<FlatList style={{ marginTop: 10, marginRight: -15 }}
+				<FlatList style={{ marginTop: 10, marginRight:-15 }}
 				 showsHorizontalScrollIndicator={false} 
 				 horizontal={true}
 				 data={section.food}
@@ -171,7 +171,7 @@ class RecommendFood extends Component {
 	}
 	renderList() {
 		return (
-			<List showsVerticalScrollIndicator={false} style={{ flex: 1, marginLeft: 5 }} dataArray={this.state.dataSection}
+			<List showsVerticalScrollIndicator={false} style={{ flex: 1, marginLeft: 0 }} dataArray={this.state.dataSection}
 				renderRow={(item) =>
 					<ListItem >
 						{this.renderHorizontalList(item)}

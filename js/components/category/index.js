@@ -26,8 +26,8 @@ class Category extends Component {
             data: [],
             index: 1,
             isSort:false,
-            sortBy: 'Id',
-            sortDirection: 'Asc',
+            sortBy: '',
+            sortDirection: '',
             changeSort: false,
             shouldLoadMore:false,
             disabled:false,
@@ -351,7 +351,6 @@ class Category extends Component {
                     textLeft="Danh Mục"
                     leftButton={() => { this.props.navigation.dispatch(resetAction) }}
                 />
-                <Spinner visible={this.state.isLoading} />
                 <View style={{flex:1}}>
                     <FlatList style={{ marginTop: 5 }}
                         onEndReached={(distanceFromEnd) => this.loadMore()}

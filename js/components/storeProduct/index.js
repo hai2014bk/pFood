@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {InteractionManager, FlatList, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -7,6 +7,7 @@ import { Grid, Col, Row } from "react-native-easy-grid";
 import { connect } from "react-redux";
 import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
+import Spinner from 'react-native-loading-spinner-overlay';
 import styles from "./styles";
 import { fetchDetail } from "../../actions/fetchDetail.js"
 import * as appFunction from "../../utils/function"
@@ -25,11 +26,13 @@ class StoreProduct extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 21, 34, 213, 123, 12]
+			data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 21, 34, 213, 123, 12],
+			isLoading: false,
+			disabled: false
 		};
 	}
 	componentDidMount() {
-		console.log('jknvfkdfjlsa',this.props)
+		console.log('jknvfkdfjlsa', this.props)
 
 	}
 	componentWillReceiveProps(props) {
@@ -85,7 +88,7 @@ class StoreProduct extends Component {
 		)
 	}
 	_keyExtractor = (item, index) => item;
-	openDetail(food){
+	openDetail(food) {
 		var foodFixed = {
 			"avgRate": 0,
 			"cities": "Hanoi",
@@ -101,16 +104,16 @@ class StoreProduct extends Component {
 			"noInStock": 500,
 			"parrentId": 16,
 			"price": 380000,
-			"productCategories":  [],
-			"productMetaData":  [
-			   {
-				"dataGroup": null,
-				"id": 29,
-				"name": "ImageUrl",
-				"order": 0,
-				"productId": 29,
-				"value": "http://media.bizwebmedia.net/Sites/99161/data/upload/2016/t2/than_bo_uc_1.jpg?20",
-			  },
+			"productCategories": [],
+			"productMetaData": [
+				{
+					"dataGroup": null,
+					"id": 29,
+					"name": "ImageUrl",
+					"order": 0,
+					"productId": 29,
+					"value": "http://media.bizwebmedia.net/Sites/99161/data/upload/2016/t2/than_bo_uc_1.jpg?20",
+				},
 			],
 			"productView": 16,
 			"purveyor": null,
@@ -120,15 +123,17 @@ class StoreProduct extends Component {
 			"rateCount": 0,
 			"status": null,
 			"unitType": "g",
-		  }
-		  console.log(this.props)
-		  this.props.screenProps.navi.navigate('FoodTab',{parrent:foodFixed})
-		  
+		}
+		this.props.screenProps.navi.navigate('FoodTab', { parrent: foodFixed })
+		InteractionManager.runAfterInteractions(() => {
+			this.setState({ disabled: false })
+		})
+
 	}
 	renderCell(food) {
 		return (
 			<View>
-				<TouchableOpacity onPress={()=>{this.openDetail(food)}} style={{ flex: 1,  alignItems: 'center' }} >
+				<TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(food) }} style={{ flex: 1, alignItems: 'center' }} >
 					<Grid style={styles.cellContainer}>
 						<Row style={styles.upContainer}>
 							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: pizza }} >
@@ -138,7 +143,7 @@ class StoreProduct extends Component {
 							</Image>
 						</Row>
 						<Row style={styles.downContainer}>
-							<Row style={{flex:1, width:'100%', justifyContent: 'space-between' }}>
+							<Row style={{ flex: 1, width: '100%', justifyContent: 'space-between' }}>
 								<Text numberOfLines={2} style={styles.foodNameText}>Thịt Bò</Text>
 								<Text style={styles.oldPriceText}>50g</Text>
 							</Row>
@@ -174,8 +179,9 @@ class StoreProduct extends Component {
 		const navigation = this.props.navi;
 		return (
 			<Container style={styles.container}>
+				<Spinner visible={this.state.isLoading} />
 				<Content style={{ flex: 1 }}>
-					<View style={{flexDirection:'row'}}>
+					<View style={{ flexDirection: 'row' }}>
 						<Image resizeMode='contain' source={{ uri: imageUrl }} style={styles.foodImage} />
 					</View>
 					<View style={{ marginLeft: 10, flexDirection: 'row' }}>
@@ -183,8 +189,8 @@ class StoreProduct extends Component {
 						<Text style={styles.sectionText} >Danh sách sản phẩm</Text>
 					</View>
 					<FlatList
-					showsVerticalScrollIndicator={false}
-					 style={{ marginTop: 5, marginLeft: 10, marginRight: 10 }}
+						showsVerticalScrollIndicator={false}
+						style={{ marginTop: 5, marginLeft: 10, marginRight: 10 }}
 						data={this.state.data}
 						extraData={this.state.data}
 						keyExtractor={this._keyExtractor}
