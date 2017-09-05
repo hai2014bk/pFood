@@ -96,8 +96,8 @@ class FoodDetail extends Component {
 	}
 	renderDecription() {
 		var food = this.state.food
-		var description=''
-		if(food.description){
+		var description = ''
+		if (food.description) {
 			description = food.description
 		}
 		return (
@@ -115,7 +115,7 @@ class FoodDetail extends Component {
 	}
 	renderContentInfo(header, content) {
 		return (
-			<Grid style={{flex:1, borderColor: '#e7e9e5', borderTopWidth: 1 }}>
+			<Grid style={{ flex: 1, borderColor: '#e7e9e5', borderTopWidth: 1 }}>
 				<Row style={{ margin: 10, flex: 1, justifyContent: 'space-between' }}>
 					<Text style={styles.contentText}>{header}</Text>
 					<Text style={styles.contentText}>{content}</Text>
@@ -125,9 +125,9 @@ class FoodDetail extends Component {
 	}
 	renderFoodContent() {
 		return (
-			<Card style={{padding:0, flex:1, marginBottom: 15 }}>
+			<Card style={{ padding: 0, flex: 1, marginBottom: 15 }}>
 				<View style={styles.cardContainer}>
-						<Text style={styles.headerText}> Hàm Lượng </Text>
+					<Text style={styles.headerText}> Hàm Lượng </Text>
 					{this.renderContentInfo('Diệp lục', '1000')}
 					{this.renderContentInfo('Vitamin A', '10%')}
 				</View>
@@ -152,52 +152,60 @@ class FoodDetail extends Component {
 	}
 	plus() {
 		var food = this.state.food
-		food.quantity += 1 
-		this.setState({ food:food })
+		food.quantity += 1
+		this.setState({ food: food })
 	}
 	minus() {
 		var food = this.state.food
-		if(food.quantity > 0){
-			food.quantity -= 1 
-			this.setState({ food:food })
+		if (food.quantity > 0) {
+			food.quantity -= 1
+			this.setState({ food: food })
 		}
 	}
 	priceHandle(price) {
 		var count = 0
 		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
-        return price
+		return price
 	}
 	insertString(str, index, value) {
 		return str.substr(0, index) + value + str.substr(index);
 	}
 	renderPriceAndBuy() {
 		var food = this.state.food
-		console.log('step', food)
-		var quantity = food.quantity  * food.quantityStep
+		var quantity = food.quantity * food.quantityStep
 		var price = ''
-		console.log(food.unitType)
 		if (food.price) {
 			price = this.priceHandle(food.price.toString())
 		}
 		if (quantity > 0) {
-            active = 0.2,
-            color = primary
-        } else {
-            active = 1,
-            color = '#cecece'
-        }
+			active = 0.2,
+				color = primary,
+				buttonAdd = (
+					<Button large addCart onPress={() => { appFunction.add(this.state.food) }} >
+						<Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+					</Button>
+				)
+		} else {
+			active = 1,
+				color = '#cecece',
+				buttonAdd = (
+					<Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart large >
+						<Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+					</Button>
+				)
+		}
 		return (
 			<Grid>
 				<Col style={{ margin: 10 }}>
 					<Row>
-					<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain' />
+						<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain' />
 						<Text style={styles.price} > {price}đ</Text>
 					</Row>
 				</Col>
 				<Col style={{ margin: 10 }}>
 					<Row style={{ marginLeft: '20%', flex: 1, justifyContent: 'flex-end' }}>
-					<TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, {borderColor:color}]} onPress={() => this.minus()} >
-							<Icon style={[styles.icon, {color:color}]} name="md-remove" />
+						<TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus()} >
+							<Icon style={[styles.icon, { color: color }]} name="md-remove" />
 						</TouchableOpacity>
 						<Col style={styles.quantityContainer}>
 							<Text style={styles.quantity}>{quantity} {food.unitType}</Text>
@@ -207,9 +215,7 @@ class FoodDetail extends Component {
 						</TouchableOpacity>
 					</Row>
 					<Col style={styles.buttonAddCard}>
-						<Button onPress={()=> {appFunction.add(this.state.food)}} addCart large >
-							<Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
-						</Button>
+						{buttonAdd}
 					</Col>
 				</Col>
 			</Grid>
@@ -231,7 +237,7 @@ class FoodDetail extends Component {
 					<View style={{ marginTop: 10 }}>
 						{this.renderInfo()}
 					</View>
-					<View style={{ marginTop: 25}}>
+					<View style={{ marginTop: 25 }}>
 						{this.renderFoodContent()}
 					</View>
 				</Content>
