@@ -52,8 +52,8 @@ export default {
 		color: '#A0A0A0',
 	},
 	moneyIcon: {
-		height: 30,
-		width: 30,
+		height: 25,
+		width: 25,
 		marginLeft: -3
 	},
 	checkBox: {

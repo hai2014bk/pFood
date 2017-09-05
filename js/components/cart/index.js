@@ -205,15 +205,13 @@ class Cart extends Component {
     }
 
     render() {
+        let content = null
         let num = this.state.totalPrice
         let price = this.priceHandle(num.toString())
         console.log('styate', this.state.data)
         const navigation = this.props.navigation;
-        return (
-            <Container style={styles.container}>
-                <HeaderContent title="Giỏ hàng"
-                    leftButton={() => navigation.goBack()}
-                    leftIcon="ios-arrow-back" />
+        if (this.state.data.length > 0) {
+            content = (
                 <Content style={styles.contentWrap}>
                     <View>
                         {this.renderList()}
@@ -229,6 +227,22 @@ class Cart extends Component {
                         <Text style={styles.checkout}> Thanh toán </Text>
                     </TouchableOpacity>
                 </Content>
+            )
+        } else {
+            content = (
+                <Content style={styles.contentWrap}>
+                  <View style={styles.alert}>
+                      <Text style={styles.alertText}>Không có sản phẩm nào {"\n"} trong giỏ hàng</Text>
+                  </View>
+                </Content>
+            )
+        }
+        return (
+            <Container style={styles.container}>
+                <HeaderContent title="Giỏ hàng"
+                    leftButton={() => navigation.goBack()}
+                    leftIcon="ios-arrow-back" />
+                {content}
             </Container>
         );
     }
