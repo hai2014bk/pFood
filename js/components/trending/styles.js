@@ -98,8 +98,7 @@ export default {
         textAlign: 'center'
     },
     quantityContainer: {
-        flex: 1,
-        aspectRatio: 1,
+        width:40,
         justifyContent: 'center',
     },
     cartWrap: {
