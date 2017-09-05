@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import styles from "./styles";
 import { fetchStores } from "../../actions/fetchStores.js"
 import Spinner from 'react-native-loading-spinner-overlay';
+import Communications from 'react-native-communications';
 const steak = 'http://www.chadwicksbutchers.com/wp-content/uploads/fillet-steak-banner-e1485792041266.jpg'
 const pizza = 'http://bijespizza.com/Site/themed_images/pizza_1_lg.png'
 const bbq = 'http://nutright.com/blog/wp-content/uploads/2017/01/bbq-islamabad.jpg'
@@ -108,7 +109,7 @@ class Store extends Component {
                         </View>
                         <View style={styles.hotlineWrap}>
                             <Icon name = 'ios-call' style={styles.phoneIcon} />
-                            <Text style={styles.hotline}>{item.hotline}</Text>
+                            <Text onPress={() => Communications.phonecall('0987678911', true)} style={styles.hotline}>0987678911</Text>
                         </View>
                         <Text style={styles.address}>{item.hqAddress}</Text>          
                     </View>

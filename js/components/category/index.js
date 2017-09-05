@@ -25,15 +25,9 @@ class Category extends Component {
         this.state = {
             data: [],
             index: 1,
-<<<<<<< HEAD
             isSort: false,
             sortBy: 'Id',
             sortDirection: 'Asc',
-=======
-            isSort:false,
-            sortBy: '',
-            sortDirection: '',
->>>>>>> 784ac8d0ef4b66bce0a8d99d47594592a167b7f8
             changeSort: false,
             shouldLoadMore: false,
             disabled: false,
