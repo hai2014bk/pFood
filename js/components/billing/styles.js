@@ -31,7 +31,7 @@ export default {
 	infoDetail: {
 		textAlignVertical: 'center',
 		fontSize: 20,
-		color: '#A0A0A0',
+		color: 'black',
 		marginTop: 5,
 		marginLeft: 10,
 	},
@@ -112,11 +112,12 @@ export default {
 		paddingBottom: 5, 
 	},
 	productText:{
-		color: '#A0A0A0',
+		color: 'black',
 		fontWeight:'400'		
 	},
 	shopText:{
 		color: '#A0A0A0',
+		fontSize: 12,
 	},
 	footer: { height: 20, 
 		width: 50, 
@@ -129,7 +130,8 @@ export default {
 	},
 	proNumber:{
 		color: '#A0A0A0',
-		marginLeft:20,
+		marginLeft:15,
+		fontSize: 12,
 	},
 	totalPriceText:{
 		color: 'black',
@@ -148,6 +150,10 @@ export default {
 		borderRadius: 13,
 		borderWidth: 1,
 		borderColor: '#d6dbdf',
+	},
+	productBlackTotalText:{
+		color: 'black',
+		fontWeight: '500',
 	},
 
 };
