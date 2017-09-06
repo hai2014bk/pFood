@@ -153,7 +153,7 @@ export default {
 	},
 	productBlackTotalText:{
 		color: 'black',
-		fontWeight: '500'
+		fontWeight: '500',
 	},
 
 };
