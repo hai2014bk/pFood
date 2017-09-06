@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, FlatList, AsyncStorage } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
 import { connect } from "react-redux";
+import { NavigationActions } from "react-navigation";
 import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
 import HeaderContent from "./../headerContent/";
 import styles from "./styles";
@@ -62,17 +63,18 @@ class Billing extends Component {
 	}
 
 	componentWillReceiveProps(props) {
+		let navigation=  this.props.navigation
 		console.log('propsss',props);
 		this.setState({visible:false})
 		if(this.state.addClick===false){
 			this.setState({addClick: true})
 			if (props.addOrder.success == true) {
 				console.log('thanh doan')
-				alert('Thanh toán thành công');
+				Alert.alert('Thông báo','Lưu hóa đơn thành công',[{text: 'Ok', onPress: ()=> console.log('success') }]);
 				let keys = [mConstants.CART];
 				AsyncStorage.multiRemove(keys)
 			} else {
-				alert(props.addOrder.message);
+				Alert.alert('Lỗi',props.addOrder.message,[{text: 'Ok', onPress: ()=> console.log('error') }] );
 			}
 		}
 	}
@@ -230,7 +232,7 @@ class Billing extends Component {
 					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#A4A4A4' />
 					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
 					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
-					<Button block style={styles.button}><Text style={styles.updateButtonText} onPress={() => this.addOrderClick()} >Thanh Toán</Text></Button>
+					<Button block style={styles.button}><Text style={styles.updateButtonText} onPress={()=> {this.addOrderClick()}} >Thanh Toán</Text></Button>
 					<View style={styles.footer}></View>
 				</Content>
 
