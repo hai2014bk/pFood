@@ -12,7 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { addOrder } from "../../actions/addOrder.js"
 var background = require('../../../images/background.png')
 var money = require('../../../images/money.png')
-var food = require('../../../images/vegeterian_food1600.png')
+var food = ''
 
 
 class Billing extends Component {
@@ -57,7 +57,7 @@ class Billing extends Component {
 				console.log('value', data)
 				this.setState({ data })
 				for (i = 0; i < data.length; i++) {
-					totalPrice += data[i].price * data[i].quantity
+					totalPrice += data[i].price * data[i].quantity / data[i].quantityStep
 					this.setState({ totalPrice })
 				}
 			}
@@ -67,10 +67,13 @@ class Billing extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-		console.log('propsss',props);
+		console.log('propsss', props);
+		this.setState({ visible: false })
 		if (props.addOrder.success == true) {
 			console.log('thanh doan')
-			alert(props.addOrder.message);
+			alert('Lưu hóa đơn thành công');
+			let keys = [mConstants.CART];
+			AsyncStorage.multiRemove(keys)
 		} else {
 			alert(props.addOrder.message);
 		}
@@ -79,17 +82,17 @@ class Billing extends Component {
 	priceHandle(price) {
 		var count = 0
 		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
-        return price
+		return price
 	}
 
-	addOrderClick(data) {
-
+	addOrderClick() {
 		var param = {};
+		data = this.state.data
 		param.OrderedProducts = [];
 		for (i = 0; i < data.length; i++) {
 			var product = {
 				ProductId: data[i].id,
-				Quantity: data[i].quantity,
+				Quantity: data[i].quantity / data[i].quantityStep,
 			}
 			param.OrderedProducts.push(product);
 		}
@@ -101,6 +104,7 @@ class Billing extends Component {
 		param.DeliveryMethod = this.state.shipKey;
 		param.PaymentMethod = this.state.payKey;
 		this.props.add(param)
+		this.setState({ visible: true })
 
 	}
 
@@ -137,8 +141,9 @@ class Billing extends Component {
 		);
 	}
 	renderItem(item) {
-		let price = this.priceHandle(item.price.toString())
-		let quantity = item.quantity * item.quantityStep
+		proPrice = item.price* item.quantity/item.quantityStep;
+		let price = this.priceHandle(proPrice.toString())
+		let quantity = item.quantity
 		return (
 			<View style={styles.proDetail}>
 				<View style={styles.textProInput}>
@@ -146,7 +151,7 @@ class Billing extends Component {
 						<Text style={styles.productBlackText}>{item.name}</Text>
 					</Left>
 					<Right>
-						<Text style={styles.productText}>{price}đ</Text>
+						<Text style={styles.productBlackText}>{price}đ</Text>
 					</Right>
 				</View>
 				<View style={styles.textProInput}>
@@ -161,14 +166,14 @@ class Billing extends Component {
 	pickerWrap(text, key, type) {
 		let shipServices = type === 'ship' ? this.state.shipServices : this.state.pay;
 		let checked = shipServices[key] ? true : false;
-		if (key !== 'cash' && type !=='ship') {
+		if (key !== 'cash' && type !== 'ship') {
 			return (
 				<TouchableOpacity style={styles.pickerWrap}>
-					<CheckBox style={styles.checkBoxDisable} color= '#f2f4f4' checked={false} />
+					<CheckBox style={styles.checkBoxDisable} color='#f2f4f4' checked={false} />
 					<Text style={styles.checkboxTextDisable}>{text}</Text>
 				</TouchableOpacity>
 			)
-		}else{
+		} else {
 			return (
 				<TouchableOpacity onPress={() => this.updateStatus(key, type)} style={styles.pickerWrap}>
 					<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
@@ -178,7 +183,7 @@ class Billing extends Component {
 		}
 	}
 	render() {
-		console.log('adjf', this.state.shipKey)
+		console.log('adjf', this.state.totalPrice)
 		console.log('pay', this.state.payKey)
 		let total = this.state.totalPrice;
 		let totalPrice = this.priceHandle(total.toString());
@@ -202,21 +207,12 @@ class Billing extends Component {
 					{this.renderDetail()}
 					<View style={styles.totalPrice}>
 						<Left>
-							<Text style={styles.productBlackText}>Tổng:</Text>
+							<Text style={styles.productBlackTotalText}>Tổng:</Text>
 						</Left>
 						<Right>
 							<Text style={styles.totalPriceText}>{totalPrice}đ</Text>
 						</Right>
 					</View>
-
-					<View style={styles.headerTitle}>
-						<Icon name="ios-bus" style={styles.userIcon} />
-						<Text style={styles.infoDetail}>Dịch vụ shipper</Text>
-					</View>
-					{this.pickerWrap('Viettel Post', 'vPost', 'ship')}
-					{this.pickerWrap('Adayroi', 'aDayroi', 'ship')}
-					{this.pickerWrap('Grab', 'grab', 'ship')}
-					{this.pickerWrap('Uber', 'uber', 'ship')}
 					<View style={styles.headerTitle}>
 						<Image source={money} style={styles.moneyIcon} resizeMode='contain' />
 						<Text style={styles.infoDetail}>Hình thức thanh toán</Text>
@@ -228,11 +224,11 @@ class Billing extends Component {
 						<Icon name="ios-contact" style={styles.userIcon} />
 						<Text style={styles.infoDetail}>Thông tin người đặt</Text>
 					</View>
-					<Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='#C6C6C6' />
-					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#C6C6C6' />
-					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#C6C6C6' />
-					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#C6C6C6' />
-					<Button block style={styles.button}><Text style={styles.updateButtonText} onPress={() => this.addOrderClick(this.state.data)} >Thanh Toán</Text></Button>
+					<Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
+					<Button block style={styles.button}><Text style={styles.updateButtonText} onPress={() => this.addOrderClick()} >Thanh Toán</Text></Button>
 					<View style={styles.footer}></View>
 				</Content>
 
