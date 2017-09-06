@@ -76,12 +76,11 @@ class Profile extends Component {
 	pickerWrap(text, key, type) {
 		let shipServices = type === 'ship' ? this.state.shipServices : this.state.pay;
 		let checked = shipServices[key] ? true : false;
-		let fontWeight = shipServices[key] ? { fontWeight:'500' } : null;
 		return (
-			<View style={styles.pickerWrap}>
+			<TouchableOpacity style={styles.pickerWrap} onPress={() => this.updateStatus(key, type)}>
 				<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
-				<Text style={[styles.checkboxText, fontWeight]}>{text}</Text>
-			</View>
+				<Text style={styles.checkboxText}>{text}</Text>
+			</TouchableOpacity>
 		)
 	}
 	render() {

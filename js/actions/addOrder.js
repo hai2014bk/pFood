@@ -1,6 +1,5 @@
 import * as  APIRequest from '../utils/Api.js'
 import * as mConstants from '../utils/Constants'
-
 export function addOrderSuccess(res) {
     return {
         type: "ADD_ORDER_SUCCESS",
@@ -20,7 +19,7 @@ export function addOrder(params) {
     return dispatch => {
         APIRequest.APIRequestPOST(url, params, true,
             response => {
-                console.log('respone', response)
+                console.log('respone billing', response,params)
                 dispatch(addOrderSuccess(response));
             },
             error => {

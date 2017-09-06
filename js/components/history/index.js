@@ -56,8 +56,8 @@ class History extends Component {
         const navigation = this.props.navigation
         return (
             <Container style={styles.container}>
-                <HeaderContent leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
-                    rightButton={false} title='Lịch sử mua hàng'>
+                <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
+                    rightButton={true} title='Lịch sử mua hàng'>
                 </HeaderContent>
                 <Content>
                     <View style={styles.moneyCostWrap}>

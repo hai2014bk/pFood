@@ -175,9 +175,10 @@ export default {
         color: 'gray'
     },
     hotline: {
-        color: '#555555',
+        color: 'blue',
         fontSize: 10,
         marginTop: 3,
-        marginLeft: 5
+        marginLeft: 5,
+        textDecorationLine : 'underline'
     }
 };

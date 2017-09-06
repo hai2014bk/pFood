@@ -7,6 +7,7 @@ import HeaderContent from "./../headerContent/";
 import { CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import Spinner from "react-native-loading-spinner-overlay";
+import * as appFunction from "../../utils/function"
 import { connect } from "react-redux";
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
@@ -25,19 +26,20 @@ class Category extends Component {
             data: [],
             index: 1,
             isSort:false,
-            sortBy: 'Id',
-            sortDirection: 'Asc',
+            sortBy: '',
+            sortDirection: '',
             changeSort: false,
             shouldLoadMore:false,
             disabled:false,
+            isLoading:true,
             field: {
-                Id: true,
+                Id: false,
                 Name: false,
                 Price: false,
                 Rate: false
             },
             direction: {
-                Desc: true,
+                Desc: false,
                 Asc: false,
             },
         };
@@ -71,34 +73,44 @@ class Category extends Component {
                    seen.push(item.id)
                    out[j++] = item;
                    console.log('bnmfvf',item.id,seen,out.length)
-                   
              }
         }
         return out;
     }
 
     componentWillReceiveProps(props) {
+        this.setState({isLoading:false})        
         if (props.fetchProduct.success) {
             if (props.fetchProduct.data.model.length > 0) {
+                var data =  this.state.data
+                data.splice(data.length -1 ,1)
+                this.setState({data:data})
                 var listFood = []
                 if(this.state.isSort){
                     listFood = props.fetchProduct.data.model
                 } else {
                     listFood = this.state.data.concat(props.fetchProduct.data.model)
-                    if(props.fetchProduct.data.model.length == 10){
-                        this.setState({shouldLoadMore:true})
-                    }
                 }
                 for (i in listFood) {
                     if(!listFood[i].quantity) {
-                        listFood[i].quantity = 1
+                        listFood[i].quantity = listFood[i].quantityStep
                     }
                 }
                 listFood = this.uniq(listFood)
-                console.log('27321kdfa',listFood)
+                if(listFood.length >= 10){
+                    var loadMoreElement = {
+                        name:'loadmore',
+                        id:'wioejqwjeqw'
+                    }
+                    listFood.push(loadMoreElement)
+                    this.setState({shouldLoadMore:true})                    
+                }                
                 this.setState({ data: listFood })
             } else {
-                this.setState({ loadedAll: true })
+                console.log('bvasaaa',this.state.data[this.state.data.length -1 ])
+                var data =  this.state.data
+                data.splice(data.length - 1 ,1)
+                this.setState({data:data, loadedAll:true})
             }
         }
         if (!props.fetchProduct.success) {
@@ -107,7 +119,9 @@ class Category extends Component {
     }
 
     loadMore() {
+        console.log('90498043io23kl32',this.state.loadedAll, this.state.shouldLoadMore)
         if (!this.state.loadedAll && this.state.shouldLoadMore) {
+            console.log('90498043io23kl32')
             var index = this.state.index + 1
             const { params } = this.props.navigation.state
             var parameter = {
@@ -125,10 +139,10 @@ class Category extends Component {
         let boxType = type === 'field' ? this.state.field : this.state.direction;
         let checked = boxType[key] ? true : false;
         return (
-            <View style={styles.pickerWrap}>
-                <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
+            <TouchableOpacity onPress={() => this.updateStatus(key, type)} style={styles.pickerWrap}>
+                <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)}  />
                 <Text style={styles.checkboxText}>{text}</Text>
-            </View>
+            </TouchableOpacity>
         )
     }
     updateStatus(key, type) {
@@ -152,7 +166,7 @@ class Category extends Component {
         let newArray = this.state.data.slice(0);
         newArray[rowID] = {
             ...this.state.data[rowID],
-            quantity: this.state.data[rowID].quantity + 1
+            quantity: this.state.data[rowID].quantity + this.state.data[rowID].quantityStep
         }
         this.setState({
             data: newArray,
@@ -164,7 +178,7 @@ class Category extends Component {
         let newArray = this.state.data.slice(0);
         newArray[rowID] = {
             ...this.state.data[rowID],
-            quantity: this.state.data[rowID].quantity - 1 > 0 ? this.state.data[rowID].quantity - 1 : 0,
+            quantity: this.state.data[rowID].quantity - this.state.data[rowID].quantityStep > 0 ? this.state.data[rowID].quantity - this.state.data[rowID].quantityStep : 0,
         };
         this.setState({
             data: newArray
@@ -207,47 +221,11 @@ class Category extends Component {
         food.parrentId = params.parent.id
         this.props.navigation.navigate('FoodTab', { parrent: food })
         InteractionManager.runAfterInteractions(() => {
-                this.setState({disabled:false})            
+        this.setState({disabled:false})            
         })
 
-       
-        
     }
-    async add(item, rowID) {
-        let food = this.state.data
-        let data = [];
-        if (item.quantity == 0) {
-            Alert.alert('', 'Hãy chọn số lượng')
-        } else {
-            try {
-                const value = await AsyncStorage.getItem('cartUser');
-                if (value !== null) {
-                    data = JSON.parse(value);
-                }
 
-            } catch (error) {
-            }
-            var temp = []
-            for (i = 0; i < data.length; i++) {
-                temp.push(data[i].id)
-            }
-            var a = temp.indexOf(item.id)
-            if (a >= 0) {
-                for (i = 0; i < data.length; i++) {
-                    if (data[i].id == item.id) {
-                        let quantity = item.quantity
-                        data[i].quantity += quantity
-                    }
-                }
-            } else {
-                data.push(item);
-            }
-            try {
-                await AsyncStorage.setItem('cartUser', JSON.stringify(data));
-            } catch (error) {
-            }
-        }
-    }
     renderSort() {
         return (
             <View style={styles.sortWrap}>
@@ -266,6 +244,7 @@ class Category extends Component {
     }
     sortButton(){
         this.popupDialog.dismiss()
+        this.setState({ loadedAll: false })        
         const { params } = this.props.navigation.state
         var parameter = {
             "PageSize": 10,
@@ -309,18 +288,37 @@ class Category extends Component {
     }
 
     renderItems(data) {
+        if(data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
+            return (
+                <View style={styles.loadMoreCell}>
+                    <Text style={styles.loadMoreText} >Tải thêm...</Text>
+                    </View>
+            )
+        }
         let item = data.item
         let active = 0
         let color = ''
-        var quantity = item.quantity * item.quantityStep
+        var quantity = item.quantity 
+        let buttonAdd = null
         if (item.quantity > 0) {
             active = 0.2,
-                color = primary
+                color = primary,
+                buttonAdd = (
+                    <Button addCart onPress={() => { appFunction.add(item) }} >
+                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                    </Button>
+                )
         } else {
             active = 1,
-                color = '#cecece'
+                color = '#cecece',
+                buttonAdd = (
+                    <Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
+                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                    </Button>
+                )
         }
         let id = item.id
+        console.log('awqwdqwdqw',item, item.price)
         let price = this.priceHandle(item.price.toString())
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => {this.setState({disabled:true}), this.openDetail(item) }}>
@@ -335,7 +333,7 @@ class Category extends Component {
                                 </Col>
                                 <Col size={3} style={styles.infoWrap}>
                                     <Text style={styles.foodName}>{item.name}</Text>
-                                    <Text style={styles.unit}> {item.minOrderedItems} {item.unitType}</Text>
+                                    <Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
                                     <Row style={{ alignItems: 'flex-end' }} >
                                         <Icon name='ios-pin' style={styles.locationIcon} />
                                         <Text style={styles.shopName}>{item.cities}</Text>
@@ -345,25 +343,23 @@ class Category extends Component {
                                     </View>
                                     <Text style={styles.price}>{price}đ</Text>
                                 </Col>
-                                <Col size={3} style={styles.buyColumn}>
+                                <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
+                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color, marginLeft:10 }]} onPress={() => this.minus(data.index)} >
                                             <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
                                             <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
                                         </Col>
-                                        <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
+                                        <TouchableOpacity style={[styles.iconWrapPlus, {marginRight:10}]} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />
                                         </TouchableOpacity>
                                     </Col>
                                     <Col style={styles.buttonAddCard}>
-                                        <Button addCart onPress={() => this.add(item, item.index)} >
-                                            <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
-                                        </Button>
+                                        {buttonAdd}                             
                                     </Col>
-                                </Col>
+                                </TouchableOpacity>
                             </Grid>
                         </Body>
                     </CardItem>
@@ -380,7 +376,7 @@ class Category extends Component {
         const { params } = this.props.navigation.state
         return (
             <Container style={styles.container}>
-                <HeaderContent navi={navigation} rightIcon={'md-funnel'} customRight={() => this.openSort()} rightButton={true} title={params.parent.name}
+                <HeaderContent navi={navigation} rightButton={true} secondRightBtnIcon={'md-funnel'} secondRightBtn={() => this.openSort()} rightButton={true} title={params.parent.name}
                     textLeft="Danh Mục"
                     leftButton={() => { this.props.navigation.dispatch(resetAction) }}
                 />

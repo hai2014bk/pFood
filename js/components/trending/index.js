@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import {InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchTrending } from "../../actions/fetchTrending.js"
@@ -28,8 +28,8 @@ class Trending extends Component {
 
     componentDidMount() {
         var date = new Date()
-        let isoDate = date.toISOString().slice(0,-1)
-        console.log('2321321',isoDate)
+        let isoDate = date.toISOString().slice(0, -1)
+        console.log('2321321', isoDate)
         var params = {
             "PageSize": "20",
             "PageIndex": "1",
@@ -43,7 +43,7 @@ class Trending extends Component {
             if (props.fetchTrending.data.model.length > 0) {
                 var listFood = this.state.data.concat(props.fetchTrending.data.model)
                 for (i in listFood) {
-                    listFood[i].quantity = 0
+                    listFood[i].quantity = listFood[i].quantityStep
                 }
                 this.setState({ data: listFood })
             }
@@ -57,7 +57,7 @@ class Trending extends Component {
         let newArray = this.state.data.slice(0);
         newArray[rowID] = {
             ...this.state.data[rowID],
-            quantity: this.state.data[rowID].quantity + 1
+            quantity: this.state.data[rowID].quantity + this.state.data[rowID].quantityStep
         }
         this.setState({
             data: newArray,
@@ -68,7 +68,7 @@ class Trending extends Component {
         let newArray = this.state.data.slice(0);
         newArray[rowID] = {
             ...this.state.data[rowID],
-            quantity: this.state.data[rowID].quantity - 1 > 0 ? this.state.data[rowID].quantity - 1 : 0,
+            quantity: this.state.data[rowID].quantity - this.state.data[rowID].quantityStep > 0 ? this.state.data[rowID].quantity - this.state.data[rowID].quantityStep : 0,
         };
         this.setState({
             data: newArray
@@ -102,23 +102,38 @@ class Trending extends Component {
         // const { params } = this.props.navigation.state
         // food.parrentId = params.parent.id
         this.props.navigation.navigate('FoodTab', { parrent: food })
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({disabled:false})            
+            })
+    
     }
     renderItems(data) {
         let item = data.item
         let active = 0
         let color = ''
-        var quantity = item.quantity * item.quantityStep
+        var quantity = item.quantity
+        let buttonAdd = null
         if (item.quantity > 0) {
             active = 0.2,
-                color = primary
+                color = primary,
+                buttonAdd = (
+                    <Button addCart onPress={() => { appFunction.add(item) }} >
+                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                    </Button>
+                )
         } else {
             active = 1,
-                color = '#cecece'
+                color = '#cecece',
+                buttonAdd = (
+                    <Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
+                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                    </Button>
+                )
         }
         let id = item.id
         let price = this.priceHandle(item.price.toString())
         return (
-            <TouchableOpacity onPress={() => { this.openDetail(item) }}>
+            <TouchableOpacity disabled={this.state.disabled} onPress={() =>  {this.setState({disabled:true}), this.openDetail(item) }}>
                 <Card style={styles.card}>
                     <CardItem >
                         <Body>
@@ -130,7 +145,7 @@ class Trending extends Component {
                                 </Col>
                                 <Col size={3} style={styles.infoWrap}>
                                     <Text style={styles.foodName}>{item.name}</Text>
-                                    <Text style={styles.unit}> {item.minOrderedItems} {item.unitType}</Text>
+                                    <Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
                                     <Row style={{ alignItems: 'flex-end' }} >
                                         <Icon name='ios-pin' style={styles.locationIcon} />
                                         <Text style={styles.shopName}>{item.cities}</Text>
@@ -140,10 +155,10 @@ class Trending extends Component {
                                     </View>
                                     <Text style={styles.price}>{price}đ</Text>
                                 </Col>
-                                <Col size={3} style={styles.buyColumn}>
+                                <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity activeOpacity={active}  style={[styles.iconWrapMinus,{borderColor:color}]} onPress={() => this.minus(data.index)} >
-                                            <Icon style={[styles.icon, {color:color}]} name="md-remove" />
+                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
+                                            <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
@@ -154,11 +169,9 @@ class Trending extends Component {
                                         </TouchableOpacity>
                                     </Col>
                                     <Col style={styles.buttonAddCard}>
-                                        <Button addCart onPress={() => { appFunction.add(item) }} >
-                                            <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
-                                        </Button>
+                                        {buttonAdd}
                                     </Col>
-                                </Col>
+                                </TouchableOpacity>
                             </Grid>
                         </Body>
                     </CardItem>
@@ -171,7 +184,7 @@ class Trending extends Component {
         const navigation = this.props.screenProps.navi;
         return (
             <Container style={styles.container}>
-                <HeaderContent navi={navigation} rightButton={true} title="Xu hướng"
+                <HeaderContent navi={navigation} leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} rightButton={true} title="Xu hướng"
                 />
                 <Content style={styles.content}>
                     <FlatList style={{ marginBottom: 5, marginTop: 5, flex: 1, width: '100%' }}

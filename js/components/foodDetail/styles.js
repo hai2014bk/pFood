@@ -90,5 +90,12 @@ export default {
 	contentText:{
 		fontSize:12,
 		color:'gray',
-	}
+	},
+	textAdd: {
+        width: '100%',
+        color: 'white',
+        fontWeight: 'normal',
+        fontSize: 12,
+        textAlign: 'center'
+    }
 };

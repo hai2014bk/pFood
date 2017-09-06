@@ -74,6 +74,17 @@ export default {
         flex: 2,
          marginLeft: 10,
     },
+    loadMoreCell :{
+        flex:1,
+        height:50,
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'#ccc'
+    },
+    loadMoreText:{
+        color:'white',
+        textAlign:'center'
+    },
     sortWrap:{
         flex:1, 
         marginLeft:5,
@@ -93,7 +104,7 @@ export default {
     },
     buttonWrap: {
         flexDirection: 'row',
-        marginLeft: 10,
+        marginTop: 20,
         justifyContent: 'center',
     },
      buttonAddCard: {
@@ -118,9 +129,8 @@ export default {
 	},
     buyColumn: {
         marginLeft: 5,
-        marginRight:5,
-        justifyContent: 'center',
-        marginTop: 20,
+        marginRight: 5,
+        flex: 3.5,
     },
     quantity: {
         fontSize: 13,
@@ -164,5 +174,12 @@ export default {
     },
     animated:{
         position:'absolute'
+    },
+    textAdd: {
+        width: '100%',
+        color: 'white',
+        fontWeight: 'normal',
+        fontSize: 12,
+        textAlign: 'center'
     }
 };

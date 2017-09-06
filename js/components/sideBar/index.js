@@ -15,7 +15,6 @@ class SideBar extends Component {
 	async logOut() {
 		let keys = [mConstants.CART, mConstants.USER_INFO];
 		await AsyncStorage.multiRemove(keys)
-		console.log('side bar1111', this.props.navigation)
 		this.props.navigation.dispatch(resetAction);
 	}
 	render() {

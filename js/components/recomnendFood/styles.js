@@ -55,6 +55,7 @@ export default {
 	sectionText:{
 		color:primary,
 		fontSize:17,
+		marginLeft:10,
 		fontWeight:'400',
 		textAlign:'left'
 	},

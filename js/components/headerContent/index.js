@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InteractionManager,Image } from "react-native";
+import { TouchableOpacity, InteractionManager, Image } from "react-native";
 import { View, Text, Icon, Button, Left, Right, Body, Header } from "native-base";
 
 import styles from "./styles";
@@ -12,26 +12,42 @@ class HeaderContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      disabled:false
+      disabled: false
     };
-}
+  }
   openCart() {
-    this.setState({disabled:true})
+    this.setState({ disabled: true })
     this.props.navi.navigate('Cart')
+    InteractionManager.runAfterInteractions(() => {
+      this.setState({ disabled: false })
+    })
+  }
+  renderSecondRight() {
+    if (this.props.secondRightBtn) {
+      return (
+        <Button transparent onPress={this.props.secondRightBtn}>
+          <Icon style={{ color: 'white' }} active name={this.props.secondRightBtnIcon} />
+        </Button>
+      )
+    } else {
+      <View>
+      </View>
+    }
+
   }
   renderLeft() {
     if (this.props.leftButton != null) {
       if (this.props.textLeft) {
         return (
-          <Button transparent onPress={this.props.leftButton}>
-            <Text style={{ color: 'white', fontSize: 13 }}>{this.props.textLeft}</Text>
-          </Button>
+            <Button transparent onPress={this.props.leftButton}>
+              <Text style={{ color: 'white', fontSize: 13 }}>{this.props.textLeft}</Text>
+            </Button>
         )
       } else {
         return (
-          <Button transparent onPress={this.props.leftButton}>
-            <Icon style={{ color: 'white' }} active name={this.props.leftIcon} />
-          </Button>
+            <Button  transparent onPress={this.props.leftButton}>
+              <Icon style={{ color: 'white',flex:1 }} active name={this.props.leftIcon} />
+            </Button>
         )
       }
     } else {
@@ -46,13 +62,13 @@ class HeaderContent extends Component {
       console.log('right butrton')
       if (this.props.customRight) {
         return (
-          <Button disabled={this.state.disabled} transparent onPress={this.props.customRight}>
+          <Button  disabled={this.state.disabled} transparent onPress={this.props.customRight}>
             <Icon style={{ color: 'white' }} active name={this.props.rightIcon} />
           </Button>
         )
       } else {
         return (
-          <Button transparent onPress={()=>{this.openCart()}}>
+          <Button transparent disabled={this.state.disabled} onPress={() => { this.openCart() }}>
             <Icon style={{ color: 'white' }} active name="cart" />
           </Button>
         )
@@ -65,18 +81,35 @@ class HeaderContent extends Component {
     }
   }
   render() {
+    console.log('mvgfdmsnkvbjswero')
+    if (this.props.secondRightBtn) {
+      return (
+        <Header style={{ borderBottomWidth: 0, backgroundColor: primary }}>
+          <Left style={{ flex: 1 }}>
+            {this.renderLeft()}
+          </Left>
+          <Body style={{ justifyContent: 'center', alignItems: 'center', flex: 2, flexDirection: 'row', }}>
+            <Text style={{ textAlign: 'center', flex: 1, color: 'white', fontSize: 15, fontWeight: 'bold' }}>{this.props.title}</Text>
+          </Body>
+          <Right style={{ flex: 1, flexDirection: 'row' }}>
+            {this.renderSecondRight()}
+            {this.renderRight()}
+          </Right>
+        </Header>
+      );
+    }
     return (
       <Header style={{ borderBottomWidth: 0, backgroundColor: primary }}>
         <Left style={{ flex: 1 }}>
           {this.renderLeft()}
         </Left>
-        <Body style={{ justifyContent: 'center', alignItems: 'center', flex: 2, flexDirection: 'row', }}>
-          <Text style={{ textAlign: 'center', flex: 1, color: 'white', fontSize: 15, fontWeight: 'bold' }}>{this.props.title}</Text>
-        </Body>
-        <Right style={{ flex: 1 }}>
-          {this.renderRight()}
-        </Right>
-      </Header>
+      <Body style={{ justifyContent: 'center', alignItems: 'center', flex: 2, flexDirection: 'row', }}>
+        <Text style={{ textAlign: 'center', flex: 1, color: 'white', fontSize: 15, fontWeight: 'bold' }}>{this.props.title}</Text>
+      </Body>
+      <Right style={{ flex: 1 }}>
+        {this.renderRight()}
+      </Right>
+      </Header >
     );
   }
 }

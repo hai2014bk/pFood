@@ -45,15 +45,16 @@ export default {
 	pickerWrap: {
 		flexDirection: 'row',
 		marginLeft: -10,
-		marginTop: 7
+		marginTop: 7,
+		width:'60%'
 	},
 	checkboxText: {
 		marginLeft: 20,
 		color: '#A0A0A0',
 	},
 	moneyIcon: {
-		height: 30,
-		width: 30,
+		height: 25,
+		width: 25,
 		marginLeft: -3
 	},
 	checkBox: {

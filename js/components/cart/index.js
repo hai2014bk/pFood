@@ -3,6 +3,7 @@ import { FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, 
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import * as mConstants from '../../utils/Constants'
+import { connect } from "react-redux";
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail, SwipeRow } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -33,7 +34,8 @@ class Cart extends Component {
                 console.log('value', data)
                 this.setState({ data })
                 for (i = 0; i < data.length; i++) {
-                    totalPrice += data[i].price * data[i].quantity
+                    var quantity = data[i].quantity/data[i].quantityStep
+                    totalPrice += data[i].price * quantity
                     this.setState({ totalPrice })
                 }
             }
@@ -41,12 +43,18 @@ class Cart extends Component {
         } catch (error) {
         }
     }
+    componentWillReceiveProps(props) {
+		if (props.addOrder.success == true) {
+			this.setState({data:[]})
+		} 
+	}
+
 
     async plus(rowID) {
         let newArray = this.state.data.slice(0);
         newArray[rowID] = {
             ...this.state.data[rowID],
-            quantity: this.state.data[rowID].quantity + 1
+            quantity: this.state.data[rowID].quantity + this.state.data[rowID].quantityStep
         }
         this.setState({
             data: newArray,
@@ -60,7 +68,7 @@ class Cart extends Component {
 
     async minus(data, rowID) {
         console.log('data', data)
-        if (data.item.quantity == 1) {
+        if (data.item.quantity/data.item.quantityStep == 1) {
             Alert.alert(
                 '',
                 'Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?',
@@ -74,7 +82,7 @@ class Cart extends Component {
             let newArray = this.state.data.slice(0);
             newArray[rowID] = {
                 ...this.state.data[rowID],
-                quantity: this.state.data[rowID].quantity - 1 > 0 ? this.state.data[rowID].quantity - 1 : 1,
+                quantity: this.state.data[rowID].quantity - this.state.data[rowID].quantityStep > 0 ? this.state.data[rowID].quantity - this.state.data[rowID].quantityStep : this.state.data[rowID].quantityStep,
             };
             this.setState({
                 data: newArray
@@ -120,13 +128,7 @@ class Cart extends Component {
 
     priceHandle(price) {
         var count = 0
-        for (var i = price.length; i--; i > 0) {
-            count += 1
-            if (count == 4) {
-                price = this.insertString(price, i + 1, '.')
-                count = 0
-            }
-        }
+		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
         return price
     }
     insertString(str, index, value) {
@@ -136,7 +138,7 @@ class Cart extends Component {
     renderItems(data) {
         let item = data.item
         let id = item.id
-        let quantity = item.quantity * item.quantityStep
+        let quantity = item.quantity
         let price = this.priceHandle(item.price.toString())
         return (
             <SwipeRow
@@ -160,7 +162,7 @@ class Cart extends Component {
                                     <Icon name="md-add" style={styles.icon} />
                                 </TouchableOpacity>
                                 <Text style={styles.x}>X</Text>
-                                <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
+                                <Text style={styles.quantity}>{quantity/item.quantityStep} {item.unitType}</Text>
                             </View>
                         </View>
                     </View>
@@ -177,14 +179,15 @@ class Cart extends Component {
     totalPrice(newArray) {
         totalPrice = 0
         for (i = 0; i < newArray.length; i++) {
-            totalPrice += newArray[i].price * newArray[i].quantity
+            quantity = newArray[i].quantity / newArray[i].quantityStep
+            totalPrice += newArray[i].price * quantity
         }
         this.setState({ totalPrice })
     }
     renderList() {
         if (this.state.data.length > 0) {
             return (
-                <FlatList style={styles.listViewWrap}
+                <FlatList scrollEnabled={false} style={styles.listViewWrap}
                     data={this.state.data}
                     extraData={this.state.data}
                     keyExtractor={(item) => item.id}
@@ -211,16 +214,14 @@ class Cart extends Component {
     }
 
     render() {
+        let content = null
         let num = this.state.totalPrice
         let price = this.priceHandle(num.toString())
         console.log('styate', this.state.data)
         const navigation = this.props.navigation;
-        return (
-            <Container style={styles.container}>
-                <HeaderContent title="Giỏ hàng"
-                    leftButton={() => navigation.goBack()}
-                    leftIcon="ios-arrow-back" />
-                <Content style={styles.contentWrap}>
+        if (this.state.data.length > 0) {
+            content = (
+                <Content bounces={false} style={styles.contentWrap}>
                     <View>
                         {this.renderList()}
                     </View>
@@ -235,9 +236,29 @@ class Cart extends Component {
                         <Text style={styles.checkout}> Thanh toán </Text>
                     </TouchableOpacity>
                 </Content>
+            )
+        } else {
+            content = (
+                <Content style={styles.contentWrap}>
+                  <View style={styles.alert}>
+                      <Text style={styles.alertText}>Không có sản phẩm nào {"\n"} trong giỏ hàng</Text>
+                  </View>
+                </Content>
+            )
+        }
+        return (
+            <Container style={styles.container}>
+                <HeaderContent title="Giỏ hàng"
+                    leftButton={() => navigation.goBack()}
+                    leftIcon="ios-arrow-back" />
+                {content}
             </Container>
         );
     }
 }
 
-export default Cart;
+const mapStateToProps = state => ({
+	addOrder: state.addOrder,
+});
+
+export default connect(mapStateToProps)(Cart);

@@ -17,9 +17,10 @@ const RecommendStack = StackNavigator({
 		index: 0,
 		initialRouteName: "RecommendFood",
 		headerMode: "none",
-		 navigationOptions: {
-      		gesturesEnabled: false,
-        },
+		navigationOptions: {
+			gesturesEnabled: false,
+			drawerLockMode: 'locked-closed'
+		},
 	}
 );
 

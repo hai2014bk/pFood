@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import styles from "./styles";
 import { fetchStores } from "../../actions/fetchStores.js"
 import Spinner from 'react-native-loading-spinner-overlay';
+import Communications from 'react-native-communications';
 const steak = 'http://www.chadwicksbutchers.com/wp-content/uploads/fillet-steak-banner-e1485792041266.jpg'
 const pizza = 'http://bijespizza.com/Site/themed_images/pizza_1_lg.png'
 const bbq = 'http://nutright.com/blog/wp-content/uploads/2017/01/bbq-islamabad.jpg'
@@ -20,7 +21,8 @@ class Store extends Component {
         super(props);
         this.state = {
             items: [],
-            isLoading: true
+            isLoading: false,
+            disabled:false
         };
     }
     componentDidMount() {
@@ -84,13 +86,16 @@ class Store extends Component {
     }
 
     openStoreDetail(store){
-        this.props.navigation.navigate('StoreTab',{parrent:store})
-        
+        this.setState({isLoading:true})       
+        setTimeout(()=>{
+            this.props.navigation.navigate('StoreTab',{parrent:store})   
+            this.setState({ isLoading: false })
+        },500)
     }
     renderStoreList(item) {
         console.log('item',item)
         return (
-            <TouchableOpacity onPress={()=>this.openStoreDetail(item)} style={styles.listItemWrap}>
+            <TouchableOpacity disabled={this.state.disabled} onPress={()=>this.openStoreDetail(item)} style={styles.listItemWrap}>
                 <View style={styles.itemWrap}>
                     <View style={styles.imageWrap}>
                         <Image source={{uri: item.storeImageUrl}} style={styles.image} resizeMode='contain' />
@@ -102,7 +107,7 @@ class Store extends Component {
                         </View>
                         <View style={styles.hotlineWrap}>
                             <Icon name = 'ios-call' style={styles.phoneIcon} />
-                            <Text style={styles.hotline}>{item.hotline}</Text>
+                            <Text onPress={() => Communications.phonecall('0987678911', true)} style={styles.hotline}>0987678911</Text>
                         </View>
                         <Text style={styles.address}>{item.hqAddress}</Text>          
                     </View>
@@ -115,10 +120,11 @@ class Store extends Component {
         const navigation = this.props.screenProps.navi;
         return (
             <Container style={styles.container}>
-                <HeaderContent leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
-                    rightButton={false} title='Cửa hàng'>
+                <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
+                    rightButton={true} title='Cửa hàng'>
                 </HeaderContent>
                 <Content>
+                    <Spinner visible={this.state.isLoading}/>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
                     </View>
@@ -138,7 +144,6 @@ class Store extends Component {
                         </List>
                     </View>
                 </Content>
-                <Spinner visible={this.state.isLoading} />
             </Container>
         );
     }
