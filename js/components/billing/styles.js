@@ -29,6 +29,7 @@ export default {
 		marginTop: 5,
 	},
 	infoDetail: {
+		fontWeight: '500',
 		textAlignVertical: 'center',
 		fontSize: 20,
 		color: 'black',
@@ -49,8 +50,8 @@ export default {
 		marginTop: 7
 	},
 	checkboxText: {
-		marginLeft: 20,
-		color: '#A0A0A0',
+		marginLeft: 18,
+		color: 'black',
 	},
 	moneyIcon: {
 		height: 30,
@@ -159,4 +160,19 @@ export default {
 		color: 'black',
 		fontWeight: '500',
 	},
+	checkoutWrap: {
+        backgroundColor: primary,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 50,
+        alignSelf: 'center',
+        borderRadius: 20,
+        marginTop: 10,
+        marginBottom:20,
+    },
+    checkout: {
+        color: 'white',
+        fontSize: 16,
+    },
 };
