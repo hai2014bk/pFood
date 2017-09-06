@@ -20,6 +20,13 @@ export type Action =
 	| { type: "FETCH_STORES_FAILED" }
 	| { type: "ADD_ORDER_SUCCESS" }
 	| { type: "ADD_ORDER_FAILED" }
+	| { type: "FETCH_RELATE_FAILED" }
+	| { type: "FETCH_RELATE_SUCCESS" }
+	| { type: "FETCH_LASTESTRECOMEND_SUCCESS" }
+	| { type: "FETCH_LASTESTRECOMEND_FAILED" }
+	| { type: "FETCH_LOWESTRECOMEND_FAILED" }
+	| { type: "FETCH_LOWESTRECOMEND_SUCCESS" }
+
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;

@@ -286,6 +286,7 @@ class Category extends Component {
             </PopupDialog>
         )
     }
+    
 
     renderItems(data) {
         if(data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
@@ -298,7 +299,7 @@ class Category extends Component {
         let item = data.item
         let active = 0
         let color = ''
-        var quantity = item.quantity 
+        var quantity = appFunction.handleUnitType(item.unitType,item.quantity)
         let buttonAdd = null
         if (item.quantity > 0) {
             active = 0.2,
@@ -350,7 +351,7 @@ class Category extends Component {
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
-                                            <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
+                                            <Text style={styles.quantity}>{quantity}</Text>
                                         </Col>
                                         <TouchableOpacity style={[styles.iconWrapPlus, {marginRight:10}]} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />
@@ -377,7 +378,7 @@ class Category extends Component {
         return (
             <Container style={styles.container}>
                 <HeaderContent navi={navigation} rightButton={true} secondRightBtnIcon={'md-funnel'} secondRightBtn={() => this.openSort()} rightButton={true} title={params.parent.name}
-                    textLeft="Danh Mục"
+                    textLeft="Danh mục"
                     leftButton={() => { this.props.navigation.dispatch(resetAction) }}
                 />
                 <Spinner visible={this.state.isLoading} />

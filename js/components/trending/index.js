@@ -111,8 +111,7 @@ class Trending extends Component {
         let item = data.item
         let active = 0
         let color = ''
-        var quantity = item.quantity
-        let buttonAdd = null
+        var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
         if (item.quantity > 0) {
             active = 0.2,
                 color = primary,
@@ -162,7 +161,7 @@ class Trending extends Component {
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
-                                            <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
+                                            <Text style={styles.quantity}>{quantity}</Text>
                                         </Col>
                                         <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />

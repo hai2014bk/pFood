@@ -9,9 +9,7 @@ import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, 
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import { connect } from "react-redux";
-
 import styles from "./styles";
-
 const headerLogo = require("../../../images/Header-Logo.png");
 const primary = require("../../themes/variable").brandPrimary;
 const resetAction = NavigationActions.reset({
@@ -23,26 +21,27 @@ class FoodRelate extends Component {
         super(props);
         this.state = {
             data: [],
-            index: 1
+            index: 1,
         };
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
-            const food = this.props.food
-            var parameter = {
-                "PageSize": 100,
-                "PageIndex": this.state.index,
-                "CategoryId": food.parrentId
+        console.log('3912321',this.props)
+        var listFood = this.props.fetchRelate.data.model
+        console.log(listFood)
+        for (i in listFood) {
+            if (this.props.food.id == listFood[i].id) {
+                listFood.splice(i, 1)
             }
-            this.props.fetch(parameter)
-        })
-
+            listFood[i].quantity = listFood[i].quantityStep
+        }
+        this.setState({ data: listFood })
     }
 
     componentWillReceiveProps(props) {
-        if (props.fetchProduct.success) {
-            var listFood = props.fetchProduct.data.model
+       console.log('3912321',props)
+        if (props.fetchRelate.success) {
+            var listFood = props.fetchRelate.data.model
             console.log(listFood)
             for (i in listFood) {
                 if (this.props.food.id == listFood[i].id) {
@@ -52,7 +51,7 @@ class FoodRelate extends Component {
             }
             this.setState({ data: listFood })
         }
-        if (!props.fetchProduct.success) {
+        if (!props.fetchRelate.success) {
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
         }
     }
@@ -115,7 +114,7 @@ class FoodRelate extends Component {
         let id = item.id
         let active = 0
         let color = ''
-        var quantity = item.quantity        
+        var quantity = appFunction.handleUnitType(item.unitType,item.quantity)      
         if (item.quantity > 0) {
             active = 0.2,
                 color = primary
@@ -153,7 +152,7 @@ class FoodRelate extends Component {
                                             <Icon style={[styles.icon, {color:color}]} name="md-remove" />
                                         </TouchableOpacity>
                                         <Col style={styles.quantityContainer}>
-                                            <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
+                                            <Text style={styles.quantity}>{quantity}</Text>
                                         </Col>
                                         <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />
@@ -199,24 +198,9 @@ function bindActions(dispatch) {
         fetch: (parameter) => dispatch(fetchProduct(parameter)),
     };
 }
-
 const mapStateToProps = state => ({
-    fetchProduct: state.fetchProduct,
+    fetchRelate: state.fetchRelate,
 });
 
 export default connect(mapStateToProps, bindActions)(FoodRelate);
 
-{/* <Col style={styles.buttonWrap}>
-<Button onPress={() => this.plus(id)} transparent >
-    <Icon name="md-add" />
-</Button>
-<Text style={styles.quantity}>{item.quantity}</Text>
-<Button onPress={() => this.minus(id)} transparent >
-    <Icon name="md-remove" />
-</Button>
-</Col>
-<Col style={styles.cartWrap}>
-<Button transparent >
-    <Icon active name="md-cart" />
-</Button>
-</Col> */}

@@ -38,6 +38,7 @@ class FoodDetail extends Component {
 
 	}
 	componentWillReceiveProps(props) {
+		console.log('i329821oi321321',props)
 		if (props.fetchDetail.success) {
 			console.log('po rop', props.fetchDetail.data.model)
 			var food = props.fetchDetail.data.model
@@ -173,13 +174,13 @@ class FoodDetail extends Component {
 	renderPriceAndBuy() {
 		var food = this.state.food
 		console.log('step', food)
-		var quantity = food.quantity
+		var quantity = appFunction.handleUnitType(food.unitType,food.quantity) 
 		var price = ''
 		console.log(food.unitType)
 		if (food.price) {
 			price = this.priceHandle(food.price.toString())
 		}
-		if (quantity > 0) {
+		if (food.quantity > 0) {
             active = 0.2,
             color = primary
         } else {
@@ -200,7 +201,7 @@ class FoodDetail extends Component {
 							<Icon style={[styles.icon, {color:color}]} name="md-remove" />
 						</TouchableOpacity>
 						<Col style={styles.quantityContainer}>
-							<Text style={styles.quantity}>{quantity} {food.unitType}</Text>
+							<Text style={styles.quantity}>{quantity} </Text>
 						</Col>
 						<TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus()} >
 							<Icon name="md-add" style={styles.icon} />

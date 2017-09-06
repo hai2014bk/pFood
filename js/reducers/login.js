@@ -12,7 +12,6 @@ const initialState = {
 
 
 export function login(state:State = initialState, action) {
-	console.log(action.type)
   if (action.type === 'LOGIN_FAILED') {
     return {
       ...state,
