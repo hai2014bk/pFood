@@ -26,7 +26,8 @@ export type Action =
 	| { type: "FETCH_LASTESTRECOMEND_FAILED" }
 	| { type: "FETCH_LOWESTRECOMEND_FAILED" }
 	| { type: "FETCH_LOWESTRECOMEND_SUCCESS" }
-
+	| { type: "FETCH_BANNER_SUCCESS" }
+	| { type: "FETCH_BANNER_FAILED" }	
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;

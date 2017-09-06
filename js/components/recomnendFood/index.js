@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
-import { fetchTrendingRecomend,fetchLastestRecomend } from "../../actions/fetchTrendingRecomend.js"
+import { fetchBanner, fetchTrendingRecomend } from "../../actions/fetchTrendingRecomend.js"
 import Swiper from 'react-native-swiper';
 import styles from "./styles";
 import { connect } from "react-redux";
@@ -25,10 +25,12 @@ class RecommendFood extends Component {
 			disabled: false,
 			dataSection: [],
 			isLoading: false,
-			tredingLoaded:false,
-			lastestLoaded:false,
-			lowestLoaded:false
-			
+			tredingLoaded: false,
+			lastestLoaded: false,
+			lowestLoaded: false,
+			bannerLoaded: false,
+			banners: []
+
 		};
 	}
 	componentDidMount() {
@@ -41,11 +43,20 @@ class RecommendFood extends Component {
 			"LastViewedDate": "2017-08-20T15:20:34.8699498"
 		}
 		this.props.fetchTrending(params)
+		this.props.fetchBanner()
 	}
 
 	componentWillReceiveProps(props) {
+		if (props.fetchBannerRecomend.success && !this.state.bannerLoaded) {
+			console.log('dskjfdaklsf')
+			if (props.fetchBannerRecomend.data.model[0]) {
+				console.log('dskjfdakls22221')
+				var listBanner = props.fetchBannerRecomend.data.model
+				this.setState({ banners: listBanner, bannerLoaded: true })
+			}
+		}
 		if (props.fetchTrendingRecomend.success && !this.state.tredingLoaded) {
-			if (props.fetchTrendingRecomend.data.model.length > 0) {
+			if (props.fetchTrendingRecomend.data.model[0]) {
 				var listFood = props.fetchTrendingRecomend.data.model
 				for (i in listFood) {
 					listFood[i].quantity = 0
@@ -55,11 +66,11 @@ class RecommendFood extends Component {
 				trendingFood.food = listFood
 				var dataSection = this.state.dataSection
 				dataSection.push(trendingFood)
-				this.setState({ dataSection: dataSection,tredingLoaded:true })
+				this.setState({ dataSection: dataSection, tredingLoaded: true })
 			}
 		}
 		if (props.fetchLastestRecomend.success && !this.state.lastestLoaded) {
-			if (props.fetchLastestRecomend.data.model.length > 0) {
+			if (props.fetchLastestRecomend.data.model[0]) {
 				var listFood = props.fetchLastestRecomend.data.model
 				for (i in listFood) {
 					listFood[i].quantity = 0
@@ -69,11 +80,11 @@ class RecommendFood extends Component {
 				lastestFood.food = listFood
 				var dataSection = this.state.dataSection
 				dataSection.push(lastestFood)
-				this.setState({ dataSection: dataSection, lastestLoaded:true })
+				this.setState({ dataSection: dataSection, lastestLoaded: true })
 			}
 		}
 		if (props.fetchLowestRecomend.success && !this.state.lowestLoaded) {
-			if (props.fetchLowestRecomend.data.model.length > 0) {
+			if (props.fetchLowestRecomend.data.model[0]) {
 				var listFood = props.fetchLowestRecomend.data.model
 				for (i in listFood) {
 					listFood[i].quantity = 0
@@ -83,35 +94,36 @@ class RecommendFood extends Component {
 				lowestFood.food = listFood
 				var dataSection = this.state.dataSection
 				dataSection.push(lowestFood)
-				this.setState({ dataSection: dataSection, lowestLoaded:true })
+				this.setState({ dataSection: dataSection, lowestLoaded: true })
 			}
 		}
 		if (!props.fetchTrendingRecomend.success) {
+			console.log('9328934893141',props)
 			setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
 		}
 	}
+
 	pageBanner() {
+		var banners = []
+		if (this.state.banners[0]) {
+			banners = this.state.banners
+			console.log('213213213',banners[0].imageUrl)
+			return (
+				<Swiper activeDotColor={primary} height={137} autoplay={true}>
+					{banners.map((item, key) => {
+						return (
+							<View style={{flex:1}} key={key} style={styles.slide1}>
+								<Image style={styles.imageBanner} source={{uri:item.imageUrl}}/>
+							</View>
+						)
+					})
+					}
+				</Swiper>
+			)			
+		}
 		return (
-			<Swiper activeDotColor={primary} height={137} autoplay={true}>
-				<View style={{ flex: 1 }}>
-					<Image
-						style={{ flex: 1 }}
-						source={{ uri: steak }}
-					/>
+			<View>
 				</View>
-				<View style={{ flex: 1 }}>
-					<Image
-						style={{ flex: 1 }}
-						source={{ uri: pizza }}
-					/>
-				</View>
-				<View style={{ flex: 1 }}>
-					<Image
-						style={{ flex: 1 }}
-						source={{ uri: bbq }}
-					/>
-				</View>
-			</Swiper>
 		)
 	}
 	renderStar(rate) {
@@ -141,15 +153,15 @@ class RecommendFood extends Component {
 
 	}
 	priceHandle(price) {
-        var count = 0
+		var count = 0
 		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
-        return price
+		return price
 	}
 	renderCell(data) {
 		var food = data.item
 		var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'
-		if(food.productMetaData[0] ) {
-			imageUrl = food.productMetaData[0].value 
+		if (food.productMetaData[0]) {
+			imageUrl = food.productMetaData[0].value
 		}
 		var price = this.priceHandle(food.price)
 		return (
@@ -246,13 +258,16 @@ class RecommendFood extends Component {
 function bindActions(dispatch) {
 	return {
 		fetchTrending: (params) => dispatch(fetchTrendingRecomend(params)),
+		fetchBanner: () => dispatch(fetchBanner()),
+
 	};
 }
 
 const mapStateToProps = state => ({
 	fetchTrendingRecomend: state.fetchTrendingRecomend,
 	fetchLastestRecomend: state.fetchLastestRecomend,
-	fetchLowestRecomend: state.fetchLowestRecomend
+	fetchLowestRecomend: state.fetchLowestRecomend,
+	fetchBannerRecomend: state.fetchBannerRecomend
 });
 
 export default connect(mapStateToProps, bindActions)(RecommendFood);

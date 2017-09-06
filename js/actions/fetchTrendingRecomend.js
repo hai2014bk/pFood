@@ -1,6 +1,41 @@
 import * as  APIRequest from '../utils/Api.js'
 import * as mConstants from '../utils/Constants'
 
+
+// Get Banner
+export function fetchBannerSuccess(data) {
+	return {
+		type: "FETCH_BANNER_SUCCESS",
+		data
+	};
+}
+
+export function fetchBannerFailed(error) {
+	return {
+		type: "FETCH_BANNER_FAILED",
+		error
+	};
+}
+export function fetchBanner() {
+	let url = mConstants.BASE_URL + 'banner/getbanners'
+	console.log(url)
+	var params = {
+		"ScreenName": "Home",
+		"City": "",
+	}
+	return dispatch => {
+		APIRequest.APIRequestPOST(url, params, true,
+			response => {
+				dispatch(fetchBannerSuccess(response));
+			},
+			error => {
+				console.log('error', error)
+				dispatch(fetchBannerFailed(error));
+			}
+		)
+	};
+}
+
 // Trending
 export function fetchTrendingRecomendSuccess(data) {
 	return {
@@ -89,8 +124,8 @@ export function fetchLowestRecomend() {
 	var params = {
 		"PageSize": "20",
 		"PageIndex": "1",
-		"OrderBy":"Price",
-		"OrderDirection":"asc"
+		"OrderBy": "Price",
+		"OrderDirection": "asc"
 	}
 	return dispatch => {
 		APIRequest.APIRequestPOST(url, params, true,

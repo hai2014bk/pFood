@@ -12,7 +12,7 @@ import { fetchTrending} from "./fetchTrending"
 import { fetchStores } from "./fetchStores"
 import  {addOrder}  from "./addOrder"
 import { fetchStoresDetail} from "./fetchStoresDetail"
-import { fetchTrendingRecomend,fetchLastestRecomend,fetchLowestRecomend} from "./fetchTrendingRecomend"
+import { fetchBannerRecomend,fetchTrendingRecomend,fetchLastestRecomend,fetchLowestRecomend} from "./fetchTrendingRecomend"
 
 
 
@@ -34,7 +34,8 @@ export default combineReducers({
 	fetchStoresDetail,
 	fetchTrendingRecomend,
 	fetchLastestRecomend,
-	fetchLowestRecomend
+	fetchLowestRecomend,
+	fetchBannerRecomend
 	
 
 });

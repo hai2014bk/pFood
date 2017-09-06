@@ -36,7 +36,7 @@ class Category extends Component {
                 Id: false,
                 Name: false,
                 Price: false,
-                Rate: false
+                RateCount: false
             },
             direction: {
                 Desc: false,
@@ -233,7 +233,7 @@ class Category extends Component {
                     {this.pickerWrap('Mã sản phẩm', 'Id', 'field')}
                     {this.pickerWrap('Tên sản phẩm', 'Name', 'field')}
                     {this.pickerWrap('Giá sản phẩm', 'Price', 'field')}
-                    {this.pickerWrap('Đánh giá', 'Rate', 'field')}
+                    {this.pickerWrap('Đánh giá', 'RateCount', 'field')}
                 </View>
                 <View style={styles.sortDirectionWrap}>
                     {this.pickerWrap('Tăng dần', 'Asc', 'direction')}

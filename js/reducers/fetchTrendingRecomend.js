@@ -4,10 +4,31 @@ export type State = {
 }
 
 const initialState = {
+    success: true,
+    data: {}
+};
+const secondState = {
     success: false,
     data: {}
 };
 
+//Trending
+export function fetchBannerRecomend(state: State = secondState, action) {
+    if (action.type === 'FETCH_BANNER_FAILED') {
+        return {
+            success: false,
+        };
+    }
+    if (action.type === 'FETCH_BANNER_SUCCESS') {
+        return {
+            success: true,
+            data: action.data,
+        };
+    }
+    return state;
+}
+
+//Trending
 export function fetchTrendingRecomend(state: State = initialState, action) {
     if (action.type === 'FETCH_TRENDINGRECOMEND_FAILED') {
         return {
@@ -23,7 +44,8 @@ export function fetchTrendingRecomend(state: State = initialState, action) {
     return state;
 }
 
-export function fetchLastestRecomend(state: State = initialState, action) {
+//Lastest
+export function fetchLastestRecomend(state: State = secondState, action) {
     if (action.type === 'FETCH_LASTESTRECOMEND_FAILED') {
         return {
             success: false,
@@ -37,7 +59,8 @@ export function fetchLastestRecomend(state: State = initialState, action) {
     }
     return state;
 }
-export function fetchLowestRecomend(state: State = initialState, action) {
+//Lowest
+export function fetchLowestRecomend(state: State = secondState, action) {
     if (action.type === 'FETCH_LOWESTRECOMEND_FAILED') {
         return {
             success: false,

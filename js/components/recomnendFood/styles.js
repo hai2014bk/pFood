@@ -52,6 +52,10 @@ export default {
 	pageBanner: {
 		flex:2
 	},
+	imageBanner:{
+		width : deviceWidth,
+		height:137,
+	},
 	sectionText:{
 		color:primary,
 		fontSize:17,
