@@ -36,12 +36,7 @@ class Billing extends Component {
 				bankCard: false,
 				creditCard: false
 			},
-			firstName: '',
-			lastName: '',
-			address: '',
-			phone: '',
-			email: ''
-
+			addClick: true,
 		};
 
 	}
@@ -67,15 +62,18 @@ class Billing extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-		console.log('propsss', props);
-		this.setState({ visible: false })
-		if (props.addOrder.success == true) {
-			console.log('thanh doan')
-			alert('Thanh toán thành công');
-			let keys = [mConstants.CART];
-			AsyncStorage.multiRemove(keys)
-		} else {
-			alert(props.addOrder.message);
+		console.log('propsss',props);
+		this.setState({visible:false})
+		if(this.state.addClick===false){
+			this.setState({addClick: true})
+			if (props.addOrder.success == true) {
+				console.log('thanh doan')
+				alert('Thanh toán thành công');
+				let keys = [mConstants.CART];
+				AsyncStorage.multiRemove(keys)
+			} else {
+				alert(props.addOrder.message);
+			}
 		}
 	}
 
@@ -86,6 +84,7 @@ class Billing extends Component {
 	}
 
 	addOrderClick() {
+		this.setState({visible:true, addClick: false})
 		var param = {};
 		data = this.state.data
 		param.OrderedProducts = [];
@@ -105,7 +104,6 @@ class Billing extends Component {
 		param.PaymentMethod = this.state.payKey;
 		this.props.add(param)
 		this.setState({ visible: true })
-
 	}
 
 	updateStatus(key, type) {
@@ -141,8 +139,9 @@ class Billing extends Component {
 		);
 	}
 	renderItem(item) {
-		let price = this.priceHandle(item.price.toString())
-		let quantity = item.quantity
+		let proPrice= item.price*item.quantity/item.quantityStep;
+		let price = this.priceHandle(proPrice.toString())
+		let quantity = item.quantity 
 		return (
 			<View style={styles.proDetail}>
 				<View style={styles.flexCol}>
@@ -216,15 +215,6 @@ class Billing extends Component {
 							<Text style={styles.totalPriceText}>{totalPrice}đ</Text>
 						</Right>
 					</View>
-
-					<View style={styles.headerTitle}>
-						<Icon name="ios-bus" style={styles.userIcon} />
-						<Text style={styles.infoDetail}>Dịch vụ shipper</Text>
-					</View>
-					{this.pickerWrap('Viettel Post', 'vPost', 'ship')}
-					{this.pickerWrap('Adayroi', 'aDayroi', 'ship')}
-					{this.pickerWrap('Grab', 'grab', 'ship')}
-					{this.pickerWrap('Uber', 'uber', 'ship')}
 					<View style={styles.headerTitle}>
 						<Image source={money} style={styles.moneyIcon} resizeMode='contain' />
 						<Text style={styles.infoDetail}>Hình thức thanh toán</Text>
@@ -236,10 +226,10 @@ class Billing extends Component {
 						<Icon name="ios-contact" style={styles.userIcon} />
 						<Text style={styles.infoDetail}>Thông tin người đặt</Text>
 					</View>
-					<Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='#C6C6C6' />
-					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#C6C6C6' />
-					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#C6C6C6' />
-					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#C6C6C6' />
+					<Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
 					<Button block style={styles.button}><Text style={styles.updateButtonText} onPress={() => this.addOrderClick()} >Thanh Toán</Text></Button>
 					<View style={styles.footer}></View>
 				</Content>
