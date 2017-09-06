@@ -52,7 +52,7 @@ class Billing extends Component {
 				console.log('value', data)
 				this.setState({ data })
 				for (i = 0; i < data.length; i++) {
-					totalPrice += data[i].price * data[i].quantity/data[i].quantityStep
+					totalPrice += data[i].price * data[i].quantity / data[i].quantityStep
 					this.setState({ totalPrice })
 				}
 			}
@@ -80,7 +80,7 @@ class Billing extends Component {
 	priceHandle(price) {
 		var count = 0
 		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
-        return price
+		return price
 	}
 
 	addOrderClick() {
@@ -91,7 +91,7 @@ class Billing extends Component {
 		for (i = 0; i < data.length; i++) {
 			var product = {
 				ProductId: data[i].id,
-				Quantity: data[i].quantity/data[i].quantityStep,
+				Quantity: data[i].quantity / data[i].quantityStep,
 			}
 			param.OrderedProducts.push(product);
 		}
@@ -103,7 +103,7 @@ class Billing extends Component {
 		param.DeliveryMethod = this.state.shipKey;
 		param.PaymentMethod = this.state.payKey;
 		this.props.add(param)
-		
+		this.setState({ visible: true })
 	}
 
 	updateStatus(key, type) {
@@ -144,19 +144,23 @@ class Billing extends Component {
 		let quantity = item.quantity 
 		return (
 			<View style={styles.proDetail}>
-				<View style={styles.textProInput}>
-					<Left>
-						<Text style={styles.productBlackText}>{item.name}</Text>
-					</Left>
-					<Right>
-						<Text style={styles.productText}>{price}đ</Text>
-					</Right>
+				<View style={styles.flexCol}>
+					<View style={styles.textProInput}>
+						<Left>
+							<Text style={styles.productBlackText}>{item.name}</Text>
+						</Left>
+						<Right>
+							<Text style={styles.productText}>{price}đ</Text>
+						</Right>
+					</View>
+					<View style={styles.textProInput}>
+						<Text style={styles.shopText}>Vinmart</Text>
+						<Text style={styles.proNumber}>Số lượng: {quantity} {item.unitType}</Text>
+					</View>
 				</View>
 				<View style={styles.textProInput}>
-					<Text style={styles.shopText}>Vinmart</Text>
-					<Text style={styles.proNumber}>Số lượng: {quantity} {item.unitType}</Text>
+					<Text style={styles.shopText}>Vận chuyển : {item.shipType}</Text>
 				</View>
-
 			</View>
 		)
 	}
@@ -164,14 +168,14 @@ class Billing extends Component {
 	pickerWrap(text, key, type) {
 		let shipServices = type === 'ship' ? this.state.shipServices : this.state.pay;
 		let checked = shipServices[key] ? true : false;
-		if (key !== 'cash' && type !=='ship') {
+		if (key !== 'cash' && type !== 'ship') {
 			return (
 				<TouchableOpacity style={styles.pickerWrap}>
-					<CheckBox style={styles.checkBoxDisable} color= '#f2f4f4' checked={false} />
+					<CheckBox style={styles.checkBoxDisable} color='#f2f4f4' checked={false} />
 					<Text style={styles.checkboxTextDisable}>{text}</Text>
 				</TouchableOpacity>
 			)
-		}else{
+		} else {
 			return (
 				<TouchableOpacity onPress={() => this.updateStatus(key, type)} style={styles.pickerWrap}>
 					<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />

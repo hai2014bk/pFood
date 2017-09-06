@@ -13,13 +13,15 @@ export default {
 		borderBottomColor: "transparent",
 	},
 	linkText: {
-		paddingLeft: 15,
+		marginLeft:15,
+		textAlign:'left',
 	},
 	logoutContainer: {
 		padding: 30,
 	},
 	iconStyle:{
-		fontSize:30
+		fontSize:30,
+		width:30
 	},
 	logoutbtn: {
 		paddingTop: 30,

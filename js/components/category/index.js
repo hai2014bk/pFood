@@ -25,13 +25,13 @@ class Category extends Component {
         this.state = {
             data: [],
             index: 1,
-            isSort:false,
+            isSort: false,
             sortBy: '',
             sortDirection: '',
             changeSort: false,
-            shouldLoadMore:false,
-            disabled:false,
-            isLoading:true,
+            shouldLoadMore: false,
+            disabled: false,
+            isLoading: true,
             field: {
                 Id: false,
                 Name: false,
@@ -52,8 +52,8 @@ class Category extends Component {
             var parameter = {
                 "PageSize": 10,
                 "PageIndex": this.state.index,
-                "OrderBy":this.state.sortBy,
-                "OrderDirection":this.state.sortDirection,
+                "OrderBy": this.state.sortBy,
+                "OrderDirection": this.state.sortDirection,
                 "CategoryId": params.parent.id
             }
             console.log('load 1')
@@ -66,51 +66,51 @@ class Category extends Component {
         var out = [];
         var len = a.length;
         var j = 0;
-        for(var i = 0; i < len; i++) {
-             var item = a[i];
-             console.log('item bbasw', seen.indexOf(item.id))
-             if(seen.indexOf(item.id) == -1) {
-                   seen.push(item.id)
-                   out[j++] = item;
-                   console.log('bnmfvf',item.id,seen,out.length)
-             }
+        for (var i = 0; i < len; i++) {
+            var item = a[i];
+            console.log('item bbasw', seen.indexOf(item.id))
+            if (seen.indexOf(item.id) == -1) {
+                seen.push(item.id)
+                out[j++] = item;
+                console.log('bnmfvf', item.id, seen, out.length)
+            }
         }
         return out;
     }
 
     componentWillReceiveProps(props) {
-        this.setState({isLoading:false})        
+        this.setState({ isLoading: false })
         if (props.fetchProduct.success) {
             if (props.fetchProduct.data.model.length > 0) {
-                var data =  this.state.data
-                data.splice(data.length -1 ,1)
-                this.setState({data:data})
+                var data = this.state.data
+                data.splice(data.length - 1, 1)
+                this.setState({ data: data })
                 var listFood = []
-                if(this.state.isSort){
+                if (this.state.isSort) {
                     listFood = props.fetchProduct.data.model
                 } else {
                     listFood = this.state.data.concat(props.fetchProduct.data.model)
                 }
                 for (i in listFood) {
-                    if(!listFood[i].quantity) {
+                    if (!listFood[i].quantity) {
                         listFood[i].quantity = listFood[i].quantityStep
                     }
                 }
                 listFood = this.uniq(listFood)
-                if(listFood.length >= 10){
+                if (listFood.length >= 10) {
                     var loadMoreElement = {
-                        name:'loadmore',
-                        id:'wioejqwjeqw'
+                        name: 'loadmore',
+                        id: 'wioejqwjeqw'
                     }
                     listFood.push(loadMoreElement)
-                    this.setState({shouldLoadMore:true})                    
-                }                
+                    this.setState({ shouldLoadMore: true })
+                }
                 this.setState({ data: listFood })
             } else {
-                console.log('bvasaaa',this.state.data[this.state.data.length -1 ])
-                var data =  this.state.data
-                data.splice(data.length - 1 ,1)
-                this.setState({data:data, loadedAll:true})
+                console.log('bvasaaa', this.state.data[this.state.data.length - 1])
+                var data = this.state.data
+                data.splice(data.length - 1, 1)
+                this.setState({ data: data, loadedAll: true })
             }
         }
         if (!props.fetchProduct.success) {
@@ -119,7 +119,7 @@ class Category extends Component {
     }
 
     loadMore() {
-        console.log('90498043io23kl32',this.state.loadedAll, this.state.shouldLoadMore)
+        console.log('90498043io23kl32', this.state.loadedAll, this.state.shouldLoadMore)
         if (!this.state.loadedAll && this.state.shouldLoadMore) {
             console.log('90498043io23kl32')
             var index = this.state.index + 1
@@ -127,11 +127,11 @@ class Category extends Component {
             var parameter = {
                 "PageSize": 10,
                 "PageIndex": index,
-                "OrderBy":this.state.sortBy,
-                "OrderDirection":this.state.sortDirection,
+                "OrderBy": this.state.sortBy,
+                "OrderDirection": this.state.sortDirection,
                 "CategoryId": params.parent.id
             }
-            this.setState({isSort:false, index: this.state.index + 1 })
+            this.setState({ isSort: false, index: this.state.index + 1 })
             this.props.fetch(parameter)
         }
     }
@@ -140,7 +140,7 @@ class Category extends Component {
         let checked = boxType[key] ? true : false;
         return (
             <TouchableOpacity onPress={() => this.updateStatus(key, type)} style={styles.pickerWrap}>
-                <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)}  />
+                <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
                 <Text style={styles.checkboxText}>{text}</Text>
             </TouchableOpacity>
         )
@@ -221,7 +221,7 @@ class Category extends Component {
         food.parrentId = params.parent.id
         this.props.navigation.navigate('FoodTab', { parrent: food })
         InteractionManager.runAfterInteractions(() => {
-        this.setState({disabled:false})            
+            this.setState({ disabled: false })
         })
 
     }
@@ -242,21 +242,21 @@ class Category extends Component {
             </View>
         )
     }
-    sortButton(){
+    sortButton() {
         this.popupDialog.dismiss()
-        this.setState({ loadedAll: false })        
+        this.setState({ loadedAll: false })
         const { params } = this.props.navigation.state
         var parameter = {
             "PageSize": 10,
             "PageIndex": this.state.index,
-            "OrderBy":this.state.sortBy,
-            "OrderDirection":this.state.sortDirection,
+            "OrderBy": this.state.sortBy,
+            "OrderDirection": this.state.sortDirection,
             "CategoryId": params.parent.id
         }
-        this.setState({ isSort:true })
+        this.setState({ isSort: true })
         this.props.fetch(parameter)
     }
-    onDismissed(){
+    onDismissed() {
 
     }
 
@@ -271,7 +271,7 @@ class Category extends Component {
                 height={300}
                 actions={[
                     <DialogButton
-                        text="OK"t
+                        text="OK" t
                         onPress={() => {
                             this.sortButton()
                         }}
@@ -288,17 +288,17 @@ class Category extends Component {
     }
 
     renderItems(data) {
-        if(data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
+        if (data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
             return (
                 <View style={styles.loadMoreCell}>
                     <Text style={styles.loadMoreText} >Tải thêm...</Text>
-                    </View>
+                </View>
             )
         }
         let item = data.item
         let active = 0
         let color = ''
-        var quantity = item.quantity 
+        var quantity = item.quantity
         let buttonAdd = null
         if (item.quantity > 0) {
             active = 0.2,
@@ -318,10 +318,10 @@ class Category extends Component {
                 )
         }
         let id = item.id
-        console.log('awqwdqwdqw',item, item.price)
+        console.log('awqwdqwdqw', item, item.price)
         let price = this.priceHandle(item.price.toString())
         return (
-            <TouchableOpacity disabled={this.state.disabled} onPress={() => {this.setState({disabled:true}), this.openDetail(item) }}>
+            <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(item) }}>
                 <Card style={styles.card}>
                     <CardItem >
                         <Body>
@@ -345,19 +345,19 @@ class Category extends Component {
                                 </Col>
                                 <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color, marginLeft:10 }]} onPress={() => this.minus(data.index)} >
+                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color, marginLeft: 10 }]} onPress={() => this.minus(data.index)} >
                                             <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
                                             <Text style={styles.quantity}>{quantity} {item.unitType}</Text>
                                         </Col>
-                                        <TouchableOpacity style={[styles.iconWrapPlus, {marginRight:10}]} onPress={() => this.plus(data.index)} >
+                                        <TouchableOpacity style={[styles.iconWrapPlus, { marginRight: 10 }]} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />
                                         </TouchableOpacity>
                                     </Col>
                                     <Col style={styles.buttonAddCard}>
-                                        {buttonAdd}                             
+                                        {buttonAdd}
                                     </Col>
                                 </TouchableOpacity>
                             </Grid>
@@ -381,7 +381,7 @@ class Category extends Component {
                     leftButton={() => { this.props.navigation.dispatch(resetAction) }}
                 />
                 <Spinner visible={this.state.isLoading} />
-                <View style={{flex:1}}>
+                <View style={{ flex: 1 }}>
                     <FlatList style={{ marginTop: 5 }}
                         onEndReached={(distanceFromEnd) => this.loadMore()}
                         onEndReachedThreshold={0.5}

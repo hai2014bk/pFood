@@ -110,6 +110,7 @@ export default {
 		borderColor: '#E1E1E1',
 		marginTop: 5,
 		paddingBottom: 5, 
+		flexDirection:'column'
 	},
 	productText:{
 		color: 'black',
@@ -151,9 +152,11 @@ export default {
 		borderWidth: 1,
 		borderColor: '#d6dbdf',
 	},
+	flexCol:{
+		flexDirection:'column'
+	},
 	productBlackTotalText:{
 		color: 'black',
 		fontWeight: '500',
 	},
-
 };
