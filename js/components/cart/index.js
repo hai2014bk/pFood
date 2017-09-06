@@ -116,7 +116,6 @@ class Cart extends Component {
     async remove(rowID) {
         let tempArray = this.state.data
         tempArray.splice(rowID, 1)
-        console.log('wwqwqqw', rowID, tempArray)
         this.setState({
             data: tempArray,
         })
@@ -214,7 +213,7 @@ class Cart extends Component {
         let content = null
         let num = this.state.totalPrice
         let price = this.priceHandle(num.toString())
-        console.log('styate', this.state.data)
+        console.log('state', this.state.data)
         const navigation = this.props.navigation;
         if (this.state.data.length > 0) {
             content = (

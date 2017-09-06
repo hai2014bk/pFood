@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import {InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchTrending } from "../../actions/fetchTrending.js"
-import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
+import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, CheckBox } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import { connect } from "react-redux";
+import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 import * as appFunction from "../../utils/function"
 
 
@@ -22,14 +23,21 @@ class Trending extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            shipTypes: {
+                ViettelPost: true,
+                Adayroi: false,
+                Grab: false,
+                Uber: false
+            },
+            item: {},
+            ship:'ViettelPost',
         };
     }
 
     componentDidMount() {
         var date = new Date()
         let isoDate = date.toISOString().slice(0, -1)
-        console.log('2321321', isoDate)
         var params = {
             "PageSize": "20",
             "PageIndex": "1",
@@ -98,14 +106,13 @@ class Trending extends Component {
     }
 
     openDetail(food) {
-        console.log('open', food)
         // const { params } = this.props.navigation.state
         // food.parrentId = params.parent.id
         this.props.navigation.navigate('FoodTab', { parrent: food })
         InteractionManager.runAfterInteractions(() => {
-            this.setState({disabled:false})            
-            })
-    
+            this.setState({ disabled: false })
+        })
+
     }
     renderItems(data) {
         let item = data.item
@@ -116,7 +123,7 @@ class Trending extends Component {
             active = 0.2,
                 color = primary,
                 buttonAdd = (
-                    <Button addCart onPress={() => { appFunction.add(item) }} >
+                    <Button addCart onPress={() => { this.popupDialog.show(); this.setState({item}) }} >
                         <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
                     </Button>
                 )
@@ -131,8 +138,9 @@ class Trending extends Component {
         }
         let id = item.id
         let price = this.priceHandle(item.price.toString())
+        
         return (
-            <TouchableOpacity disabled={this.state.disabled} onPress={() =>  {this.setState({disabled:true}), this.openDetail(item) }}>
+            <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(item) }}>
                 <Card style={styles.card}>
                     <CardItem >
                         <Body>
@@ -178,6 +186,64 @@ class Trending extends Component {
             </TouchableOpacity>
         )
     }
+    updateStatus(key) {
+        let boxType = Object.assign({}, this.state.shipTypes)
+        for (let k in boxType) {
+            if (boxType.hasOwnProperty(k)) {
+                boxType[k] = false;
+                if (k === key) {
+                    boxType[k] = true;
+                }
+            }
+        }
+        this.setState({ shipTypes: boxType, ship: key });
+    }
+
+    pickerWrap(text, key) {
+        let shipTypes = this.state.shipTypes
+        let checked = shipTypes[key] ? true : false;
+        return (
+            <TouchableOpacity style={styles.pickerWrap} onPress={() => this.updateStatus(key)}>
+                <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key)} />
+                <Text style={styles.checkboxText}>{text}</Text>
+            </TouchableOpacity>
+        )
+    }
+    renderPopup() {
+        return (
+            <PopupDialog
+                dialogTitle={<DialogTitle title="Hình thức vận chuyển" />}
+                ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+                dialogStyle={{ marginTop: -200 }}
+                width={250}
+                height={250}
+                actions={[
+                    <DialogButton
+                        text="Xác nhận" t
+                        onPress={() => {
+                            this.addCart()
+                        }}
+                        key="button-1"
+                    />,
+                ]}
+            >
+                <View style={styles.pickerContainer}>
+                    {this.pickerWrap('Viettel Post', 'ViettelPost')}
+                    {this.pickerWrap('Adayroi', 'Adayroi')}
+                    {this.pickerWrap('Grab', 'Grab')}
+                    {this.pickerWrap('Uber', 'Uber')}
+                </View>
+
+            </PopupDialog>
+        )
+    }
+
+    addCart(){
+        let item = this.state.item
+        item.shipType = this.state.ship
+        appFunction.add(item)
+        this.popupDialog.dismiss()
+    }
 
     render() {
         const navigation = this.props.screenProps.navi;
@@ -197,6 +263,7 @@ class Trending extends Component {
                         )
                         }
                     />
+                    {this.renderPopup()}
                 </Content>
             </Container>
         );
