@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {InteractionManager, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -10,6 +10,7 @@ import Swiper from 'react-native-swiper';
 import styles from "./styles";
 import { fetchDetail } from "../../actions/fetchDetail.js"
 import * as appFunction from "../../utils/function"
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const primary = require("../../themes/variable").brandPrimary;
 
@@ -29,16 +30,21 @@ class FoodDetail extends Component {
 			password: "",
 			quantity: 1,
 			seeMore: false,
-			food: ''
+			food: '',
+			isLoading:true
+			
 		};
 	}
 	componentDidMount() {
-		console.log('mountedssasasa', this.props.food)
-		this.props.fetch(this.props.food.id)
+		InteractionManager.runAfterInteractions(() => {
+			this.props.fetch(this.props.food.id)
+			
+		})
 
 	}
 	componentWillReceiveProps(props) {
 		console.log('i329821oi321321',props)
+		this.setState({isLoading:false})
 		if (props.fetchDetail.success) {
 			console.log('po rop', props.fetchDetail.data.model)
 			var food = props.fetchDetail.data.model
@@ -174,12 +180,13 @@ class FoodDetail extends Component {
 	renderPriceAndBuy() {
 		var food = this.state.food
 		console.log('step', food)
-		var quantity = appFunction.handleUnitType(food.unitType,food.quantity) 
+		var quantity = ''
 		var price = ''
 		var disabled = false
 		console.log(food.unitType)
 		if (food.price) {
 			price = this.priceHandle(food.price.toString())
+			quantity = appFunction.handleUnitType(food.unitType,food.quantity)
 		}
 		if (food.quantity > 0) {
             active = 0.2,
@@ -229,6 +236,7 @@ class FoodDetail extends Component {
 		return (
 			<Container style={styles.container}>
 				<Content>
+					<Spinner visible ={this.state.isLoading}/>
 					<Image resizeMode='cover' source={{ uri: imageUrl }} style={styles.foodImage} />
 					{this.renderPriceAndBuy()}
 					{this.renderDecription()}

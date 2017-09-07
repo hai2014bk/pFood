@@ -28,6 +28,11 @@ export type Action =
 	| { type: "FETCH_LOWESTRECOMEND_SUCCESS" }
 	| { type: "FETCH_BANNER_SUCCESS" }
 	| { type: "FETCH_BANNER_FAILED" }	
+	| { type: "FETCH_STOREPRODUCT_SUCCESS" }	
+	| { type: "FETCH_STOREPRODUCT_FAILED" }	
+	| { type: "FETCH_STOREBANNER_SUCCESS" }	
+	| { type: "FETCH_STOREBANNER_FAILED" }	
+	| { type: "RERENDER_HEADER" }	
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;

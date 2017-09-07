@@ -6,6 +6,7 @@ import { fetchProduct } from "../../actions/fetchProduct.js"
 import HeaderContent from "./../headerContent/";
 import { CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
+import {reRenderHeader} from '../../actions/header'
 import Spinner from "react-native-loading-spinner-overlay";
 import * as appFunction from "../../utils/function"
 import { connect } from "react-redux";
@@ -310,7 +311,7 @@ class Category extends Component {
             active = 0.2,
                 color = primary,
                 buttonAdd = (
-                    <Button addCart onPress={() => { appFunction.add(item) }} >
+                    <Button addCart onPress={() => { appFunction.add(item,this.props) }} >
                         <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
                     </Button>
                 )
@@ -410,6 +411,7 @@ class Category extends Component {
 function bindActions(dispatch) {
     return {
         fetch: (parameter) => dispatch(fetchProduct(parameter)),
+        reRenderHeader : () => dispatch(reRenderHeader())
     };
 }
 

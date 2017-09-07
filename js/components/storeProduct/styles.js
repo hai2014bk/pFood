@@ -106,7 +106,6 @@ export default {
 		color:'black',
 		fontWeight:'500',
 		fontSize:12,
-		maxWidth:100,
 		textAlign:'left',
 		alignSelf:'flex-start',
 	},

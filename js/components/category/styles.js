@@ -130,10 +130,7 @@ export default {
     buyColumn: {
         marginLeft: 5,
         marginRight: 5,
-        flex:4,
-        paddingLeft:15,
-        paddingRight:15,
-        marginRight:-10,
+        flex: 3.5,
     },
     quantity: {
         fontSize: 13,
@@ -142,7 +139,7 @@ export default {
     },
     quantityContainer: {
        width:50,
-        justifyContent: 'center',
+    justifyContent: 'center',
     },
     cartWrap: {
         flex: 1,
