@@ -8,18 +8,17 @@ const initialState = {
     data: {}
 };
 
-export function fetchDetail(state: State = initialState, action) {
-    if (action.type === 'FETCH_PRODUCTDETAIL_FAILED') {
+export function fetchRelate(state: State = initialState, action) {
+    if (action.type === 'FETCH_RELATE_FAILED') {
         return {
             success: false,
         };
     }
-    if (action.type === 'FETCH_PRODUCTDETAIL_SUCCESS') {
+    if (action.type === 'FETCH_RELATE_SUCCESS') {
         return {
             success: true,
             data: action.data,
         };
     }
     return state;
-
 }

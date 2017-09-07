@@ -38,6 +38,7 @@ class FoodDetail extends Component {
 
 	}
 	componentWillReceiveProps(props) {
+		console.log('i329821oi321321',props)
 		if (props.fetchDetail.success) {
 			console.log('po rop', props.fetchDetail.data.model)
 			var food = props.fetchDetail.data.model
@@ -173,18 +174,21 @@ class FoodDetail extends Component {
 	renderPriceAndBuy() {
 		var food = this.state.food
 		console.log('step', food)
-		var quantity = food.quantity
+		var quantity = appFunction.handleUnitType(food.unitType,food.quantity) 
 		var price = ''
+		var disabled = false
 		console.log(food.unitType)
 		if (food.price) {
 			price = this.priceHandle(food.price.toString())
 		}
-		if (quantity > 0) {
+		if (food.quantity > 0) {
             active = 0.2,
-            color = primary
+			color = primary
+			disabled = false
         } else {
             active = 1,
-            color = '#cecece'
+			color = '#cecece'
+			disabled = true
         }
 		return (
 			<Grid>
@@ -200,14 +204,14 @@ class FoodDetail extends Component {
 							<Icon style={[styles.icon, {color:color}]} name="md-remove" />
 						</TouchableOpacity>
 						<Col style={styles.quantityContainer}>
-							<Text style={styles.quantity}>{quantity} {food.unitType}</Text>
+							<Text style={styles.quantity}>{quantity} </Text>
 						</Col>
 						<TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus()} >
 							<Icon name="md-add" style={styles.icon} />
 						</TouchableOpacity>
 					</Row>
 					<Col style={styles.buttonAddCard}>
-						<Button onPress={()=> {appFunction.add(this.state.food)}} addCart large >
+						<Button style={{backgroundColor:color}} disabled={disabled} onPress={()=> {appFunction.add(this.state.food)}} addCart large >
 							<Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
 						</Button>
 					</Col>

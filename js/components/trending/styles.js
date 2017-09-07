@@ -101,7 +101,7 @@ export default {
         textAlign: 'center'
     },
     quantityContainer: {
-        width: 40,
+        width:50,
         justifyContent: 'center',
     },
     cartWrap: {

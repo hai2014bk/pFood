@@ -7,11 +7,12 @@ import { forgetPassword } from "./forgetPassword"
 import { fetchCategories ,fetchSubCategories} from "./fetchCategories"
 import { fetchProduct} from "./fetchProduct"
 import { fetchDetail} from "./fetchDetail"
+import { fetchRelate} from "./fetchRelate"
 import { fetchTrending} from "./fetchTrending"
 import { fetchStores } from "./fetchStores"
 import  {addOrder}  from "./addOrder"
 import { fetchStoresDetail} from "./fetchStoresDetail"
-import { fetchTrendingRecomend} from "./fetchTrendingRecomend"
+import { fetchBannerRecomend,fetchTrendingRecomend,fetchLastestRecomend,fetchLowestRecomend} from "./fetchTrendingRecomend"
 
 
 
@@ -26,10 +27,15 @@ export default combineReducers({
 	fetchSubCategories,
 	fetchProduct,
 	fetchDetail,
+	fetchRelate,
 	fetchTrending,
 	fetchStores,
 	addOrder,
 	fetchStoresDetail,
-	fetchTrendingRecomend
+	fetchTrendingRecomend,
+	fetchLastestRecomend,
+	fetchLowestRecomend,
+	fetchBannerRecomend
+	
 
 });

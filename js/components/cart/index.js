@@ -4,6 +4,7 @@ import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import * as mConstants from '../../utils/Constants'
 import { connect } from "react-redux";
+import * as appFunction from "../../utils/function"
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail, SwipeRow } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -130,14 +131,10 @@ class Cart extends Component {
 		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
         return price
     }
-    insertString(str, index, value) {
-        return str.substr(0, index) + value + str.substr(index);
-    }
-
     renderItems(data) {
         let item = data.item
         let id = item.id
-        let quantity = item.quantity
+        let quantity = appFunction.handleUnitType(item.unitType,item.quantity)
         let price = this.priceHandle(item.price.toString())
         return (
             <SwipeRow
@@ -160,8 +157,8 @@ class Cart extends Component {
                                 <TouchableOpacity onPress={() => this.plus(data.index)} style={styles.buttonAdd}>
                                     <Icon name="md-add" style={styles.icon} />
                                 </TouchableOpacity>
-                                <Text style={styles.x}>X</Text>
-                                <Text style={styles.quantity}>{quantity/item.quantityStep} {item.unitType}</Text>
+                                <Text style={styles.x}>x </Text>
+                                <Text style={styles.quantity}>{quantity} </Text>
                             </View>
                         </View>
                     </View>

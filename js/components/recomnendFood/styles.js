@@ -15,7 +15,7 @@ export default {
 	cellContainer:{
 		backgroundColor:'white', 
 		flex: 1, 
-		width: deviceWidth/3 - 15,
+		width: deviceWidth/2 - 20,
 		minWidth:120,				
 		alignItems: 'flex-start',
 		justifyContent:'flex-end',
@@ -52,6 +52,10 @@ export default {
 	pageBanner: {
 		flex:2
 	},
+	imageBanner:{
+		width : deviceWidth,
+		height:137,
+	},
 	sectionText:{
 		color:primary,
 		fontSize:17,
@@ -61,7 +65,7 @@ export default {
 	},
 	foodThumnail:{
 		marginTop:5,
-		height:60,
+		height:80,
 		flex:1,
 	},
 	oldPriceText: {

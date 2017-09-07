@@ -4,6 +4,35 @@ import {  Alert } from "react-native";
 import {  Toast } from "native-base";
 const primary = require("../themes/variable").brandPrimary;
 const platform = Platform.OS
+
+export function handleUnitType(unitType,quantity){
+    var newQuantity = quantity
+    var newUnittype = unitType
+    if (unitType == 'g') {
+        console.log('24891209321')
+        if(quantity >= 1000) {
+            newQuantity = quantity/1000
+            newUnittype = 'kg'
+        }
+    }
+    if (unitType == 'kg') {
+        if(quantity >= 10) {
+            newQuantity = quantity/10
+            newUnittype = 'yến'
+        }
+        console.log('qyabdqwdwqd',quantity)
+        if(quantity >= 100) {
+            newQuantity = quantity/100
+            newUnittype = 'tạ'
+        }
+        if(quantity >= 1000) {
+            newQuantity = quantity/1000
+            newUnittype = 'tấn'
+        }
+    }
+    var quantityUnit = newQuantity + ' ' + newUnittype
+    return quantityUnit
+}
 export async function add(item) {   
     let data = [];
     var quantity = item.quantity - item.quantityStep
