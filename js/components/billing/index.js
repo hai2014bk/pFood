@@ -158,10 +158,8 @@ class Billing extends Component {
 					<View style={styles.textProInput}>
 						<Text style={styles.shopText}>Vinmart</Text>
 						<Text style={styles.proNumber}>Số lượng: {quantity} {item.unitType}</Text>
+						<Text style={styles.proNumber}>Vận chuyển : {item.shipType}</Text>
 					</View>
-				</View>
-				<View style={styles.textProInput}>
-					<Text style={styles.shopText}>Vận chuyển : {item.shipType}</Text>
 				</View>
 			</View>
 		)

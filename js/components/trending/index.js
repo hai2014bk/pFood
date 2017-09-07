@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchTrending } from "../../actions/fetchTrending.js"
@@ -9,6 +9,7 @@ import HeaderContent from "./../headerContent/";
 import { connect } from "react-redux";
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 import * as appFunction from "../../utils/function"
+import * as mConstants from '../../utils/Constants'
 
 
 import styles from "./styles";
@@ -31,7 +32,7 @@ class Trending extends Component {
                 Uber: false
             },
             item: {},
-            ship:'ViettelPost',
+            ship: 'ViettelPost',
         };
     }
 
@@ -114,6 +115,7 @@ class Trending extends Component {
         })
 
     }
+
     renderItems(data) {
         let item = data.item
         let active = 0
@@ -123,7 +125,7 @@ class Trending extends Component {
             active = 0.2,
                 color = primary,
                 buttonAdd = (
-                    <Button addCart onPress={() => { this.popupDialog.show(); this.setState({item}) }} >
+                    <Button addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
                         <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
                     </Button>
                 )
@@ -138,7 +140,7 @@ class Trending extends Component {
         }
         let id = item.id
         let price = this.priceHandle(item.price.toString())
-        
+
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(item) }}>
                 <Card style={styles.card}>
@@ -186,6 +188,32 @@ class Trending extends Component {
             </TouchableOpacity>
         )
     }
+
+    async addtoCart(item) {
+        let data = []
+        try {
+            const value = await AsyncStorage.getItem(mConstants.CART);
+            if (value !== null) {
+                data = JSON.parse(value)
+                if (data.length > 0) {
+                    for (let i = 0; i <= data.length; i++) {
+                        if (data[i].purveyorId == item.purveyorId) {
+                            item.shipType = data[i].shipType
+                            appFunction.add(item)
+                        } else {
+                            this.popupDialog.show()
+                        }
+                    }
+                } else {
+                    this.popupDialog.show()
+                }
+            } else {
+                this.popupDialog.show()
+            }
+        } catch (error) {
+        }
+    }
+
     updateStatus(key) {
         let boxType = Object.assign({}, this.state.shipTypes)
         for (let k in boxType) {
@@ -233,12 +261,11 @@ class Trending extends Component {
                     {this.pickerWrap('Grab', 'Grab')}
                     {this.pickerWrap('Uber', 'Uber')}
                 </View>
-
             </PopupDialog>
         )
     }
 
-    addCart(){
+    addCart() {
         let item = this.state.item
         item.shipType = this.state.ship
         appFunction.add(item)
