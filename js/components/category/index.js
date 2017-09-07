@@ -8,6 +8,7 @@ import { CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Lef
 import { Grid, Col, Row } from "react-native-easy-grid";
 import Spinner from "react-native-loading-spinner-overlay";
 import * as appFunction from "../../utils/function"
+import * as mConstants from '../../utils/Constants'
 import { connect } from "react-redux";
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
@@ -42,6 +43,14 @@ class Category extends Component {
                 Desc: false,
                 Asc: false,
             },
+            shipTypes: {
+                ViettelPost: true,
+                Adayroi: false,
+                Grab: false,
+                Uber: false
+            },
+            item: {},
+            ship: 'ViettelPost',
         };
     }
 
@@ -310,7 +319,7 @@ class Category extends Component {
             active = 0.2,
                 color = primary,
                 buttonAdd = (
-                    <Button addCart onPress={() => { appFunction.add(item) }} >
+                    <Button addCart onPress={() => { this.addtoCart(item); this.setState({item}) }} >
                         <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
                     </Button>
                 )
@@ -377,6 +386,90 @@ class Category extends Component {
         this.popupDialog.show();
     }
 
+    updateShipStatus(key) {
+        let boxType = Object.assign({}, this.state.shipTypes)
+        for (let k in boxType) {
+            if (boxType.hasOwnProperty(k)) {
+                boxType[k] = false;
+                if (k === key) {
+                    boxType[k] = true;
+                }
+            }
+        }
+        this.setState({ shipTypes: boxType, ship: key });
+    }
+
+    shipPickerWrap(text, key) {
+        let shipTypes = this.state.shipTypes
+        let checked = shipTypes[key] ? true : false;
+        return (
+            <TouchableOpacity style={styles.pickerWrap} onPress={() => this.updateShipStatus(key)}>
+                <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateShipStatus(key)} />
+                <Text style={styles.checkboxText}>{text}</Text>
+            </TouchableOpacity>
+        )
+    }
+
+    renderShipPopup(){
+        return (
+            <PopupDialog
+                dialogTitle={<DialogTitle title="Hình thức vận chuyển" />}
+                ref={(shipPopupDialog) => { this.shipPopupDialog = shipPopupDialog; }}
+                dialogStyle={{ marginTop: -200 }}
+                width={250}
+                height={250}
+                actions={[
+                    <DialogButton
+                        text="Xác nhận" t
+                        onPress={() => {
+                            this.addCart()
+                        }}
+                        key="button-1"
+                    />,
+                ]}
+            >
+                <View style={styles.pickerContainer}>
+                    {this.shipPickerWrap('Viettel Post', 'ViettelPost')}
+                    {this.shipPickerWrap('Adayroi', 'Adayroi')}
+                    {this.shipPickerWrap('Grab', 'Grab')}
+                    {this.shipPickerWrap('Uber', 'Uber')}
+                </View>
+            </PopupDialog>
+        )
+    }
+
+    async addtoCart(item) {
+        let data = []
+        try {
+            const value = await AsyncStorage.getItem(mConstants.CART);
+            if (value !== null) {
+                data = JSON.parse(value)
+                if (data.length > 0) {
+                    for (let i = 0; i <= data.length; i++) {
+                        if (data[i].purveyorId == item.purveyorId) {
+                            item.shipType = data[i].shipType
+                            appFunction.add(item)
+                        } else {
+                            this.shipPopupDialog.show()
+                        }
+                    }
+                } else {
+                    this.shipPopupDialog.show()
+                }
+            } else {
+                this.shipPopupDialog.show()
+            }
+        } catch (error) {
+        }
+    }
+
+    addCart() {
+        let item = this.state.item
+        item.shipType = this.state.ship
+        appFunction.add(item)
+        this.shipPopupDialog.dismiss()
+    }
+
     render() {
         const navigation = this.props.screenProps.navi;
         const { params } = this.props.navigation.state
@@ -402,6 +495,7 @@ class Category extends Component {
                         }
                     />
                     {this.renderSortPopup()}
+                    {this.renderShipPopup()}
                 </View>
             </Container>
         );
