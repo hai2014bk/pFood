@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
 import * as appFunction from "../../utils/function"
 import {reRenderHeader} from '../../actions/header'
+import * as mConstants from '../../utils/Constants'
+import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
-import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
+import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail, CheckBox } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import { connect } from "react-redux";
@@ -23,6 +25,14 @@ class FoodRelate extends Component {
         this.state = {
             data: [],
             index: 1,
+            shipTypes: {
+                ViettelPost: true,
+                Adayroi: false,
+                Grab: false,
+                Uber: false
+            },
+            item: {},
+            ship: 'ViettelPost',
         };
     }
 
@@ -118,9 +128,19 @@ class FoodRelate extends Component {
         if (item.quantity > 0) {
             active = 0.2,
                 color = primary
+                buttonAdd = (
+                    <Button addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
+                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                    </Button>
+                )
         } else {
             active = 1,
                 color = '#cecece'
+                buttonAdd = (
+                    <Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
+                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                    </Button>
+                )
         }
         let price = this.priceHandle(item.price.toString())
         return (
@@ -146,7 +166,7 @@ class FoodRelate extends Component {
                                     </View>
                                     <Text style={styles.price}>{price}đ</Text>
                                 </Col>
-                                <Col size={3} style={styles.buyColumn}>
+                                <TouchableOpacity style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
                                         <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
                                             <Icon style={[styles.icon, { color: color }]} name="md-remove" />
@@ -159,17 +179,99 @@ class FoodRelate extends Component {
                                         </TouchableOpacity>
                                     </Col>
                                     <Col style={styles.buttonAddCard}>
-                                        <Button addCart onPress={() => { appFunction.add(item,this.props) }} >
-                                            <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
-                                        </Button>
+                                    {buttonAdd}
                                     </Col>
-                                </Col>
+                                </TouchableOpacity>
                             </Grid>
                         </Body>
                     </CardItem>
                 </Card>
             </TouchableOpacity>
         )
+    }
+
+    async addtoCart(item) {
+        let data = []
+        try {
+            const value = await AsyncStorage.getItem(mConstants.CART);
+            if (value !== null) {
+                data = JSON.parse(value)
+                if (data.length > 0) {
+                    for (let i = 0; i <= data.length; i++) {
+                        if (data[i].purveyorId == item.purveyorId) {
+                            item.shipType = data[i].shipType
+                            appFunction.add(item,this.props)
+                        } else {
+                            this.popupDialog.show()
+                        }
+                    }
+                } else {
+                    this.popupDialog.show()
+                }
+            } else {
+                this.popupDialog.show()
+            }
+        } catch (error) {
+        }
+    }
+
+    updateStatus(key) {
+        let boxType = Object.assign({}, this.state.shipTypes)
+        for (let k in boxType) {
+            if (boxType.hasOwnProperty(k)) {
+                boxType[k] = false;
+                if (k === key) {
+                    boxType[k] = true;
+                }
+            }
+        }
+        this.setState({ shipTypes: boxType, ship: key });
+    }
+
+    pickerWrap(text, key) {
+        let shipTypes = this.state.shipTypes
+        let checked = shipTypes[key] ? true : false;
+        return (
+            <TouchableOpacity style={styles.pickerWrap} onPress={() => this.updateStatus(key)}>
+                <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key)} />
+                <Text style={styles.checkboxText}>{text}</Text>
+            </TouchableOpacity>
+        )
+    }
+
+    renderPopup() {
+        return (
+            <PopupDialog
+                dialogTitle={<DialogTitle title="Hình thức vận chuyển" />}
+                ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+                dialogStyle={{ marginTop: -200 }}
+                width={250}
+                height={250}
+                actions={[
+                    <DialogButton
+                        text="Xác nhận" t
+                        onPress={() => {
+                            this.addCart()
+                        }}
+                        key="button-1"
+                    />,
+                ]}
+            >
+                <View style={styles.pickerContainer}>
+                    {this.pickerWrap('Viettel Post', 'ViettelPost')}
+                    {this.pickerWrap('Adayroi', 'Adayroi')}
+                    {this.pickerWrap('Grab', 'Grab')}
+                    {this.pickerWrap('Uber', 'Uber')}
+                </View>
+            </PopupDialog>
+        )
+    }
+
+    addCart() {
+        let item = this.state.item
+        item.shipType = this.state.ship
+        appFunction.add(item,this.props)
+        this.popupDialog.dismiss()
     }
 
     render() {
@@ -188,6 +290,7 @@ class FoodRelate extends Component {
                         )
                         }
                     />
+                    {this.renderPopup()}
                 </Content>
             </Container>
         );

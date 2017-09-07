@@ -216,7 +216,6 @@ class Cart extends Component {
         let content = null
         let num = this.state.totalPrice
         let price = this.priceHandle(num.toString())
-        console.log('state', this.state.data)
         const navigation = this.props.navigation;
         if (this.state.data.length > 0) {
             content = (

@@ -97,5 +97,25 @@ export default {
         fontWeight: 'normal',
         fontSize: 12,
         textAlign: 'center'
+    },
+    pickerWrap: {
+        flexDirection: 'row',
+        marginLeft: -10,
+        marginTop: 7,
+        width: '60%'
+    },
+    checkboxText: {
+        marginLeft: 20,
+        color: '#A0A0A0',
+    },
+    checkBox: {
+        borderRadius: 13,
+        borderWidth: 1,
+        borderColor: '#A0A0A0',
+    },
+    pickerContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingLeft: 20
     }
 };
