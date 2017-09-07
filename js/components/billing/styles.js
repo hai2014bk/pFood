@@ -17,6 +17,21 @@ export default {
 		paddingTop: 10,
 		paddingRight: 30,
 	},
+	checkoutWrap: {
+        backgroundColor: primary,
+        width: '90%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 40,
+        alignSelf: 'center',
+        borderRadius: 20,
+        marginTop: 10,
+        marginBottom:20,
+    },
+    checkout: {
+        color: 'white',
+        fontSize: 16,
+    },
 	textInput: {
 		width: '100%',
 		height: 45,

@@ -232,10 +232,10 @@ class Billing extends Component {
 					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#A4A4A4' />
 					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
 					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
-					<Button block style={styles.button}><Text style={styles.updateButtonText} onPress={()=> {this.addOrderClick()}} >Thanh Toán</Text></Button>
-					<View style={styles.footer}></View>
+					<TouchableOpacity style={styles.checkoutWrap} onPress={() => {this.addOrderClick()}}>
+                        <Text style={styles.checkout}> Thanh toán </Text>
+                    </TouchableOpacity>
 				</Content>
-
 			</Container>
 		);
 	}
