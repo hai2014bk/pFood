@@ -154,7 +154,7 @@ export default {
 		borderColor: '#d6dbdf',
 	},
 	flexCol:{
-		flexDirection:'column',
+		flexDirection:'column'
 	},
 	productBlackTotalText:{
 		color: 'black',

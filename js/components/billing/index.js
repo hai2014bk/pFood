@@ -70,7 +70,7 @@ class Billing extends Component {
 			this.setState({addClick: true})
 			if (props.addOrder.success == true) {
 				console.log('thanh doan')
-				Alert.alert('','Lưu hóa đơn thành công',[{text: 'Ok', onPress: ()=> console.log('success') }]);
+				Alert.alert('','Lưu hóa đơn thành công',[{text: 'Ok', onPress: ()=> {navigation.navigate('Drawer')} }]);
 				let keys = [mConstants.CART];
 				AsyncStorage.multiRemove(keys)
 			} else {
