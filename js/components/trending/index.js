@@ -3,6 +3,7 @@ import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, 
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchTrending } from "../../actions/fetchTrending.js"
+import {reRenderHeader} from '../../actions/header'
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, CheckBox } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
@@ -241,7 +242,7 @@ class Trending extends Component {
     addCart(){
         let item = this.state.item
         item.shipType = this.state.ship
-        appFunction.add(item)
+        appFunction.add(item, this.props)
         this.popupDialog.dismiss()
     }
 
@@ -272,6 +273,7 @@ class Trending extends Component {
 function bindActions(dispatch) {
     return {
         fetch: (params) => dispatch(fetchTrending(params)),
+        reRenderHeader:() => dispatch(reRenderHeader())
     };
 }
 

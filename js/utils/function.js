@@ -81,6 +81,7 @@ export async function add(item, props) {
         try {
             await AsyncStorage.setItem('cartUser', JSON.stringify(data));
             console.log('olsd12312',props)
+            props.reRenderHeader()
         } catch (error) {
         }
     }

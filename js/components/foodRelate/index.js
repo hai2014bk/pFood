@@ -4,6 +4,7 @@ import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
 import * as appFunction from "../../utils/function"
+import {reRenderHeader} from '../../actions/header'
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -158,7 +159,7 @@ class FoodRelate extends Component {
                                         </TouchableOpacity>
                                     </Col>
                                     <Col style={styles.buttonAddCard}>
-                                        <Button addCart onPress={() => { appFunction.add(item) }} >
+                                        <Button addCart onPress={() => { appFunction.add(item,this.props) }} >
                                             <Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
                                         </Button>
                                     </Col>
@@ -195,6 +196,7 @@ class FoodRelate extends Component {
 function bindActions(dispatch) {
     return {
         fetch: (parameter) => dispatch(fetchProduct(parameter)),
+        reRenderHeader:() => dispatch(reRenderHeader())
     };
 }
 const mapStateToProps = state => ({

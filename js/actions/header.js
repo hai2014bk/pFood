@@ -6,8 +6,8 @@ export function reRenderHeaderSuccess() {
 }
 
 export function reRenderHeader() {
-	console.log('dfjklmjkdshiu23l3')
+	console.log('fbvdffsas')
 	return dispatch => {
-		dispatch(reRenderHeader())
+		dispatch(reRenderHeaderSuccess())
 	};
 }

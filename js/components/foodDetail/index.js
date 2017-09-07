@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
 import styles from "./styles";
+import {reRenderHeader} from '../../actions/header'
 import { fetchDetail } from "../../actions/fetchDetail.js"
 import * as appFunction from "../../utils/function"
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -218,7 +219,7 @@ class FoodDetail extends Component {
 						</TouchableOpacity>
 					</Row>
 					<Col style={styles.buttonAddCard}>
-						<Button style={{backgroundColor:color}} disabled={disabled} onPress={()=> {appFunction.add(this.state.food)}} addCart large >
+						<Button style={{backgroundColor:color}} disabled={disabled} onPress={()=> {appFunction.add(this.state.food,this.props)}} addCart large >
 							<Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
 						</Button>
 					</Col>
@@ -255,6 +256,7 @@ class FoodDetail extends Component {
 function bindActions(dispatch) {
 	return {
 		fetch: (id) => dispatch(fetchDetail(id)),
+		reRenderHeader:() => dispatch(reRenderHeader())
 	};
 }
 
