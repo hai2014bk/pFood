@@ -228,16 +228,15 @@ class Billing extends Component {
 						<Icon name="ios-contact" style={styles.userIcon} />
 						<Text style={styles.infoDetail}>Thông tin người đặt</Text>
 					</View>
-					<Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='black' />
-					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='black' />
-					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='black' />
-					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='black' />
-					<TouchableOpacity style={styles.checkoutWrap} onPress={()=> {this.addOrderClick()}}>
-                        <Text style={styles.checkout}>Thanh toán</Text>
-                    </TouchableOpacity>
-					<View style={styles.footer}></View>
-				</Content>
 
+					<Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
+					<TouchableOpacity style={styles.checkoutWrap} onPress={() => {this.addOrderClick()}}>
+                        <Text style={styles.checkout}> Thanh toán </Text>
+                    </TouchableOpacity>
+				</Content>
 			</Container>
 		);
 	}
