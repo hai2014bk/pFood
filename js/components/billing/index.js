@@ -233,7 +233,7 @@ class Billing extends Component {
 					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='black' />
 					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='black' />
 					<TouchableOpacity style={styles.checkoutWrap} onPress={()=> {this.addOrderClick()}}>
-                        <Text style={styles.checkout}> Thanh toán </Text>
+                        <Text style={styles.checkout}>Thanh toán</Text>
                     </TouchableOpacity>
 					<View style={styles.footer}></View>
 				</Content>
