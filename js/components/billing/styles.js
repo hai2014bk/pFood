@@ -71,7 +71,7 @@ export default {
 	moneyIcon: {
 		height: 30,
 		width: 30,
-		marginLeft: -3
+		marginLeft: 0
 	},
 	checkBox: {
 		borderRadius: 13,
