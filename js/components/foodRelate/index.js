@@ -39,8 +39,9 @@ class FoodRelate extends Component {
     componentDidMount() {
             var listFood = this.props.fetchRelate.data.model
             var listRelateFood = []
-            console.log('j12oei21j321',listFood)
+            console.log('dasdqwdwq',listFood.length)
             for (i in listFood) {
+                console.log('28213213',this.props.food.id)
                 if (this.props.food.id != listFood[i].id) {
                     listFood[i].quantity = listFood[i].quantityStep
                     listRelateFood.push(listFood[i])
@@ -48,18 +49,18 @@ class FoodRelate extends Component {
             }
             this.setState({ data: listRelateFood })
     }
-
     componentWillReceiveProps(props) {
         if (props.fetchRelate.success) {
             var listFood = props.fetchRelate.data.model
-            console.log(listFood)
+            var listRelateFood = []
             for (i in listFood) {
-                if (this.props.food.id == listFood[i].id) {
-                    listFood.splice(i, 1)
+                console.log('28213213',this.props.food.id)
+                if (this.props.food.id != listFood[i].id) {
+                    listFood[i].quantity = listFood[i].quantityStep
+                    listRelateFood.push(listFood[i])
                 }
-                listFood[i].quantity = listFood[i].quantityStep
             }
-            this.setState({ data: listFood })
+            this.setState({ data: listRelateFood })
         }
         if (!props.fetchRelate.success) {
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })

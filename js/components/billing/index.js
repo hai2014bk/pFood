@@ -14,7 +14,10 @@ import { addOrder } from "../../actions/addOrder.js"
 var background = require('../../../images/background.png')
 var money = require('../../../images/money.png')
 var food = ''
-
+const resetAction = NavigationActions.reset({
+	index: 0,
+	actions: [NavigationActions.navigate({ routeName: "Drawer" })],
+});
 
 class Billing extends Component {
 	constructor(props) {
@@ -70,7 +73,7 @@ class Billing extends Component {
 			this.setState({addClick: true})
 			if (props.addOrder.success == true) {
 				console.log('thanh doan')
-				Alert.alert('','Lưu hóa đơn thành công',[{text: 'Ok', onPress: ()=> {navigation.navigate('Drawer')} }]);
+				Alert.alert('','Lưu hóa đơn thành công',[{text: 'Ok', onPress: ()=> {this.props.navigation.dispatch(resetAction)} }]);
 				let keys = [mConstants.CART];
 				AsyncStorage.multiRemove(keys)
 			} else {

@@ -15,9 +15,13 @@ class CustomTabBar extends Component {
 		if(page==1){
 			icon = 'ios-list-box-outline'
 		}
-		if(page==2){
+		if(page==3){
 			icon = 'ios-megaphone'
 		}
+		if(page==2){
+			icon = 'ios-search'
+		}
+
 
 		return (
 			<TouchableOpacity
