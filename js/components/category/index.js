@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
+import {ActivityIndicator, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
@@ -307,7 +307,8 @@ class Category extends Component {
         if (data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
             return (
                 <View style={styles.loadMoreCell}>
-                    <Text style={styles.loadMoreText} >Tải thêm...</Text>
+                    <ActivityIndicator/>
+					<Text style={styles.loadMoreText} >Tải thêm...</Text>
                 </View>
             )
         }
@@ -320,7 +321,7 @@ class Category extends Component {
             active = 0.2,
                 color = primary,
                 buttonAdd = (
-                    <Button addCart onPress={() => { this.addtoCart(item); this.setState({item}) }} >
+                    <Button disabled={this.state.disabled} addCart onPress={() => { this.addtoCart(item); this.setState({item}) }} >
                         <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
                     </Button>
                 )
@@ -441,6 +442,8 @@ class Category extends Component {
 
     async addtoCart(item) {
         let data = []
+        this.setState({disabled:true})
+		setTimeout(()=>{this.setState({disabled:false}),500})
         try {
             const value = await AsyncStorage.getItem(mConstants.CART);
             if (value !== null) {

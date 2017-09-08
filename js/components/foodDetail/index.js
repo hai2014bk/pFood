@@ -42,6 +42,7 @@ class FoodDetail extends Component {
 			},
 			item: {},
 			ship: 'ViettelPost',
+			disabled:false,
 		};
 	}
 	componentDidMount() {
@@ -199,7 +200,7 @@ class FoodDetail extends Component {
 			active = 0.2,
 				color = primary
 			buttonAdd = (
-				<Button addCart onPress={() => { this.addtoCart(food); this.setState({ item: food }) }} >
+				<Button disabled={this.state.disabled} addCart onPress={() => { this.addtoCart(food); this.setState({ item: food }) }} >
 					<Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
 				</Button>
 			)
@@ -241,7 +242,9 @@ class FoodDetail extends Component {
 	}
 
 	async addtoCart(item) {
-        let data = []
+		let data = []
+		this.setState({disabled:true})
+		setTimeout(()=>{this.setState({disabled:false}),500})
         try {
             const value = await AsyncStorage.getItem(mConstants.CART);
             if (value !== null) {

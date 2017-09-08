@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
+import {ActivityIndicator, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
-import { fetchProduct } from "../../actions/fetchProduct.js"
+import { fetchTrending } from "../../actions/fetchTrending.js"
 import HeaderContent from "./../headerContent/";
 import {Item, Input,CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -77,8 +77,8 @@ class SearchFood extends Component {
 
 	componentWillReceiveProps(props) {
 		this.setState({ isLoading: false })
-		if (props.fetchProduct.success) {
-			if (props.fetchProduct.data.model.length > 0) {
+		if (props.fetchTrending.success) {
+			if (props.fetchTrending.data.model.length > 0) {
 				var data = this.state.data
 				data.splice(data.length - 1, 1)
 				this.setState({ data: data })
@@ -86,7 +86,7 @@ class SearchFood extends Component {
 				if (this.state.isSort) {
 					listFood = props.fetchProduct.data.model
 				} else {
-					listFood = this.state.data.concat(props.fetchProduct.data.model)
+					listFood = this.state.data.concat(props.fetchTrending.data.model)
 				}
 				for (i in listFood) {
 					if (!listFood[i].quantity) {
@@ -94,7 +94,7 @@ class SearchFood extends Component {
 					}
 				}
 				listFood = this.uniq(listFood)
-				if (listFood.length >= 10) {
+				if (listFood.length >= 20) {
 					var loadMoreElement = {
 						name: 'loadmore',
 						id: 'wioejqwjeqw'
@@ -110,7 +110,7 @@ class SearchFood extends Component {
 				this.setState({ data: data, loadedAll: true })
 			}
 		}
-		if (!props.fetchProduct.success) {
+		if (!props.fetchTrending.success) {
 			setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
 		}
 	}
@@ -122,11 +122,10 @@ class SearchFood extends Component {
 			var index = this.state.index + 1
 			const { params } = this.props.navigation.state
 			var parameter = {
-				"PageSize": 10,
+				"PageSize": "20",
 				"PageIndex": index,
-				"OrderBy": this.state.sortBy,
-				"OrderDirection": this.state.sortDirection,
-				"CategoryId": params.parent.id
+				"LastViewedDate": "2017-08-20T15:20:34.8699498"
+				
 			}
 			this.setState({ isSort: false, index: this.state.index + 1 })
 			this.props.fetch(parameter)
@@ -294,6 +293,7 @@ class SearchFood extends Component {
 		if (data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
 			return (
 				<View style={styles.loadMoreCell}>
+					<ActivityIndicator/>
 					<Text style={styles.loadMoreText} >Tải thêm...</Text>
 				</View>
 			)
@@ -303,6 +303,11 @@ class SearchFood extends Component {
 		let color = ''
 		var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
 		let buttonAdd = null
+		var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'
+		if (data.item.productMetaData[0]){
+			imageUrl = data.item.productMetaData[0].value
+		}
+		console.log('1293213212',data.item)
 		if (item.quantity > 0) {
 			active = 0.2,
 				color = primary,
@@ -331,7 +336,7 @@ class SearchFood extends Component {
 							<Grid >
 								<Col size={2} style={styles.imageWrap}>
 									<View style={styles.imageContainer}>
-										<Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
+										<Image source={{ uri: imageUrl }} style={styles.image} />
 									</View>
 								</Col>
 								<Col size={3} style={styles.infoWrap}>
@@ -458,6 +463,16 @@ class SearchFood extends Component {
 		this.shipPopupDialog.dismiss()
 	}
 
+	search(){
+		this.setState({index:1,isLoading:true})
+		var params = {
+            "PageSize": "20",
+            "PageIndex": "1",
+            "LastViewedDate": "2017-08-20T15:20:34.8699498"
+        }
+        this.props.fetch(params)
+	}
+
 	render() {
 		const navigation = this.props.screenProps.navi;
 		const { params } = this.props.navigation.state
@@ -468,7 +483,7 @@ class SearchFood extends Component {
 						<Icon name="ios-search" />
 						<Input placeholder="Tìm kiếm" />
 					</Item>
-					<Button transparent>
+					<Button transparent onPress={()=>{this.search()}}>
 						<Text style={{color:'white'}}>Tìm kiếm</Text>
 					</Button>
 				</Header>
@@ -496,13 +511,13 @@ class SearchFood extends Component {
 }
 function bindActions(dispatch) {
 	return {
-		fetch: (parameter) => dispatch(fetchProduct(parameter)),
+        fetch: (params) => dispatch(fetchTrending(params)),
 		reRenderHeader: () => dispatch(reRenderHeader())
 	};
 }
 
 const mapStateToProps = state => ({
-	fetchProduct: state.fetchProduct,
+    fetchTrending: state.fetchTrending,
 });
 
 export default connect(mapStateToProps, bindActions)(SearchFood);

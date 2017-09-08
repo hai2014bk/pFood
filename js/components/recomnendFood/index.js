@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {ActivityIndicator,Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -134,11 +134,9 @@ class RecommendFood extends Component {
             )
         }
         return (
-            <Swiper activeDotColor={primary} autoplayTimeout={3} height={137} autoplay={true}>
-                <View style={{ flex: 1 }} style={styles.slide1}>
-                    <Image style={styles.imageBanner} source={{ uri: imageLoad }} />
+                <View style={{ flex:1, height:137 }} style={styles.slide1}>
+                    <ActivityIndicator style={{height:137}}/>
                 </View>
-            </Swiper>
         )
     }
 	renderStar(rate) {

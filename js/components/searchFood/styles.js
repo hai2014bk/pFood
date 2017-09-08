@@ -1,114 +1,186 @@
 const React = require("react-native");
+const { Dimensions, Platform } = React;
 
-const { Platform, Dimensions } = React;
-
+const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
+
 const primary = require("../../themes/variable").brandPrimary;
 
 export default {
-	container: {
-		flex: 1,
-		width: null,
-		height: null,
+    container: {
+        flex: 1,
         backgroundColor: '#e7e9e5',
-	},
-	cellContainer:{
-		backgroundColor:'white', 
-		flex: 1, 
-		width: deviceWidth/2 - 20,
-		minWidth:120,				
-		alignItems: 'flex-start',
-		justifyContent:'flex-end',
-		borderRadius:5,
-	},
-	upContainer:{
-		flex:1,
-		justifyContent:'center',
-		alignItems:'center',
-	},
-	downContainer:{
-		marginTop:4,
-		flex:1,
-		width:'100%',
-		borderTopWidth:1,
-		borderColor:'#e7e9e5',
-		flexDirection:'column',
-		alignItems:'flex-end',
-	},
-	saleView:{
-		height:15,
-		width:40,
-		borderTopLeftRadius: 7.5,
-		borderBottomLeftRadius: 7.5,
-		alignSelf:'flex-end',
-		backgroundColor:'orange'
-	},
-	saleText:{
-		color:'white',
-		fontSize:10,
-		fontWeight:'900',
-		alignSelf:'center'
-	},
-	pageBanner: {
-		flex:2
-	},
-	imageBanner:{
-		width : deviceWidth,
-		height:137,
-	},
-	sectionText:{
-		color:primary,
-		fontSize:17,
-		marginLeft:10,
-		fontWeight:'400',
-		textAlign:'left'
-	},
-	foodThumnail:{
-		marginTop:5,
-		height:80,
-		flex:1,
-	},
-	oldPriceText: {
-		color:'gray',
-		fontSize:9,
-		marginLeft:5,
-		marginRight:2,
-		fontWeight:'100',
-		textAlign:'left',
-		textDecorationLine :'line-through',
-		marginTop:6,
-	},
-	shopNameText: {
-		color:'gray',
-		fontSize:9,
-		fontWeight:'100',
-		textAlign:'center',
-		marginLeft:3,
-	},
-	locationIcon:{
-		fontSize: 9, 
+    },
+    content: {
+        flex: 1,
+    },
+    card: {
+        flex:1,
+        borderTopWidth: 0,
+        borderBottomWidth: 0,
+        marginBottom: 10,
+        backgroundColor:'white',
+    },
+    imageWrap: {
+        flex: 2,
+        justifyContent: 'center',
+        marginRight: 8,
+        marginLeft: -5
+    },
+    imageContainer: {
+        borderColor: '#d9dbd8',
+        borderWidth: 1,
+        flex: 1,
+        aspectRatio: 1,
+        padding: 2,
+        marginRight:10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    image: {
+        flex:1,
+        aspectRatio: 1
+    },
+    infoWrap: {
+        justifyContent: 'space-between'
+    },
+    unit: {
+        color: 'gray',
+        fontSize: 12,
+        fontWeight: '100',
+        textAlign: 'left'
+    },
+    price: {
+        color: 'gray',
+        fontSize: 15,
+        fontWeight: '600',
+        textAlign: 'left',
+        marginBottom: 0,
+        alignSelf: 'baseline'
+    },
+    locationIcon:{
+		fontSize: 11, 
 		color: 'gray',
-		marginLeft:3,
-	},
-	foodNameText: {
+        marginLeft:3,
+        marginRight:5,
+    },
+    sortDirectionWrap:{
+        flex: 1, 
+        marginLeft: 10, 
+        borderTopColor:'gray', 
+        borderTopWidth:0.5,
+    },
+    sortFieldWrap:{
+        flex: 2,
+         marginLeft: 10,
+    },
+    loadMoreCell :{
+        flex:1,
+        height:50,
+        justifyContent:'center',
+        alignItems:'center',
+		backgroundColor:'#ccc',
+    },
+    loadMoreText:{
 		marginTop:5,
-		marginLeft:5,
-		color:'black',
-		fontWeight:'500',
-		fontSize:12,
-		maxWidth:100,
-		textAlign:'left',
-		alignSelf:'flex-start',
-		height:28
+        color:'white',
+        textAlign:'center'
+    },
+    sortWrap:{
+        flex:1, 
+        marginLeft:5,
+        marginTop:10,
+        justifyContent:'center'
+    },
+    shopName: {
+        color: 'gray',
+        fontSize: 11,
+        fontWeight: '100',
+        textAlign: 'left'
+    },
+    foodName: {
+        color: 'black',
+        fontSize: 13,
+        fontWeight: '400'
+    },
+    buttonWrap: {
+        flexDirection: 'row',
+        marginTop: 20,
+        justifyContent: 'center',
+    },
+     buttonAddCard: {
+        flex:1,
+        marginTop:10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems:'center',
+    },
+    checkboxText: {
+		marginLeft: 20,
+		color: '#A0A0A0',
+    },
+    checkBox: {
+		borderRadius: 13,
+		borderWidth: 1,
+		borderColor: '#A0A0A0',
 	},
-	priceText: {
-		color:primary,
-		fontSize:12,
-		fontWeight:'600',
-		textAlign:'left',
-		marginLeft:3,
+    pickerWrap: {
+		flexDirection: 'row',
+		marginTop: 7
 	},
-	mainContent:{
-		flex:3
-	}
+    buyColumn: {
+        marginLeft: 5,
+        marginRight: 5,
+        flex: 3.5,
+    },
+    quantity: {
+        fontSize: 13,
+        alignSelf: 'center',
+        textAlign:'center'
+    },
+    quantityContainer: {
+       width:45,
+    justifyContent: 'center',
+    },
+    cartWrap: {
+        flex: 1,
+        alignItems: 'flex-end',
+        marginLeft: 5
+    },
+    iconWrapPlus: {
+        width: 30,
+        aspectRatio: 1,
+        borderWidth: 1,
+        marginLeft: 10,
+        borderTopRightRadius: 5,
+        borderBottomRightRadius: 5,
+        borderColor: primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+
+    },
+    iconWrapMinus: {
+        width: 30,
+        aspectRatio: 1,
+        borderWidth: 1,
+        marginRight: 10,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    icon: {
+        fontSize: 17,
+        color:primary
+    },
+    animated:{
+        position:'absolute'
+    },
+    textAdd: {
+        width: '100%',
+        color: 'white',
+        fontWeight: 'normal',
+        fontSize: 12,
+        textAlign: 'center'
+    }
 };

@@ -82,6 +82,7 @@ export default {
         backgroundColor:'#ccc'
     },
     loadMoreText:{
+        marginTop:5,
         color:'white',
         textAlign:'center'
     },
