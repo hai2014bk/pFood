@@ -29,10 +29,24 @@ export default class Setup extends Component {
 			Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
 		});
 			const loginInfo = await AsyncStorage.getItem(mConstants.USER_INFO);
-			console.log('login 11111', loginInfo)
+			console.log('login 111112221', loginInfo)
 			if (loginInfo !== null) {
-				console.log('login 11111', loginInfo)
-				this.setState({ isLogined: true })
+				console.log('login 11212111', loginInfo)
+				var user = JSON.parse(loginInfo)
+				var date = new Date()
+				console.log('2138921803213',user.date,date)
+				var msPerMinute = 60 * 1000;
+				var msPerHour = msPerMinute * 60;
+				var msPerDay = msPerHour * 24;				
+				var oldDate = new Date(user.date).getTime()
+				var nowDate =  date.getTime()
+				var elapsed = nowDate - oldDate;				
+				var diff =  Math.round(elapsed/msPerHour );   
+				if (diff < 24) {
+					this.setState({ isLogined: true })					
+				} else {
+					this.setState({ isLogined: false })
+				}
 			}
 		this.setState({ isReady: true });
 	}

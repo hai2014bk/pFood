@@ -117,8 +117,14 @@ class FoodRelate extends Component {
     }
 
     openDetail(food) {
-        console.log('open')
+        this.setState({disabled:true})
         this.props.screenProps.navi.navigate('FoodTab', { parrent: food })
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({disabled:false})
+            
+		})
+
+
     }
     renderItems(data) {
         let item = data.item
@@ -145,7 +151,7 @@ class FoodRelate extends Component {
         }
         let price = this.priceHandle(item.price.toString())
         return (
-            <TouchableOpacity onPress={() => { this.openDetail(item) }}>
+            <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openDetail(item) }}>
                 <Card style={styles.card}>
                     <CardItem >
                         <Body>

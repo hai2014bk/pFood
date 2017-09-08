@@ -34,6 +34,7 @@ class SearchFood extends Component {
 			shouldLoadMore: false,
 			disabled: false,
 			isLoading: false,
+			searchText:'',
 			field: {
 				Id: false,
 				Name: false,
@@ -213,15 +214,11 @@ class SearchFood extends Component {
 	}
 
 	openDetail(food) {
-		const { params } = this.props.navigation.state
-		food.parrentId = params.parent.id
 		this.props.navigation.navigate('FoodTab', { parrent: food })
-		InteractionManager.runAfterInteractions(() => {
-			this.setState({ disabled: false })
-		})
-
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({ disabled: false })
+        })
 	}
-
 	renderSort() {
 		return (
 			<View style={styles.sortWrap}>
@@ -473,6 +470,10 @@ class SearchFood extends Component {
         this.props.fetch(params)
 	}
 
+	deleteSearch(){
+		this.setState({searchText:''})
+	}
+
 	render() {
 		const navigation = this.props.screenProps.navi;
 		const { params } = this.props.navigation.state
@@ -481,7 +482,13 @@ class SearchFood extends Component {
 				<Header searchBar rounded>
 					<Item>
 						<Icon name="ios-search" />
-						<Input placeholder="Tìm kiếm" />
+						<Input value={this.state.searchText} 
+						onChangeText={(text)=> {this.setState({searchText:text})}} 
+						ref={(search) => { this.searchInput = search }} 
+						placeholder="Tìm kiếm" />
+						<TouchableOpacity onPress={()=>{this.deleteSearch()}}>
+							<Icon name="ios-close-circle" />
+						</TouchableOpacity>
 					</Item>
 					<Button transparent onPress={()=>{this.search()}}>
 						<Text style={{color:'white'}}>Tìm kiếm</Text>

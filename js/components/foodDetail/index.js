@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {InteractionManager, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { InteractionManager, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail, CheckBox } from "native-base";
@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
 import styles from "./styles";
-import {reRenderHeader} from '../../actions/header'
+import { reRenderHeader } from '../../actions/header'
 import { fetchDetail } from "../../actions/fetchDetail.js"
 import * as appFunction from "../../utils/function"
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -33,7 +33,7 @@ class FoodDetail extends Component {
 			quantity: 1,
 			seeMore: false,
 			food: '',
-			isLoading:true,
+			isLoading: true,
 			shipTypes: {
 				ViettelPost: true,
 				Adayroi: false,
@@ -48,12 +48,12 @@ class FoodDetail extends Component {
 	componentDidMount() {
 		InteractionManager.runAfterInteractions(() => {
 			this.props.fetch(this.props.food.id)
-			
+
 		})
 
 	}
 	componentWillReceiveProps(props) {
-		this.setState({isLoading:false})
+		this.setState({ isLoading: false })
 		if (props.fetchDetail.success) {
 			console.log('po rop', props.fetchDetail.data.model)
 			var food = props.fetchDetail.data.model
@@ -194,7 +194,7 @@ class FoodDetail extends Component {
 		console.log(food.unitType)
 		if (food.price) {
 			price = this.priceHandle(food.price.toString())
-			quantity = appFunction.handleUnitType(food.unitType,food.quantity)
+			quantity = appFunction.handleUnitType(food.unitType, food.quantity)
 		}
 		if (food.quantity > 0) {
 			active = 0.2,
@@ -244,89 +244,98 @@ class FoodDetail extends Component {
 	async addtoCart(item) {
 		let data = []
 		this.setState({disabled:true})
-		setTimeout(()=>{this.setState({disabled:false}),500})
-        try {
-            const value = await AsyncStorage.getItem(mConstants.CART);
-            if (value !== null) {
-                data = JSON.parse(value)
-                if (data.length > 0) {
-                    for (let i = 0; i <= data.length; i++) {
-                        if (data[i].purveyorId == item.purveyorId) {
-                            item.shipType = data[i].shipType
-							appFunction.add(item,this.props)
-							console.log('3u102321')
-                        } else {
-                            this.popupDialog.show()
-                        }
-                    }
-                } else {
-                    this.popupDialog.show()
-                }
-            } else {
-                this.popupDialog.show()
-            }
-        } catch (error) {
-        }
-    }
-
-    updateStatus(key) {
-        let boxType = Object.assign({}, this.state.shipTypes)
-        for (let k in boxType) {
-            if (boxType.hasOwnProperty(k)) {
-                boxType[k] = false;
-                if (k === key) {
-                    boxType[k] = true;
-                }
-            }
-        }
-        this.setState({ shipTypes: boxType, ship: key });
-    }
-
-    pickerWrap(text, key) {
-        let shipTypes = this.state.shipTypes
-        let checked = shipTypes[key] ? true : false;
-        return (
-            <TouchableOpacity style={styles.pickerWrap} onPress={() => this.updateStatus(key)}>
-                <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key)} />
-                <Text style={styles.checkboxText}>{text}</Text>
-            </TouchableOpacity>
-        )
-    }
-    renderPopup() {
-        return (
-            <PopupDialog
-                dialogTitle={<DialogTitle title="Hình thức vận chuyển" />}
-                ref={(popupDialog) => { this.popupDialog = popupDialog; }}
-                dialogStyle={{ marginTop: -200 }}
-                width={250}
-                height={250}
-                actions={[
-                    <DialogButton
-                        text="Xác nhận" t
-                        onPress={() => {
-                            this.addCart()
-                        }}
-                        key="button-1"
-                    />,
-                ]}
-            >
-                <View style={styles.pickerContainer}>
-                    {this.pickerWrap('Viettel Post', 'ViettelPost')}
-                    {this.pickerWrap('Adayroi', 'Adayroi')}
-                    {this.pickerWrap('Grab', 'Grab')}
-                    {this.pickerWrap('Uber', 'Uber')}
-                </View>
-            </PopupDialog>
-        )
-    }
-
-    addCart() {
-        let item = this.state.item
-        item.shipType = this.state.ship
-        appFunction.add(item,this.props)
-        this.popupDialog.dismiss()
+		setTimeout(()=>{this.setState({disabled:false})},500)
+		try {
+			const value = await AsyncStorage.getItem(mConstants.CART);
+			if (value !== null) {
+				data = JSON.parse(value)
+				if (data.length > 0) {
+					for (let i = 0; i <= data.length; i++) {
+						console.log(data[i].purveyorId)
+						if (item.purveyorId == null) {
+							item.purveyorId = 0
+							item.shipType = data[i].shipType
+							appFunction.add(item, this.props)
+						} else {
+							if (data[i].purveyorId == item.purveyorId) {
+								item.shipType = data[i].shipType
+								appFunction.add(item, this.props)
+							} else {
+								this.popupDialog.show()
+							}
+						}
+					}
+				} else {
+					this.popupDialog.show()
+				}
+			} else {
+				this.popupDialog.show()
+			}
+		} catch (error) {
+		}
 	}
-	
+
+	updateStatus(key) {
+		let boxType = Object.assign({}, this.state.shipTypes)
+		for (let k in boxType) {
+			if (boxType.hasOwnProperty(k)) {
+				boxType[k] = false;
+				if (k === key) {
+					boxType[k] = true;
+				}
+			}
+		}
+		this.setState({ shipTypes: boxType, ship: key });
+	}
+
+	pickerWrap(text, key) {
+		let shipTypes = this.state.shipTypes
+		let checked = shipTypes[key] ? true : false;
+		return (
+			<TouchableOpacity style={styles.pickerWrap} onPress={() => this.updateStatus(key)}>
+				<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key)} />
+				<Text style={styles.checkboxText}>{text}</Text>
+			</TouchableOpacity>
+		)
+	}
+	renderPopup() {
+		return (
+			<PopupDialog
+				dialogTitle={<DialogTitle title="Hình thức vận chuyển" />}
+				ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+				dialogStyle={{ marginTop: -200 }}
+				width={250}
+				height={250}
+				actions={[
+					<DialogButton
+						text="Xác nhận" t
+						onPress={() => {
+							this.addCart()
+						}}
+						key="button-1"
+					/>,
+				]}
+			>
+				<View style={styles.pickerContainer}>
+					{this.pickerWrap('Viettel Post', 'ViettelPost')}
+					{this.pickerWrap('Adayroi', 'Adayroi')}
+					{this.pickerWrap('Grab', 'Grab')}
+					{this.pickerWrap('Uber', 'Uber')}
+				</View>
+			</PopupDialog>
+		)
+	}
+
+	addCart() {
+		let item = this.state.item
+		if (item.purveyorId == null) {
+			item.purveyorId = 0
+		}
+		item.shipType = this.state.ship
+		appFunction.add(item, this.props)
+		this.popupDialog.dismiss()
+	}
+
 	render() {
 		var imageUrl = 'https://hlfppt.org/wp-content/uploads/2017/04/placeholder.png'
 		if (this.state.food.productMetaData) {
@@ -336,7 +345,7 @@ class FoodDetail extends Component {
 		return (
 			<Container style={styles.container}>
 				<Content>
-					<Spinner visible ={this.state.isLoading}/>
+					<Spinner visible={this.state.isLoading} />
 					<Image resizeMode='cover' source={{ uri: imageUrl }} style={styles.foodImage} />
 					{this.renderPriceAndBuy()}
 					{this.renderDecription()}
@@ -346,7 +355,7 @@ class FoodDetail extends Component {
 					<View style={{ marginTop: 25 }}>
 						{this.renderFoodContent()}
 					</View>
-				
+
 				</Content>
 				{this.renderPopup()}
 			</Container>
@@ -357,7 +366,7 @@ class FoodDetail extends Component {
 function bindActions(dispatch) {
 	return {
 		fetch: (id) => dispatch(fetchDetail(id)),
-		reRenderHeader:() => dispatch(reRenderHeader())
+		reRenderHeader: () => dispatch(reRenderHeader())
 	};
 }
 
