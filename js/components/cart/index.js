@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
+import {InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import * as mConstants from '../../utils/Constants'
@@ -21,7 +21,8 @@ class Cart extends Component {
         super(props);
         this.state = {
             data: [],
-            totalPrice: 0
+            totalPrice: 0,
+            disabled:false,
         };
     }
 
@@ -134,6 +135,7 @@ class Cart extends Component {
 		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
         return price
     }
+   
     renderItems(data) {
         let item = data.item
         let id = item.id
@@ -207,8 +209,12 @@ class Cart extends Component {
     }
     openBilling(){
         if(this.state.data.length > 0) {
+            this.setState({disabled:true})
             const navigation = this.props.navigation;
             navigation.navigate("Billing")
+            InteractionManager.runAfterInteractions(() => {
+                this.setState({disabled:false})            
+        })
         }
     }
 
@@ -230,7 +236,7 @@ class Cart extends Component {
                             <Text style={[styles.totalPrice, { fontSize: 20 }]}> {price}đ</Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.checkoutWrap} onPress={() => {this.openBilling()}}>
+                    <TouchableOpacity disabled={this.state.disabled} style={styles.checkoutWrap} onPress={() => {this.openBilling()}}>
                         <Text style={styles.checkout}> Thanh toán </Text>
                     </TouchableOpacity>
                 </Content>

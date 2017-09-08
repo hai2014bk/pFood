@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -9,12 +9,12 @@ import Swiper from 'react-native-swiper';
 import { connect } from "react-redux";
 import styles from "./styles";
 import { fetchStores } from "../../actions/fetchStores.js"
-import {fetchBanner} from "../../actions/fetchStoresDetail.js"
+import { fetchBanner } from "../../actions/fetchStoresDetail.js"
 import Spinner from 'react-native-loading-spinner-overlay';
 import Communications from 'react-native-communications';
-const steak = 'http://www.chadwicksbutchers.com/wp-content/uploads/fillet-steak-banner-e1485792041266.jpg'
-const pizza = 'http://bijespizza.com/Site/themed_images/pizza_1_lg.png'
-const bbq = 'http://nutright.com/blog/wp-content/uploads/2017/01/bbq-islamabad.jpg'
+import Carousel from 'react-native-banner-carousel';
+
+const BannerWidth = Dimensions.get('window').width;
 const primary = require("../../themes/variable").brandPrimary;
 const money = require("../../../images/money.png");
 class Store extends Component {
@@ -24,7 +24,7 @@ class Store extends Component {
             data: [],
             disabled: false,
             banners: [],
-            isLoading:true
+            isLoading: true
         };
     }
     componentDidMount() {
@@ -38,45 +38,53 @@ class Store extends Component {
 
     componentWillReceiveProps(props) {
         let items = []
-        this.setState({isLoading:false})
+        this.setState({ isLoading: false })
         if (props.fetchStores.success) {
             this.setState({ data: props.fetchStores.data.model, isLoading: false })
         }
-        if(props.fetchStoreBanner.success){
+        if (props.fetchStoreBanner.success) {
             console.log('uiojldkwqdq')
-            this.setState({banners:props.fetchStoreBanner.data.model})
+            this.setState({ banners: props.fetchStoreBanner.data.model })
         }
         if (!props.fetchStores.success) {
             this.setState({ isLoading: false })
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') }, 200)
         }
     }
+    renderPage(item, index) {
+        return (
+            <View style={{ flex: 1 }} key={index} style={styles.slide1}>
+                <Image style={styles.imageBanner} source={{ uri: item.imageUrl }} />
+            </View>
+        )
+    }
+
     pageBanner() {
         var banners = []
-		var imageLoad = 'http://www.jqueryscript.net/images/Minimal-jQuery-Loading-Overlay-Spinner-Plugin-Easy-Overlay.jpg'		
-		if (this.state.banners[0]) {
-			banners = this.state.banners
-			console.log('213213213', banners[0].imageUrl)
-			return (
-				<Swiper activeDotColor={primary} height={137} autoplay={true}>
-					{banners.map((item, key) => {
-						return (
-							<View style={{ flex: 1 }} key={key} style={styles.slide1}>
-								<Image style={styles.imageBanner} source={{ uri: item.imageUrl }} />
-							</View>
-						)
-					})
-					}
-				</Swiper>
-			)
-		} 
-		return (
-			<Swiper activeDotColor={primary} height={137} autoplay={true}>
-							<View style={{ flex: 1 }} style={styles.slide1}>
-								<Image style={styles.imageBanner} source={{ uri: imageLoad }} />
-							</View>
-			</Swiper>
-		)
+        var sliders = []
+        var imageLoad = 'http://www.jqueryscript.net/images/Minimal-jQuery-Loading-Overlay-Spinner-Plugin-Easy-Overlay.jpg'
+        if (this.state.banners.length > 0) {
+            banners = this.state.banners
+            return (
+                <Carousel
+                    autoplay
+                    autoplayTimeout={3000}
+                    loop
+                    index={0}
+                    pageSize={BannerWidth}
+                    activePageIndicatorStyle={{ backgroundColor: primary }}
+                >
+                    {banners.map((item, index) => this.renderPage(item, index))}
+                </Carousel>
+            )
+        }
+        return (
+            <Swiper activeDotColor={primary} autoplayTimeout={3} height={137} autoplay={true}>
+                <View style={{ flex: 1 }} style={styles.slide1}>
+                    <Image style={styles.imageBanner} source={{ uri: imageLoad }} />
+                </View>
+            </Swiper>
+        )
     }
     renderStar(rate) {
         return (
@@ -97,10 +105,10 @@ class Store extends Component {
 
     openStoreDetail(store) {
         this.setState({ disabled: true })
-        this.props.navigation.navigate('StoreTab', { parrent: store })
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({ disabled: false })
-        })
+        // this.props.navigation.navigate('StoreTab', { parrent: store })
+        // InteractionManager.runAfterInteractions(() => {
+        //     this.setState({ disabled: false })
+        // })
     }
     renderStoreList(data) {
         var item = data.item
@@ -133,29 +141,29 @@ class Store extends Component {
         return (
             <Container style={styles.container}>
                 <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
-                    rightButton={true} title='Cửa hàng'>
-                </HeaderContent>
+                    rightButton={true} title='Cửa hàng' />
                 <Content>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
                     </View>
-                    <Spinner visible = {this.state.isLoading}/>
+                    <Spinner visible={this.state.isLoading} />
                     <View style={styles.bodyWrap}>
                         <View style={styles.titleWrap}>
                             <Image source={money} style={styles.moneyIcon} resizeMode='contain' />
                             <Text style={styles.title}>Cửa hàng thực phẩm</Text>
                         </View>
-                        <FlatList
+                        <FlatList style={{}}
                             data={this.state.data}
                             extraData={this.state.data}
                             keyExtractor={this._keyExtractor}
                             numColumns={2}
-                            renderItem={(item) => 
-                            (
-                                <View style={styles.listItemWrap}>
+                            renderItem={(item) => (
+                                <View style={styles.listItemWrap} >
                                     {this.renderStoreList(item)}
                                 </View>
-                            )} />
+                            )
+                            }
+                        />
                     </View>
                 </Content>
             </Container>
@@ -165,7 +173,7 @@ class Store extends Component {
 function bindActions(dispatch) {
     return {
         fetch: (params) => dispatch(fetchStores(params)),
-        fetchBanner:() => dispatch(fetchBanner())
+        fetchBanner: () => dispatch(fetchBanner())
     };
 }
 

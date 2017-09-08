@@ -60,7 +60,6 @@ class Login extends Component {
 
   }
   loginClick() {
-
     if (this.state.email && this.state.password) {
       if ((!this.checkSpaceAll(this.state.email))) {
         if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
@@ -77,6 +76,7 @@ class Login extends Component {
           let params = {}
           params.email = this.state.email
           params.password = this.state.password
+          params.LoginType = "default"
           this.props.loginAction(params)
           this.setState({ isLoading: true })
         }

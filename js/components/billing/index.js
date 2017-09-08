@@ -13,7 +13,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { addOrder } from "../../actions/addOrder.js"
 var background = require('../../../images/background.png')
 var money = require('../../../images/money.png')
-var food = ''
+var food = require('../../../images/foodBasket.png')
 const resetAction = NavigationActions.reset({
 	index: 0,
 	actions: [NavigationActions.navigate({ routeName: "Drawer" })],

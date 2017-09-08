@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -10,6 +10,9 @@ import Swiper from 'react-native-swiper';
 import styles from "./styles";
 import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
+import Carousel from 'react-native-banner-carousel';
+
+const BannerWidth = Dimensions.get('window').width;
 const primary = require("../../themes/variable").brandPrimary;
 
 
@@ -103,33 +106,41 @@ class RecommendFood extends Component {
 		}
 	}
 
-	pageBanner() {
-		var banners = []
-		var imageLoad = 'http://www.jqueryscript.net/images/Minimal-jQuery-Loading-Overlay-Spinner-Plugin-Easy-Overlay.jpg'		
-		if (this.state.banners[0]) {
-			banners = this.state.banners
-			console.log('213213213', banners[0].imageUrl)
-			return (
-				<Swiper activeDotColor={primary} height={137} autoplay={true}>
-					{banners.map((item, key) => {
-						return (
-							<View style={{ flex: 1 }} key={key} style={styles.slide1}>
-								<Image style={styles.imageBanner} source={{ uri: item.imageUrl }} />
-							</View>
-						)
-					})
-					}
-				</Swiper>
-			)
-		} 
-		return (
-			<Swiper activeDotColor={primary} height={137} autoplay={true}>
-							<View style={{ flex: 1 }} style={styles.slide1}>
-								<Image style={styles.imageBanner} source={{ uri: imageLoad }} />
-							</View>
-			</Swiper>
-		)
-	}
+	renderPage(item, index) {
+        return (
+            <View style={{ flex: 1 }} key={index} style={styles.slide1}>
+                <Image style={styles.imageBanner} source={{ uri: item.imageUrl }} />
+            </View>
+        )
+    }
+
+    pageBanner() {
+        var banners = []
+        var sliders = []
+        var imageLoad = 'http://www.jqueryscript.net/images/Minimal-jQuery-Loading-Overlay-Spinner-Plugin-Easy-Overlay.jpg'
+        if (this.state.banners.length > 0) {
+            banners = this.state.banners
+            return (
+                <Carousel
+                    autoplay
+                    autoplayTimeout={3000}
+                    loop
+                    index={0}
+                    pageSize={BannerWidth}
+					activePageIndicatorStyle={{backgroundColor:primary}}
+                >
+                    {banners.map((item, index) => this.renderPage(item, index))}
+                </Carousel>
+            )
+        }
+        return (
+            <Swiper activeDotColor={primary} autoplayTimeout={3} height={137} autoplay={true}>
+                <View style={{ flex: 1 }} style={styles.slide1}>
+                    <Image style={styles.imageBanner} source={{ uri: imageLoad }} />
+                </View>
+            </Swiper>
+        )
+    }
 	renderStar(rate) {
 		return (
 			<StarRating
