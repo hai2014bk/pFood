@@ -23,6 +23,7 @@ import StoreProduct from "./components/storeProduct"
 import StoreInfo from "./components/storeInfo"
 import StoreTab from "./components/storeTab";
 import HistoryDetail from "./components/historyDetail";
+import StoreNear from "./components/storeNear";
 
 
 
@@ -39,10 +40,11 @@ const Main = StackNavigator(
 		Cart: { screen: Cart },	
 		Billing : { screen: Billing },
 		HistoryDetail : { screen: HistoryDetail },		
+		StoreNear : { screen: StoreNear },
 	},
 	{
 		index: 0,
-		initialRouteName: initialRouteName,
+		initialRouteName: 'StoreNear',
 		headerMode: "none",
 		navigationOptions: {
 			gesturesEnabled: false,

@@ -42,20 +42,20 @@ class Profile extends Component {
 	}
 
 	async componentDidMount() {
-		try {
-			const value = await AsyncStorage.getItem(mConstants.USER_INFO);
-			if (value !== null) {
-				console.log('value',value)
-				let lastName = ''
-				let email = ''
-			}
-		} catch (error) {
-
+		let data = []
+		const value = await AsyncStorage.getItem(mConstants.USER_DETAIL);
+		if (value !== null) {
+			data = JSON.parse(value)	
+			let firstName = data.model.firstName
+			let lastName = data.model.lastName
+			let email = data.model.email
+			console.log('value profile', data.model.firstName)
+			this.setState({ firstName, lastName, email })
 		}
 	}
 
 	updateStatus(key, type) {
-
+``
 		let shipStatus = type === 'ship' ? Object.assign({}, this.state.shipServices) : Object.assign({}, this.state.pay);
 		for (let k in shipStatus) {
 			if (shipStatus.hasOwnProperty(k)) {
@@ -85,11 +85,12 @@ class Profile extends Component {
 	}
 	render() {
 		const navigation = this.props.navigation;
+		console.log('firstName', this.state.firstName)
 		return (
 			<Container style={styles.containerWrap}>
 				<Spinner visible={this.state.isLoading} />
 				<HeaderContent title="Thông tin cá nhân"
-				leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")}
+					leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")}
 				/>
 				<Content keyboardShouldPersistTaps='handled' style={styles.content} contentContainerStyle={{ flexGrow: 1 }}>
 					<View style={styles.headerTitle}>
@@ -121,7 +122,7 @@ class Profile extends Component {
 					{this.pickerWrap('Thẻ ngân hàng', 'bankCard', 'pay')}
 					{this.pickerWrap('Thẻ tín dụng', 'creditCard', 'pay')}
 					<TouchableOpacity style={styles.updateButtonWrap}>
-						<Text style={styles.updateButtonText}> Cập nhật </Text>
+						<Text style={styles.updateButtonText}> Cập nhật {this.state.firstName} </Text>
 					</TouchableOpacity>
 				</Content>
 			</Container>
