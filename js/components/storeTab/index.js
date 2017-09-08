@@ -33,7 +33,7 @@ class StoreTab extends Component {
 				<HeaderContent navi={this.props.screenProps.navi} rightButton={true} leftIcon={'ios-arrow-back'} leftButton={() => navigation.goBack()}
 					 title={params.parrent.name}>
 				</HeaderContent>
-				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'top'} >
+				<ScrollableTabView locked={false} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'top'} >
 					<StoreProduct screenProps={{navi:navigation}} storeParrent={params.parrent}   tabLabel="Sản phẩm" />
 					<StoreInfo screenProps={{navi:navigation}} storeParrent={params.parrent}  tabLabel="Thông tin" />
 				</ScrollableTabView>

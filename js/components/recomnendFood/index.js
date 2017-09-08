@@ -98,7 +98,7 @@ class RecommendFood extends Component {
 			}
 		}
 		if (!props.fetchTrendingRecomend.success) {
-			console.log('9328934893141',props)
+			console.log('9328934893141', props)
 			setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
 		}
 	}
@@ -107,23 +107,23 @@ class RecommendFood extends Component {
 		var banners = []
 		if (this.state.banners[0]) {
 			banners = this.state.banners
-			console.log('213213213',banners[0].imageUrl)
+			console.log('213213213', banners[0].imageUrl)
 			return (
 				<Swiper activeDotColor={primary} height={137} autoplay={true}>
 					{banners.map((item, key) => {
 						return (
-							<View style={{flex:1}} key={key} style={styles.slide1}>
-								<Image style={styles.imageBanner} source={{uri:item.imageUrl}}/>
+							<View style={{ flex: 1 }} key={key} style={styles.slide1}>
+								<Image style={styles.imageBanner} source={{ uri: item.imageUrl }} />
 							</View>
 						)
 					})
 					}
 				</Swiper>
-			)			
+			)
 		}
 		return (
 			<View>
-				</View>
+			</View>
 		)
 	}
 	renderStar(rate) {
@@ -143,14 +143,11 @@ class RecommendFood extends Component {
 		)
 	}
 	openDetail(food) {
-		this.setState({ isLoading: true })
-		setTimeout(() => {
-			console.log('open distsa', this.state.disabled)
-			this.props.navigation.navigate('FoodTab', { parrent: food })
-			this.setState({ isLoading: false })
-
-		}, 500)
-
+		this.setState({ disabled: true })
+		this.props.navigation.navigate('FoodTab', { parrent: food })
+		InteractionManager.runAfterInteractions(() => {
+			this.setState({ disabled: false })
+		})
 	}
 	priceHandle(price) {
 		var count = 0
@@ -201,7 +198,8 @@ class RecommendFood extends Component {
 		)
 	}
 	_keyExtractor = (item, index) => item.id;
-	renderHorizontalList(section) {
+	renderHorizontalList(item) {
+		var section = item.item
 		return (
 			<View style={{ flex: 1 }}>
 				<View style={{ alignItems: 'flex-start', justifyContent: 'flex-start' }}>
@@ -225,13 +223,17 @@ class RecommendFood extends Component {
 	}
 	renderList() {
 		return (
-			<List showsVerticalScrollIndicator={false} style={{ flex: 1, marginLeft: -10 }} dataArray={this.state.dataSection}
-				renderRow={(item) =>
+			<FlatList showsVerticalScrollIndicator={false}
+				style={{ flex: 1, marginLeft: -10 }}
+				data={this.state.dataSection}
+				keyExtractor={(item) => item.sectionName}
+				extraData={this.state.dataSection}
+				renderItem={(item) =>
 					<ListItem >
 						{this.renderHorizontalList(item)}
 					</ListItem>
 				}>
-			</List>
+			</FlatList>
 		)
 	}
 	render() {

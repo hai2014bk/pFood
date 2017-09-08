@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -20,9 +20,8 @@ class Store extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: [],
-            isLoading: false,
-            disabled:false
+            data: [],
+            disabled: false
         };
     }
     componentDidMount() {
@@ -36,10 +35,10 @@ class Store extends Component {
     componentWillReceiveProps(props) {
         let items = []
         if (props.fetchStores.success) {
-            this.setState({items: props.fetchStores.data.model, isLoading:false})
+            this.setState({ data: props.fetchStores.data.model, isLoading: false })
         }
         if (!props.fetchStores.success) {
-            this.setState({isLoading:false})
+            this.setState({ isLoading: false })
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') }, 200)
         }
     }
@@ -85,20 +84,21 @@ class Store extends Component {
         )
     }
 
-    openStoreDetail(store){
-        this.setState({isLoading:true})       
-        setTimeout(()=>{
-            this.props.navigation.navigate('StoreTab',{parrent:store})   
-            this.setState({ isLoading: false })
-        },500)
+    openStoreDetail(store) {
+        this.setState({ disabled: true })
+        //this.props.navigation.navigate('StoreTab', { parrent: store })
+        // InteractionManager.runAfterInteractions(() => {
+        //     this.setState({ disabled: false })
+        // })
     }
-    renderStoreList(item) {
-        console.log('item',item)
+    renderStoreList(data) {
+        var item = data.item
+        console.log(item)
         return (
-            <TouchableOpacity disabled={this.state.disabled} onPress={()=>this.openStoreDetail(item)} style={styles.listItemWrap}>
+            <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openStoreDetail(item) }} style={{ flex: 1 }} >
                 <View style={styles.itemWrap}>
                     <View style={styles.imageWrap}>
-                        <Image source={{uri: item.storeImageUrl}} style={styles.image} resizeMode='contain' />
+                        <Image source={{ uri: item.storeImageUrl }} style={styles.image} resizeMode='contain' />
                     </View>
                     <View style={styles.descriptionWrap}>
                         <Text style={styles.products}>{item.name}</Text>
@@ -106,25 +106,25 @@ class Store extends Component {
                             {this.renderStar(4)}
                         </View>
                         <View style={styles.hotlineWrap}>
-                            <Icon name = 'ios-call' style={styles.phoneIcon} />
+                            <Icon name='ios-call' style={styles.phoneIcon} />
                             <Text onPress={() => Communications.phonecall('0987678911', true)} style={styles.hotline}>0987678911</Text>
                         </View>
-                        <Text style={styles.address}>{item.hqAddress}</Text>          
+                        <Text style={styles.address}>{item.hqAddress}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         )
     }
-
+    _keyExtractor = (item, index) => item.id;
     render() {
         const navigation = this.props.screenProps.navi;
+        console.log(this.state.disabled)
         return (
             <Container style={styles.container}>
                 <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
                     rightButton={true} title='Cửa hàng'>
                 </HeaderContent>
                 <Content>
-                    <Spinner visible={this.state.isLoading}/>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
                     </View>
@@ -133,15 +133,16 @@ class Store extends Component {
                             <Image source={money} style={styles.moneyIcon} resizeMode='contain' />
                             <Text style={styles.title}>Cửa hàng thực phẩm</Text>
                         </View>
-                        <List contentContainerStyle={{
-                            flexDirection: 'row',
-                            flexWrap: 'wrap'
-                        }}
-                            showsVerticalScrollIndicator={false} dataArray={this.state.items}
-                            renderRow={(item) =>
-                                this.renderStoreList(item)
-                            }>
-                        </List>
+                        <FlatList
+                            data={this.state.data}
+                            extraData={this.state.data}
+                            keyExtractor={this._keyExtractor}
+                            numColumns={2}
+                            renderItem={(item) => (
+                                <View style={styles.listItemWrap}>
+                                    {this.renderStoreList(item)}
+                                </View>
+                            )} />
                     </View>
                 </Content>
             </Container>

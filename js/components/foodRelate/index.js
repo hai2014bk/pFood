@@ -26,20 +26,19 @@ class FoodRelate extends Component {
     }
 
     componentDidMount() {
-        console.log('3912321',this.props)
-        var listFood = this.props.fetchRelate.data.model
-        console.log(listFood)
-        for (i in listFood) {
-            if (this.props.food.id == listFood[i].id) {
-                listFood.splice(i, 1)
+            var listFood = this.props.fetchRelate.data.model
+            var listRelateFood = []
+            console.log('j12oei21j321',listFood)
+            for (i in listFood) {
+                if (this.props.food.id != listFood[i].id) {
+                    listFood[i].quantity = listFood[i].quantityStep
+                    listRelateFood.push(listFood[i])
+                }
             }
-            listFood[i].quantity = listFood[i].quantityStep
-        }
-        this.setState({ data: listFood })
+            this.setState({ data: listRelateFood })
     }
 
     componentWillReceiveProps(props) {
-       console.log('3912321',props)
         if (props.fetchRelate.success) {
             var listFood = props.fetchRelate.data.model
             console.log(listFood)
@@ -55,7 +54,7 @@ class FoodRelate extends Component {
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
         }
     }
-   
+
 
     plus(rowID) {
         let newArray = this.state.data.slice(0);
@@ -114,7 +113,7 @@ class FoodRelate extends Component {
         let id = item.id
         let active = 0
         let color = ''
-        var quantity = appFunction.handleUnitType(item.unitType,item.quantity)      
+        var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
         if (item.quantity > 0) {
             active = 0.2,
                 color = primary
@@ -148,8 +147,8 @@ class FoodRelate extends Component {
                                 </Col>
                                 <Col size={3} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, {borderColor:color}]} onPress={() => this.minus(data.index)} >
-                                            <Icon style={[styles.icon, {color:color}]} name="md-remove" />
+                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
+                                            <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
                                         <Col style={styles.quantityContainer}>
                                             <Text style={styles.quantity}>{quantity}</Text>
@@ -200,6 +199,7 @@ function bindActions(dispatch) {
 }
 const mapStateToProps = state => ({
     fetchRelate: state.fetchRelate,
+    fetchProduct: state.fetchProduct
 });
 
 export default connect(mapStateToProps, bindActions)(FoodRelate);

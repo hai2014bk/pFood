@@ -63,18 +63,18 @@ class Billing extends Component {
 	}
 
 	componentWillReceiveProps(props) {
-		let navigation=  this.props.navigation
-		console.log('propsss',props);
-		this.setState({visible:false})
-		if(this.state.addClick===false){
-			this.setState({addClick: true})
+		let navigation = this.props.navigation
+		console.log('propsss', props);
+		this.setState({ visible: false })
+		if (this.state.addClick === false) {
+			this.setState({ addClick: true })
 			if (props.addOrder.success == true) {
 				console.log('thanh doan')
-				Alert.alert('','Lưu hóa đơn thành công',[{text: 'Ok', onPress: ()=> {navigation.navigate('Drawer')} }]);
+				Alert.alert('Thông báo', 'Lưu hóa đơn thành công', [{ text: 'Ok', onPress: () => console.log('success') }]);
 				let keys = [mConstants.CART];
 				AsyncStorage.multiRemove(keys)
 			} else {
-				Alert.alert('',props.addOrder.message,[{text: 'Ok', onPress: ()=> console.log('error') }] );
+				Alert.alert('Lỗi', props.addOrder.message, [{ text: 'Ok', onPress: () => console.log('error') }]);
 			}
 		}
 	}
@@ -86,7 +86,7 @@ class Billing extends Component {
 	}
 
 	addOrderClick() {
-		this.setState({visible:true, addClick: false})
+		this.setState({ visible: true, addClick: false })
 		var param = {};
 		data = this.state.data
 		param.OrderedProducts = [];
@@ -141,9 +141,9 @@ class Billing extends Component {
 		);
 	}
 	renderItem(item) {
-		let proPrice= item.price*item.quantity/item.quantityStep;
+		let proPrice = item.price * item.quantity / item.quantityStep;
 		let price = this.priceHandle(proPrice.toString())
-		let quantity = item.quantity 
+		let quantity = item.quantity
 		return (
 			<View style={styles.proDetail}>
 				<View style={styles.flexCol}>
@@ -228,16 +228,14 @@ class Billing extends Component {
 						<Icon name="ios-contact" style={styles.userIcon} />
 						<Text style={styles.infoDetail}>Thông tin người đặt</Text>
 					</View>
-					<Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='black' />
-					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='black' />
-					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='black' />
-					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='black' />
-					<TouchableOpacity style={styles.checkoutWrap} onPress={()=> {this.addOrderClick()}}>
-                        <Text style={styles.checkout}>Thanh toán</Text>
-                    </TouchableOpacity>
-					<View style={styles.footer}></View>
+					<Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
+					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
+					<TouchableOpacity style={styles.checkoutWrap} onPress={() => { this.addOrderClick() }}>
+						<Text style={styles.checkout}> Thanh toán </Text>
+					</TouchableOpacity>
 				</Content>
-
 			</Container>
 		);
 	}

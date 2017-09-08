@@ -32,7 +32,7 @@ class FoodTab extends Component {
 				<HeaderContent navi={this.props.screenProps.navi} leftIcon={'ios-arrow-back'} leftButton={() => navigation.goBack()}
 					rightButton={true} title={params.parrent.name}>
 				</HeaderContent>
-				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'top'} >
+				<ScrollableTabView locked={false} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'top'} >
 					<FoodDetail screenProps={{navi:navigation}} food={params.parrent}   tabLabel="Chi tiết" />
 					<FoodRelate screenProps={{navi:navigation}} food={params.parrent}  tabLabel="Liên quan" />
 				</ScrollableTabView>

@@ -261,6 +261,10 @@ class Category extends Component {
     }
 
     renderSortPopup() {
+        var disable = false 
+        if(this.state.sortBy =='' || this.state.sortDirection == '' ){
+            disable = true
+        }
         return (
             <PopupDialog
                 dialogTitle={<DialogTitle title="Sắp xếp" />}
@@ -271,7 +275,8 @@ class Category extends Component {
                 height={300}
                 actions={[
                     <DialogButton
-                        text="OK" t
+                        text="OK"
+                        disabled={disable}
                         onPress={() => {
                             this.sortButton()
                         }}
