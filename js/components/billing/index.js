@@ -49,11 +49,19 @@ class Billing extends Component {
 		let data = []
 		this.setState({ totalPrice })
 		try {
+			const value = await AsyncStorage.getItem(mConstants.USER_DETAIL);
+			console.log('dsfda', value)
+			if (value !== null) {
+				var userInfo = JSON.parse(value)
+				this.setState({ userInfo: userInfo })
+			}
+		} catch (error) {
+		}
+		try {
 			const value = await AsyncStorage.getItem(mConstants.CART);
 			if (value !== null) {
 				this.setState({ visible: false })
 				data = JSON.parse(value)
-				console.log('value', data)
 				this.setState({ data })
 				for (i = 0; i < data.length; i++) {
 					totalPrice += data[i].price * data[i].quantity / data[i].quantityStep
@@ -73,7 +81,7 @@ class Billing extends Component {
 			this.setState({ addClick: true })
 			if (props.addOrder.success == true) {
 				console.log('thanh doan')
-				Alert.alert('','Lưu hóa đơn thành công',[{text: 'OK', onPress: ()=> {this.props.navigation.dispatch(resetAction)} }]);
+				Alert.alert('', 'Lưu hóa đơn thành công', [{ text: 'OK', onPress: () => { this.props.navigation.dispatch(resetAction) } }]);
 				let keys = [mConstants.CART];
 				AsyncStorage.multiRemove(keys)
 			} else {
@@ -100,14 +108,15 @@ class Billing extends Component {
 			}
 			param.OrderedProducts.push(product);
 		}
-		param.UserId = 1;
+		param.UserId = this.state.userInfo.model.id;
 		param.Status = "Submitted";
 		param.TotalPrice = this.state.totalPrice;
-		param.BillingAddress = "thuy khue";
-		param.DeliveryAddress = "thuy khue";
+		param.BillingAddress = this.state.userAddress;
+		param.DeliveryAddress = this.state.userAddress;
 		param.DeliveryMethod = this.state.shipKey;
 		param.PaymentMethod = this.state.payKey;
 		this.props.add(param)
+		console.log(param)
 		this.setState({ visible: true })
 	}
 
@@ -189,56 +198,76 @@ class Billing extends Component {
 	}
 	render() {
 		console.log('adjf', this.state.shipKey)
-		console.log('pay', this.state.payKey)
 		let total = this.state.totalPrice;
 		let totalPrice = this.priceHandle(total.toString());
 		var mdh = "F001"
 		const navigation = this.props.navigation;
-		return (
-			<Container style={styles.containerWrap}>
-				<Spinner visible={this.state.visible} />
-				<HeaderContent title="Hóa đơn"
-					leftButton={() => navigation.goBack()}
-					leftIcon='ios-arrow-back'
-				/>
-				<Content keyboardShouldPersistTaps='handled' style={styles.content} contentContainerStyle={{ flexGrow: 1 }}>
-					<View style={styles.headerTitle}>
-						<Image source={food} style={styles.moneyIcon} resizeMode='contain' />
-						<Text style={styles.infoDetail}>Thông tin chi tiết</Text>
-					</View>
-					<View style={styles.proDetail}>
-						<Text style={styles.productText}>Mã đơn Hàng: {mdh}</Text>
-					</View>
-					{this.renderDetail()}
-					<View style={styles.totalPrice}>
-						<Left>
-							<Text style={styles.productBlackText}>Tổng:</Text>
-						</Left>
-						<Right>
-							<Text style={styles.totalPriceText}>{totalPrice}đ</Text>
-						</Right>
-					</View>
-					<View style={styles.headerTitle}>
-						<Image source={money} style={styles.moneyIcon} resizeMode='contain' />
-						<Text style={styles.infoDetail}>Hình thức thanh toán</Text>
-					</View>
-					{this.pickerWrap('Tiền mặt', 'cash', 'pay')}
-					{this.pickerWrap('Thẻ ngân hàng', 'bankCard', 'pay')}
-					{this.pickerWrap('Thẻ tín dụng', 'creditCard', 'pay')}
-					<View style={styles.headerTitle}>
-						<Icon name="ios-contact" style={styles.userIcon} />
-						<Text style={styles.infoDetail}>Thông tin người đặt</Text>
-					</View>
-					<Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='#A4A4A4' />
-					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#A4A4A4' />
-					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
-					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
-					<TouchableOpacity style={styles.checkoutWrap} onPress={() => {this.addOrderClick()}}>
-                        <Text style={styles.checkout}> Thanh toán </Text>
-                    </TouchableOpacity>
-				</Content>
-			</Container>
-		);
+		var userInfo = this.state.userInfo
+		console.log('paysadasdasasas', userInfo)		
+		if (userInfo) {
+			userInfo = this.state.userInfo.model
+			return (
+				<Container style={styles.containerWrap}>
+					<Spinner visible={this.state.visible} />
+					<HeaderContent title="Hóa đơn"
+						leftButton={() => navigation.goBack()}
+						leftIcon='ios-arrow-back'
+					/>
+					<Content keyboardShouldPersistTaps='handled' style={styles.content} contentContainerStyle={{ flexGrow: 1 }}>
+						<View style={styles.headerTitle}>
+							<Image source={food} style={styles.moneyIcon} resizeMode='contain' />
+							<Text style={styles.infoDetail}>Thông tin chi tiết</Text>
+						</View>
+						<View style={styles.proDetail}>
+							<Text style={styles.productText}>Mã đơn Hàng: {mdh}</Text>
+						</View>
+						{this.renderDetail()}
+						<View style={styles.totalPrice}>
+							<Left>
+								<Text style={styles.productBlackText}>Tổng:</Text>
+							</Left>
+							<Right>
+								<Text style={styles.totalPriceText}>{totalPrice}đ</Text>
+							</Right>
+						</View>
+						<View style={styles.headerTitle}>
+							<Image source={money} style={styles.moneyIcon} resizeMode='contain' />
+							<Text style={styles.infoDetail}>Hình thức thanh toán</Text>
+						</View>
+						{this.pickerWrap('Tiền mặt', 'cash', 'pay')}
+						{this.pickerWrap('Thẻ ngân hàng', 'bankCard', 'pay')}
+						{this.pickerWrap('Thẻ tín dụng', 'creditCard', 'pay')}
+						<View style={styles.headerTitle}>
+							<Icon name="ios-contact" style={styles.userIcon} />
+							<Text style={styles.infoDetail}>Thông tin người đặt</Text>
+						</View>
+						<Input style={styles.textInput}
+							onChangeText={(text) => { this.setState({ userName: text }) }}
+							value={userInfo.lastName + ' ' + userInfo.firstName}
+							placeholder="Họ và Tên"
+							placeholderTextColor='#A4A4A4' />
+						<Input style={styles.textInput}
+							onChangeText={(text) => { this.setState({ userAddress: text }) }}
+							value={userInfo.address}
+							placeholder="Địa chỉ"
+							placeholderTextColor='#A4A4A4' />
+						<Input style={styles.textInput} onChangeText={(text) => { this.setState({ userMobile: text }) }}
+							value={ userInfo.mobile}
+							placeholder="Số điện thoại"
+							placeholderTextColor='#A4A4A4' />
+						<Input style={styles.textInput}
+							onChangeText={(text) => { this.setState({ userEmail: text }) }}
+							value={userInfo.email}
+							placeholder="Email" placeholderTextColor='#A4A4A4' />
+						<TouchableOpacity style={styles.checkoutWrap} onPress={() => { this.addOrderClick() }}>
+							<Text style={styles.checkout}> Thanh toán </Text>
+						</TouchableOpacity>
+					</Content>
+				</Container>
+			);
+		} else {
+			return null
+		}
 	}
 
 }
