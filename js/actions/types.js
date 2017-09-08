@@ -33,6 +33,8 @@ export type Action =
 	| { type: "FETCH_STOREBANNER_SUCCESS" }	
 	| { type: "FETCH_STOREBANNER_FAILED" }	
 	| { type: "RERENDER_HEADER" }	
+	| { type: "FETCH_USER_SUCCESS" }	
+	| { type: "FETCH_USER_FAILED" }	
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;
