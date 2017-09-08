@@ -105,6 +105,7 @@ class RecommendFood extends Component {
 
 	pageBanner() {
 		var banners = []
+		var imageLoad = 'http://www.jqueryscript.net/images/Minimal-jQuery-Loading-Overlay-Spinner-Plugin-Easy-Overlay.jpg'		
 		if (this.state.banners[0]) {
 			banners = this.state.banners
 			console.log('213213213', banners[0].imageUrl)
@@ -120,10 +121,13 @@ class RecommendFood extends Component {
 					}
 				</Swiper>
 			)
-		}
+		} 
 		return (
-			<View>
-			</View>
+			<Swiper activeDotColor={primary} height={137} autoplay={true}>
+							<View style={{ flex: 1 }} style={styles.slide1}>
+								<Image style={styles.imageBanner} source={{ uri: imageLoad }} />
+							</View>
+			</Swiper>
 		)
 	}
 	renderStar(rate) {

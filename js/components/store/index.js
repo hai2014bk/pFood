@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -9,6 +9,7 @@ import Swiper from 'react-native-swiper';
 import { connect } from "react-redux";
 import styles from "./styles";
 import { fetchStores } from "../../actions/fetchStores.js"
+import {fetchBanner} from "../../actions/fetchStoresDetail.js"
 import Spinner from 'react-native-loading-spinner-overlay';
 import Communications from 'react-native-communications';
 const steak = 'http://www.chadwicksbutchers.com/wp-content/uploads/fillet-steak-banner-e1485792041266.jpg'
@@ -21,7 +22,9 @@ class Store extends Component {
         super(props);
         this.state = {
             data: [],
-            disabled: false
+            disabled: false,
+            banners: [],
+            isLoading:true
         };
     }
     componentDidMount() {
@@ -30,42 +33,50 @@ class Store extends Component {
         params.pageSize = 100
         params.pageIndex = 1
         this.props.fetch(params)
+        this.props.fetchBanner()
     }
 
     componentWillReceiveProps(props) {
         let items = []
+        this.setState({isLoading:false})
         if (props.fetchStores.success) {
             this.setState({ data: props.fetchStores.data.model, isLoading: false })
+        }
+        if(props.fetchStoreBanner.success){
+            console.log('uiojldkwqdq')
+            this.setState({banners:props.fetchStoreBanner.data.model})
         }
         if (!props.fetchStores.success) {
             this.setState({ isLoading: false })
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') }, 200)
         }
     }
-
     pageBanner() {
-        return (
-            <Swiper activeDotColor={primary} height={137} autoplay={true}>
-                <View style={{ flex: 1 }}>
-                    <Image
-                        style={{ flex: 1 }}
-                        source={{ uri: steak }}
-                    />
-                </View>
-                <View style={{ flex: 1 }}>
-                    <Image
-                        style={{ flex: 1 }}
-                        source={{ uri: pizza }}
-                    />
-                </View>
-                <View style={{ flex: 1 }}>
-                    <Image
-                        style={{ flex: 1 }}
-                        source={{ uri: bbq }}
-                    />
-                </View>
-            </Swiper>
-        )
+        var banners = []
+		var imageLoad = 'http://www.jqueryscript.net/images/Minimal-jQuery-Loading-Overlay-Spinner-Plugin-Easy-Overlay.jpg'		
+		if (this.state.banners[0]) {
+			banners = this.state.banners
+			console.log('213213213', banners[0].imageUrl)
+			return (
+				<Swiper activeDotColor={primary} height={137} autoplay={true}>
+					{banners.map((item, key) => {
+						return (
+							<View style={{ flex: 1 }} key={key} style={styles.slide1}>
+								<Image style={styles.imageBanner} source={{ uri: item.imageUrl }} />
+							</View>
+						)
+					})
+					}
+				</Swiper>
+			)
+		} 
+		return (
+			<Swiper activeDotColor={primary} height={137} autoplay={true}>
+							<View style={{ flex: 1 }} style={styles.slide1}>
+								<Image style={styles.imageBanner} source={{ uri: imageLoad }} />
+							</View>
+			</Swiper>
+		)
     }
     renderStar(rate) {
         return (
@@ -86,10 +97,10 @@ class Store extends Component {
 
     openStoreDetail(store) {
         this.setState({ disabled: true })
-        //this.props.navigation.navigate('StoreTab', { parrent: store })
-        // InteractionManager.runAfterInteractions(() => {
-        //     this.setState({ disabled: false })
-        // })
+        this.props.navigation.navigate('StoreTab', { parrent: store })
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({ disabled: false })
+        })
     }
     renderStoreList(data) {
         var item = data.item
@@ -128,6 +139,7 @@ class Store extends Component {
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
                     </View>
+                    <Spinner visible = {this.state.isLoading}/>
                     <View style={styles.bodyWrap}>
                         <View style={styles.titleWrap}>
                             <Image source={money} style={styles.moneyIcon} resizeMode='contain' />
@@ -138,7 +150,8 @@ class Store extends Component {
                             extraData={this.state.data}
                             keyExtractor={this._keyExtractor}
                             numColumns={2}
-                            renderItem={(item) => (
+                            renderItem={(item) => 
+                            (
                                 <View style={styles.listItemWrap}>
                                     {this.renderStoreList(item)}
                                 </View>
@@ -152,11 +165,13 @@ class Store extends Component {
 function bindActions(dispatch) {
     return {
         fetch: (params) => dispatch(fetchStores(params)),
+        fetchBanner:() => dispatch(fetchBanner())
     };
 }
 
 const mapStateToProps = state => ({
     fetchStores: state.fetchStores,
+    fetchStoreBanner: state.fetchStoreBanner
 });
 
 export default connect(mapStateToProps, bindActions)(Store);

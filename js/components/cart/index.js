@@ -5,6 +5,7 @@ import { NavigationActions } from "react-navigation";
 import * as mConstants from '../../utils/Constants'
 import { connect } from "react-redux";
 import * as appFunction from "../../utils/function"
+import {reRenderHeader} from '../../actions/header'
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail, SwipeRow } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -121,6 +122,8 @@ class Cart extends Component {
         })
         try {
             await AsyncStorage.setItem(mConstants.CART, JSON.stringify(tempArray));
+            console.log('kmccmnmcx')
+            this.props.reRenderHeader()            
         } catch (error) {
         }
         this.totalPrice(tempArray)
@@ -213,7 +216,6 @@ class Cart extends Component {
         let content = null
         let num = this.state.totalPrice
         let price = this.priceHandle(num.toString())
-        console.log('state', this.state.data)
         const navigation = this.props.navigation;
         if (this.state.data.length > 0) {
             content = (
@@ -253,8 +255,15 @@ class Cart extends Component {
     }
 }
 
+function bindActions(dispatch) {
+	return {
+        fetch: (id) => dispatch(fetchDetail(id)),
+        reRenderHeader : () => dispatch(reRenderHeader())            
+	};
+}
+
 const mapStateToProps = state => ({
-	addOrder: state.addOrder,
+    addOrder: state.addOrder,
 });
 
-export default connect(mapStateToProps)(Cart);
+export default connect(mapStateToProps,bindActions)(Cart);

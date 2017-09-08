@@ -14,7 +14,10 @@ import { addOrder } from "../../actions/addOrder.js"
 var background = require('../../../images/background.png')
 var money = require('../../../images/money.png')
 var food = ''
-
+const resetAction = NavigationActions.reset({
+	index: 0,
+	actions: [NavigationActions.navigate({ routeName: "Drawer" })],
+});
 
 class Billing extends Component {
 	constructor(props) {
@@ -70,7 +73,11 @@ class Billing extends Component {
 			this.setState({ addClick: true })
 			if (props.addOrder.success == true) {
 				console.log('thanh doan')
+<<<<<<< HEAD
 				Alert.alert('Thông báo', 'Lưu hóa đơn thành công', [{ text: 'Ok', onPress: () => console.log('success') }]);
+=======
+				Alert.alert('','Lưu hóa đơn thành công',[{text: 'Ok', onPress: ()=> {this.props.navigation.dispatch(resetAction)} }]);
+>>>>>>> 05241923da31059549c02a944072e6065ea88cf5
 				let keys = [mConstants.CART];
 				AsyncStorage.multiRemove(keys)
 			} else {
@@ -158,10 +165,8 @@ class Billing extends Component {
 					<View style={styles.textProInput}>
 						<Text style={styles.shopText}>Vinmart</Text>
 						<Text style={styles.proNumber}>Số lượng: {quantity} {item.unitType}</Text>
+						<Text style={styles.proNumber}>Vận chuyển : {item.shipType}</Text>
 					</View>
-				</View>
-				<View style={styles.textProInput}>
-					<Text style={styles.shopText}>Vận chuyển : {item.shipType}</Text>
 				</View>
 			</View>
 		)
@@ -228,13 +233,23 @@ class Billing extends Component {
 						<Icon name="ios-contact" style={styles.userIcon} />
 						<Text style={styles.infoDetail}>Thông tin người đặt</Text>
 					</View>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 05241923da31059549c02a944072e6065ea88cf5
 					<Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='#A4A4A4' />
 					<Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#A4A4A4' />
 					<Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
 					<Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
+<<<<<<< HEAD
 					<TouchableOpacity style={styles.checkoutWrap} onPress={() => { this.addOrderClick() }}>
 						<Text style={styles.checkout}> Thanh toán </Text>
 					</TouchableOpacity>
+=======
+					<TouchableOpacity style={styles.checkoutWrap} onPress={() => {this.addOrderClick()}}>
+                        <Text style={styles.checkout}> Thanh toán </Text>
+                    </TouchableOpacity>
+>>>>>>> 05241923da31059549c02a944072e6065ea88cf5
 				</Content>
 			</Container>
 		);

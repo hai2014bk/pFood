@@ -9,11 +9,9 @@ import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
 import Spinner from 'react-native-loading-spinner-overlay';
 import styles from "./styles";
-import { fetchDetail } from "../../actions/fetchDetail.js"
+import { fetchStoreProduct } from "../../actions/fetchStoresDetail.js"
 import * as appFunction from "../../utils/function"
-
 const primary = require("../../themes/variable").brandPrimary;
-
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
 const testText = "\Thịt gà là món ăn được xếp vào hàng “sang chảnh” trong thế giới ẩm thực. Mặc dù có rất nhiều món ăn mới, hấp dẫn hơn nhưng trong mâm cỗ thì thịt gà là món ăn không thể thiếu. Vì không chỉ ngon miệng mà nó còn có giá trị dinh dưỡng cao, thậm chí các bài thuốc từ thịt gà cũng chữa bệnh rất tốt "
@@ -26,23 +24,23 @@ class StoreProduct extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 21, 34, 213, 123, 12],
-			isLoading: false,
+			data: [],
+			isLoading: true,
 			disabled: false
 		};
 	}
 	componentDidMount() {
-		console.log('jknvfkdfjlsa', this.props)
-
+		InteractionManager.runAfterInteractions(() => {
+			this.props.fetch(this.props.storeParrent.id)			
+		})
 	}
 	componentWillReceiveProps(props) {
-		if (props.fetchDetail.success) {
-			console.log('po rop', props.fetchDetail.data.model)
-			var food = props.fetchDetail.data.model
-			food.quantity = 1
-			this.setState({ food: food })
+		this.setState({isLoading:false})
+		if (props.fetchStoreProduct.success) {
+			var food = props.fetchStoreProduct.data.model
+			this.setState({ data: food })
 		}
-		if (!props.fetchDetail.success) {
+		if (!props.fetchStoreProduct.success) {
 			setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
 		}
 
@@ -87,81 +85,56 @@ class StoreProduct extends Component {
 			/>
 		)
 	}
-	_keyExtractor = (item, index) => item;
+	_keyExtractor = (item, index) => item.id;
 	openDetail(food) {
-		var foodFixed = {
-			"avgRate": 0,
-			"cities": "Hanoi",
-			"createdBy": "Admin10@gmail.com",
-			"createdDate": "2017-08-24T10:18:08.5660451",
-			"description": "Thăn bò Úc",
-			"id": 29,
-			"lastViewedDate": "2017-08-31T03:59:41.8666643",
-			"minOrderedItems": 1,
-			"modifiedBy": null,
-			"modifiedDate": null,
-			"name": "Thăn",
-			"noInStock": 500,
-			"parrentId": 16,
-			"price": 380000,
-			"productCategories": [],
-			"productMetaData": [
-				{
-					"dataGroup": null,
-					"id": 29,
-					"name": "ImageUrl",
-					"order": 0,
-					"productId": 29,
-					"value": "http://media.bizwebmedia.net/Sites/99161/data/upload/2016/t2/than_bo_uc_1.jpg?20",
-				},
-			],
-			"productView": 16,
-			"purveyor": null,
-			"purveyorId": 0,
-			"quantity": 1,
-			"quantityStep": 200,
-			"rateCount": 0,
-			"status": null,
-			"unitType": "g",
-		}
-		this.props.screenProps.navi.navigate('FoodTab', { parrent: foodFixed })
+		this.setState({disabled:true})
+		this.props.screenProps.navi.navigate('FoodTab', { parrent: food })
 		InteractionManager.runAfterInteractions(() => {
 			this.setState({ disabled: false })
 		})
 
 	}
-	renderCell(food) {
+	
+	priceHandle(price) {
+		var count = 0
+		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+		return price
+	}
+	renderCell(data) {
+		var food = data.item
+		var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'
+		if (food.productMetaData[0]) {
+			imageUrl = food.productMetaData[0].value
+		}
+		var price = this.priceHandle(food.price)
 		return (
 			<View>
-				<TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(food) }} style={{ flex: 1, alignItems: 'center' }} >
+				<TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openDetail(food) }} style={{ flex: 1, alignItems: 'center' }} >
 					<Grid style={styles.cellContainer}>
 						<Row style={styles.upContainer}>
-							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: pizza }} >
+							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: imageUrl }} >
 								<View style={styles.saleView}>
 									<Text style={styles.saleText}>-10%</Text>
 								</View>
 							</Image>
 						</Row>
 						<Row style={styles.downContainer}>
-							<Row style={{ flex: 1, width: '100%', justifyContent: 'space-between' }}>
-								<Text numberOfLines={2} style={styles.foodNameText}>Thịt Bò</Text>
-								<Text style={styles.oldPriceText}>50g</Text>
-							</Row>
-							<Row style={{ alignSelf: 'flex-start' }} >
-								<Icon name='ios-pin' style={styles.locationIcon} />
-								<Text style={styles.shopNameText}>Vinmart</Text>
-							</Row>
+							<Text numberOfLines={2} style={styles.foodNameText}>{food.name}</Text>
 							<View style={{ paddingLeft: 2, flex: 1, width: '100%' }}>
-								<Row style={{ justifyContent: 'flex-end', marginTop: 3 }} >
+								<Row style={{ justifyContent: 'space-between', marginTop: 3 }} >
+									<Row style={{ alignSelf: 'flex-end' }} >
+										<Icon name='ios-pin' style={styles.locationIcon} />
+										<Text style={styles.shopNameText}>Vinmart</Text>
+									</Row>
 									<Text style={styles.oldPriceText}>322.000đ</Text>
 								</Row>
 								<Row style={{ flex: 1, justifyContent: 'space-between', alignItems: 'flex-end' }} size={1}>
+									<Text style={styles.priceText}>{price} đ</Text>
 									<View style={{
 										marginRight: 2, marginRight: 5
 									}}>
-										{this.renderStar(3.5)}
+										{this.renderStar(food.rate)}
 									</View>
-									<Text style={styles.priceText}>1.000.00đ</Text>
 								</Row>
 							</View>
 						</Row>
@@ -177,6 +150,7 @@ class StoreProduct extends Component {
 			imageUrl = this.props.storeParrent.storeImageUrl
 		}
 		const navigation = this.props.navi;
+		console.log('893893123',this.state.data)
 		return (
 			<Container style={styles.container}>
 				<Spinner visible={this.state.isLoading} />
@@ -210,12 +184,12 @@ class StoreProduct extends Component {
 
 function bindActions(dispatch) {
 	return {
-		fetch: (id) => dispatch(fetchDetail(id)),
+		fetch: (id) => dispatch(fetchStoreProduct(id)),
 	};
 }
 
 const mapStateToProps = state => ({
-	fetchDetail: state.fetchDetail,
+	fetchStoreProduct: state.fetchStoreProduct,
 });
 
 export default connect(mapStateToProps, bindActions)(StoreProduct);

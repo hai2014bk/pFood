@@ -26,9 +26,14 @@ class History extends Component {
 
     }
 
+    onDetail(item){
+
+    }
+
     renderList(item) {
+        const navigation = this.props.navigation;
         return (
-            <View style={styles.listItemWrap}>
+            <TouchableOpacity onPress={() => navigation.navigate('HistoryDetail',{item:item})} style={styles.listItemWrap}>
                 <View style={styles.dayMonthWrap}>
                     <Text style={[styles.darkText, {fontSize:35}]}>{item.day}</Text>
                     <View style={styles.monthWrap}>
@@ -48,7 +53,7 @@ class History extends Component {
                     </View>
                     <Text style={styles.price}>{item.price}đ</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 

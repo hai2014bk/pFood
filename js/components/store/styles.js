@@ -13,6 +13,10 @@ export default {
         backgroundColor: '#e7e9e5',
         paddingBottom: 10
     },
+    imageBanner:{
+		width : deviceWidth,
+		height:137,
+	},
     cellContainer: {
         backgroundColor: 'white',
         flex: 1,

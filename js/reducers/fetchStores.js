@@ -4,7 +4,7 @@ export type State = {
 }
 
 const initialState = {
-    success: false,
+    success: true,
     data: []
 };
 

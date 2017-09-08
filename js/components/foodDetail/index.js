@@ -1,15 +1,18 @@
 import React, { Component } from "react";
-import { Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {InteractionManager, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
-import { Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
+import { Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail, CheckBox } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import { connect } from "react-redux";
 import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
 import styles from "./styles";
+import {reRenderHeader} from '../../actions/header'
 import { fetchDetail } from "../../actions/fetchDetail.js"
 import * as appFunction from "../../utils/function"
+import Spinner from 'react-native-loading-spinner-overlay';
+import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
 const primary = require("../../themes/variable").brandPrimary;
 
@@ -29,16 +32,27 @@ class FoodDetail extends Component {
 			password: "",
 			quantity: 1,
 			seeMore: false,
-			food: ''
+			food: '',
+			isLoading:true,
+			shipTypes: {
+				ViettelPost: true,
+				Adayroi: false,
+				Grab: false,
+				Uber: false
+			},
+			item: {},
+			ship: 'ViettelPost',
 		};
 	}
 	componentDidMount() {
-		console.log('mountedssasasa', this.props.food)
-		this.props.fetch(this.props.food.id)
+		InteractionManager.runAfterInteractions(() => {
+			this.props.fetch(this.props.food.id)
+			
+		})
 
 	}
 	componentWillReceiveProps(props) {
-		console.log('i329821oi321321',props)
+		this.setState({isLoading:false})
 		if (props.fetchDetail.success) {
 			console.log('po rop', props.fetchDetail.data.model)
 			var food = props.fetchDetail.data.model
@@ -97,8 +111,8 @@ class FoodDetail extends Component {
 	}
 	renderDecription() {
 		var food = this.state.food
-		var description=''
-		if(food.description){
+		var description = ''
+		if (food.description) {
 			description = food.description
 		}
 		return (
@@ -116,7 +130,7 @@ class FoodDetail extends Component {
 	}
 	renderContentInfo(header, content) {
 		return (
-			<Grid style={{flex:1, borderColor: '#e7e9e5', borderTopWidth: 1 }}>
+			<Grid style={{ flex: 1, borderColor: '#e7e9e5', borderTopWidth: 1 }}>
 				<Row style={{ margin: 10, flex: 1, justifyContent: 'space-between' }}>
 					<Text style={styles.contentText}>{header}</Text>
 					<Text style={styles.contentText}>{content}</Text>
@@ -126,9 +140,9 @@ class FoodDetail extends Component {
 	}
 	renderFoodContent() {
 		return (
-			<Card style={{padding:0, flex:1, marginBottom: 15 }}>
+			<Card style={{ padding: 0, flex: 1, marginBottom: 15 }}>
 				<View style={styles.cardContainer}>
-						<Text style={styles.headerText}> Hàm Lượng </Text>
+					<Text style={styles.headerText}> Hàm Lượng </Text>
 					{this.renderContentInfo('Diệp lục', '1000')}
 					{this.renderContentInfo('Vitamin A', '10%')}
 				</View>
@@ -153,20 +167,20 @@ class FoodDetail extends Component {
 	}
 	plus() {
 		var food = this.state.food
-		food.quantity += food.quantityStep 
-		this.setState({ food:food })
+		food.quantity += food.quantityStep
+		this.setState({ food: food })
 	}
 	minus() {
 		var food = this.state.food
-		if(food.quantity > 0){
+		if (food.quantity > 0) {
 			food.quantity -= food.quantityStep
-			this.setState({ food:food })
+			this.setState({ food: food })
 		}
 	}
 	priceHandle(price) {
 		var count = 0
 		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
-        return price
+		return price
 	}
 	insertString(str, index, value) {
 		return str.substr(0, index) + value + str.substr(index);
@@ -174,34 +188,42 @@ class FoodDetail extends Component {
 	renderPriceAndBuy() {
 		var food = this.state.food
 		console.log('step', food)
-		var quantity = appFunction.handleUnitType(food.unitType,food.quantity) 
+		var quantity = ''
 		var price = ''
-		var disabled = false
 		console.log(food.unitType)
 		if (food.price) {
 			price = this.priceHandle(food.price.toString())
+			quantity = appFunction.handleUnitType(food.unitType,food.quantity)
 		}
 		if (food.quantity > 0) {
-            active = 0.2,
-			color = primary
-			disabled = false
-        } else {
-            active = 1,
-			color = '#cecece'
-			disabled = true
-        }
+			active = 0.2,
+				color = primary
+			buttonAdd = (
+				<Button addCart onPress={() => { this.addtoCart(food); this.setState({ item: food }) }} >
+					<Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+				</Button>
+			)
+		} else {
+			active = 1,
+				color = '#cecece'
+			buttonAdd = (
+				<Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
+					<Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+				</Button>
+			)
+		}
 		return (
 			<Grid>
 				<Col style={{ margin: 10 }}>
 					<Row>
-					<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain' />
+						<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain' />
 						<Text style={styles.price} > {price}đ</Text>
 					</Row>
 				</Col>
 				<Col style={{ margin: 10 }}>
 					<Row style={{ marginLeft: '20%', flex: 1, justifyContent: 'flex-end' }}>
-					<TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, {borderColor:color}]} onPress={() => this.minus()} >
-							<Icon style={[styles.icon, {color:color}]} name="md-remove" />
+						<TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus()} >
+							<Icon style={[styles.icon, { color: color }]} name="md-remove" />
 						</TouchableOpacity>
 						<Col style={styles.quantityContainer}>
 							<Text style={styles.quantity}>{quantity} </Text>
@@ -211,15 +233,97 @@ class FoodDetail extends Component {
 						</TouchableOpacity>
 					</Row>
 					<Col style={styles.buttonAddCard}>
-						<Button style={{backgroundColor:color}} disabled={disabled} onPress={()=> {appFunction.add(this.state.food)}} addCart large >
-							<Text numberOfLines={1} style={{ width: '100%', color: 'white', fontWeight: 'normal', fontSize: 12, textAlign: 'center' }}> Thêm vào giỏ </Text>
-						</Button>
+						{buttonAdd}
 					</Col>
 				</Col>
 			</Grid>
 		)
 	}
 
+	async addtoCart(item) {
+        let data = []
+        try {
+            const value = await AsyncStorage.getItem(mConstants.CART);
+            if (value !== null) {
+                data = JSON.parse(value)
+                if (data.length > 0) {
+                    for (let i = 0; i <= data.length; i++) {
+                        if (data[i].purveyorId == item.purveyorId) {
+                            item.shipType = data[i].shipType
+							appFunction.add(item,this.props)
+							console.log('3u102321')
+                        } else {
+                            this.popupDialog.show()
+                        }
+                    }
+                } else {
+                    this.popupDialog.show()
+                }
+            } else {
+                this.popupDialog.show()
+            }
+        } catch (error) {
+        }
+    }
+
+    updateStatus(key) {
+        let boxType = Object.assign({}, this.state.shipTypes)
+        for (let k in boxType) {
+            if (boxType.hasOwnProperty(k)) {
+                boxType[k] = false;
+                if (k === key) {
+                    boxType[k] = true;
+                }
+            }
+        }
+        this.setState({ shipTypes: boxType, ship: key });
+    }
+
+    pickerWrap(text, key) {
+        let shipTypes = this.state.shipTypes
+        let checked = shipTypes[key] ? true : false;
+        return (
+            <TouchableOpacity style={styles.pickerWrap} onPress={() => this.updateStatus(key)}>
+                <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key)} />
+                <Text style={styles.checkboxText}>{text}</Text>
+            </TouchableOpacity>
+        )
+    }
+    renderPopup() {
+        return (
+            <PopupDialog
+                dialogTitle={<DialogTitle title="Hình thức vận chuyển" />}
+                ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+                dialogStyle={{ marginTop: -200 }}
+                width={250}
+                height={250}
+                actions={[
+                    <DialogButton
+                        text="Xác nhận" t
+                        onPress={() => {
+                            this.addCart()
+                        }}
+                        key="button-1"
+                    />,
+                ]}
+            >
+                <View style={styles.pickerContainer}>
+                    {this.pickerWrap('Viettel Post', 'ViettelPost')}
+                    {this.pickerWrap('Adayroi', 'Adayroi')}
+                    {this.pickerWrap('Grab', 'Grab')}
+                    {this.pickerWrap('Uber', 'Uber')}
+                </View>
+            </PopupDialog>
+        )
+    }
+
+    addCart() {
+        let item = this.state.item
+        item.shipType = this.state.ship
+        appFunction.add(item,this.props)
+        this.popupDialog.dismiss()
+	}
+	
 	render() {
 		var imageUrl = 'https://hlfppt.org/wp-content/uploads/2017/04/placeholder.png'
 		if (this.state.food.productMetaData) {
@@ -229,16 +333,19 @@ class FoodDetail extends Component {
 		return (
 			<Container style={styles.container}>
 				<Content>
+					<Spinner visible ={this.state.isLoading}/>
 					<Image resizeMode='cover' source={{ uri: imageUrl }} style={styles.foodImage} />
 					{this.renderPriceAndBuy()}
 					{this.renderDecription()}
 					<View style={{ marginTop: 10 }}>
 						{this.renderInfo()}
 					</View>
-					<View style={{ marginTop: 25}}>
+					<View style={{ marginTop: 25 }}>
 						{this.renderFoodContent()}
 					</View>
+				
 				</Content>
+				{this.renderPopup()}
 			</Container>
 		);
 	}
@@ -247,6 +354,7 @@ class FoodDetail extends Component {
 function bindActions(dispatch) {
 	return {
 		fetch: (id) => dispatch(fetchDetail(id)),
+		reRenderHeader:() => dispatch(reRenderHeader())
 	};
 }
 

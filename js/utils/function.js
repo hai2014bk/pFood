@@ -33,7 +33,7 @@ export function handleUnitType(unitType,quantity){
     var quantityUnit = newQuantity + ' ' + newUnittype
     return quantityUnit
 }
-export async function add(item) {   
+export async function add(item, props) {   
     let data = [];
     var quantity = item.quantity - item.quantityStep
     if (quantity  < 0 || (quantity == 0 && item.quantityStep == 0)) {
@@ -80,6 +80,8 @@ export async function add(item) {
         }
         try {
             await AsyncStorage.setItem('cartUser', JSON.stringify(data));
+            console.log('olsd12312',props)
+            props.reRenderHeader()
         } catch (error) {
         }
     }

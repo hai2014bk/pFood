@@ -2,10 +2,7 @@ const React = require("react-native");
 
 const { Platform, Dimensions } = React;
 
-const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
-const itemWidth = (deviceWidth - 30) / 2;
-
 const primary = require("../../themes/variable").brandPrimary;
 
 export default {
@@ -15,19 +12,11 @@ export default {
 		height: null,
         backgroundColor: '#e7e9e5',
 	},
-	pageBanner: {
-		width:'100%',
-		height:deviceHeight * 125/990
-	},
-	foodImage:{
-		margin:10,
-		flex:1,
-		height:deviceHeight * 200/990
-	},
 	cellContainer:{
 		backgroundColor:'white', 
 		flex: 1, 
-		width:'100%',
+		width: deviceWidth/2 - 20,
+		minWidth:120,				
 		alignItems: 'flex-start',
 		justifyContent:'flex-end',
 		borderRadius:5,
@@ -45,9 +34,6 @@ export default {
 		borderColor:'#e7e9e5',
 		flexDirection:'column',
 		alignItems:'flex-end',
-		paddingRight:5,
-		paddingBottom:3,
-		paddingLeft:5,
 	},
 	saleView:{
 		height:15,
@@ -66,16 +52,20 @@ export default {
 	pageBanner: {
 		flex:2
 	},
+	imageBanner:{
+		width : deviceWidth,
+		height:137,
+	},
 	sectionText:{
 		color:primary,
 		fontSize:17,
-		fontWeight:'bold',
-		textAlign:'left',
-		marginLeft:10
+		marginLeft:10,
+		fontWeight:'400',
+		textAlign:'left'
 	},
 	foodThumnail:{
 		marginTop:5,
-		height:60,
+		height:80,
 		flex:1,
 	},
 	oldPriceText: {
@@ -106,8 +96,10 @@ export default {
 		color:'black',
 		fontWeight:'500',
 		fontSize:12,
+		maxWidth:100,
 		textAlign:'left',
 		alignSelf:'flex-start',
+		height:28
 	},
 	priceText: {
 		color:primary,
@@ -118,13 +110,5 @@ export default {
 	},
 	mainContent:{
 		flex:3
-	},
-	listItem:{
-		flex: 1, 
-		margin: 3,
-		marginBottom:10,
-		justifyContent:'center',
-		 minWidth: itemWidth, 
-		 maxWidth: itemWidth
-	  },
+	}
 };
