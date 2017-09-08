@@ -77,6 +77,7 @@ class Login extends Component {
           let params = {}
           params.email = this.state.email
           params.password = this.state.password
+          params.loginType = 'default'
           this.props.loginAction(params)
           this.setState({ isLoading: true })
         }
@@ -110,7 +111,7 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(props) {
-
+    console.log('props',props)
     this.setState({ isLoading: false })
     if (props.login.success) {
       this.props.navigation.navigate('Drawer')
