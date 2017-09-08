@@ -39,7 +39,7 @@ class RecommendFood extends Component {
 	componentDidMount() {
 		var date = new Date()
 		let isoDate = date.toISOString().slice(0, -1)
-		console.log('2321321', isoDate)
+		// console.log('2321321', isoDate)
 		var params = {
 			"PageSize": "20",
 			"PageIndex": "1",
@@ -51,9 +51,9 @@ class RecommendFood extends Component {
 
 	componentWillReceiveProps(props) {
 		if (props.fetchBannerRecomend.success && !this.state.bannerLoaded) {
-			console.log('dskjfdaklsf')
+			// console.log('dskjfdaklsf')
 			if (props.fetchBannerRecomend.data.model[0]) {
-				console.log('dskjfdakls22221')
+				// console.log('dskjfdakls22221')
 				var listBanner = props.fetchBannerRecomend.data.model
 				this.setState({ banners: listBanner, bannerLoaded: true })
 			}
@@ -101,7 +101,7 @@ class RecommendFood extends Component {
 			}
 		}
 		if (!props.fetchTrendingRecomend.success) {
-			console.log('9328934893141', props)
+			// console.log('9328934893141', props)
 			setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
 		}
 	}

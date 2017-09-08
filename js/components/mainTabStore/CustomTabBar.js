@@ -10,16 +10,10 @@ class CustomTabBar extends Component {
 		const isTabActive = this.props.activeTab === page;
 		var icon = ''
 		if(page==0){
-			icon = 'md-star'
-		}
-		if(page==1){
 			icon = 'ios-list-box-outline'
 		}
-		if(page==3){
-			icon = 'ios-megaphone'
-		}
-		if(page==2){
-			icon = 'ios-search'
+		if(page==1){
+			icon = 'ios-pin'
 		}
 
 

@@ -53,7 +53,10 @@ class Categories extends Component {
                 })
                 }
             } else {
+                if (props.fetchSubCategories.data.checkId == this.state.parentChoose.id){
+                setTimeout(() => { Alert.alert('', 'Chưa có sản phầm') })
                 this.setState({disabled:false})
+                }
             }
         }
     }

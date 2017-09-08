@@ -120,11 +120,8 @@ class FoodRelate extends Component {
         this.setState({disabled:true})
         this.props.screenProps.navi.navigate('FoodTab', { parrent: food })
         InteractionManager.runAfterInteractions(() => {
-            this.setState({disabled:false})
-            
+            this.setState({disabled:false})  
 		})
-
-
     }
     renderItems(data) {
         let item = data.item

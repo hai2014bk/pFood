@@ -12,8 +12,7 @@ import Profile from "./components/profile/";
 import Settings from "./components/settings";
 import Widgets from "./components/widgets";
 import MainTabFood from "./components/mainTabFood";
-import MainStore from "./components/mainStore";
-
+import MainTabStore from "./components/mainTabStore";
 import History from "./components/history"
 import Store from "./components/store"
 import StoreStack from "./storeStack"
@@ -30,7 +29,7 @@ const Drawer = DrawerNavigator(
 		Settings: { screen: Settings },
 		Widgets: { screen: Widgets },
 		History: { screen: History },	
-		MainStore : { screen: MainStore },
+		MainTabStore : { screen: MainTabStore },
 		MainTabFood: {screen: MainTabFood},
 		
 	},

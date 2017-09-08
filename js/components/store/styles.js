@@ -11,7 +11,6 @@ export default {
         width: null,
         height: null,
         backgroundColor: '#e7e9e5',
-        paddingBottom: 10
     },
     imageBanner:{
 		width : deviceWidth,
@@ -154,7 +153,7 @@ export default {
     },
     bodyWrap: {
         flex: 1,
-        padding: 10
+        padding: 10,
     },
     titleWrap: {
         flexDirection: 'row',

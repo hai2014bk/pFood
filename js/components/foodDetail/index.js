@@ -48,7 +48,6 @@ class FoodDetail extends Component {
 	componentDidMount() {
 		InteractionManager.runAfterInteractions(() => {
 			this.props.fetch(this.props.food.id)
-
 		})
 
 	}

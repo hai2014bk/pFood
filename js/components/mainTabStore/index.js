@@ -11,17 +11,11 @@ import Login from "./../login/";
 import SignUp from "./../sign-up/";
 import Swiper from 'react-native-swiper';
 import CustomTabBar from "./CustomTabBar";
-import CategoryStack from '../../categoryStack';
-import RecommendStack from '../../recommendStack';
-import TrendingStack from '../../trendingStack';
-import SearchFoodStack from '../../searchFoodStack';
-
-
-
-
+import StoreStack from '../../storeStack';
+import NearbyStoreStack from '../../nearbyStoreStack';
 import styles from "./styles";
 
-class MainStoreFood extends Component {
+class MainTabStore extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -36,14 +30,12 @@ class MainStoreFood extends Component {
 		return (
 			<Container>
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'bottom'} >
-					<RecommendStack screenProps={{ navi: navigation }} tabLabel="Đề xuất" />
-					<CategoryStack screenProps={{ navi: navigation }} tabLabel="Danh mục" />
-					<SearchFoodStack screenProps={{ navi: navigation }} tabLabel="Tìm kiếm" />
-					<TrendingStack screenProps={{ navi: navigation }} tabLabel="Xu hướng" />
+					<StoreStack screenProps={{ navi: navigation }} tabLabel="Cửa hàng" />
+					<NearbyStoreStack screenProps={{ navi: navigation }} tabLabel="Gần đây" />
 				</ScrollableTabView>
 			</Container>
 		);
 	}
 }
 
-export default MainStoreFood;
+export default MainTabStore;

@@ -33,12 +33,15 @@ export function fetchUserFailed(error) {
 
 export function fetchUser(email) {
 	console.log('email', email)
-	let url = mConstants.BASE_URL + 'user/getuserbyemail?emai=' + email
+	let url = mConstants.BASE_URL + 'user/getuserbyemail?email=' + email
 	return dispatch => {
 		APIRequest.APIRequestGET(url, true,
 			response => {
 				console.log('respone fetch user', response)
 				dispatch(fetchUserSuccess(response));
+				AsyncStorage.setItem(
+					mConstants.USER_DETAIL,
+					JSON.stringify(response));
 			},
 			error => {
 				console.log('error fetch user', error)

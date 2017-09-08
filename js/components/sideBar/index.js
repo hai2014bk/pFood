@@ -11,19 +11,50 @@ const resetAction = NavigationActions.reset({
 	actions: [NavigationActions.navigate({ routeName: "Login" })],
 });
 class SideBar extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			firstName: "",
+			lastName: "",
+			isLoading: false,
+			image: ''
+		};
+	}
+
+	async componentDidMount() {
+		let data = []
+		try {
+			const value = await AsyncStorage.getItem(mConstants.USER_DETAIL);
+			if (value !== null) {
+				data = JSON.parse(value)
+				console.log('data sideMenu',data)
+				let firstName = data.model.firstName
+				let lastName = data.model.lastName
+				this.setState({ firstName, lastName })
+			}
+		} catch (error) {
+
+		}
+	}
 
 	async logOut() {
-		let keys = [mConstants.CART, mConstants.USER_INFO];
+		let keys = [mConstants.CART, mConstants.USER_INFO, mConstants.USER_DETAIL];
 		await AsyncStorage.multiRemove(keys)
 		this.props.navigation.dispatch(resetAction);
 	}
 	render() {
+		let source = ''
+		if(this.state.image){
+			source = this.state.image
+		} else {
+			source = 'https://i.imgur.com/GOje06b.png'
+		}
 		const navigation = this.props.navigation;
 		return (
 			<Container>
 				<Image source={require("../../../images/sid.png")} style={styles.background}>
 					<Content style={styles.drawerContent}>
-					<ListItem
+						<ListItem
 							navigation={navigation}
 							button
 							onPress={() => {
@@ -39,7 +70,7 @@ class SideBar extends Component {
 							navigation={navigation}
 							button
 							onPress={() => {
-								navigation.navigate("MainStore");
+								navigation.navigate("MainTabStore");
 							}}
 							iconLeft
 							style={styles.links}
@@ -86,7 +117,7 @@ class SideBar extends Component {
 										>
 											<Text style={{ fontWeight: "bold", color: "#fff" }}>LOG OUT</Text>
 											<Text note style={{ color: "#fff" }}>
-												Kumar Sanket
+												{this.state.firstName} {this.state.lastName}
 											</Text>
 										</TouchableOpacity>
 									</Col>
@@ -98,7 +129,7 @@ class SideBar extends Component {
 											}}
 										>
 											<Thumbnail
-												source={require("../../../images/contacts/sanket.png")}
+												source={{ uri: source}}
 												style={styles.profilePic}
 											/>
 										</TouchableOpacity>

@@ -17,7 +17,12 @@
 			"bundleIdentifier": "io.market.nativebase.geekyants.flatappui"
 		},
 		"android": {
-			"package": "io.market.nativebase.geekyants.flatappui"
+			"package": "io.market.nativebase.geekyants.flatappui",
+			"config": {
+				"googleMaps": {
+				  "apiKey": "AIzaSyDFXchmJX9nP2q6mHKNpkJgzVSgfBOsky0"
+				}
+		}
 		},
 		"androidStatusBarColor": "#01cca1",
 		"androidStatusBar": {

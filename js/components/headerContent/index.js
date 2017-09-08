@@ -59,9 +59,9 @@ class HeaderContent extends Component {
     if (this.props.leftButton != null) {
       if (this.props.textLeft) {
         return (
-          <Button transparent onPress={this.props.leftButton}>
-            <Text style={{ color: 'white', fontSize: 13 }}>{this.props.textLeft}</Text>
-          </Button>
+          <TouchableOpacity style={{marginLeft:-10}} transparent onPress={this.props.leftButton}>
+            <Text style={{marginLeft:10, color: 'white', fontSize: 13 }}>{this.props.textLeft}</Text>
+          </TouchableOpacity>
         )
       } else {
         return (
@@ -127,7 +127,7 @@ class HeaderContent extends Component {
     if (this.props.secondRightBtn) {
       return (
         <Header style={{ borderBottomWidth: 0, backgroundColor: primary }}>
-          <Left style={{ flex: 1 }}>
+          <Left style={{ flex: 1, marginLeft:0 }}>
             {this.renderLeft()}
           </Left>
           <Body style={{ justifyContent: 'center', alignItems: 'center', flex: 2, flexDirection: 'row', }}>
