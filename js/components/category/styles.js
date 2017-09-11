@@ -69,9 +69,9 @@ export default {
         marginLeft: 10, 
         borderTopColor:'gray', 
         borderTopWidth:0.5,
+        marginTop:10,
     },
     sortFieldWrap:{
-        flex: 2,
          marginLeft: 10,
     },
     loadMoreCell :{

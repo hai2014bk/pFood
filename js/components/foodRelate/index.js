@@ -170,7 +170,7 @@ class FoodRelate extends Component {
                                     </View>
                                     <Text style={styles.price}>{price}đ</Text>
                                 </Col>
-                                <TouchableOpacity style={styles.buyColumn}>
+                                <TouchableOpacity  activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
                                         <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
                                             <Icon style={[styles.icon, { color: color }]} name="md-remove" />

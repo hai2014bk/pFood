@@ -12,6 +12,7 @@ import SignUp from "./../sign-up/";
 import Swiper from 'react-native-swiper';
 import CustomTabBar from "./CustomTabBar";
 import StoreStack from '../../storeStack';
+import SearchStoreStack from '../../searchStoreStack';
 import NearbyStoreStack from '../../nearbyStoreStack';
 import styles from "./styles";
 
@@ -31,6 +32,7 @@ class MainTabStore extends Component {
 			<Container>
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'bottom'} >
 					<StoreStack screenProps={{ navi: navigation }} tabLabel="Cửa hàng" />
+					<SearchStoreStack screenProps={{ navi: navigation }} tabLabel="Tìm kiếm" />
 					<NearbyStoreStack screenProps={{ navi: navigation }} tabLabel="Gần đây" />
 				</ScrollableTabView>
 			</Container>

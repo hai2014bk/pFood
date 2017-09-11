@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {InteractionManager,Alert, Dimensions, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
+import { InteractionManager, Alert, Dimensions, FlatList, Image, View, TouchableOpacity, Platform, Text } from "react-native";
 import { fetchCategories, fetchSubCategories } from "../../actions/fetchCategories.js"
 import { Thumbnail, Container, Header, Content, Button, Icon, Left, Right, Item, Body, List, ListItem, Label } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
@@ -15,9 +15,9 @@ class Categories extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            parentChoose : '',
-            disabled:false
-            
+            parentChoose: '',
+            disabled: false
+
         };
     }
 
@@ -46,39 +46,42 @@ class Categories extends Component {
             console.log('ssaaa')
             var subCategories = props.fetchSubCategories.data.model
             if (subCategories.length > 0) {
-                if(subCategories[0].parentId == this.state.parentChoose.id) {
-                    this.props.navigation.navigate("SubCategories", { data: subCategories,parent:this.state.parentChoose})
+                if (subCategories[0].parentId == this.state.parentChoose.id) {
+                    this.props.navigation.navigate("SubCategories", { data: subCategories, parent: this.state.parentChoose })
                     InteractionManager.runAfterInteractions(() => {
-                        this.setState({disabled:false})            
-                })
+                        this.setState({ disabled: false })
+                    })
                 }
             } else {
-                if (props.fetchSubCategories.data.checkId == this.state.parentChoose.id){
-                setTimeout(() => { Alert.alert('', 'Chưa có sản phầm') })
-                this.setState({disabled:false})
+                if (props.fetchSubCategories.data.checkId == this.state.parentChoose.id) {
+                    setTimeout(() => { Alert.alert('', 'Chưa có sản phầm') })
+                    setTimeout(() => {
+                        this.setState({ disabled: false },500)
+                    })
+
                 }
             }
         }
     }
-    choseFood(food){
+    choseFood(food) {
         this.props.fetchSub(food.id)
-        this.setState({parentChoose:food})
+        this.setState({ parentChoose: food })
     }
 
     renderCell(data) {
-        var icon = '' 
-        if(data.item.iconUrl) {
+        var icon = ''
+        if (data.item.iconUrl) {
             icon = data.item.iconUrl
-        }        
+        }
         console.log('jkhofdgjkdfsjkre', data.item)
         return (
-            <TouchableOpacity disabled={this.state.disabled} style={{ flex: 1 }} onPress={() => {this.setState({disabled:true}),this.choseFood(data.item) }}>
+            <TouchableOpacity disabled={this.state.disabled} style={{ flex: 1 }} onPress={() => { this.setState({ disabled: true }), this.choseFood(data.item) }}>
                 <Image resizeMode='cover' style={styles.imageBackgroundItem} source={{ uri: data.item.imageUrl }}>
                     <View style={styles.opacityView}>
-                    <Image style={{width:'40%',aspectRatio:1, marginBottom:5}} resizeMode='contain' source={{uri:icon}}/>
+                        <Image style={{ width: '40%', aspectRatio: 1, marginBottom: 5 }} resizeMode='contain' source={{ uri: icon }} />
                         <Text style={styles.title}>{data.item.name}</Text>
-                        </View>
-                    </Image>
+                    </View>
+                </Image>
             </TouchableOpacity>
 
         )
@@ -91,7 +94,7 @@ class Categories extends Component {
             <Container style={styles.container}>
                 <HeaderContent rightButton={true} navi={navigation} title="Danh mục" leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")} />
                 <Content style={styles.contentWrap}>
-                    <FlatList style={{margin:10}}
+                    <FlatList style={{ margin: 10 }}
                         data={this.state.data}
                         extraData={this.state.data}
                         keyExtractor={this._keyExtractor}

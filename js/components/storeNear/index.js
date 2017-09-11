@@ -109,6 +109,7 @@ class StoreNear extends Component {
     renderCallOut(store) {
         return(
             <View style={styles.callOutWrap}>
+                <TouchableOpacity disabled={this.state.disabled} onPress={()=> {this.openStoreDetail(store)}}>
                 <Grid>
                 <Col style={{flex:1}}>
                     <Image resizeMode='contain' style={styles.imageStore} source={{uri:store.storeImageUrl}}/>
@@ -121,6 +122,7 @@ class StoreNear extends Component {
                         <Text style={styles.address}>{store.hqAddress}</Text>
                 </Col>
                 </Grid>
+                </TouchableOpacity>
                 </View>
         )
     }
@@ -144,7 +146,7 @@ class StoreNear extends Component {
                 coordinate={marker.coordinate}
                 style={styles.marker}
               >
-              <MapView.Callout onPress={()=> {this.openStoreDetail(marker)}}>
+              <MapView.Callout>
                   {this.renderCallOut(marker)}
                 </MapView.Callout>
                 </MapView.Marker>

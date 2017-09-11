@@ -35,7 +35,6 @@ class Category extends Component {
             disabled: false,
             isLoading: true,
             field: {
-                Id: false,
                 Name: false,
                 Price: false,
                 RateCount: false
@@ -52,6 +51,8 @@ class Category extends Component {
             },
             item: {},
             ship: 'ViettelPost',
+            fieldChose: '',
+            directionChose:''
         };
     }
 
@@ -240,7 +241,6 @@ class Category extends Component {
         return (
             <View style={styles.sortWrap}>
                 <View style={styles.sortFieldWrap}>
-                    {this.pickerWrap('Mã sản phẩm', 'Id', 'field')}
                     {this.pickerWrap('Tên sản phẩm', 'Name', 'field')}
                     {this.pickerWrap('Giá sản phẩm', 'Price', 'field')}
                     {this.pickerWrap('Đánh giá', 'RateCount', 'field')}
@@ -263,11 +263,29 @@ class Category extends Component {
             "OrderDirection": this.state.sortDirection,
             "CategoryId": params.parent.id
         }
-        this.setState({ isSort: true })
+        this.setState({ isSort: true, fieldChose:this.state.sortBy, directionChose:this.state.sortDirection })
         this.props.fetch(parameter)
     }
     onDismissed() {
+        let fieldType = Object.assign({}, this.state.field)
+        let directionType = Object.assign({}, this.state.direction)
+        for (let k in fieldType) {
+            if (fieldType.hasOwnProperty(k)) {
+                fieldType[k] = false;
+                if (k === this.state.fieldChose) {
+                    fieldType[k] = true;
+                }
+            }
+        }for (let k in directionType) {
+            if (directionType.hasOwnProperty(k)) {
+                directionType[k] = false;
+                if (k === this.state.directionChose) {
+                    directionType[k] = true;
+                }
+            }
+        }
 
+            this.setState({ field: fieldType,direction: directionType, });
     }
 
     renderSortPopup() {

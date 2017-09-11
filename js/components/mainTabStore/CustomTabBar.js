@@ -13,6 +13,9 @@ class CustomTabBar extends Component {
 			icon = 'ios-list-box-outline'
 		}
 		if(page==1){
+			icon = 'ios-search'
+		}
+		if(page==2){
 			icon = 'ios-pin'
 		}
 

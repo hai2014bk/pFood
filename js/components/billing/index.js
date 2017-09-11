@@ -9,6 +9,8 @@ import styles from "./styles";
 import commonColor from "../../../native-base-theme/variables/commonColor";
 import Utils from "../../utils/validate.js"
 import * as mConstants from '../../utils/Constants';
+import * as appFunction from "../../utils/function"
+
 import Spinner from 'react-native-loading-spinner-overlay';
 import { addOrder } from "../../actions/addOrder.js"
 var background = require('../../../images/background.png')
@@ -41,19 +43,38 @@ class Billing extends Component {
 				creditCard: false
 			},
 			addClick: true,
+			userAddress: '',
+			userEmail: '',
+			userMobile: '',
+			userName: '',
+
 		};
 
 	}
 	async componentDidMount() {
+		console.log('propsss2321', this.props);		
 		totalPrice = 0
 		let data = []
 		this.setState({ totalPrice })
 		try {
 			const value = await AsyncStorage.getItem(mConstants.USER_DETAIL);
-			console.log('dsfda', value)
+			console.log('dsfda321321213', value)
 			if (value !== null) {
-				var userInfo = JSON.parse(value)
-				this.setState({ userInfo: userInfo })
+				var userInfo = JSON.parse(value).model
+				console.log('2382190321j3212312312',userInfo)
+				if(!userInfo.address) {
+					userInfo.address = ''
+				}
+				if(!userInfo.address) {
+					userInfo.mobile = ''
+				}
+				this.setState({
+					userInfo: userInfo,
+					userAddress: userInfo.address,
+					userEmail: userInfo.email,
+					userName: userInfo.lastName + ' ' + userInfo.firstName,
+					userMobile: userInfo.mobile
+				})
 			}
 		} catch (error) {
 		}
@@ -75,7 +96,6 @@ class Billing extends Component {
 
 	componentWillReceiveProps(props) {
 		let navigation = this.props.navigation
-		console.log('propsss', props);
 		this.setState({ visible: false })
 		if (this.state.addClick === false) {
 			this.setState({ addClick: true })
@@ -96,9 +116,25 @@ class Billing extends Component {
 		return price
 	}
 
+	checkValue() {
+		if (this.state.userEmail == '') {
+			this.userEmail._root.focus()
+		}
+		if (this.state.userMobile == '') {
+			this.userMobile._root.focus()
+		}
+
+		if (this.state.userAddress == '') {
+			this.userAddress._root.focus()
+		}
+		if (this.state.userName == '') {
+			console.log('1213213', this.state.userName)
+			this.userName._root.focus()
+		}
+	}
 	addOrderClick() {
-		this.setState({ visible: true, addClick: false })
 		var param = {};
+		Keyboard.dismiss()
 		data = this.state.data
 		param.OrderedProducts = [];
 		for (i = 0; i < data.length; i++) {
@@ -108,16 +144,48 @@ class Billing extends Component {
 			}
 			param.OrderedProducts.push(product);
 		}
-		param.UserId = this.state.userInfo.model.id;
-		param.Status = "Submitted";
-		param.TotalPrice = this.state.totalPrice;
-		param.BillingAddress = this.state.userAddress;
-		param.DeliveryAddress = this.state.userAddress;
-		param.DeliveryMethod = this.state.shipKey;
-		param.PaymentMethod = this.state.payKey;
-		this.props.add(param)
-		console.log(param)
-		this.setState({ visible: true })
+		if (this.state.userAddress == '' ||
+			this.state.userName == '' ||
+			this.state.userEmail == '' ||
+			this.state.userMobile == '' ||
+			Utils.checkSpaceAll(this.state.userName) ||
+			Utils.checkSpaceAll(this.state.userAddress)) {
+			setTimeout(() => {
+				Alert.alert(
+					'',
+					'Các trường không được phép trống',
+					[
+						{ text: 'OK', onPress: () => this.checkValue() },
+					],
+					{ cancelable: false }
+				)
+			}, 200)
+		} else {
+			if (!Utils.validateEmail(this.state.userEmail) || !Utils.validateUnicode(this.state.userEmail)) {
+				setTimeout(() => {
+					Alert.alert(
+						'',
+						'Địa chỉ email không hợp lệ',
+						[
+							{ text: 'OK', onPress: () => this.userEmail._root.focus() },
+						],
+						{ cancelable: false }
+					)
+				}, 200)
+			} else {
+				param.UserId = this.state.userInfo.id;
+				param.Status = "Submitted";
+				param.TotalPrice = this.state.totalPrice;
+				param.BillingAddress = this.state.userAddress;
+				param.DeliveryAddress = this.state.userAddress;
+				param.DeliveryMethod = this.state.shipKey;
+				param.PaymentMethod = this.state.payKey;
+				this.props.add(param)
+				console.log(param)
+				this.setState({ visible: true, addClick: false })
+				this.setState({ visible: true })
+			}
+		}
 	}
 
 	updateStatus(key, type) {
@@ -155,7 +223,7 @@ class Billing extends Component {
 	renderItem(item) {
 		let proPrice = item.price * item.quantity / item.quantityStep;
 		let price = this.priceHandle(proPrice.toString())
-		let quantity = item.quantity
+		let quantity = appFunction.handleUnitType(item.unitType,item.quantity)		
 		return (
 			<View style={styles.proDetail}>
 				<View style={styles.flexCol}>
@@ -169,7 +237,7 @@ class Billing extends Component {
 					</View>
 					<View style={styles.textProInput}>
 						<Text style={styles.shopText}>Vinmart</Text>
-						<Text style={styles.proNumber}>Số lượng: {quantity} {item.unitType}</Text>
+						<Text style={styles.proNumber}>Số lượng: {quantity} </Text>
 					</View>
 					<Text style={styles.shopText}>Vận chuyển : {item.shipType}</Text>
 				</View>
@@ -203,7 +271,7 @@ class Billing extends Component {
 		var mdh = "F001"
 		const navigation = this.props.navigation;
 		var userInfo = this.state.userInfo
-		console.log('paysadasdasasas', userInfo)		
+		console.log('paysadasdasasas', userInfo)
 		if (userInfo) {
 			userInfo = this.state.userInfo.model
 			return (
@@ -242,22 +310,27 @@ class Billing extends Component {
 							<Text style={styles.infoDetail}>Thông tin người đặt</Text>
 						</View>
 						<Input style={styles.textInput}
+							ref={(name) => (this.userName = name)}
 							onChangeText={(text) => { this.setState({ userName: text }) }}
-							value={userInfo.lastName + ' ' + userInfo.firstName}
+							value={this.state.userName}
 							placeholder="Họ và Tên"
 							placeholderTextColor='#A4A4A4' />
 						<Input style={styles.textInput}
+							ref={(address) => (this.userAddress = address)}
 							onChangeText={(text) => { this.setState({ userAddress: text }) }}
-							value={userInfo.address}
+							value={this.state.userAddress}
 							placeholder="Địa chỉ"
 							placeholderTextColor='#A4A4A4' />
-						<Input style={styles.textInput} onChangeText={(text) => { this.setState({ userMobile: text }) }}
-							value={ userInfo.mobile}
+						<Input keyboardType='phone-pad' style={styles.textInput} onChangeText={(text) => { this.setState({ userMobile: text }) }}
+							value={this.state.userMobile}
+							maxLength={20}
+							ref={(mobile) => (this.userMobile = mobile)}
 							placeholder="Số điện thoại"
 							placeholderTextColor='#A4A4A4' />
 						<Input style={styles.textInput}
+							ref={(email) => (this.userEmail = email)}
 							onChangeText={(text) => { this.setState({ userEmail: text }) }}
-							value={userInfo.email}
+							value={this.state.userEmail}
 							placeholder="Email" placeholderTextColor='#A4A4A4' />
 						<TouchableOpacity style={styles.checkoutWrap} onPress={() => { this.addOrderClick() }}>
 							<Text style={styles.checkout}> Thanh toán </Text>

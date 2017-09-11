@@ -11,7 +11,7 @@ const RecommendStack = StackNavigator({
   },
   FoodTab: {
     screen: FoodTab,
-  },
+	},
 },
 {
 		index: 0,
