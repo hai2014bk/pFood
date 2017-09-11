@@ -14,6 +14,8 @@ import CustomTabBar from "./CustomTabBar";
 import StoreStack from '../../storeStack';
 import SearchStoreStack from '../../searchStoreStack';
 import NearbyStoreStack from '../../nearbyStoreStack';
+import PurveyorStack from '../../purveyorStack';
+
 import styles from "./styles";
 
 class MainTabStore extends Component {
@@ -34,6 +36,7 @@ class MainTabStore extends Component {
 					<StoreStack screenProps={{ navi: navigation }} tabLabel="Cửa hàng" />
 					<SearchStoreStack screenProps={{ navi: navigation }} tabLabel="Tìm kiếm" />
 					<NearbyStoreStack screenProps={{ navi: navigation }} tabLabel="Gần đây" />
+					<PurveyorStack screenProps={{ navi: navigation }} tabLabel="Nhà phân phối" />
 				</ScrollableTabView>
 			</Container>
 		);

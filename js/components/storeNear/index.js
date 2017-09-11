@@ -58,7 +58,6 @@ class StoreNear extends Component {
                 timeInterval: 1000
             },
             result => {
-                console.log("result: ", result);
             }
         );
     }
@@ -128,7 +127,6 @@ class StoreNear extends Component {
     }
     render() {
         const navigation = this.props.screenProps.navi
-        console.log('912312312',this.state.dataMakers)
         return (
             <Container style={styles.container}>
                 <HeaderContent leftIcon={'menu'} navi={this.props.screenProps.navi} leftButton={() => navigation.navigate("DrawerOpen")}

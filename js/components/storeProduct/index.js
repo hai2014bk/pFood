@@ -150,7 +150,6 @@ class StoreProduct extends Component {
 			imageUrl = this.props.storeParrent.storeImageUrl
 		}
 		const navigation = this.props.navi;
-		console.log('893893123',this.state.data)
 		return (
 			<Container style={styles.container}>
 				<Spinner visible={this.state.isLoading} />

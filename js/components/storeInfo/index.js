@@ -35,7 +35,6 @@ class StoreInfo extends Component {
     componentWillReceiveProps(props) {
         if (props.fetchStoresDetail.success) {
             this.setState({ store: props.fetchStoresDetail.data.model })
-            console.log('mvcmvfdsvfs', props.fetchStoresDetail.data.model)
         }
         if (!props.fetchStoresDetail.success) {
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
