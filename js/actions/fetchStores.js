@@ -20,11 +20,9 @@ export function fetchStores(params) {
 	return dispatch => {
 		APIRequest.APIRequestPOST(url,params,true,
 			response => {
-				console.log('respone',response)
 				dispatch(fetchStoresSuccess(response));
 			},
 			error => {
-				console.log('error',error)
 				dispatch(fetchStoresFailed(error));
 			}
 		)

@@ -26,8 +26,6 @@ class StoreTab extends Component {
 	render() {
 		const navigation = this.props.navigation;
 		const { params } = this.props.navigation.state
-		console.log('2321321321',params)
-		
 		return (
 			<Container>
 				<HeaderContent navi={this.props.screenProps.navi} rightButton={true} leftIcon={'ios-arrow-back'} leftButton={() => navigation.goBack()}

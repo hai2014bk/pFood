@@ -17,7 +17,7 @@ import Carousel from 'react-native-banner-carousel';
 const BannerWidth = Dimensions.get('window').width;
 const primary = require("../../themes/variable").brandPrimary;
 const money = require("../../../images/money.png");
-class Store extends Component {
+class Purveyor extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -43,6 +43,7 @@ class Store extends Component {
             this.setState({ data: props.fetchStores.data.model, isLoading: false })
         }
         if (props.fetchStoreBanner.success) {
+            console.log('uiojldkwqdq')
             this.setState({ banners: props.fetchStoreBanner.data.model })
         }
         if (!props.fetchStores.success) {
@@ -102,13 +103,14 @@ class Store extends Component {
 
     openStoreDetail(store) {
         this.setState({ disabled: true })
-        this.props.navigation.navigate('StoreTab', { parrent: store })
+        this.props.navigation.navigate('Store', { name: store.name })
         InteractionManager.runAfterInteractions(() => {
             this.setState({ disabled: false })
         })
     }
     renderStoreList(data) {
         var item = data.item
+        console.log(item)
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openStoreDetail(item) }} style={{ flex: 1 }} >
                 <View style={styles.itemWrap}>
@@ -131,36 +133,13 @@ class Store extends Component {
         )
     }
     _keyExtractor = (item, index) => item.id;
-
-    onLeftIcon(){
-        let params  = this.props.navigation.state
-        if(params.params != undefined){
-            navigate = this.props.navigation.goBack()
-        } else {
-            navigate = navigation.navigate("DrawerOpen")
-        }
-    }
-
     render() {
         const navigation = this.props.screenProps.navi;
-        let params  = this.props.navigation.state
-        let name = ''
-        let title = ''
-        let leftIcon = ''
-        let navigate = null
-        if(params.params != undefined){
-            name = 'Danh sách cửa hàng của ' + params.params.name
-            title = params.params.name
-            leftIcon = 'ios-arrow-back'
-        } else {
-            name = 'Cửa hàng thực phẩm'
-            title = 'Cửa hàng'
-            leftIcon = 'menu'
-        }
+        console.log(this.state.disabled)
         return (
             <Container style={styles.container}>
-                <HeaderContent leftIcon={leftIcon} navi={navigation} leftButton={() => this.onLeftIcon() } navi={navigation}
-                    rightButton={true} title={title} />
+                <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
+                    rightButton={true} title='Nhà phân phối' />
                 <Content>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
@@ -169,7 +148,7 @@ class Store extends Component {
                     <View style={styles.bodyWrap}>
                         <View style={styles.titleWrap}>
                             <Image source={money} style={styles.moneyIcon} resizeMode='contain' />
-                            <Text style={styles.title}>{name}</Text>
+                            <Text style={styles.title}>Danh sách các nhà phân phối</Text>
                         </View>
                         <FlatList style={{}}
                             data={this.state.data}
@@ -201,4 +180,4 @@ const mapStateToProps = state => ({
     fetchStoreBanner: state.fetchStoreBanner
 });
 
-export default connect(mapStateToProps, bindActions)(Store);
+export default connect(mapStateToProps, bindActions)(Purveyor);

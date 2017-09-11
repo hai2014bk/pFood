@@ -13,6 +13,8 @@ import Swiper from 'react-native-swiper';
 import CustomTabBar from "./CustomTabBar";
 import StoreStack from '../../storeStack';
 import NearbyStoreStack from '../../nearbyStoreStack';
+import PurveyorStack from '../../purveyorStack';
+
 import styles from "./styles";
 
 class MainTabStore extends Component {
@@ -32,6 +34,7 @@ class MainTabStore extends Component {
 				<ScrollableTabView locked={true} renderTabBar={() => <CustomTabBar someProp={"here"} />} tabBarPosition={'bottom'} >
 					<StoreStack screenProps={{ navi: navigation }} tabLabel="Cửa hàng" />
 					<NearbyStoreStack screenProps={{ navi: navigation }} tabLabel="Gần đây" />
+					<PurveyorStack screenProps={{ navi: navigation }} tabLabel="Nhà phân phối" />
 				</ScrollableTabView>
 			</Container>
 		);
