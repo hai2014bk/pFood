@@ -15,6 +15,9 @@ class CustomTabBar extends Component {
 		if(page==1){
 			icon = 'ios-pin'
 		}
+		if(page==2){
+			icon = 'ios-basket'
+		}
 
 
 		return (

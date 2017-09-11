@@ -15,6 +15,7 @@ import {
   Left,
   Right,
 } from "native-base";
+import Expo from "expo"
 import { Grid, Col } from "react-native-easy-grid";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from "react-redux";
@@ -110,7 +111,7 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log('props',props)
+    console.log('props', props)
     this.setState({ isLoading: false })
     if (props.login.success) {
       this.props.navigation.navigate('Drawer')
@@ -119,6 +120,45 @@ class Login extends Component {
       setTimeout(() => { Alert.alert('Tài khoản hoặc mật khẩu không chính xác') }, 100)
     }
   }
+
+  async loginFb() {
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1237620896349287', {
+      permissions: ['public_profile', 'email'], behavior: 'browser'
+    });
+    if (type === 'success') {
+      // Get the user's name using Facebook's Graph API
+      const response = await fetch(
+        `https://graph.facebook.com/me?access_token=${token}`);
+      let params = {}
+      params.accessToken = token
+      params.loginType = 'Facebook'
+      console.log('params',params)
+      this.props.loginAction(params)
+    }
+  }
+
+  async loginGoogle() {
+    try {
+      const result = await Expo.Google.logInAsync({
+        androidClientId: YOUR_CLIENT_ID_HERE,
+        iosClientId: '514654911028-9ougk5pan5mdb1rrnk3va5uqnpdsu3b1.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+      });
+  
+      if (result.type === 'success') {
+        return result.accessToken;
+        let params = {}
+        params.accessToken = result.accessToken
+        params.loginType = 'Google'
+        this.props.loginAction(params)
+      } else {
+        return {cancelled: true};
+      }
+    } catch(e) {
+      return {error: true};
+    }
+  }
+
   render() {
     const navigation = this.props.navigation;
     return (
@@ -195,6 +235,7 @@ class Login extends Component {
                   style={
                     styles.icon
                   }
+                  onPress={() => this.loginGoogle()}
                 >
                   <Entypo name="google--with-circle" size={50} color='white' />
                 </TouchableOpacity>
@@ -202,6 +243,7 @@ class Login extends Component {
                   transparent
                   style={styles.icon
                   }
+                  onPress={() => this.loginFb()}
                 >
 
                   <Entypo name="facebook-with-circle" size={50} color='white' />

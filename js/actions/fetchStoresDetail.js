@@ -3,7 +3,6 @@ import * as mConstants from '../utils/Constants'
 
 //Fetch Banner
 export function fetchStoreBannerSuccess(data) {
-	console.log('213j21321',data)
 	return {
 		type: "FETCH_STOREBANNER_SUCCESS",
 		data
@@ -18,7 +17,7 @@ export function fetchStoreBannerFailed(error) {
 }
 export function fetchBanner() {
 	let url = mConstants.BASE_URL + 'banner/getbanners'
-	console.log(url)
+
 	var params = {
 		"ScreenName": "Store",
 		"City": "",
@@ -29,7 +28,6 @@ export function fetchBanner() {
 				dispatch(fetchStoreBannerSuccess(response));
 			},
 			error => {
-				console.log('error', error)
 				dispatch(fetchStoreBannerFailed(error));
 			}
 		)
