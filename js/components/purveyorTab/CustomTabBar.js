@@ -8,20 +8,6 @@ const primary = require("../../themes/variable").brandPrimary;
 class CustomTabBar extends Component {
 	renderTabOption(name, page) {
 		const isTabActive = this.props.activeTab === page;
-		var icon = ''
-		if(page==0){
-			icon = 'ios-list-box-outline'
-		}
-		if(page==1){
-			icon = 'ios-search'
-		}
-		if(page==2){
-			icon = 'ios-pin'
-		}
-		if(page==3){
-			icon = 'ios-basket'
-		}
-
 
 		return (
 			<TouchableOpacity
@@ -30,11 +16,11 @@ class CustomTabBar extends Component {
 				style={[
 					styles.tab,
 					{
-						borderColor: "gray",
+						borderColor: isTabActive? primary: "gray",
+						borderBottomWidth: isTabActive ? 3:0
 					},
 				]}
 			>
-				<Icon style={{fontSize:30,color:isTabActive? primary: 'gray'}} active name={icon} />
 				<Text style={{ fontSize:13, color:isTabActive? primary: 'gray'}}>
 					{name}
 				</Text>
@@ -62,7 +48,7 @@ const styles = {
 
 	tabs: {
 		flexDirection: "row",
-		height:55,
+		height:40,
 		borderTopWidth:1,
 		borderColor:'#e7e7e7'
 	},

@@ -17,7 +17,7 @@ import Carousel from 'react-native-banner-carousel';
 const BannerWidth = Dimensions.get('window').width;
 const primary = require("../../themes/variable").brandPrimary;
 const money = require("../../../images/money.png");
-class Purveyor extends Component {
+class StoreList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -43,7 +43,6 @@ class Purveyor extends Component {
             this.setState({ data: props.fetchStores.data.model, isLoading: false })
         }
         if (props.fetchStoreBanner.success) {
-            console.log('uiojldkwqdq')
             this.setState({ banners: props.fetchStoreBanner.data.model })
         }
         if (!props.fetchStores.success) {
@@ -103,14 +102,13 @@ class Purveyor extends Component {
 
     openStoreDetail(store) {
         this.setState({ disabled: true })
-        this.props.navigation.navigate('PurveyorTab', { parrent: store })
+        this.props.screenProps.navi.navigate('StoreTab', { parrent: store })
         InteractionManager.runAfterInteractions(() => {
             this.setState({ disabled: false })
         })
     }
     renderStoreList(data) {
         var item = data.item
-        console.log(item)
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openStoreDetail(item) }} style={{ flex: 1 }} >
                 <View style={styles.itemWrap}>
@@ -133,13 +131,14 @@ class Purveyor extends Component {
         )
     }
     _keyExtractor = (item, index) => item.id;
+
+
     render() {
         const navigation = this.props.screenProps.navi;
-        console.log(this.state.disabled)
+        let params  = this.props.storeParrent
+        var name = 'Danh sách cửa hàng của ' + params.name
         return (
             <Container style={styles.container}>
-                <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
-                    rightButton={true} title='Nhà phân phối' />
                 <Content>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
@@ -148,7 +147,7 @@ class Purveyor extends Component {
                     <View style={styles.bodyWrap}>
                         <View style={styles.titleWrap}>
                             <Image source={money} style={styles.moneyIcon} resizeMode='contain' />
-                            <Text style={styles.title}>Danh sách các nhà phân phối</Text>
+                            <Text style={styles.title}>{name}</Text>
                         </View>
                         <FlatList style={{}}
                             data={this.state.data}
@@ -180,4 +179,4 @@ const mapStateToProps = state => ({
     fetchStoreBanner: state.fetchStoreBanner
 });
 
-export default connect(mapStateToProps, bindActions)(Purveyor);
+export default connect(mapStateToProps, bindActions)(StoreList);

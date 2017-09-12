@@ -6,6 +6,8 @@ import StoreNear from "./components/storeNear";
 import StoreTab from "./components/storeTab";
 import FoodTab from "./components/foodTab";
 import Purveyor from "./components/purveyor";
+import PurveyorTab from "./components/purveyorTab";
+
 
 const PurveyorStack = StackNavigator({
   StoreNear: {
@@ -22,6 +24,9 @@ const PurveyorStack = StackNavigator({
   },
   Store: {
     screen: Store,
+  },
+  PurveyorTab: {
+    screen: PurveyorTab,
   },
 },
 {
