@@ -132,7 +132,6 @@ class Login extends Component {
       let params = {}
       params.accessToken = token
       params.loginType = 'Facebook'
-      console.log('params',params)
       this.props.loginAction(params)
     }
   }
@@ -140,22 +139,23 @@ class Login extends Component {
   async loginGoogle() {
     try {
       const result = await Expo.Google.logInAsync({
-        androidClientId: YOUR_CLIENT_ID_HERE,
+        androidClientId: '514654911028-9ougk5pan5mdb1rrnk3va5uqnpdsu3b1.apps.googleusercontent.com',
         iosClientId: '514654911028-9ougk5pan5mdb1rrnk3va5uqnpdsu3b1.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       });
-  
+      console.log('result', result)
       if (result.type === 'success') {
-        return result.accessToken;
+
         let params = {}
         params.accessToken = result.accessToken
         params.loginType = 'Google'
+        console.log('params', params)
         this.props.loginAction(params)
       } else {
-        return {cancelled: true};
+        return { cancelled: true };
       }
-    } catch(e) {
-      return {error: true};
+    } catch (e) {
+      return { error: true };
     }
   }
 
