@@ -38,10 +38,13 @@ export function fetchUser(email) {
 		APIRequest.APIRequestGET(url, true,
 			response => {
 				console.log('respone fetch user', response)
-				dispatch(fetchUserSuccess(response));
 				AsyncStorage.setItem(
 					mConstants.USER_DETAIL,
-					JSON.stringify(response));
+					JSON.stringify(response)).then(() =>
+						{
+							dispatch(fetchUserSuccess(response));							
+						}
+					);
 			},
 			error => {
 				console.log('error fetch user', error)

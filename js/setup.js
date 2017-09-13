@@ -45,6 +45,8 @@ export default class Setup extends Component {
 				if (diff < 24) {
 					this.setState({ isLogined: true })					
 				} else {
+					let keys = [mConstants.CART, mConstants.USER_INFO, mConstants.USER_DETAIL];
+					await AsyncStorage.multiRemove(keys)
 					this.setState({ isLogined: false })
 				}
 			}

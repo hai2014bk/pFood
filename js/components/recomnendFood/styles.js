@@ -22,7 +22,7 @@ export default {
 		borderRadius:5,
 	},
 	upContainer:{
-		flex:1,
+		flex:2,
 		justifyContent:'center',
 		alignItems:'center',
 	},
@@ -65,7 +65,7 @@ export default {
 	},
 	foodThumnail:{
 		marginTop:5,
-		height:80,
+		height:90,
 		flex:1,
 	},
 	oldPriceText: {
@@ -99,7 +99,6 @@ export default {
 		maxWidth:100,
 		textAlign:'left',
 		alignSelf:'flex-start',
-		height:28
 	},
 	priceText: {
 		color:primary,

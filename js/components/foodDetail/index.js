@@ -56,7 +56,7 @@ class FoodDetail extends Component {
 		if (props.fetchDetail.success) {
 			console.log('po rop', props.fetchDetail.data.model)
 			var food = props.fetchDetail.data.model
-			food.quantity = food.quantityStep
+			food.quantity = food.quantityStep * food.minOrderedItems
 			this.setState({ food: food })
 		}
 		if (!props.fetchDetail.success) {
@@ -195,7 +195,7 @@ class FoodDetail extends Component {
 			price = this.priceHandle(food.price.toString())
 			quantity = appFunction.handleUnitType(food.unitType, food.quantity)
 		}
-		if (food.quantity > 0) {
+		if (food.quantity > food.quantityStep * food.minOrderedItems) {
 			active = 0.2,
 				color = primary
 			buttonAdd = (

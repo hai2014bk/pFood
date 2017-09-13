@@ -43,7 +43,7 @@ class FoodRelate extends Component {
             for (i in listFood) {
                 console.log('28213213',this.props.food.id)
                 if (this.props.food.id != listFood[i].id) {
-                    listFood[i].quantity = listFood[i].quantityStep
+                    listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
                     listRelateFood.push(listFood[i])
                 }
             }
@@ -129,7 +129,7 @@ class FoodRelate extends Component {
         let active = 0
         let color = ''
         var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
-        if (item.quantity > 0) {
+        if (item.quantity > item.quantityStep * item.minOrderedItems) {
             active = 0.2,
                 color = primary
                 buttonAdd = (
