@@ -122,17 +122,23 @@ class Billing extends Component {
 	checkValue() {
 		if (this.state.userEmail == '' || Utils.checkSpaceAll(this.state.userEmail)) {
 			this.userEmail._root.focus()
+			this.setState({userEmail:''})
 		}
 		if (this.state.userMobile == '' || Utils.checkSpaceAll(this.state.userMobile)) {
 			this.userMobile._root.focus()
+			this.setState({userMobile:''})
+			
 		}
 
 		if (this.state.userAddress == '' || Utils.checkSpaceAll(this.state.userAddress)) {
 			this.userAddress._root.focus()
+			this.setState({userAddress:''})
+			
 		}
 		if (this.state.userName == '' || Utils.checkSpaceAll(this.state.userName)) {
-			console.log('1213213', this.state.userName)
 			this.userName._root.focus()
+			this.setState({userName:''})
+			
 		}
 	}
 	addOrderClick() {

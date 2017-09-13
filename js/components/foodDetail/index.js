@@ -97,6 +97,8 @@ class FoodDetail extends Component {
 	}
 
 	renderDiscount(data) {
+		console.log('2133213fbfvvbf',data)
+		if (data){
 		if (data.productMetaData[1]) {
 			var discount = ''
 			for (i in data.productMetaData) {
@@ -117,6 +119,9 @@ class FoodDetail extends Component {
 		} else {
 			return null
 		}
+	} else {
+		return null
+	}
 	}
 	renderStar(rate) {
 		return (

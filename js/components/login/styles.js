@@ -128,7 +128,7 @@ questionText:{
   },
   forgot:{
     fontSize: 16,
-
+    textDecorationLine: 'underline',
     textAlign: "center",
     color: "white"
   },
