@@ -131,36 +131,13 @@ class Store extends Component {
         )
     }
     _keyExtractor = (item, index) => item.id;
-
-    onLeftIcon(){
-        let params  = this.props.navigation.state
-        if(params.params != undefined){
-            navigate = this.props.navigation.goBack()
-        } else {
-            navigate = navigation.navigate("DrawerOpen")
-        }
-    }
-
     render() {
         const navigation = this.props.screenProps.navi;
         let params  = this.props.navigation.state
-        let name = ''
-        let title = ''
-        let leftIcon = ''
-        let navigate = null
-        if(params.params != undefined){
-            name = 'Danh sách cửa hàng của ' + params.params.name
-            title = params.params.name
-            leftIcon = 'ios-arrow-back'
-        } else {
-            name = 'Cửa hàng thực phẩm'
-            title = 'Cửa hàng'
-            leftIcon = 'menu'
-        }
         return (
             <Container style={styles.container}>
-                <HeaderContent leftIcon={leftIcon} navi={navigation} leftButton={() => this.onLeftIcon() } navi={navigation}
-                    rightButton={true} title={title} />
+                <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
+                    rightButton={true} title={'Cửa hàng'} />
                 <Content>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
@@ -169,7 +146,7 @@ class Store extends Component {
                     <View style={styles.bodyWrap}>
                         <View style={styles.titleWrap}>
                             <Image source={money} style={styles.moneyIcon} resizeMode='contain' />
-                            <Text style={styles.title}>{name}</Text>
+                            <Text style={styles.title}>Cửa hàng thực phẩm</Text>
                         </View>
                         <FlatList style={{}}
                             data={this.state.data}

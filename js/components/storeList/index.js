@@ -136,7 +136,7 @@ class StoreList extends Component {
     render() {
         const navigation = this.props.screenProps.navi;
         let params  = this.props.storeParrent
-        var name = 'Danh sách cửa hàng của ' + params.name
+        var name = 'Chuỗi cửa hàng của ' + params.name
         return (
             <Container style={styles.container}>
                 <Content>

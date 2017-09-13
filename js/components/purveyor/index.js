@@ -139,7 +139,7 @@ class Purveyor extends Component {
         return (
             <Container style={styles.container}>
                 <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
-                    rightButton={true} title='Nhà phân phối' />
+                    rightButton={true} title='Trang trại' />
                 <Content>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
@@ -148,7 +148,7 @@ class Purveyor extends Component {
                     <View style={styles.bodyWrap}>
                         <View style={styles.titleWrap}>
                             <Image source={money} style={styles.moneyIcon} resizeMode='contain' />
-                            <Text style={styles.title}>Danh sách các nhà phân phối</Text>
+                            <Text style={styles.title}>Danh sách trang trại</Text>
                         </View>
                         <FlatList style={{}}
                             data={this.state.data}
