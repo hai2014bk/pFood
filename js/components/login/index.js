@@ -111,7 +111,6 @@ class Login extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log('props', props)
     this.setState({ isLoading: false })
     if (props.login.success) {
       this.props.navigation.navigate('Drawer')
@@ -122,8 +121,8 @@ class Login extends Component {
   }
 
   async loginFb() {
-    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1237620896349287', {
-      permissions: ['public_profile', 'email'], behavior: 'browser'
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1426412894062417', {
+      permissions: ['public_profile', 'email']
     });
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
@@ -143,13 +142,12 @@ class Login extends Component {
         iosClientId: '514654911028-9ougk5pan5mdb1rrnk3va5uqnpdsu3b1.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       });
-      console.log('result', result)
+      console.log('result google', result)
       if (result.type === 'success') {
 
         let params = {}
         params.accessToken = result.accessToken
         params.loginType = 'Google'
-        console.log('params', params)
         this.props.loginAction(params)
       } else {
         return { cancelled: true };

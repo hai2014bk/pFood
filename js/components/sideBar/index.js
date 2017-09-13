@@ -31,7 +31,8 @@ class SideBar extends Component {
 				console.log('data sideMenu',data)
 				let firstName = data.model.firstName
 				let lastName = data.model.lastName
-				this.setState({ firstName, lastName })
+				if (!data.model.firstName && !data.model.lastName)
+				this.setState({ firstName:data.model.email, lastName })
 			}
 		} catch (error) {
 
@@ -129,7 +130,7 @@ class SideBar extends Component {
 						<View style={styles.logoutContainer}>
 							<View style={styles.logoutbtn} foregroundColor={"white"}>
 								<Grid>
-									<Col>
+									<Col size={2}>
 										<TouchableOpacity
 											onPress={() => {
 												this.logOut()
@@ -142,7 +143,7 @@ class SideBar extends Component {
 											</Text>
 										</TouchableOpacity>
 									</Col>
-									<Col>
+									<Col size={1}>
 										<TouchableOpacity
 											style={{ alignSelf: "flex-end" }}
 											onPress={() => {

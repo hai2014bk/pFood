@@ -42,7 +42,7 @@ class FoodDetail extends Component {
 			},
 			item: {},
 			ship: 'ViettelPost',
-			disabled:false,
+			disabled: false,
 		};
 	}
 	componentDidMount() {
@@ -57,6 +57,13 @@ class FoodDetail extends Component {
 			console.log('po rop', props.fetchDetail.data.model)
 			var food = props.fetchDetail.data.model
 			food.quantity = food.quantityStep * food.minOrderedItems
+			let metaData = food.productMetaData
+			for (j in metaData) {
+				if (metaData[j].name == 'Discount') {
+					let discountPrice = food.price * metaData[j].value / 100
+					food.price = food.price - discountPrice
+				}
+			}
 			this.setState({ food: food })
 		}
 		if (!props.fetchDetail.success) {
@@ -87,6 +94,29 @@ class FoodDetail extends Component {
 				</View>
 			</Swiper>
 		)
+	}
+
+	renderDiscount(data) {
+		if (data.productMetaData[1]) {
+			var discount = ''
+			for (i in data.productMetaData) {
+				if (data.productMetaData[i].name == 'Discount') {
+					if (data.productMetaData[i].value) {
+						discount = data.productMetaData[i].value
+					}
+				}
+			}
+			if (discount == '') {
+				return null
+			}
+			return (
+				<View style={styles.saleView}>
+					<Text style={styles.saleText}>-{discount} %</Text>
+				</View>
+			)
+		} else {
+			return null
+		}
 	}
 	renderStar(rate) {
 		return (
@@ -190,14 +220,23 @@ class FoodDetail extends Component {
 		console.log('step', food)
 		var quantity = ''
 		var price = ''
+		var disabled = false
 		console.log(food.unitType)
 		if (food.price) {
 			price = this.priceHandle(food.price.toString())
 			quantity = appFunction.handleUnitType(food.unitType, food.quantity)
 		}
-		if (food.quantity > food.quantityStep * food.minOrderedItems) {
-			active = 0.2,
+		if (food.quantity >= food.quantityStep * food.minOrderedItems) {
+			if (food.quantity == food.quantityStep * food.minOrderedItems) {
+				disabled = true
+				color = '#cecece'
+				active = 1
+			} else {
+				disabled = false
+				active = 0.2
 				color = primary
+			}
+
 			buttonAdd = (
 				<Button disabled={this.state.disabled} addCart onPress={() => { this.addtoCart(food); this.setState({ item: food }) }} >
 					<Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
@@ -206,6 +245,7 @@ class FoodDetail extends Component {
 		} else {
 			active = 1,
 				color = '#cecece'
+			var disabled = true
 			buttonAdd = (
 				<Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
 					<Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
@@ -216,13 +256,14 @@ class FoodDetail extends Component {
 			<Grid>
 				<Col style={{ margin: 10 }}>
 					<Row>
-						<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain' />
+						<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain'>
+						</Image>
 						<Text style={styles.price} > {price}đ</Text>
 					</Row>
 				</Col>
 				<Col style={{ margin: 10 }}>
 					<Row style={{ marginLeft: '20%', flex: 1, justifyContent: 'flex-end' }}>
-						<TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus()} >
+						<TouchableOpacity disabled={disabled} activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus()} >
 							<Icon style={[styles.icon, { color: color }]} name="md-remove" />
 						</TouchableOpacity>
 						<Col style={styles.quantityContainer}>
@@ -242,8 +283,8 @@ class FoodDetail extends Component {
 
 	async addtoCart(item) {
 		let data = []
-		this.setState({disabled:true})
-		setTimeout(()=>{this.setState({disabled:false})},500)
+		this.setState({ disabled: true })
+		setTimeout(() => { this.setState({ disabled: false }) }, 500)
 		try {
 			const value = await AsyncStorage.getItem(mConstants.CART);
 			if (value !== null) {
@@ -345,7 +386,9 @@ class FoodDetail extends Component {
 			<Container style={styles.container}>
 				<Content>
 					<Spinner visible={this.state.isLoading} />
-					<Image resizeMode='cover' source={{ uri: imageUrl }} style={styles.foodImage} />
+					<Image resizeMode='cover' source={{ uri: imageUrl }} style={styles.foodImage}>
+						{this.renderDiscount(this.state.food)}
+					</Image>
 					{this.renderPriceAndBuy()}
 					{this.renderDecription()}
 					<View style={{ marginTop: 10 }}>

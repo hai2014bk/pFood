@@ -54,6 +54,13 @@ class Trending extends Component {
                 var listFood = this.state.data.concat(props.fetchTrending.data.model)
                 for (i in listFood) {
                     listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
+                    let metaData = listFood[i].productMetaData
+                    for (j in metaData){
+                        if (metaData[j].name == 'Discount'){
+                            let discountPrice = listFood[i].price * metaData[j].value/100
+                            listFood[i].price = listFood[i].price - discountPrice
+                        }
+                    }
                 }
                 this.setState({ data: listFood })
             }
@@ -117,16 +124,46 @@ class Trending extends Component {
 
     }
 
+    renderDiscount(data) {
+		if (data.productMetaData[1]) {
+			var discount = ''
+			for (i in data.productMetaData) {
+				if(data.productMetaData[i].name == 'Discount') {
+					if(data.productMetaData[i].value) {
+						discount = data.productMetaData[i].value
+					}				
+				}
+			}
+			if(discount == '') {
+				return null
+			}
+			return (
+				<View style={styles.saleView}>
+					<Text style={styles.saleText}>-{discount} %</Text>
+				</View>
+			) 
+		} else {
+			return null
+		}
+	}
+
+
     renderItems(data) {
         let item = data.item
         let active = 0
         let color = ''
         var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
         var disabled = false
-        if (item.quantity > item.quantityStep * item.minOrderedItems) {
-            active = 0.2,
-                color = primary,
-                disabled = false
+        if (item.quantity >= item.quantityStep * item.minOrderedItems) {
+                if (item.quantity == item.quantityStep * item.minOrderedItems) {
+                    disabled = true
+                    color = '#cecece'
+                    active = 1
+                } else {
+                    disabled = false
+                    active = 0.2
+                    color = primary
+                }
                 buttonAdd = (
                     <Button addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
                         <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
@@ -153,7 +190,9 @@ class Trending extends Component {
                             <Grid >
                                 <Col size={2} style={styles.imageWrap}>
                                     <View style={styles.imageContainer}>
-                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
+                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image}>
+                                                {this.renderDiscount(item)}
+                                            </Image>
                                     </View>
                                 </Col>
                                 <Col size={3} style={styles.infoWrap}>

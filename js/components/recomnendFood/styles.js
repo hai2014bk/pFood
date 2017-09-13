@@ -14,12 +14,13 @@ export default {
 	},
 	cellContainer:{
 		backgroundColor:'white', 
-		flex: 1, 
+		flex: 1,
 		width: deviceWidth/2 - 20,
 		minWidth:120,				
 		alignItems: 'flex-start',
 		justifyContent:'flex-end',
 		borderRadius:5,
+		marginBottom:10,
 	},
 	upContainer:{
 		flex:2,
@@ -96,7 +97,6 @@ export default {
 		color:'black',
 		fontWeight:'500',
 		fontSize:12,
-		maxWidth:100,
 		textAlign:'left',
 		alignSelf:'flex-start',
 	},

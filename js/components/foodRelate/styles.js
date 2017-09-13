@@ -95,6 +95,19 @@ export default {
         paddingRight: 15,
         marginRight: -10,
     },
+    saleText:{
+		color:'white',
+		fontSize:10,
+		alignSelf:'center'
+	},
+    saleView:{
+		height:15,
+		width:30,
+		borderTopLeftRadius: 7.5,
+		borderBottomLeftRadius: 7.5,
+		alignSelf:'flex-end',
+		backgroundColor:'orange'
+	},
     quantity: {
         fontSize: 13,
         alignSelf: 'center',

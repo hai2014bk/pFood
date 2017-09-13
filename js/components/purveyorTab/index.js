@@ -26,7 +26,7 @@ class PurveyorTab extends Component {
 	}
 	render() {
 		const navigation = this.props.navigation;
-		const { params } = this.props.screenprops.navigation.state
+		const { params } = this.props.navigation.state
 		return (
 			<Container>
 				<HeaderContent navi={this.props.screenProps.navi} rightButton={true} leftIcon={'ios-arrow-back'} leftButton={() => navigation.goBack()}

@@ -94,6 +94,48 @@ class StoreProduct extends Component {
 		})
 
 	}
+renderDiscount(data) {
+		if (data.productMetaData[1]) {
+			var discount = ''
+			for (i in data.productMetaData) {
+				if(data.productMetaData[i].name == 'Discount') {
+					if(data.productMetaData[i].value) {
+						discount = data.productMetaData[i].value
+					}				
+				}
+			}
+			if(discount == '') {
+				return null
+			}
+			return (
+				<View style={styles.saleView}>
+					<Text style={styles.saleText}>-{discount} %</Text>
+				</View>
+			) 
+		} else {
+			return null
+		}
+	}
+	renderOldPrice(data) {
+		if (data.productMetaData[1]) {
+			for (i in data.productMetaData) {
+				if(data.productMetaData[i].name == 'Discount') {
+					var oldPrice = this.priceHandle(data.price)					
+				}
+			}
+			return (
+				<View>
+					<Text style={styles.oldPriceText}>{oldPrice}</Text>
+				</View>
+			)
+		} else {
+			return (
+				<View>
+					<Text style={[styles.oldPriceText,{color:'white'}]}>22132132</Text>
+				</View>
+			)
+		}
+	}
 	
 	priceHandle(price) {
 		var count = 0
@@ -103,19 +145,28 @@ class StoreProduct extends Component {
 	renderCell(data) {
 		var food = data.item
 		var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'
-		if (food.productMetaData[0]) {
-			imageUrl = food.productMetaData[0].value
+		for (i in food.productMetaData) {
+			if(food.productMetaData[i].name == 'ImageUrl') {
+				if (food.productMetaData[i]) {
+					console.log('92345m,fd')
+					imageUrl = food.productMetaData[i].value
+				}					
+			}
 		}
+		
 		var price = this.priceHandle(food.price)
+		if (food.productMetaData[1]) {
+			
+			var discountPrice = food.price * (food.productMetaData[1].value/100)
+			price = this.priceHandle(food.price - discountPrice)
+		}
 		return (
 			<View>
 				<TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openDetail(food) }} style={{ flex: 1, alignItems: 'center' }} >
 					<Grid style={styles.cellContainer}>
 						<Row style={styles.upContainer}>
 							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: imageUrl }} >
-								<View style={styles.saleView}>
-									<Text style={styles.saleText}>-10%</Text>
-								</View>
+								{this.renderDiscount(food)}
 							</Image>
 						</Row>
 						<Row style={styles.downContainer}>
@@ -126,7 +177,7 @@ class StoreProduct extends Component {
 										<Icon name='ios-pin' style={styles.locationIcon} />
 										<Text style={styles.shopNameText}>Vinmart</Text>
 									</Row>
-									<Text style={styles.oldPriceText}>322.000đ</Text>
+									{this.renderOldPrice(food)}
 								</Row>
 								<Row style={{ flex: 1, justifyContent: 'space-between', alignItems: 'flex-end' }} size={1}>
 									<Text style={styles.priceText}>{price} đ</Text>

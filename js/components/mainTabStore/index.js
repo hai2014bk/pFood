@@ -36,7 +36,7 @@ class MainTabStore extends Component {
 					<StoreStack screenProps={{ navi: navigation }} tabLabel="Cửa hàng" />
 					<SearchStoreStack screenProps={{ navi: navigation }} tabLabel="Tìm kiếm" />
 					<NearbyStoreStack screenProps={{ navi: navigation }} tabLabel="Gần đây" />
-					<PurveyorStack screenProps={{ navi: navigation }} tabLabel="Nhà phân phối" />
+					<PurveyorStack screenProps={{ navi: navigation }} tabLabel="Trang Trại" />
 				</ScrollableTabView>
 			</Container>
 		);

@@ -5,8 +5,8 @@
 		"slug": "strapflatapp",
 		"loading": {
 			"hideExponentText": true,
-			"icon": "./images/loading.png",
-			"backgroundImage": "./images/launchImages/splashscreen.png"
+			"icon": "./images/logoFamous.png"
+			
 		},
 		"orientation": "portrait",
 		"primaryColor": "#cccccc",

@@ -37,6 +37,19 @@ export default {
         justifyContent: 'center',
         alignItems: 'center'
     },
+    saleText:{
+		color:'white',
+		fontSize:10,
+		alignSelf:'center'
+	},
+    saleView:{
+		height:15,
+		width:30,
+		borderTopLeftRadius: 7.5,
+		borderBottomLeftRadius: 7.5,
+		alignSelf:'flex-end',
+		backgroundColor:'orange'
+	},
     image: {
         flex:1,
         aspectRatio: 1

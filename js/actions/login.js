@@ -69,8 +69,9 @@ export function loginClick(params) {
 					mConstants.USER_INFO,
 					JSON.stringify(response)
 				);
+				console.log('i239210321312',response.model.userEmail)
 				dispatch(loginSuccess(response));
-				dispatch(fetchUser(params.email));
+				dispatch(fetchUser(response.model.userEmail));
 			},
 			error => {
 				dispatch(loginFailed(error));
