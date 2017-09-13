@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { Entypo } from '@expo/vector-icons';
-import { Keyboard, Image, Platform, StatusBar, TouchableOpacity, Alert, Animated } from "react-native";
+import { Keyboard, Image, Platform, StatusBar, TouchableOpacity, Alert, Animated, InteractionManager } from "react-native";
 
 import {
   Container,
@@ -34,10 +34,15 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      isLoading: false
+      isLoading: false,
+      click: false,
+      disabled: false,
     };
   }
   checkSpace() {
+    this.setState({ click: false })
+    noneSpaceEmail = this.state.email.replace(/^\s+/, "").replace(/\s+$/, "").replace(/\s+/g, " ");
+    this.setState({ email: noneSpaceEmail });
     if (this.checkSpaceAll(this.state.email)) {
       this.emailInput._root.focus()
     }
@@ -47,20 +52,28 @@ class Login extends Component {
 
   }
   checkValue() {
+    this.setState({ click: false })
+    noneSpaceEmail = this.state.email.replace(/^\s+/, "").replace(/\s+$/, "").replace(/\s+/g, " ");
+    this.setState({ email: noneSpaceEmail });
     if (!this.state.email) {
+
       this.emailInput._root.focus()
-    }
-    if (!this.state.email && !this.state.password)
-    { this.emailInput._root.focus() }
-    else {
+    } else {
       if (!this.state.password) {
         this.passwordInput._root.focus()
       }
     }
-
-
   }
+
+  checkClick() {
+    if (this.state.click === false) {
+      this.loginClick();
+    } else { }
+  }
+
   loginClick() {
+
+    this.setState({ click: true })
     if (this.state.email && this.state.password) {
       if ((!this.checkSpaceAll(this.state.email))) {
         if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
@@ -108,11 +121,21 @@ class Login extends Component {
       }, 200)
     }
     Keyboard.dismiss()
+
   }
+
+  changeDisble() {
+    if (this.state.disabled) {
+      this.setState({ disabled: false })
+    } else {
+      this.setState({ disabled: true })
+    }
+  }
+
 
   componentWillReceiveProps(props) {
     console.log('props', props)
-    this.setState({ isLoading: false })
+    this.setState({ isLoading: false, click: true })
     if (props.login.success) {
       this.props.navigation.navigate('Drawer')
     }
@@ -181,6 +204,7 @@ class Login extends Component {
                 placeholder="Tên đăng nhập"
                 placeholderTextColor='#f4e6db'
                 autoCapitalize='none'
+                autoCorrect={false}
                 value={this.state.email}
                 onChangeText={email => this.setState({ email })}
                 style={styles.input}
@@ -201,7 +225,7 @@ class Login extends Component {
               <TouchableOpacity
                 rounded
                 style={styles.loginBtn}
-                onPress={() => this.loginClick()}
+                onPress={() => this.checkClick()}
               >
                 <Text
                   style={
@@ -213,7 +237,14 @@ class Login extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ marginTop: 15 }}
-                onPress={() => navigation.navigate("ForgetPassword")}
+                disabled={this.state.disabled}
+                onPress={() => {
+                  this.setState({ disabled: true }),
+                    navigation.navigate("ForgetPassword"),
+                    InteractionManager.runAfterInteractions(() => {
+                      this.setState({ disabled: false })
+                    })
+                }}
               >
                 <Text
                   style={styles.forgot}
@@ -260,10 +291,17 @@ class Login extends Component {
                 <Text style={styles.dontac}>{"Không có tài khoản?  "}</Text>
                 <TouchableOpacity
                   style={styles.regis}
-                  onPress={() => navigation.navigate("SignUp")}
+                  disabled={this.state.disabled}
+                  onPress={() => {
+                    this.setState({ disabled: true }),
+                    navigation.navigate("SignUp"),
+                    InteractionManager.runAfterInteractions(() => {
+                      this.setState({ disabled: false })
+                    })
+                  }}
                 >
                   <Text
-                    style={{ fontSize: 16, fontWeight: 'bold', color: "white" }}>
+                    style={{ fontSize: 16, fontWeight: 'bold', color: "white", textDecorationLine: 'underline' }}>
                     Đăng Kí Ngay
                 </Text>
                 </TouchableOpacity>
