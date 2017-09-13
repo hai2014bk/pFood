@@ -77,7 +77,7 @@ export default {
     },
     buttonWrap: {
         flexDirection: 'row',
-        marginLeft: 10,
+        marginTop: 20,
         justifyContent: 'center',
     },
      buttonAddCard: {

@@ -242,7 +242,7 @@ class RecommendFood extends Component {
 				keyExtractor={(item) => item.sectionName}
 				extraData={this.state.dataSection}
 				renderItem={(item) =>
-					<ListItem >
+					<ListItem style={{borderBottomWidth: 0}} >
 						{this.renderHorizontalList(item)}
 					</ListItem>
 				}>

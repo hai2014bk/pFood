@@ -53,7 +53,7 @@ class Trending extends Component {
             if (props.fetchTrending.data.model.length > 0) {
                 var listFood = this.state.data.concat(props.fetchTrending.data.model)
                 for (i in listFood) {
-                    listFood[i].quantity = listFood[i].quantityStep
+                    listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
                 }
                 this.setState({ data: listFood })
             }
@@ -122,9 +122,11 @@ class Trending extends Component {
         let active = 0
         let color = ''
         var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
-        if (item.quantity > 0) {
+        var disabled = false
+        if (item.quantity > item.quantityStep * item.minOrderedItems) {
             active = 0.2,
                 color = primary,
+                disabled = false
                 buttonAdd = (
                     <Button addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
                         <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
@@ -133,6 +135,7 @@ class Trending extends Component {
         } else {
             active = 1,
                 color = '#cecece',
+                disabled = true                
                 buttonAdd = (
                     <Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
                         <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
@@ -167,7 +170,7 @@ class Trending extends Component {
                                 </Col>
                                 <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
+                                        <TouchableOpacity disabled={disabled} activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
                                             <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
 

@@ -141,6 +141,13 @@ class Cart extends Component {
         let id = item.id
         let quantity = appFunction.handleUnitType(item.unitType,item.quantity)
         let price = this.priceHandle(item.price.toString())
+        var disabled = false 
+        var color = primary
+        var active =  0.2
+        if (item.quantity < 0) {
+            disabled = true
+            active = 1
+        }
         return (
             <SwipeRow
                 list={true}
@@ -156,7 +163,7 @@ class Cart extends Component {
                             <Text style={styles.foodName}>{item.name}</Text>
                             <Text style={styles.price}>{price}đ</Text>
                             <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                                <TouchableOpacity onPress={() => this.minus(data, data.index)} style={styles.buttonMinus}>
+                                <TouchableOpacity disabled = {disabled} onPress={() => this.minus(data, data.index)} style={styles.buttonMinus}>
                                     <Icon style={styles.icon} name="md-remove" />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.plus(data.index)} style={styles.buttonAdd}>

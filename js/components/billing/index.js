@@ -17,9 +17,12 @@ var background = require('../../../images/background.png')
 var money = require('../../../images/money.png')
 var food = require('../../../images/foodBasket.png')
 const resetAction = NavigationActions.reset({
-	index: 0,
-	actions: [NavigationActions.navigate({ routeName: "Drawer" })],
-});
+	index: 1,
+	actions: [
+		NavigationActions.navigate({ routeName: 'Login' }),
+		NavigationActions.navigate({ routeName: 'Drawer' })
+	]
+})
 
 class Billing extends Component {
 	constructor(props) {
@@ -52,7 +55,7 @@ class Billing extends Component {
 
 	}
 	async componentDidMount() {
-		console.log('propsss2321', this.props);		
+		console.log('propsss2321', this.props);
 		totalPrice = 0
 		let data = []
 		this.setState({ totalPrice })
@@ -61,11 +64,11 @@ class Billing extends Component {
 			console.log('dsfda321321213', value)
 			if (value !== null) {
 				var userInfo = JSON.parse(value).model
-				console.log('2382190321j3212312312',userInfo)
-				if(!userInfo.address) {
+				console.log('2382190321j3212312312', userInfo)
+				if (!userInfo.address) {
 					userInfo.address = ''
 				}
-				if(!userInfo.address) {
+				if (!userInfo.address) {
 					userInfo.mobile = ''
 				}
 				this.setState({
@@ -117,17 +120,17 @@ class Billing extends Component {
 	}
 
 	checkValue() {
-		if (this.state.userEmail == '') {
+		if (this.state.userEmail == '' || Utils.checkSpaceAll(this.state.userEmail)) {
 			this.userEmail._root.focus()
 		}
-		if (this.state.userMobile == '') {
+		if (this.state.userMobile == '' || Utils.checkSpaceAll(this.state.userMobile)) {
 			this.userMobile._root.focus()
 		}
 
-		if (this.state.userAddress == '') {
+		if (this.state.userAddress == '' || Utils.checkSpaceAll(this.state.userAddress)) {
 			this.userAddress._root.focus()
 		}
-		if (this.state.userName == '') {
+		if (this.state.userName == '' || Utils.checkSpaceAll(this.state.userName)) {
 			console.log('1213213', this.state.userName)
 			this.userName._root.focus()
 		}
@@ -149,7 +152,9 @@ class Billing extends Component {
 			this.state.userEmail == '' ||
 			this.state.userMobile == '' ||
 			Utils.checkSpaceAll(this.state.userName) ||
-			Utils.checkSpaceAll(this.state.userAddress)) {
+			Utils.checkSpaceAll(this.state.userAddress) ||
+			Utils.checkSpaceAll(this.state.userMobile) ||
+			Utils.checkSpaceAll(this.state.userEmail)) {
 			setTimeout(() => {
 				Alert.alert(
 					'',
@@ -223,7 +228,7 @@ class Billing extends Component {
 	renderItem(item) {
 		let proPrice = item.price * item.quantity / item.quantityStep;
 		let price = this.priceHandle(proPrice.toString())
-		let quantity = appFunction.handleUnitType(item.unitType,item.quantity)		
+		let quantity = appFunction.handleUnitType(item.unitType, item.quantity)
 		return (
 			<View style={styles.proDetail}>
 				<View style={styles.flexCol}>

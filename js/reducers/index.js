@@ -6,6 +6,7 @@ import { login } from "./login";
 import { forgetPassword } from "./forgetPassword"
 import { fetchCategories, fetchSubCategories } from "./fetchCategories"
 import { fetchProduct } from "./fetchProduct"
+import { fetchUser } from "./fetchUser"
 import { fetchDetail } from "./fetchDetail"
 import { fetchRelate } from "./fetchRelate"
 import { fetchTrending } from "./fetchTrending"
@@ -42,6 +43,7 @@ export default combineReducers({
 	fetchBannerRecomend,
 	fetchPurveyor,
 	reRender,
+	fetchUser
 
 
 });

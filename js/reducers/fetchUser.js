@@ -12,15 +12,16 @@ const initialState = {
 
 export function fetchUser(state: State = initialState, action) {
     if (action.type === 'FETCH_USER_SUCCESS') {
+        console.log('839891k')
         return {
             ...state,
-            success: false,
+            success: true,
         };
     }
     if (action.type === 'FETCH_USER_FAILED') {
         return {
             ...state,
-            success: true,
+            success: false,
             data: action.data,
         };
     }
