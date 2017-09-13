@@ -14,6 +14,7 @@ import { addOrder } from "./addOrder"
 import { reRender } from "./header"
 import { fetchStoresDetail, fetchStoreProduct, fetchStoreBanner } from "./fetchStoresDetail"
 import { fetchBannerRecomend, fetchTrendingRecomend, fetchLastestRecomend, fetchLowestRecomend } from "./fetchTrendingRecomend"
+import { fetchPurveyor } from "./fetchPurveyor"
 
 
 
@@ -39,6 +40,7 @@ export default combineReducers({
 	fetchLastestRecomend,
 	fetchLowestRecomend,
 	fetchBannerRecomend,
+	fetchPurveyor,
 	reRender,
 
 
