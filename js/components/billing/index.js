@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, FlatList, AsyncStorage } from "react-native";
+import {Platform, Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, FlatList, AsyncStorage } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
@@ -97,15 +97,28 @@ class Billing extends Component {
 		}
 	}
 
+	backToDrawer()
+	{
+		console.log('939jklfdmfdgv21')
+		this.props.navigation.dispatch(resetAction)
+	}
+
 	componentWillReceiveProps(props) {
 		let navigation = this.props.navigation
 		this.setState({ visible: false })
 		if (this.state.addClick === false) {
 			this.setState({ addClick: true })
 			if (props.addOrder.success == true) {
-				console.log('thanh doan')
-				Alert.alert('', 'Lưu hóa đơn thành công', [{ text: 'OK', onPress: () => { this.props.navigation.dispatch(resetAction) } }]);
-				let keys = [mConstants.CART];
+				if (Platform.OS == 'ios') {
+				Alert.alert('', 'Lưu hóa đơn thành công',
+				 [{ text: 'OK', onPress: () => this.backToDrawer()  }]);
+				} else {
+					Alert.alert('', 'Lưu hóa đơn thành công',
+					[{ text: 'OK', onPress: () => this.backToDrawer() }],
+					{ cancelable: false },					
+				);
+				}
+				 let keys = [mConstants.CART];
 				AsyncStorage.multiRemove(keys)
 			} else {
 				Alert.alert('', props.addOrder.message, [{ text: 'OK', onPress: () => console.log('error') }]);

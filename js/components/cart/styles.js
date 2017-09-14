@@ -19,7 +19,8 @@ export default {
         width: '100%',
         backgroundColor: 'white',
         flexDirection: 'row',
-        padding: 10
+        padding: 10,
+        flex:1,
     },
     imageWrap: {
         flex: 2,
@@ -43,7 +44,8 @@ export default {
         aspectRatio: 1,
     },
     infoWrap: {
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flex:1,
     },
     unit: {
         color: 'gray',
@@ -69,6 +71,7 @@ export default {
         color: 'black',
         fontSize: 13,
         fontWeight: '400',
+        flex:1,
     },
     buttonAdd: {
         height: 30,

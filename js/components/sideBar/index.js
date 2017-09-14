@@ -24,15 +24,16 @@ class SideBar extends Component {
 
 	async componentDidMount() {
 		let data = []
+		console.log('94kjngjkdf89dl')
 		try {
 			const value = await AsyncStorage.getItem(mConstants.USER_DETAIL);
 			if (value !== null) {
 				data = JSON.parse(value)
-				console.log('data sideMenu',data)
+				console.log('data sideMenu 22321321',data)
 				let firstName = data.model.firstName
 				let lastName = data.model.lastName
-				if (!data.model.firstName && !data.model.lastName)
-				this.setState({ firstName:data.model.email, lastName })
+				this.setState({ email:data.model.email })
+				this.setState({ firstName, lastName })
 			}
 		} catch (error) {
 
@@ -48,9 +49,10 @@ class SideBar extends Component {
 				const value = await AsyncStorage.getItem(mConstants.USER_DETAIL);
 				if (value !== null) {
 					data = JSON.parse(value)
-					console.log('data sideMenu 22',data)
+					console.log('data sideMenu 22321321',data)
 					let firstName = data.model.firstName
 					let lastName = data.model.lastName
+					this.setState({ email:data.model.email })
 					this.setState({ firstName, lastName })
 				}
 			} catch (error) {
@@ -66,6 +68,10 @@ class SideBar extends Component {
 	}
 	render() {
 		let source = ''
+		var name = this.state.email
+		if (this.state.firstName != '' || this.state.lastName != ''){
+			name = this.state.firstName + ' ' + this.state.lastName
+		}
 		if(this.state.image){
 			source = this.state.image
 		} else {
@@ -139,7 +145,7 @@ class SideBar extends Component {
 										>
 											<Text style={{ fontWeight: "bold", color: "#fff" }}>LOG OUT</Text>
 											<Text note style={{ color: "#fff" }}>
-												{this.state.firstName} {this.state.lastName}
+												{name}
 											</Text>
 										</TouchableOpacity>
 									</Col>

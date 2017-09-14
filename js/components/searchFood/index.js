@@ -90,11 +90,18 @@ class SearchFood extends Component {
 					listFood = this.state.data.concat(props.fetchTrending.data.model)
 				}
 				for (i in listFood) {
-					if (!listFood[i].quantity) {
-						listFood[i].quantity = listFood[i].quantityStep
-					}
-				}
-				listFood = this.uniq(listFood)
+                    if (!listFood[i].quantity) {
+                        listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
+                        let metaData = listFood[i].productMetaData
+                        for (j in metaData){
+                            if (metaData[j].name == 'Discount'){
+                                let discountPrice = listFood[i].price * metaData[j].value/100
+                                listFood[i].price = listFood[i].price - discountPrice
+                            }
+                        }
+                    }
+                }
+                listFood = this.uniq(listFood)
 				if (listFood.length >= 20) {
 					var loadMoreElement = {
 						name: 'loadmore',
@@ -284,94 +291,121 @@ class SearchFood extends Component {
 			</PopupDialog>
 		)
 	}
-
+	renderDiscount(data) {
+		if (data.productMetaData[1]) {
+			var discount = ''
+			for (i in data.productMetaData) {
+				if(data.productMetaData[i].name == 'Discount') {
+					if(data.productMetaData[i].value) {
+						discount = data.productMetaData[i].value
+					}				
+				}
+			}
+			if(discount == '') {
+				return null
+			}
+			return (
+				<View style={styles.saleView}>
+					<Text style={styles.saleText}>-{discount} %</Text>
+				</View>
+			) 
+		} else {
+			return null
+		}
+	}
 
 	renderItems(data) {
-		if (data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
-			return (
-				<View style={styles.loadMoreCell}>
-					<ActivityIndicator/>
-					<Text style={styles.loadMoreText} >Tải thêm...</Text>
-				</View>
-			)
-		}
-		let item = data.item
-		let active = 0
-		let color = ''
-		var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
-		let buttonAdd = null
-		var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'
-		if (data.item.productMetaData[0]){
-			imageUrl = data.item.productMetaData[0].value
-		}
-		console.log('1293213212',data.item)
-		if (item.quantity > 0) {
-			active = 0.2,
-				color = primary,
-				buttonAdd = (
-					<Button addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
-						<Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
-					</Button>
-				)
-		} else {
-			active = 1,
-				color = '#cecece',
-				buttonAdd = (
-					<Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
-						<Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
-					</Button>
-				)
-		}
-		let id = item.id
-		console.log('awqwdqwdqw', item, item.price)
-		let price = this.priceHandle(item.price.toString())
-		return (
-			<TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(item) }}>
-				<Card style={styles.card}>
-					<CardItem >
-						<Body>
-							<Grid >
-								<Col size={2} style={styles.imageWrap}>
-									<View style={styles.imageContainer}>
-										<Image source={{ uri: imageUrl }} style={styles.image} />
-									</View>
-								</Col>
-								<Col size={3} style={styles.infoWrap}>
-									<Text style={styles.foodName}>{item.name}</Text>
-									<Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
-									<Row style={{ alignItems: 'flex-end' }} >
-										<Icon name='ios-pin' style={styles.locationIcon} />
-										<Text style={styles.shopName}>{item.cities}</Text>
-									</Row>
-									<View style={{ width: 50 }}>
-										{this.renderStar(item.rate)}
-									</View>
-									<Text style={styles.price}>{price}đ</Text>
-								</Col>
-								<TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
-									<Col style={styles.buttonWrap}>
-										<TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color, marginLeft: 10 }]} onPress={() => this.minus(data.index)} >
-											<Icon style={[styles.icon, { color: color }]} name="md-remove" />
-										</TouchableOpacity>
+        if (data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
+            return (
+                <View style={styles.loadMoreCell}>
+                    <ActivityIndicator />
+                    <Text style={styles.loadMoreText} >Tải thêm...</Text>
+                </View>
+            )
+        }
+        let item = data.item
+        let active = 0
+        var disable = false
+        let color = ''
+        var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
+        let buttonAdd = null
+        if (item.quantity >= item.quantityStep * item.minOrderedItems) {
+            if (item.quantity == item.quantityStep * item.minOrderedItems) {
+                disabled = true
+                color = '#cecece'
+                active = 1
+            } else {
+                disabled = false
+                active = 0.2
+                color = primary
+            }
+            buttonAdd = (
+                <Button disabled={this.state.disabled} addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
+                    <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                </Button>
+            )
+        } else {
+            active = 1,
+                disable = true
+            color = '#cecece',
+                buttonAdd = (
+                    <Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
+                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                    </Button>
+                )
+        }
+        let id = item.id
+        console.log('awqwdqwdqw', item, item.price)
+        let price = this.priceHandle(item.price.toString())
+        return (
+            <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(item) }}>
+                <Card style={styles.card}>
+                    <CardItem >
+                        <Body>
+                            <Grid >
+                                <Col size={2} style={styles.imageWrap}>
+                                    <View style={styles.imageContainer}>
+                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} >
+                                                {this.renderDiscount(item)}
+                                            </Image>
+                                    </View>
+                                </Col>
+                                <Col size={3} style={styles.infoWrap}>
+                                    <Text style={styles.foodName}>{item.name}</Text>
+                                    <Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
+                                    <Row style={{ alignItems: 'flex-end' }} >
+                                        <Icon name='ios-pin' style={styles.locationIcon} />
+                                        <Text style={styles.shopName}>{item.cities}</Text>
+                                    </Row>
+                                    <View style={{ width: 50 }}>
+                                        {this.renderStar(item.rate)}
+                                    </View>
+                                    <Text style={styles.price}>{price}đ</Text>
+                                </Col>
+                                <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
+                                    <Col style={styles.buttonWrap}>
+                                        <TouchableOpacity disabled={disable} activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color, marginLeft: 10 }]} onPress={() => this.minus(data.index)} >
+                                            <Icon style={[styles.icon, { color: color }]} name="md-remove" />
+                                        </TouchableOpacity>
 
-										<Col style={styles.quantityContainer}>
-											<Text style={styles.quantity}>{quantity}</Text>
-										</Col>
-										<TouchableOpacity style={[styles.iconWrapPlus, { marginRight: 10 }]} onPress={() => this.plus(data.index)} >
-											<Icon name="md-add" style={styles.icon} />
-										</TouchableOpacity>
-									</Col>
-									<Col style={styles.buttonAddCard}>
-										{buttonAdd}
-									</Col>
-								</TouchableOpacity>
-							</Grid>
-						</Body>
-					</CardItem>
-				</Card>
-			</TouchableOpacity>
-		)
-	}
+                                        <Col style={styles.quantityContainer}>
+                                            <Text style={styles.quantity}>{quantity}</Text>
+                                        </Col>
+                                        <TouchableOpacity style={[styles.iconWrapPlus, { marginRight: 10 }]} onPress={() => this.plus(data.index)} >
+                                            <Icon name="md-add" style={styles.icon} />
+                                        </TouchableOpacity>
+                                    </Col>
+                                    <Col style={styles.buttonAddCard}>
+                                        {buttonAdd}
+                                    </Col>
+                                </TouchableOpacity>
+                            </Grid>
+                        </Body>
+                    </CardItem>
+                </Card>
+            </TouchableOpacity>
+        )
+    }
 	openSort() {
 		this.popupDialog.show();
 	}

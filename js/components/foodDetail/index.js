@@ -54,22 +54,30 @@ class FoodDetail extends Component {
 	componentWillReceiveProps(props) {
 		this.setState({ isLoading: false })
 		if (props.fetchDetail.success) {
+			console.log('countintf')
 			console.log('po rop', props.fetchDetail.data.model)
 			var food = props.fetchDetail.data.model
-			food.quantity = food.quantityStep * food.minOrderedItems
-			let metaData = food.productMetaData
-			for (j in metaData) {
-				if (metaData[j].name == 'Discount') {
-					let discountPrice = food.price * metaData[j].value / 100
-					food.price = food.price - discountPrice
+			console.log('fodddwaaw',food.id, this.props.food.id)
+			if (food.id == this.props.food.id) {
+				console.log('ssssaa',food)
+				food.quantity = food.quantityStep * food.minOrderedItems
+				let metaData = food.productMetaData
+				for (j in metaData) {
+					console.log('mcncvs',metaData)
+					if (metaData[j].name == 'Discount') {
+						console.log('ssssaa2222',food.price, metaData[j].value)						
+						let discountPrice = food.price * metaData[j].value / 100
+						food.price = food.price - discountPrice
+						console.log('ssssaa2222bbb',food.price, metaData[j].value)						
+						
+					}
 				}
+				this.setState({ food: food })
 			}
-			this.setState({ food: food })
 		}
 		if (!props.fetchDetail.success) {
 			setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
 		}
-
 	}
 	pageBanner() {
 		return (
@@ -97,31 +105,31 @@ class FoodDetail extends Component {
 	}
 
 	renderDiscount(data) {
-		console.log('2133213fbfvvbf',data)
-		if (data){
-		if (data.productMetaData[1]) {
-			var discount = ''
-			for (i in data.productMetaData) {
-				if (data.productMetaData[i].name == 'Discount') {
-					if (data.productMetaData[i].value) {
-						discount = data.productMetaData[i].value
+		console.log('2133213fbfvvbf', data)
+		if (data) {
+			if (data.productMetaData[1]) {
+				var discount = ''
+				for (i in data.productMetaData) {
+					if (data.productMetaData[i].name == 'Discount') {
+						if (data.productMetaData[i].value) {
+							discount = data.productMetaData[i].value
+						}
 					}
 				}
-			}
-			if (discount == '') {
+				if (discount == '') {
+					return null
+				}
+				return (
+					<View style={styles.saleView}>
+						<Text style={styles.saleText}>-{discount} %</Text>
+					</View>
+				)
+			} else {
 				return null
 			}
-			return (
-				<View style={styles.saleView}>
-					<Text style={styles.saleText}>-{discount} %</Text>
-				</View>
-			)
 		} else {
 			return null
 		}
-	} else {
-		return null
-	}
 	}
 	renderStar(rate) {
 		return (

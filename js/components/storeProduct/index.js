@@ -94,7 +94,7 @@ class StoreProduct extends Component {
 		})
 
 	}
-renderDiscount(data) {
+ renderDiscount(data) {
 		if (data.productMetaData[1]) {
 			var discount = ''
 			for (i in data.productMetaData) {
@@ -155,10 +155,11 @@ renderDiscount(data) {
 		}
 		
 		var price = this.priceHandle(food.price)
-		if (food.productMetaData[1]) {
-			
-			var discountPrice = food.price * (food.productMetaData[1].value/100)
-			price = this.priceHandle(food.price - discountPrice)
+		for (i in food.productMetaData) {
+			if(food.productMetaData[i].name == 'Discount') {
+				var discountPrice = food.price * (food.productMetaData[i].value/100)
+				price = this.priceHandle(food.price - discountPrice)				
+			}
 		}
 		return (
 			<View>
