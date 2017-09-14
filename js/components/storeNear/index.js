@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {InteractionManager, Alert, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { InteractionManager, Alert, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import Communications from 'react-native-communications';
@@ -21,7 +21,10 @@ class StoreNear extends Component {
         super(props);
         this.state = {
             data: [],
-            dataMakers:[]
+            dataMakers: [],
+            storeSelect: '',
+            showCallout: false,
+            position:''
         };
     }
     componentDidMount() {
@@ -63,20 +66,20 @@ class StoreNear extends Component {
     }
     componentWillReceiveProps(props) {
         if (props.fetchStores.success) {
-            this.setState({isLoading: false })
+            this.setState({ isLoading: false })
             this.creatMaker(props.fetchStores.data.model)
         }
     }
 
     creatMaker(list) {
         for (i in list) {
-            var coordinate= {
-                    latitude: list[i].latitude,
-                    longitude: list[i].longtitude
+            var coordinate = {
+                latitude: list[i].latitude,
+                longitude: list[i].longtitude
             }
             list[i].coordinate = coordinate
         }
-        this.setState({dataMakers:list})
+        this.setState({ dataMakers: list })
     }
 
     onRegionChange(region) {
@@ -99,6 +102,7 @@ class StoreNear extends Component {
         )
     }
     openStoreDetail(store) {
+        console.log('921321lmkcvbkmnlcvdf')
         this.setState({ disabled: true })
         this.props.navigation.navigate('StoreTab', { parrent: store })
         InteractionManager.runAfterInteractions(() => {
@@ -106,24 +110,28 @@ class StoreNear extends Component {
         })
     }
     renderCallOut(store) {
-        return(
-            <View style={styles.callOutWrap}>
-                <TouchableOpacity disabled={this.state.disabled} onPress={()=> {this.openStoreDetail(store)}}>
-                <Grid>
-                <Col style={{flex:1}}>
-                    <Image resizeMode='contain' style={styles.imageStore} source={{uri:store.storeImageUrl}}/>
-                </Col>
-                <Col style={{flex:1}}>
-                    <Text style={styles.shopName}>{store.name}</Text>
-                    <View style={styles.starWrap}>
-                            {this.renderStar(4)}
-                        </View>
-                        <Text style={styles.address}>{store.hqAddress}</Text>
-                </Col>
-                </Grid>
-                </TouchableOpacity>
-                </View>
-        )
+        if (this.state.showCallout) {
+            console.log('21321321',this.state.position)
+            return (
+                <Card style={styles.callOutWrap}>
+                    <TouchableOpacity style={{flex:1}} disabled={this.state.disabled} onPress={()=>{this.openStoreDetail(store)}}>
+                    <Grid>
+                        <Col style={{ flex: 1, justifyContent:'center' }}>
+                            <Image resizeMode='contain' style={styles.imageStore} source={{ uri: store.storeImageUrl }} />
+                        </Col>
+                        <Col style={{ flex:2.5, marginLeft:15, }}>
+                            <Text style={styles.shopName}>{store.name}</Text>
+                            <View style={styles.starWrap}>
+                                {this.renderStar(4)}
+                            </View>
+                            <Text style={styles.address}>{store.hqAddress}</Text>
+                        </Col>
+                    </Grid>
+                    </TouchableOpacity>
+                </Card>
+            )
+        }
+        return null
     }
     render() {
         const navigation = this.props.screenProps.navi
@@ -137,20 +145,20 @@ class StoreNear extends Component {
                     region={this.state.region}
                     onRegionChange={this.onRegionChange.bind(this)}
                     showsUserLocation={true}
+                    onPress={()=> {this.setState({showCallout:false})}}
+                    onMarkerPress={(e)=> {this.setState({showCallout:true})}}
                 >
-                {this.state.dataMakers.map(marker =>
-              <MapView.Marker
-                key={marker.id}
-                coordinate={marker.coordinate}
-                style={styles.marker}
-              >
-              <MapView.Callout>
-                  {this.renderCallOut(marker)}
-                </MapView.Callout>
-                </MapView.Marker>
-            )}
+                    {this.state.dataMakers.map(marker =>
+                        <MapView.Marker
+                            key={marker.id}
+                            coordinate={marker.coordinate}
+                            style={styles.marker}
+                            onPress={(e)=> {this.setState({storeSelect:marker})}}
+                        >
+                        </MapView.Marker>
+                    )}
                 </MapView>
-
+                   {this.renderCallOut(this.state.storeSelect)} 
             </Container>
         );
     }

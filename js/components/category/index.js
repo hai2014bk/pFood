@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import {ActivityIndicator, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
+import { ActivityIndicator, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
 import HeaderContent from "./../headerContent/";
 import { CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
-import {reRenderHeader} from '../../actions/header'
+import { reRenderHeader } from '../../actions/header'
 import Spinner from "react-native-loading-spinner-overlay";
 import * as appFunction from "../../utils/function"
 import * as mConstants from '../../utils/Constants'
@@ -52,7 +52,7 @@ class Category extends Component {
             item: {},
             ship: 'ViettelPost',
             fieldChose: '',
-            directionChose:''
+            directionChose: ''
         };
     }
 
@@ -104,7 +104,14 @@ class Category extends Component {
                 }
                 for (i in listFood) {
                     if (!listFood[i].quantity) {
-                        listFood[i].quantity = listFood[i].quantityStep
+                        listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
+                        let metaData = listFood[i].productMetaData
+                        for (j in metaData){
+                            if (metaData[j].name == 'Discount'){
+                                let discountPrice = listFood[i].price * metaData[j].value/100
+                                listFood[i].price = listFood[i].price - discountPrice
+                            }
+                        }
                     }
                 }
                 listFood = this.uniq(listFood)
@@ -263,7 +270,7 @@ class Category extends Component {
             "OrderDirection": this.state.sortDirection,
             "CategoryId": params.parent.id
         }
-        this.setState({ isSort: true, fieldChose:this.state.sortBy, directionChose:this.state.sortDirection })
+        this.setState({ isSort: true, fieldChose: this.state.sortBy, directionChose: this.state.sortDirection })
         this.props.fetch(parameter)
     }
     onDismissed() {
@@ -276,7 +283,7 @@ class Category extends Component {
                     fieldType[k] = true;
                 }
             }
-        }for (let k in directionType) {
+        } for (let k in directionType) {
             if (directionType.hasOwnProperty(k)) {
                 directionType[k] = false;
                 if (k === this.state.directionChose) {
@@ -285,12 +292,12 @@ class Category extends Component {
             }
         }
 
-            this.setState({ field: fieldType,direction: directionType, });
+        this.setState({ field: fieldType, direction: directionType, });
     }
 
     renderSortPopup() {
-        var disable = false 
-        if(this.state.sortBy =='' || this.state.sortDirection == '' ){
+        var disable = false
+        if (this.state.sortBy == '' || this.state.sortDirection == '') {
             disable = true
         }
         return (
@@ -319,33 +326,65 @@ class Category extends Component {
             </PopupDialog>
         )
     }
-    
+
+    renderDiscount(data) {
+		if (data.productMetaData[1]) {
+			var discount = ''
+			for (i in data.productMetaData) {
+				if(data.productMetaData[i].name == 'Discount') {
+					if(data.productMetaData[i].value) {
+						discount = data.productMetaData[i].value
+					}				
+				}
+			}
+			if(discount == '') {
+				return null
+			}
+			return (
+				<View style={styles.saleView}>
+					<Text style={styles.saleText}>-{discount} %</Text>
+				</View>
+			) 
+		} else {
+			return null
+		}
+	}
+
 
     renderItems(data) {
         if (data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
             return (
                 <View style={styles.loadMoreCell}>
-                    <ActivityIndicator/>
-					<Text style={styles.loadMoreText} >Tải thêm...</Text>
+                    <ActivityIndicator />
+                    <Text style={styles.loadMoreText} >Tải thêm...</Text>
                 </View>
             )
         }
         let item = data.item
         let active = 0
+        var disable = false
         let color = ''
-        var quantity = appFunction.handleUnitType(item.unitType,item.quantity)
+        var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
         let buttonAdd = null
-        if (item.quantity > 0) {
-            active = 0.2,
-                color = primary,
-                buttonAdd = (
-                    <Button disabled={this.state.disabled} addCart onPress={() => { this.addtoCart(item); this.setState({item}) }} >
-                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
-                    </Button>
-                )
+        if (item.quantity >= item.quantityStep * item.minOrderedItems) {
+            if (item.quantity == item.quantityStep * item.minOrderedItems) {
+                disabled = true
+                color = '#cecece'
+                active = 1
+            } else {
+                disabled = false
+                active = 0.2
+                color = primary
+            }
+            buttonAdd = (
+                <Button disabled={this.state.disabled} addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
+                    <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                </Button>
+            )
         } else {
             active = 1,
-                color = '#cecece',
+                disable = true
+            color = '#cecece',
                 buttonAdd = (
                     <Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
                         <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
@@ -363,7 +402,9 @@ class Category extends Component {
                             <Grid >
                                 <Col size={2} style={styles.imageWrap}>
                                     <View style={styles.imageContainer}>
-                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
+                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} >
+                                                {this.renderDiscount(item)}
+                                            </Image>
                                     </View>
                                 </Col>
                                 <Col size={3} style={styles.infoWrap}>
@@ -380,7 +421,7 @@ class Category extends Component {
                                 </Col>
                                 <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color, marginLeft: 10 }]} onPress={() => this.minus(data.index)} >
+                                        <TouchableOpacity disabled={disable} activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color, marginLeft: 10 }]} onPress={() => this.minus(data.index)} >
                                             <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
 
@@ -430,7 +471,7 @@ class Category extends Component {
         )
     }
 
-    renderShipPopup(){
+    renderShipPopup() {
         return (
             <PopupDialog
                 dialogTitle={<DialogTitle title="Hình thức vận chuyển" />}
@@ -460,8 +501,8 @@ class Category extends Component {
 
     async addtoCart(item) {
         let data = []
-        this.setState({disabled:true})
-		setTimeout(()=>{this.setState({disabled:false}),500})
+        this.setState({ disabled: true })
+        setTimeout(() => { this.setState({ disabled: false }), 500 })
         try {
             const value = await AsyncStorage.getItem(mConstants.CART);
             if (value !== null) {
@@ -470,7 +511,7 @@ class Category extends Component {
                     for (let i = 0; i <= data.length; i++) {
                         if (data[i].purveyorId == item.purveyorId) {
                             item.shipType = data[i].shipType
-                            appFunction.add(item,this.props)
+                            appFunction.add(item, this.props)
                         } else {
                             this.shipPopupDialog.show()
                         }
@@ -488,7 +529,7 @@ class Category extends Component {
     addCart() {
         let item = this.state.item
         item.shipType = this.state.ship
-        appFunction.add(item,this.props)
+        appFunction.add(item, this.props)
         this.shipPopupDialog.dismiss()
     }
 
@@ -526,7 +567,7 @@ class Category extends Component {
 function bindActions(dispatch) {
     return {
         fetch: (parameter) => dispatch(fetchProduct(parameter)),
-        reRenderHeader : () => dispatch(reRenderHeader())
+        reRenderHeader: () => dispatch(reRenderHeader())
     };
 }
 

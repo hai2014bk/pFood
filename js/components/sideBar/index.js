@@ -4,6 +4,7 @@ import * as mConstants from '../../utils/Constants'
 import { NavigationActions } from "react-navigation";
 import { Container, Content, Text, Icon, ListItem, Thumbnail } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
+import { connect } from "react-redux";
 
 import styles from "./style";
 const resetAction = NavigationActions.reset({
@@ -30,10 +31,31 @@ class SideBar extends Component {
 				console.log('data sideMenu',data)
 				let firstName = data.model.firstName
 				let lastName = data.model.lastName
-				this.setState({ firstName, lastName })
+				if (!data.model.firstName && !data.model.lastName)
+				this.setState({ firstName:data.model.email, lastName })
 			}
 		} catch (error) {
 
+		}
+	}
+
+	async componentWillReceiveProps(props) {
+		console.log('8immj',props)
+		if (props.fetchUser.success) {
+			console.log('ui2oi1321321')
+			let data = []
+			try {
+				const value = await AsyncStorage.getItem(mConstants.USER_DETAIL);
+				if (value !== null) {
+					data = JSON.parse(value)
+					console.log('data sideMenu 22',data)
+					let firstName = data.model.firstName
+					let lastName = data.model.lastName
+					this.setState({ firstName, lastName })
+				}
+			} catch (error) {
+	
+			}
 		}
 	}
 
@@ -108,7 +130,7 @@ class SideBar extends Component {
 						<View style={styles.logoutContainer}>
 							<View style={styles.logoutbtn} foregroundColor={"white"}>
 								<Grid>
-									<Col>
+									<Col size={2}>
 										<TouchableOpacity
 											onPress={() => {
 												this.logOut()
@@ -121,7 +143,7 @@ class SideBar extends Component {
 											</Text>
 										</TouchableOpacity>
 									</Col>
-									<Col>
+									<Col size={1}>
 										<TouchableOpacity
 											style={{ alignSelf: "flex-end" }}
 											onPress={() => {
@@ -144,4 +166,9 @@ class SideBar extends Component {
 	}
 }
 
-export default SideBar;
+const mapStateToProps = state => ({
+	fetchUser: state.fetchUser
+});
+
+export default connect(mapStateToProps)(SideBar);
+

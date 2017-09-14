@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {ActivityIndicator,Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -107,38 +107,38 @@ class RecommendFood extends Component {
 	}
 
 	renderPage(item, index) {
-        return (
-            <View style={{ flex: 1 }} key={index} style={styles.slide1}>
-                <Image style={styles.imageBanner} source={{ uri: item.imageUrl }} />
-            </View>
-        )
-    }
+		return (
+			<View style={{ flex: 1 }} key={index} style={styles.slide1}>
+				<Image style={styles.imageBanner} source={{ uri: item.imageUrl }} />
+			</View>
+		)
+	}
 
-    pageBanner() {
-        var banners = []
-        var sliders = []
-        var imageLoad = 'http://www.jqueryscript.net/images/Minimal-jQuery-Loading-Overlay-Spinner-Plugin-Easy-Overlay.jpg'
-        if (this.state.banners.length > 0) {
-            banners = this.state.banners
-            return (
-                <Carousel
-                    autoplay
-                    autoplayTimeout={3000}
-                    loop
-                    index={0}
-                    pageSize={BannerWidth}
-					activePageIndicatorStyle={{backgroundColor:primary}}
-                >
-                    {banners.map((item, index) => this.renderPage(item, index))}
-                </Carousel>
-            )
-        }
-        return (
-                <View style={{ flex:1, height:137 }} style={styles.slide1}>
-                    <ActivityIndicator style={{height:137}}/>
-                </View>
-        )
-    }
+	pageBanner() {
+		var banners = []
+		var sliders = []
+		var imageLoad = 'http://www.jqueryscript.net/images/Minimal-jQuery-Loading-Overlay-Spinner-Plugin-Easy-Overlay.jpg'
+		if (this.state.banners.length > 0) {
+			banners = this.state.banners
+			return (
+				<Carousel
+					autoplay
+					autoplayTimeout={3000}
+					loop
+					index={0}
+					pageSize={BannerWidth}
+					activePageIndicatorStyle={{ backgroundColor: primary }}
+				>
+					{banners.map((item, index) => this.renderPage(item, index))}
+				</Carousel>
+			)
+		}
+		return (
+			<View style={{ flex: 1, height: 137 }} style={styles.slide1}>
+				<ActivityIndicator style={{ height: 137 }} />
+			</View>
+		)
+	}
 	renderStar(rate) {
 		return (
 			<StarRating
@@ -162,6 +162,49 @@ class RecommendFood extends Component {
 			this.setState({ disabled: false })
 		})
 	}
+	renderDiscount(data) {
+		if (data.productMetaData[1]) {
+			var discount = ''
+			for (i in data.productMetaData) {
+				if(data.productMetaData[i].name == 'Discount') {
+					if(data.productMetaData[i].value) {
+						discount = data.productMetaData[i].value
+					}				
+				}
+			}
+			if(discount == '') {
+				return null
+			}
+			return (
+				<View style={styles.saleView}>
+					<Text style={styles.saleText}>-{discount} %</Text>
+				</View>
+			) 
+		} else {
+			return null
+		}
+	}
+	renderOldPrice(data) {
+		if (data.productMetaData[1]) {
+			for (i in data.productMetaData) {
+				if(data.productMetaData[i].name == 'Discount') {
+					var oldPrice = this.priceHandle(data.price)					
+				}
+			}
+			return (
+				<View>
+					<Text style={styles.oldPriceText}>{oldPrice}</Text>
+				</View>
+			)
+		} else {
+			return (
+				<View>
+					<Text style={[styles.oldPriceText,{color:'white'}]}>22132132</Text>
+				</View>
+			)
+		}
+	}
+	
 	priceHandle(price) {
 		var count = 0
 		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
@@ -170,30 +213,39 @@ class RecommendFood extends Component {
 	renderCell(data) {
 		var food = data.item
 		var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'
-		if (food.productMetaData[0]) {
-			imageUrl = food.productMetaData[0].value
+		for (i in food.productMetaData) {
+			if(food.productMetaData[i].name == 'ImageUrl') {
+				if (food.productMetaData[i]) {
+					console.log('92345m,fd')
+					imageUrl = food.productMetaData[i].value
+				}					
+			}
 		}
+		
 		var price = this.priceHandle(food.price)
+		if (food.productMetaData[1]) {
+			
+			var discountPrice = food.price * (food.productMetaData[1].value/100)
+			price = this.priceHandle(food.price - discountPrice)
+		}
 		return (
 			<View>
 				<TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openDetail(food) }} style={{ flex: 1, alignItems: 'center' }} >
 					<Grid style={styles.cellContainer}>
 						<Row style={styles.upContainer}>
 							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: imageUrl }} >
-								<View style={styles.saleView}>
-									<Text style={styles.saleText}>-10%</Text>
-								</View>
+									{this.renderDiscount(data.item)}
 							</Image>
 						</Row>
 						<Row style={styles.downContainer}>
-							<Text numberOfLines={2} style={styles.foodNameText}>{food.name}</Text>
+							<Text style={styles.foodNameText}>{food.name}</Text>
 							<View style={{ paddingLeft: 2, flex: 1, width: '100%' }}>
 								<Row style={{ justifyContent: 'space-between', marginTop: 3 }} >
 									<Row style={{ alignSelf: 'flex-end' }} >
 										<Icon name='ios-pin' style={styles.locationIcon} />
 										<Text style={styles.shopNameText}>Vinmart</Text>
 									</Row>
-									<Text style={styles.oldPriceText}>322.000đ</Text>
+									{this.renderOldPrice(data.item)}
 								</Row>
 								<Row style={{ flex: 1, justifyContent: 'space-between', alignItems: 'flex-end' }} size={1}>
 									<Text style={styles.priceText}>{price} đ</Text>
@@ -242,7 +294,7 @@ class RecommendFood extends Component {
 				keyExtractor={(item) => item.sectionName}
 				extraData={this.state.dataSection}
 				renderItem={(item) =>
-					<ListItem >
+					<ListItem style={{marginBottom:-15, borderBottomWidth: 0 }} >
 						{this.renderHorizontalList(item)}
 					</ListItem>
 				}>

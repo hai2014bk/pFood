@@ -15,11 +15,22 @@ export default {
 	},
 	callOutWrap: {
 		flex:1,
-		width:150
+		width:deviceWidth - 60,
+		backgroundColor:'white',
+		marginLeft:30,
+		marginRight:30,
+		height:110,
+		marginTop:deviceHeight - 190,
+		position:'absolute',
+		padding:10,
 	},
 	imageStore:{
-		height:60,
+		height:80,
 		aspectRatio:1,
+	},
+	shopName:{
+		fontSize:17,
+		fontWeight:'bold'
 	},
 	marker:{
 		width:50,
@@ -37,7 +48,7 @@ export default {
 	},
 	address: {
         color: '#555555',
-        fontSize: 10,
+        fontSize: 14,
     },
 	starWrap: {
         width: 50,

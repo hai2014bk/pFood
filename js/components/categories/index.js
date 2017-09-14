@@ -56,8 +56,8 @@ class Categories extends Component {
                 if (props.fetchSubCategories.data.checkId == this.state.parentChoose.id) {
                     setTimeout(() => { Alert.alert('', 'Chưa có sản phầm') })
                     setTimeout(() => {
-                        this.setState({ disabled: false },500)
-                    })
+                        this.setState({ disabled: false })
+                    },500)
 
                 }
             }

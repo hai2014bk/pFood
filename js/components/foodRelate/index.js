@@ -4,7 +4,7 @@ import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
 import * as appFunction from "../../utils/function"
-import {reRenderHeader} from '../../actions/header'
+import { reRenderHeader } from '../../actions/header'
 import * as mConstants from '../../utils/Constants'
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
@@ -37,24 +37,31 @@ class FoodRelate extends Component {
     }
 
     componentDidMount() {
-            var listFood = this.props.fetchRelate.data.model
-            var listRelateFood = []
-            console.log('dasdqwdwq',listFood.length)
-            for (i in listFood) {
-                console.log('28213213',this.props.food.id)
-                if (this.props.food.id != listFood[i].id) {
-                    listFood[i].quantity = listFood[i].quantityStep
-                    listRelateFood.push(listFood[i])
+        var listFood = this.props.fetchRelate.data.model
+        var listRelateFood = []
+        console.log('dasdqwdwq', listFood.length)
+        for (i in listFood) {
+            console.log('28213213', this.props.food.id)
+            if (this.props.food.id != listFood[i].id) {
+                listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
+                let metaData = listFood[i].productMetaData
+                for (j in metaData){
+                    if (metaData[j].name == 'Discount'){
+                        let discountPrice = listFood[i].price * metaData[j].value/100
+                        listFood[i].price = listFood[i].price - discountPrice
+                    }
                 }
+                listRelateFood.push(listFood[i])
             }
-            this.setState({ data: listRelateFood })
+        }
+        this.setState({ data: listRelateFood })
     }
     componentWillReceiveProps(props) {
         if (props.fetchRelate.success) {
             var listFood = props.fetchRelate.data.model
             var listRelateFood = []
             for (i in listFood) {
-                console.log('28213213',this.props.food.id)
+                console.log('28213213', this.props.food.id)
                 if (this.props.food.id != listFood[i].id) {
                     listFood[i].quantity = listFood[i].quantityStep
                     listRelateFood.push(listFood[i])
@@ -117,34 +124,66 @@ class FoodRelate extends Component {
     }
 
     openDetail(food) {
-        this.setState({disabled:true})
+        this.setState({ disabled: true })
         this.props.screenProps.navi.navigate('FoodTab', { parrent: food })
         InteractionManager.runAfterInteractions(() => {
-            this.setState({disabled:false})  
-		})
+            this.setState({ disabled: false })
+        })
     }
+    renderDiscount(data) {
+		if (data.productMetaData[1]) {
+			var discount = ''
+			for (i in data.productMetaData) {
+				if(data.productMetaData[i].name == 'Discount') {
+					if(data.productMetaData[i].value) {
+						discount = data.productMetaData[i].value
+					}				
+				}
+			}
+			if(discount == '') {
+				return null
+			}
+			return (
+				<View style={styles.saleView}>
+					<Text style={styles.saleText}>-{discount} %</Text>
+				</View>
+			) 
+		} else {
+			return null
+		}
+	}
+
     renderItems(data) {
         let item = data.item
         let id = item.id
         let active = 0
         let color = ''
+        var disabled = false
         var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
-        if (item.quantity > 0) {
-            active = 0.2,
+        if (item.quantity >= item.quantityStep * item.minOrderedItems) {
+            if (item.quantity == item.quantityStep * item.minOrderedItems) {
+                disabled = true
+                color = '#cecece'
+                active = 1
+            } else {
+                disabled = false
+                active = 0.2
                 color = primary
-                buttonAdd = (
-                    <Button addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
-                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
-                    </Button>
-                )
+            }
+            buttonAdd = (
+                <Button addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
+                    <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                </Button>
+            )
         } else {
             active = 1,
-                color = '#cecece'
-                buttonAdd = (
-                    <Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
-                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
-                    </Button>
-                )
+                disabled = true
+            color = '#cecece'
+            buttonAdd = (
+                <Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
+                    <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                </Button>
+            )
         }
         let price = this.priceHandle(item.price.toString())
         return (
@@ -155,7 +194,9 @@ class FoodRelate extends Component {
                             <Grid >
                                 <Col size={2} style={styles.imageWrap}>
                                     <View style={styles.imageContainer}>
-                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
+                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image}>
+                                                {this.renderDiscount(item)}
+                                            </Image>
                                     </View>
                                 </Col>
                                 <Col size={3} style={styles.infoWrap}>
@@ -170,9 +211,9 @@ class FoodRelate extends Component {
                                     </View>
                                     <Text style={styles.price}>{price}đ</Text>
                                 </Col>
-                                <TouchableOpacity  activeOpacity={1} style={styles.buyColumn}>
+                                <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
+                                        <TouchableOpacity disabled={disabled} activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
                                             <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
                                         <Col style={styles.quantityContainer}>
@@ -183,7 +224,7 @@ class FoodRelate extends Component {
                                         </TouchableOpacity>
                                     </Col>
                                     <Col style={styles.buttonAddCard}>
-                                    {buttonAdd}
+                                        {buttonAdd}
                                     </Col>
                                 </TouchableOpacity>
                             </Grid>
@@ -204,7 +245,7 @@ class FoodRelate extends Component {
                     for (let i = 0; i <= data.length; i++) {
                         if (data[i].purveyorId == item.purveyorId) {
                             item.shipType = data[i].shipType
-                            appFunction.add(item,this.props)
+                            appFunction.add(item, this.props)
                         } else {
                             this.popupDialog.show()
                         }
@@ -274,7 +315,7 @@ class FoodRelate extends Component {
     addCart() {
         let item = this.state.item
         item.shipType = this.state.ship
-        appFunction.add(item,this.props)
+        appFunction.add(item, this.props)
         this.popupDialog.dismiss()
     }
 
@@ -303,7 +344,7 @@ class FoodRelate extends Component {
 function bindActions(dispatch) {
     return {
         fetch: (parameter) => dispatch(fetchProduct(parameter)),
-        reRenderHeader:() => dispatch(reRenderHeader())
+        reRenderHeader: () => dispatch(reRenderHeader())
     };
 }
 const mapStateToProps = state => ({

@@ -38,10 +38,13 @@ export function fetchUser(email) {
 		APIRequest.APIRequestGET(url, true,
 			response => {
 				console.log('respone fetch user', response)
-				dispatch(fetchUserSuccess(response));
 				AsyncStorage.setItem(
 					mConstants.USER_DETAIL,
-					JSON.stringify(response));
+					JSON.stringify(response)).then(() =>
+						{
+							dispatch(fetchUserSuccess(response));							
+						}
+					);
 			},
 			error => {
 				console.log('error fetch user', error)
@@ -66,8 +69,9 @@ export function loginClick(params) {
 					mConstants.USER_INFO,
 					JSON.stringify(response)
 				);
+				console.log('i239210321312',response.model.userEmail)
 				dispatch(loginSuccess(response));
-				dispatch(fetchUser(params.email));
+				dispatch(fetchUser(response.model.userEmail));
 			},
 			error => {
 				dispatch(loginFailed(error));

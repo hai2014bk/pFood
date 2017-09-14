@@ -78,6 +78,21 @@ export default {
 		marginBottom:5,
 		flex:1,
 	},
+	saleText:{
+		color:'white',
+		fontSize:15,
+		alignSelf:'center',
+		fontWeight:'bold'
+	},
+    saleView:{
+		height:20,
+		width:60,
+		borderTopLeftRadius: 7.5,
+		borderBottomLeftRadius: 7.5,
+		alignSelf:'flex-end',
+		justifyContent:'center',
+		backgroundColor:'orange'
+	},
 	headerText:{
 		color:primary,
 		fontSize:18,
