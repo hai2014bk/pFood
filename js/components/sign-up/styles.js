@@ -19,7 +19,7 @@ export default {
 		},
 	container: {
 		flex: 1,
-		marginTop:30,
+		marginTop:0,
 		marginBottom:10,
 		justifyContent:'center',
 	},
@@ -107,6 +107,11 @@ export default {
 		textAlign:'center',
 		fontSize:12,
 		marginTop:8
+	},
+	resTitle:{
+		fontSize:38,
+		textAlign: 'center',
+		marginBottom: 30,
 	}
 
 };
