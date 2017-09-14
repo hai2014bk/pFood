@@ -34,7 +34,6 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      email:"",
       isLoading: false,
       click: false,
       disabled: false,
@@ -47,18 +46,14 @@ class Login extends Component {
     if (this.checkSpaceAll(this.state.email)) {
       this.emailInput._root.focus()
     }
-    if (!this.validateEmail(this.state.email)) {
-      this.emailInput._root.focus()
+    if (this.checkSpaceAll(this.state.password)) {
+      this.setState({ password: '' })
+      this.passwordInput._root.focus()
     }
-
   }
+
   checkValue() {
     this.setState({ click: false })
-    var noneSpaceEmail = ''
-    if(this.state.email) {
-     noneSpaceEmail = this.state.email.replace(/^\s+/, "").replace(/\s+$/, "").replace(/\s+/g, " ");
-    }
-    this.setState({ email: noneSpaceEmail });
     if (!this.state.email) {
 
       this.emailInput._root.focus()
@@ -70,9 +65,16 @@ class Login extends Component {
   }
 
   checkClick() {
+    if (this.state.email) {
+      noneSpaceEmail = this.state.email.replace(/^\s+/, "").replace(/\s+$/, "").replace(/\s+/g, " ");
+      this.setState({ email: noneSpaceEmail });
+    }
     if (this.state.click === false) {
-      this.loginClick();
-    } else { }
+      setTimeout(() => {
+        this.loginClick();
+      }, 200)
+
+    } Keyboard.dismiss()
   }
 
   loginClick() {
@@ -85,7 +87,7 @@ class Login extends Component {
           setTimeout(() => {
             Alert.alert('', 'Địa chỉ email không hợp lệ',
               [
-                { text: 'OK', onPress: () => this.checkSpace() },
+                { text: 'OK', onPress: () => {this.emailInput._root.focus(), this.setState({ disabled: false })} },
               ],
               { cancelable: false }
             )
@@ -124,23 +126,13 @@ class Login extends Component {
         )
       }, 200)
     }
-    Keyboard.dismiss()
-
-  }
-
-  changeDisble() {
-    if (this.state.disabled) {
-      this.setState({ disabled: false })
-    } else {
-      this.setState({ disabled: true })
-    }
+    this.setState({ click: false })
   }
 
 
   componentWillReceiveProps(props) {
-    this.setState({ isLoading: false })
     console.log('props', props)
-    this.setState({ isLoading: false, click: true })
+    this.setState({ isLoading: false, click: false })
     if (props.login.success) {
       this.props.navigation.navigate('Drawer')
     }
@@ -150,8 +142,8 @@ class Login extends Component {
   }
 
   async loginFb() {
-    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1426412894062417', {
-      permissions: ['public_profile', 'email']
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1237620896349287', {
+      permissions: ['public_profile', 'email'], behavior: 'browser'
     });
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
@@ -171,12 +163,13 @@ class Login extends Component {
         iosClientId: '514654911028-9ougk5pan5mdb1rrnk3va5uqnpdsu3b1.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       });
-      console.log('result google', result)
+      console.log('result', result)
       if (result.type === 'success') {
 
         let params = {}
         params.accessToken = result.accessToken
         params.loginType = 'Google'
+        console.log('params', params)
         this.props.loginAction(params)
       } else {
         return { cancelled: true };
@@ -221,7 +214,7 @@ class Login extends Component {
                 placeholderTextColor='#f4e6db'
                 secureTextEntry
                 style={styles.textInput}
-
+                value={this.state.password}
                 onChangeText={password => this.setState({ password })}
                 style={styles.input}
 
@@ -299,6 +292,9 @@ class Login extends Component {
                   onPress={() => {
                     this.setState({ disabled: true }),
                     navigation.navigate("SignUp"),
+                    this.setState({ email: '' })
+                    this.setState({ password: "" })
+                    Keyboard.dismiss()
                     InteractionManager.runAfterInteractions(() => {
                       this.setState({ disabled: false })
                     })
