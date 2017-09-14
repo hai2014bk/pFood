@@ -25,11 +25,13 @@ class SignUp extends Component {
 			email: '',
 			name: '',
 			password: '',
-			isLoading: false
+			isLoading: false,
+			disabled: false,
 		};
 		this.validateEmail = this.validateEmail.bind(this)
 	}
 	componentWillReceiveProps(props) {
+		this.setState({ disabled: false })
 		if (props.creatAcount.success) {
 			this.setState({ isLoading: false })
 			Alert.alert(
@@ -59,7 +61,9 @@ class SignUp extends Component {
 
 	}
 
+
 	checkSpace() {
+		this.setState({ disabled: false })
 		if (this.checkSpaceAll(this.state.email)) {
 			this.setState({ email: '' })
 			this.emailInput._root.focus()
@@ -75,6 +79,7 @@ class SignUp extends Component {
 
 	}
 	checkValue() {
+		this.setState({ disabled: false })
 		if (this.state.email == '') {
 			this.emailInput._root.focus()
 		} else {
@@ -92,50 +97,50 @@ class SignUp extends Component {
 
 	createPassword() {
 		Keyboard.dismiss()
-		if (this.state.email && this.state.firstName && this.state.password) {
-			if ((!this.checkSpaceAll(this.state.email)) && (!this.checkSpaceAll(this.state.firstName) && (!this.checkSpaceAll(this.state.password)))) {
-				if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
-					setTimeout(() => {
-						Alert.alert(
-							'',
-							'Địa chỉ email không hợp lệ',
-							[
-								{ text: 'OK', onPress: () => this.emailInput._root.focus() },
-							],
-							{ cancelable: false }
-						)
-					}, 200)
-				} else {
-					if (this.state.password.length < 8) {
-						Alert.alert(
-							'',
-							'Mật khẩu tối thiểu 8 kí tự',
-							[
-								{ text: 'OK', onPress: () => this.passwordInput._root.focus() },
-							],
-							{ cancelable: false }
-						)	
-					} else {
-						let params = {}
-						params.firstName = this.state.firstName
+		if (this.state.email) {
+			noneSpaceEmail = this.state.email.replace(/^\s+/, "").replace(/\s+$/, "").replace(/\s+/g, " ");
+			this.setState({ email: noneSpaceEmail });
+		}
+		if (this.state.firstName) {
+			noneSpaceName = this.state.firstName.replace(/^\s+/, "").replace(/\s+$/, "").replace(/\s+/g, " ");
+			this.setState({ firstName: noneSpaceName });
+		}
+	
+		this.setState({ disabled: true })
+setTimeout(() => {
 
-						params.email = this.state.email
-						params.password = this.state.password
-						this.props.register(params)
-						this.setState({ isLoading: true })
-					}
-				}
-			} else {
+	if (this.state.email && this.state.firstName && this.state.password) {
+		if ((!this.checkSpaceAll(this.state.email)) && (!this.checkSpaceAll(this.state.firstName) && (!this.checkSpaceAll(this.state.password)))) {
+			if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
 				setTimeout(() => {
 					Alert.alert(
 						'',
-						'Một trong các trường không hợp lệ',
+						'Địa chỉ email không hợp lệ',
 						[
-							{ text: 'OK', onPress: () => this.checkSpace() },
+							{ text: 'OK', onPress: () => { this.emailInput._root.focus(), this.setState({ disabled: false }) } },
 						],
 						{ cancelable: false }
 					)
 				}, 200)
+			} else {
+				if (this.state.password.length < 8) {
+					Alert.alert(
+						'',
+						'Mật khẩu tối thiểu 8 kí tự',
+						[
+							{ text: 'OK', onPress: () => { this.passwordInput._root.focus(), this.setState({ disabled: false }) } },
+						],
+						{ cancelable: false }
+					)
+				} else {
+					let params = {}
+					params.firstName = this.state.firstName
+
+					params.email = this.state.email
+					params.password = this.state.password
+					this.props.register(params)
+					this.setState({ isLoading: true })
+				}
 			}
 		} else {
 			setTimeout(() => {
@@ -143,82 +148,98 @@ class SignUp extends Component {
 					'',
 					'Các trường không được phép trống',
 					[
-						{ text: 'OK', onPress: () => this.checkValue() },
+						{ text: 'OK', onPress: () => this.checkSpace() },
 					],
 					{ cancelable: false }
 				)
 			}, 200)
 		}
+	} else {
+		setTimeout(() => {
+			Alert.alert(
+				'',
+				'Các trường không được phép trống',
+				[
+					{ text: 'OK', onPress: () => this.checkValue() },
+				],
+				{ cancelable: false }
+			)
+		}, 200)
+	}
+}, 200)
 	}
 
 
-	render() {
-		const navigation = this.props.navigation;
-		return (
-			<Container style={styles.containerWrap}>
-				<Spinner visible={this.state.isLoading} />
-				<Image source={background} style={styles.imageBackground}>
-					<Content keyboardShouldPersistTaps='handled' style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-						<View style={styles.container}>
-							<Form>
-								<Input main
-									ref={(email) => { this.emailInput = email }}
+render() {
+	const navigation = this.props.navigation;
+	return (
+		<Container style={styles.containerWrap}>
+			<Spinner visible={this.state.isLoading} />
+			<Image source={background} style={styles.imageBackground}>
+				<Content keyboardShouldPersistTaps='handled' style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>				
+					<View style={styles.container}>			
+						<Text style={styles.resTitle}>TẠO TÀI KHOẢN</Text>			
+						<Form>
+							<Input main
+								ref={(email) => { this.emailInput = email }}
+								style={styles.textInput}
+								value={this.state.email}
+								autoCapitalize='none'
+								onChangeText={text => this.setState({ email: text })}
+								placeholder='Email của bạn' placeholderTextColor='#f4e6db' />
+							<Input main
+								ref={(firstName) => { this.firstNameInput = firstName }}
+								style={styles.textInput}
+								autoCapitalize='none'
+								value={this.state.firstName}
+								onChangeText={text => this.setState({ firstName: text })}
+								placeholder='Tên của bạn' placeholderTextColor='#f4e6db' />
+							<View style={styles.pass}>
+								<Input
+									ref={(password) => { this.passwordInput = password }}
 									style={styles.textInput}
-									value={this.state.email}
-									autoCapitalize='none'
-									onChangeText={text => this.setState({ email: text })}
-									placeholder='Email của bạn' placeholderTextColor='#f4e6db' />
-								<Input main
-									ref={(firstName) => { this.firstNameInput = firstName }}
-									style={styles.textInput}
-									autoCapitalize='none'
-									value={this.state.firstName}
-									onChangeText={text => this.setState({ firstName: text })}
-									placeholder='Tên của bạn' placeholderTextColor='#f4e6db' />
-								<View style={styles.pass}>
-									<Input
-										ref={(password) => { this.passwordInput = password }}
-										style={styles.textInput}
-										value={this.state.password}
-										onChangeText={text => this.setState({ password: text })}
-										secureTextEntry={this.state.showPassword} placeholder='Mật khẩu của bạn' placeholderTextColor='#f4e6db' />
-									<TouchableOpacity style={styles.iconp} onPress={() => this.showPassword()}>
-										<Icon name="ios-eye" />
-									</TouchableOpacity>
-								</View>
-							</Form>
-							<TouchableOpacity onPress={() => { this.createPassword() }} style={styles.button} >
-								<Text style={{ color: '#f4e6db', fontSize: 18, }}>Đăng Ký</Text>
-							</TouchableOpacity>
-							<View style={styles.questionWrap}>
-								<Text style={styles.questionText}>Đã có tài khoản</Text>
+									value={this.state.password}
+									onChangeText={text => this.setState({ password: text })}
+									secureTextEntry={this.state.showPassword} placeholder='Mật khẩu của bạn' placeholderTextColor='#f4e6db' />
+								<TouchableOpacity style={styles.iconp} onPress={() => this.showPassword()}>
+									<Icon name="ios-eye" />
+								</TouchableOpacity>
 							</View>
-							<TouchableOpacity onPress={() => { navigation.goBack(); Keyboard.dismiss() }} style={styles.button}  >
-								<Text style={{ color: '#f4e6db', fontSize: 18 }}>Đăng Nhập</Text>
-							</TouchableOpacity>
+						</Form>
+						<TouchableOpacity onPress={() => { this.createPassword() }}
+							disabled={this.state.disabled}
+							style={styles.button} >
+							<Text style={{ color: '#f4e6db', fontSize: 18, }}>Đăng Ký</Text>
+						</TouchableOpacity>
+						<View style={styles.questionWrap}>
+							<Text style={styles.questionText}>Đã có tài khoản</Text>
 						</View>
-					</Content>
-				</Image>
-			</Container>
-		);
+						<TouchableOpacity onPress={() => { navigation.goBack(); Keyboard.dismiss() }} style={styles.button}  >
+							<Text style={{ color: '#f4e6db', fontSize: 18 }}>Đăng Nhập</Text>
+						</TouchableOpacity>
+					</View>
+				</Content>
+			</Image>
+		</Container>
+	);
+}
+validateEmail(email) {
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(email);
+}
+validateUnicode(email) {
+	var regex = /^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/gi
+	if (regex.test(email)) {
+		return true;
 	}
-	validateEmail(email) {
-		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		return re.test(email);
+	return false;
+}
+checkSpaceAll(text) {
+	if (!text.replace(/\s/g, '').length) {
+		return true
 	}
-	validateUnicode(email) {
-		var regex = /^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/gi
-		if (regex.test(email)) {
-			return true;
-		}
-		return false;
-	}
-	checkSpaceAll(text) {
-		if (!text.replace(/\s/g, '').length) {
-			return true
-		}
-		return false
-	}
+	return false
+}
 }
 function bindActions(dispatch) {
 	return {
