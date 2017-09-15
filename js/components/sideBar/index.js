@@ -33,7 +33,10 @@ class SideBar extends Component {
 				let firstName = data.model.firstName
 				let lastName = data.model.lastName
 				this.setState({ email:data.model.email })
-				this.setState({ firstName, lastName })
+				if(firstName && lastName) {
+					console.log('fffssd')
+					this.setState({ firstName, lastName })
+				}
 			}
 		} catch (error) {
 
@@ -53,7 +56,10 @@ class SideBar extends Component {
 					let firstName = data.model.firstName
 					let lastName = data.model.lastName
 					this.setState({ email:data.model.email })
-					this.setState({ firstName, lastName })
+					if(firstName && lastName) {
+						console.log('fffssd')						
+						this.setState({ firstName, lastName })
+					}
 				}
 			} catch (error) {
 	
@@ -69,8 +75,8 @@ class SideBar extends Component {
 	render() {
 		let source = ''
 		var name = this.state.email
-		if (this.state.firstName != '' || this.state.lastName != ''){
-			name = this.state.firstName + ' ' + this.state.lastName
+		if (this.state.firstName) {
+		 name = this.state.firstName + ' ' + this.state.lastName
 		}
 		if(this.state.image){
 			source = this.state.image

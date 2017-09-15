@@ -143,7 +143,7 @@ class Login extends Component {
 
   async loginFb() {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1237620896349287', {
-      permissions: ['public_profile', 'email'], behavior: 'browser'
+      permissions: ['public_profile', 'email']
     });
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API

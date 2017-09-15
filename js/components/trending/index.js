@@ -321,7 +321,7 @@ class Trending extends Component {
             <Container style={styles.container}>
                 <HeaderContent navi={navigation} leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} rightButton={true} title="Xu hướng"
                 />
-                <Content style={styles.content}>
+                <View style={{ flex: 1 }}>
                     <FlatList style={{ marginBottom: 5, marginTop: 5, flex: 1, width: '100%' }}
                         data={this.state.data}
                         extraData={this.state.data}
@@ -334,7 +334,7 @@ class Trending extends Component {
                         }
                     />
                     {this.renderPopup()}
-                </Content>
+                </View>
             </Container>
         );
     }

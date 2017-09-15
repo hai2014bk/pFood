@@ -40,21 +40,21 @@ class FoodRelate extends Component {
     componentDidMount() {
         var listFood = this.props.fetchRelate.data.model
         var listRelateFood = []
-            for (i in listFood) {
-                console.log('28213213', this.props.food.id)
-                if (this.props.food.id != listFood[i].id) {
-                    listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
-                    let metaData = listFood[i].productMetaData
-                    for (j in metaData) {
-                        if (metaData[j].name == 'Discount') {
-                            let discountPrice = listFood[i].price * metaData[j].value / 100
-                            listFood[i].price = listFood[i].price - discountPrice
-                        }
+        for (i in listFood) {
+            console.log('28213213', this.props.food.id)
+            if (this.props.food.id != listFood[i].id) {
+                listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
+                let metaData = listFood[i].productMetaData
+                for (j in metaData) {
+                    if (metaData[j].name == 'Discount') {
+                        let discountPrice = listFood[i].price * metaData[j].value / 100
+                        listFood[i].price = listFood[i].price - discountPrice
                     }
-                    listRelateFood.push(listFood[i])
                 }
+                listRelateFood.push(listFood[i])
             }
-            this.setState({ data: listRelateFood, loaded: true })
+        }
+        this.setState({ data: listRelateFood, loaded: true })
     }
     componentWillReceiveProps(props) {
         if (props.fetchRelate.success) {
@@ -325,7 +325,7 @@ class FoodRelate extends Component {
         const navigation = this.props.screenProps.navi;
         return (
             <Container style={styles.container}>
-                <Content style={styles.contentWrap}>
+                <View style={{ flex: 1 }}>
                     <FlatList style={{ marginBottom: 5, marginTop: 5 }}
                         data={this.state.data}
                         extraData={this.state.data}
@@ -338,7 +338,7 @@ class FoodRelate extends Component {
                         }
                     />
                     {this.renderPopup()}
-                </Content>
+                </View>
             </Container>
         );
     }

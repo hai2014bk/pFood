@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 1474,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "packagerPid": 1989,
+  "expoServerNgrokUrl": "https://x9-u7d.haieric96.pfood.exp.direct",
+  "packagerNgrokUrl": "https://packager.x9-u7d.haieric96.pfood.exp.direct",
+  "ngrokPid": 2001
 }

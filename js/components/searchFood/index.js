@@ -315,39 +315,30 @@ class SearchFood extends Component {
 	}
 
 	renderItems(data) {
-        if (data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
-            return (
-                <View style={styles.loadMoreCell}>
-                    <ActivityIndicator />
-                    <Text style={styles.loadMoreText} >Tải thêm...</Text>
-                </View>
-            )
-        }
         let item = data.item
         let active = 0
-        var disable = false
         let color = ''
         var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
-        let buttonAdd = null
+        var disabled = false
         if (item.quantity >= item.quantityStep * item.minOrderedItems) {
-            if (item.quantity == item.quantityStep * item.minOrderedItems) {
-                disabled = true
-                color = '#cecece'
-                active = 1
-            } else {
-                disabled = false
-                active = 0.2
-                color = primary
-            }
-            buttonAdd = (
-                <Button disabled={this.state.disabled} addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
-                    <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
-                </Button>
-            )
+                if (item.quantity == item.quantityStep * item.minOrderedItems) {
+                    disabled = true
+                    color = '#cecece'
+                    active = 1
+                } else {
+                    disabled = false
+                    active = 0.2
+                    color = primary
+                }
+                buttonAdd = (
+                    <Button addCart onPress={() => { this.addtoCart(item); this.setState({ item }) }} >
+                        <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
+                    </Button>
+                )
         } else {
             active = 1,
-                disable = true
-            color = '#cecece',
+                color = '#cecece',
+                disabled = true                
                 buttonAdd = (
                     <Button disabled={true} style={{ backgroundColor: '#cecece' }} addCart >
                         <Text numberOfLines={1} style={styles.textAdd}> Thêm vào giỏ </Text>
@@ -355,8 +346,8 @@ class SearchFood extends Component {
                 )
         }
         let id = item.id
-        console.log('awqwdqwdqw', item, item.price)
         let price = this.priceHandle(item.price.toString())
+
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(item) }}>
                 <Card style={styles.card}>
@@ -365,7 +356,7 @@ class SearchFood extends Component {
                             <Grid >
                                 <Col size={2} style={styles.imageWrap}>
                                     <View style={styles.imageContainer}>
-                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} >
+                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image}>
                                                 {this.renderDiscount(item)}
                                             </Image>
                                     </View>
@@ -384,14 +375,14 @@ class SearchFood extends Component {
                                 </Col>
                                 <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity disabled={disable} activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color, marginLeft: 10 }]} onPress={() => this.minus(data.index)} >
+                                        <TouchableOpacity disabled={disabled} activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
                                             <Icon style={[styles.icon, { color: color }]} name="md-remove" />
                                         </TouchableOpacity>
 
                                         <Col style={styles.quantityContainer}>
                                             <Text style={styles.quantity}>{quantity}</Text>
                                         </Col>
-                                        <TouchableOpacity style={[styles.iconWrapPlus, { marginRight: 10 }]} onPress={() => this.plus(data.index)} >
+                                        <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
                                             <Icon name="md-add" style={styles.icon} />
                                         </TouchableOpacity>
                                     </Col>

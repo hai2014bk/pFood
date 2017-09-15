@@ -40,6 +40,7 @@ class FoodDetail extends Component {
 				Grab: false,
 				Uber: false
 			},
+			loaded: false,
 			item: {},
 			ship: 'ViettelPost',
 			disabled: false,
@@ -54,25 +55,20 @@ class FoodDetail extends Component {
 	componentWillReceiveProps(props) {
 		this.setState({ isLoading: false })
 		if (props.fetchDetail.success) {
-			console.log('countintf')
-			console.log('po rop', props.fetchDetail.data.model)
-			var food = props.fetchDetail.data.model
-			console.log('fodddwaaw',food.id, this.props.food.id)
-			if (food.id == this.props.food.id) {
-				console.log('ssssaa',food)
-				food.quantity = food.quantityStep * food.minOrderedItems
-				let metaData = food.productMetaData
-				for (j in metaData) {
-					console.log('mcncvs',metaData)
-					if (metaData[j].name == 'Discount') {
-						console.log('ssssaa2222',food.price, metaData[j].value)						
-						let discountPrice = food.price * metaData[j].value / 100
-						food.price = food.price - discountPrice
-						console.log('ssssaa2222bbb',food.price, metaData[j].value)						
-						
+			if (!this.state.loaded) {
+				var food = props.fetchDetail.data.model
+				if (food.id == this.props.food.id) {
+					food.quantity = food.quantityStep * food.minOrderedItems
+					let metaData = food.productMetaData
+					for (j in metaData) {
+						console.log('mcncvs', metaData)
+						if (metaData[j].name == 'Discount') {
+							let discountPrice = food.price * metaData[j].value / 100
+							food.price = food.price - discountPrice
+						}
 					}
+					this.setState({ food: food, loaded: true })
 				}
-				this.setState({ food: food })
 			}
 		}
 		if (!props.fetchDetail.success) {

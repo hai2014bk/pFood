@@ -88,7 +88,7 @@ export default {
 	},
     saleView:{
 		height:15,
-		width:30,
+		width:40,
 		borderTopLeftRadius: 7.5,
 		borderBottomLeftRadius: 7.5,
 		alignSelf:'flex-end',
