@@ -315,6 +315,14 @@ class SearchFood extends Component {
 	}
 
 	renderItems(data) {
+		if (data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
+            return (
+                <View style={styles.loadMoreCell}>
+                    <ActivityIndicator />
+                    <Text style={styles.loadMoreText} >Tải thêm...</Text>
+                </View>
+            )
+        }
         let item = data.item
         let active = 0
         let color = ''
