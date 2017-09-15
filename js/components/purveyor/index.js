@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import {ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
-import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
+import { Icon, Header, Container, Content } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
 import { connect } from "react-redux";
 import styles from "./styles";
-import { fetchStores } from "../../actions/fetchStores.js"
 import { fetchBanner } from "../../actions/fetchStoresDetail.js"
+import { fetchPurveyor } from "../../actions/fetchPurveyor.js"
 import Spinner from 'react-native-loading-spinner-overlay';
 import Communications from 'react-native-communications';
 import Carousel from 'react-native-banner-carousel';
@@ -29,26 +29,26 @@ class Purveyor extends Component {
     }
     componentDidMount() {
         let params = {}
-        params.city = 'Hanoi'
-        params.pageSize = 100
+        params.searchTerm = ''
+        params.pageSize = 10
         params.pageIndex = 1
-        this.props.fetch(params)
+        this.props.fetchListPurveyor(params)
         this.props.fetchBanner()
     }
 
     componentWillReceiveProps(props) {
         let items = []
         this.setState({ isLoading: false })
-        if (props.fetchStores.success) {
-            this.setState({ data: props.fetchStores.data.model, isLoading: false })
+        if (props.fetchPurveyor.success) {
+            this.setState({ data: props.fetchPurveyor.data.model, isLoading: false })
+        }
+        if (props.fetchPurveyor.failed) {
+            this.setState({ isLoading: false })
+            setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') }, 200)
         }
         if (props.fetchStoreBanner.success) {
             console.log('uiojldkwqdq')
             this.setState({ banners: props.fetchStoreBanner.data.model })
-        }
-        if (!props.fetchStores.success) {
-            this.setState({ isLoading: false })
-            setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') }, 200)
         }
     }
     renderPage(item, index) {
@@ -79,9 +79,9 @@ class Purveyor extends Component {
             )
         }
         return (
-            <View style={{ flex:1, height:137 }} style={styles.slide1}>
-                    <ActivityIndicator style={{height:137}}/>
-                </View>
+            <View style={{ flex: 1, height: 137 }} style={styles.slide1}>
+                <ActivityIndicator style={{ height: 137 }} />
+            </View>
         )
     }
     renderStar(rate) {
@@ -108,9 +108,8 @@ class Purveyor extends Component {
             this.setState({ disabled: false })
         })
     }
-    renderStoreList(data) {
-        var item = data.item
-        console.log(item)
+    renderStoreList(items) {
+        let item = items.item
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openStoreDetail(item) }} style={{ flex: 1 }} >
                 <View style={styles.itemWrap}>
@@ -124,9 +123,9 @@ class Purveyor extends Component {
                         </View>
                         <View style={styles.hotlineWrap}>
                             <Icon name='ios-call' style={styles.phoneIcon} />
-                            <Text onPress={() => Communications.phonecall('0987678911', true)} style={styles.hotline}>0987678911</Text>
+                            <Text onPress={() => Communications.phonecall(item.mobile, true)} style={styles.hotline}>{item.mobile}</Text>
                         </View>
-                        <Text style={styles.address}>{item.hqAddress}</Text>
+                        <Text style={styles.address}>{item.address}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -170,14 +169,15 @@ class Purveyor extends Component {
 }
 function bindActions(dispatch) {
     return {
-        fetch: (params) => dispatch(fetchStores(params)),
-        fetchBanner: () => dispatch(fetchBanner())
+        fetchBanner: () => dispatch(fetchBanner()),
+        fetchListPurveyor: (params) => dispatch(fetchPurveyor(params))
     };
 }
 
 const mapStateToProps = state => ({
-    fetchStores: state.fetchStores,
-    fetchStoreBanner: state.fetchStoreBanner
+    fetchStoreBanner: state.fetchStoreBanner,
+    fetchPurveyor: state.fetchPurveyor
+
 });
 
 export default connect(mapStateToProps, bindActions)(Purveyor);

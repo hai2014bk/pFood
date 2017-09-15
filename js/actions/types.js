@@ -35,6 +35,8 @@ export type Action =
 	| { type: "RERENDER_HEADER" }	
 	| { type: "FETCH_USER_SUCCESS" }	
 	| { type: "FETCH_USER_FAILED" }	
+	| { type: "FETCH_PURVEYOR_SUCCESS" }	
+	| { type: "FETCH_PURVEYOR_FAILED" }	
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;
