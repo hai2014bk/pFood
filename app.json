@@ -2,7 +2,7 @@
 	"expo": {
 		"sdkVersion": "19.0.0",
 		"icon": "./images/icon.png",
-		"slug": "strapflatapp",
+		"slug": "pfood",
 		"loading": {
 			"hideExponentText": true,
 			"backgroundImage": "./images/launchImages/splashscreen.png"

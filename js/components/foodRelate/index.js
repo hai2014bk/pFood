@@ -11,6 +11,8 @@ import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialo
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail, CheckBox } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";
+import FoodTab from "./../foodTab/";
+
 import { connect } from "react-redux";
 import styles from "./styles";
 const headerLogo = require("../../../images/Header-Logo.png");

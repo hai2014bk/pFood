@@ -35,7 +35,7 @@ export default {
         marginRight:10
     },
     opacityView:{
-        backgroundColor: 'rgba(0,0,0,0.8)',
+        backgroundColor: 'rgba(0,0,0,0.7)',
         flex:1,
         alignItems:'center',
         justifyContent:'center',

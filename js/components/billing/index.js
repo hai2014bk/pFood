@@ -75,7 +75,7 @@ class Billing extends Component {
 					userInfo: userInfo,
 					userAddress: userInfo.address,
 					userEmail: userInfo.email,
-					userName: userInfo.lastName + ' ' + userInfo.firstName,
+					userName:  userInfo.firstName,
 					userMobile: userInfo.mobile
 				})
 			}

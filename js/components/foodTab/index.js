@@ -17,11 +17,15 @@ class FoodTab extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			selectedTab: 'recommend'
+			selectedTab: 'recommend',
+			disable:false
 		};
 	}
 	selected(tab) {
 		this.setState({ selectedTab: tab })
+	}
+	disableSwipe(){
+		this.setState({disable:true})
 	}
 	render() {
 		const navigation = this.props.navigation;

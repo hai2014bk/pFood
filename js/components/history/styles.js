@@ -82,12 +82,14 @@ export default {
     },
     pinIcon:{
         fontSize:15,
+        width:15,
         color:'#AAAAAA',
-        marginTop:3
+        marginTop:3,
+        textAlign:'center'
     },
     moneyIcon:{
-        height:25,
-        width:25
+        height:15,
+        width:15
     },
     price:{
         color: '#555555',

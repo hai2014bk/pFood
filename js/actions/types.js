@@ -37,6 +37,10 @@ export type Action =
 	| { type: "FETCH_USER_FAILED" }	
 	| { type: "FETCH_PURVEYOR_SUCCESS" }	
 	| { type: "FETCH_PURVEYOR_FAILED" }	
+	| { type: "FETCH_HISTORIES_SUCCESS"}
+	| { type: "FETCH_HISTORIES_FAILED"}	
+	| {	type: "FETCH_HISTORYDETAIL_FAILED"}
+	| {	type: "FETCH_HISTORYDETAIL_SUCCESS"}
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;

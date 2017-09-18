@@ -39,7 +39,7 @@ export default {
     },
     saleText:{
 		color:'white',
-		fontSize:10,
+		fontSize:8,
 		alignSelf:'center'
 	},
     saleView:{

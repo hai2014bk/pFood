@@ -28,19 +28,19 @@ class Category extends Component {
             data: [],
             index: 1,
             isSort: false,
-            sortBy: '',
-            sortDirection: '',
+            sortBy: 'Name',
+            sortDirection: 'Desc',
             changeSort: false,
             shouldLoadMore: false,
             disabled: false,
             isLoading: true,
             field: {
-                Name: false,
+                Name: true,
                 Price: false,
                 RateCount: false
             },
             direction: {
-                Desc: false,
+                Desc: true,
                 Asc: false,
             },
             shipTypes: {
@@ -51,8 +51,9 @@ class Category extends Component {
             },
             item: {},
             ship: 'ViettelPost',
-            fieldChose: '',
-            directionChose: ''
+            fieldChose: 'Name',
+            directionChose: 'Desc',
+            disable:false,
         };
     }
 
@@ -220,19 +221,10 @@ class Category extends Component {
     }
 
     priceHandle(price) {
-        var count = 0
-        for (var i = price.length; i--; i > 0) {
-            count += 1
-            if (count == 4) {
-                price = this.insertString(price, i + 1, '.')
-                count = 0
-            }
-        }
-        return price
-    }
-    insertString(str, index, value) {
-        return str.substr(0, index) + value + str.substr(index);
-    }
+		var count = 0
+		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+		return price
+	}
 
     openDetail(food) {
         const { params } = this.props.navigation.state
@@ -393,7 +385,7 @@ class Category extends Component {
         }
         let id = item.id
         console.log('2332mjklbkljkioeeq', item.price, item)
-        let price = this.priceHandle(item.price.toString())
+        let price = this.priceHandle(item.price)
 
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(item) }}>

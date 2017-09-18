@@ -207,17 +207,8 @@ class SearchFood extends Component {
 
 	priceHandle(price) {
 		var count = 0
-		for (var i = price.length; i--; i > 0) {
-			count += 1
-			if (count == 4) {
-				price = this.insertString(price, i + 1, '.')
-				count = 0
-			}
-		}
+		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
 		return price
-	}
-	insertString(str, index, value) {
-		return str.substr(0, index) + value + str.substr(index);
 	}
 
 	openDetail(food) {
@@ -354,7 +345,7 @@ class SearchFood extends Component {
                 )
         }
         let id = item.id
-        let price = this.priceHandle(item.price.toString())
+        let price = this.priceHandle(item.price)
 
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(item) }}>

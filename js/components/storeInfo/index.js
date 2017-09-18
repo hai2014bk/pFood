@@ -182,6 +182,7 @@ class StoreInfo extends Component {
     }
 
     render() {
+        var imageUrl = ''
         if (this.props.storeParrent.storeImageUrl) {
             imageUrl = this.props.storeParrent.storeImageUrl
         }

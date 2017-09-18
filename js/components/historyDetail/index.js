@@ -10,7 +10,7 @@ import commonColor from "../../../native-base-theme/variables/commonColor";
 import Utils from "../../utils/validate.js"
 import * as mConstants from '../../utils/Constants';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { addOrder } from "../../actions/addOrder.js"
+import { fetchHistoryDetail } from "../../actions/fetchHistories.js"
 var background = require('../../../images/background.png')
 var money = require('../../../images/money.png')
 var food = ''
@@ -25,6 +25,7 @@ class HistoryDetail extends Component {
             visible: false,
             totalPrice: 0,
             data: [],
+            order:'',
             checked: false,
             shipServices: {
                 vPost: true,
@@ -38,22 +39,23 @@ class HistoryDetail extends Component {
                 creditCard: false
             },
             addClick: true,
-            data: [
-                { id: 1, name: 'Chân gà', quantity: 2, quantityStep: 100, unitType: 'g', price: 10000, shipType:'Grab' },
-                { id: 2, name: 'Cánh gà', quantity: 2, quantityStep: 100, unitType: 'g', price: 10000, shipType:'Grab' },
-            ]
+            data: []
         };
 
     }
 
     componentDidMount() {
 
-        let data = this.props.navigation.item
-        console.log('props', data)
+        let params = this.props.navigation.state.params.item
+        this.props.fetch(params.id)
+        console.log('props', params)
     }
 
     componentWillReceiveProps(props) {
-
+        console.log('921vcdsfas',props)
+        if (props.fetchHistoryDetail.success) {
+            this.setState({order:props.fetchHistoryDetail.data.model})
+        }
     }
 
     priceHandle(price) {
@@ -64,9 +66,10 @@ class HistoryDetail extends Component {
 
 
     renderDetail() {
+        var data = this.state.order.orderedProducts
         return (
             <FlatList
-                data={this.state.data}
+                data={data}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => this.renderItem(item)}
             ></FlatList>
@@ -74,7 +77,7 @@ class HistoryDetail extends Component {
     }
     renderItem(item) {
         let proPrice = item.price * item.quantity / item.quantityStep;
-        let price = this.priceHandle(proPrice.toString())
+        let price = '10.000'
         let quantity = item.quantity
         return (
             <View style={styles.proDetail}>
@@ -102,24 +105,27 @@ class HistoryDetail extends Component {
         let checked = shipServices[key] ? true : false;
         if (key !== 'cash' && type !== 'ship') {
             return (
-                <TouchableOpacity style={styles.pickerWrap}>
-                    <CheckBox style={styles.checkBoxDisable} color='#f2f4f4' checked={false} />
+                <TouchableOpacity disabled={true} style={styles.pickerWrap}>
+                    <CheckBox disabled={true} style={styles.checkBoxDisable} color='#f2f4f4' checked={false} />
                     <Text style={styles.checkboxTextDisable}>{text}</Text>
                 </TouchableOpacity>
             )
         } else {
             return (
-                <TouchableOpacity onPress={() => this.updateStatus(key, type)} style={styles.pickerWrap}>
-                    <CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
+                <TouchableOpacity disabled={true} onPress={() => this.updateStatus(key, type)} style={styles.pickerWrap}>
+                    <CheckBox disabled={true} style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
                     <Text style={styles.checkboxText}>{text}</Text>
                 </TouchableOpacity>
             )
         }
     }
     render() {
-        let total = this.state.totalPrice;
-        let totalPrice = this.priceHandle(total.toString());
         var mdh = "F001"
+        var data = this.state.order
+        var totalPrice = ''
+        if(data) {
+        let totalPrice = this.priceHandle(data.totalPrice);
+        }
         const navigation = this.props.navigation;
         return (
             <Container style={styles.containerWrap}>
@@ -157,7 +163,7 @@ class HistoryDetail extends Component {
                         <Text style={styles.infoDetail}>Thông tin người đặt</Text>
                     </View>
                     <Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='#A4A4A4' />
-                    <Input style={styles.textInput} disabled placeholder="24T1 Hoang Dao Thuy" placeholderTextColor='#A4A4A4' />
+                    <Input style={styles.textInput} disabled placeholder={data.deliveryAddress} placeholderTextColor='#A4A4A4' />
                     <Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
                     <Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
                     <View style={styles.footer}></View>
@@ -170,12 +176,12 @@ class HistoryDetail extends Component {
 }
 function bindActions(dispatch) {
     return {
-        add: (params) => dispatch(addOrder(params)),
+        fetch: (id) => dispatch(fetchHistoryDetail(id)),
     };
 }
 
 const mapStateToProps = state => ({
-    addOrder: state.addOrder,
+    fetchHistoryDetail: state.fetchHistoryDetail,
 });
 
 export default connect(mapStateToProps, bindActions)(HistoryDetail);
