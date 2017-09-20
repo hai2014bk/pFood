@@ -189,6 +189,7 @@ export default {
     titleText: {
         fontSize: 20,
         fontWeight: '400',
+        color: '#848484',
     },
     noDataText: {
         fontSize: 12,

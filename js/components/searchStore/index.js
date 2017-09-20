@@ -108,71 +108,82 @@ class SearchStore extends Component {
         })
     }
 
-    renderList(data, key) {
+    openPurveyorDetail(store) {
+        this.setState({ disabled: true })
+        this.props.navigation.navigate('PurveyorTab', { parrent: store })
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({ disabled: false })
+        })
+    }
+
+    renderStore() {
+        console.log('âffaf', this.state.dataPurveyor)
         if (this.state.searchClick == true) {
-            if (key === 'store') {
-                if (!data[0]) {
-                    return (
-                        <View style={styles.bodyWrap}>
-                            <View style={styles.titleWrap}>
-                                <Text style={styles.titleText}>Cửa hàng</Text>
-                            </View>
-                            <Text style={styles.noDataText}>Không tìm thấy cửa hàng phù hợp với yêu cầu tìm kiếm</Text>
+            if (!this.state.data[0]) {
+                return (
+                    <View style={styles.bodyWrap}>
+                        <View style={styles.titleWrap}>
+                            <Text style={styles.titleText}>Cửa hàng</Text>
                         </View>
-                    )
-                } else {
-                    return (
-                        <View style={styles.bodyWrap}>
-                            <View style={styles.titleWrap}>
-                                <Text style={styles.titleText}>Cửa hàng</Text>
-                            </View>
-                            <FlatList style={{}}
-                                data={this.state.data}
-                                extraData={this.state.data}
-                                keyExtractor={this._keyExtractor}
-                                numColumns={2}
-                                renderItem={(item) => (
-                                    <View style={styles.listItemWrap} >
-                                        {this.renderStoreList(item)}
-                                    </View>
-                                )
-                                }
-                            />
+                        <Text style={styles.noDataText}>Không tìm thấy cửa hàng phù hợp với yêu cầu tìm kiếm</Text>
+                    </View>
+                )
+            } else {
+                return (
+                    <View style={styles.bodyWrap}>
+                        <View style={styles.titleWrap}>
+                            <Text style={styles.titleText}>Cửa hàng</Text>
                         </View>
-                    )
-                }
+                        <FlatList style={{}}
+                            data={this.state.data}
+                            extraData={this.state.data}
+                            keyExtractor={this._keyExtractor}
+                            numColumns={2}
+                            renderItem={(item) => (
+                                <View style={styles.listItemWrap} >
+                                    {this.renderStoreList(item)}
+                                </View>
+                            )
+                            }
+                        />
+                    </View>
+                )
             }
-            if (key = 'purveyor') {
-                if (!data[0]) {
-                    return (
-                        <View style={styles.bodyWrap}>
-                            <View style={styles.titleWrap}>
-                                <Text style={styles.titleText}>Trang trại</Text>
-                            </View>
-                            <Text style={styles.noDataText}>Không tìm thấy trang trại phù hợp với yêu cầu tìm kiếm</Text>
+
+        }
+    }
+
+    renderPurveyor() {
+        if (this.state.searchClick == true) {
+            if (!this.state.dataPurveyor[0]) {
+                return (
+                    <View style={styles.bodyWrap}>
+                        <View style={styles.titleWrap}>
+                            <Text style={styles.titleText}>Trang trại</Text>
                         </View>
-                    )
-                } else {
-                    return (
-                        <View style={styles.bodyWrap}>
-                            <View style={styles.titleWrap}>
-                                <Text style={styles.titleText}>Trang trại</Text>
-                            </View>
-                            <FlatList style={{}}
-                                data={this.state.dataPurveyor}
-                                extraData={this.state.dataPurveyor}
-                                keyExtractor={this._keyExtractor}
-                                numColumns={2}
-                                renderItem={(item) => (
-                                    <View style={styles.listItemWrap} >
-                                        {this.renderStoreList(item)}
-                                    </View>
-                                )
-                                }
-                            />
+                        <Text style={styles.noDataText}>Không tìm thấy trang trại phù hợp với yêu cầu tìm kiếm</Text>
+                    </View>
+                )
+            } else {
+                return (
+                    <View style={styles.bodyWrap}>
+                        <View style={styles.titleWrap}>
+                            <Text style={styles.titleText}>Trang trại</Text>
                         </View>
-                    )
-                }
+                        <FlatList style={{}}
+                            data={this.state.dataPurveyor}
+                            extraData={this.state.dataPurveyor}
+                            keyExtractor={this._keyExtractor}
+                            numColumns={2}
+                            renderItem={(item) => (
+                                <View style={styles.listItemWrap} >
+                                    {this.renderPurveyorList(item)}
+                                </View>
+                            )
+                            }
+                        />
+                    </View>
+                )
             }
         }
     }
@@ -182,6 +193,31 @@ class SearchStore extends Component {
         console.log(item)
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openStoreDetail(item) }} style={{ flex: 1 }} >
+                <View style={styles.itemWrap}>
+                    <View style={styles.imageWrap}>
+                        <Image source={{ uri: item.storeImageUrl }} style={styles.image} resizeMode='contain' />
+                    </View>
+                    <View style={styles.descriptionWrap}>
+                        <Text style={styles.products}>{item.name}</Text>
+                        <View style={styles.starWrap}>
+                            {this.renderStar(4)}
+                        </View>
+                        <View style={styles.hotlineWrap}>
+                            <Icon name='ios-call' style={styles.phoneIcon} />
+                            <Text onPress={() => Communications.phonecall('0987678911', true)} style={styles.hotline}>0987678911</Text>
+                        </View>
+                        <Text style={styles.address}>{item.hqAddress}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
+    renderPurveyorList(data) {
+        var item = data.item
+        console.log(item)
+        return (
+            <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openPurveyorDetail(item) }} style={{ flex: 1 }} >
                 <View style={styles.itemWrap}>
                     <View style={styles.imageWrap}>
                         <Image source={{ uri: item.storeImageUrl }} style={styles.image} resizeMode='contain' />
@@ -208,7 +244,7 @@ class SearchStore extends Component {
         params.city = 'Hanoi'
         params.pageSize = 100
         params.pageIndex = 1
-        params.searchTerm = ''
+        params.searchTerm = this.state.searchText
         this.setState({ isLoading: true })
         this.props.fetch(params)
         this.props.fetchPurvey(params)
@@ -217,7 +253,7 @@ class SearchStore extends Component {
     deleteSearch() {
         this.setState({ searchText: '' })
     }
-    render() {        
+    render() {
         const navigation = this.props.screenProps.navi;
         const { params } = this.props.navigation.state
         console.log(this.state.disabled)
@@ -232,8 +268,8 @@ class SearchStore extends Component {
                     search={() => this.search()} />
                 <Content>
                     <Spinner visible={this.state.isLoading} />
-                    {this.renderList(this.state.data, 'store')}
-                    {this.renderList(this.state.dataPurveyor, 'purveyor')}
+                    {this.renderStore()}
+                    {this.renderPurveyor()}
                 </Content>
             </Container>
         );
