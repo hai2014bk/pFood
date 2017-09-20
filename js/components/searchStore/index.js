@@ -204,11 +204,10 @@ class SearchStore extends Component {
     _keyExtractor = (item, index) => item.id;
     search() {
         let params = {}
-        let purveyParams = {}
         params.city = 'Hanoi'
         params.pageSize = 100
         params.pageIndex = 1
-        params.searchTerm = ''
+        params.searchTerm = this.state.searchText
         this.setState({ isLoading: true })
         this.props.fetch(params)
         this.props.fetchPurvey(params)
