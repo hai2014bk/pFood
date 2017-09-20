@@ -85,7 +85,22 @@ export default {
 		color:'white',
 		fontSize:8,
 		alignSelf:'center'
-	},
+    },
+    popularHeader: {
+        alignSelf:'center',
+        color:'black',
+        fontSize:20,
+        textAlign:'center',     
+        marginTop:150,   
+    },
+    popularText:{
+        marginLeft:16,
+        color:'blue',
+        fontWeight:'600',
+        fontSize:15,
+        alignSelf:'center',
+        textAlign:'center',
+    },
     saleView:{
 		height:15,
 		width:40,

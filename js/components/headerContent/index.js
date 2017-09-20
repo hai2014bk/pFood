@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { AsyncStorage, TouchableOpacity, InteractionManager, Image } from "react-native";
-import { View, Text, Icon, Button, Left, Right, Body, Header } from "native-base";
+import {Item,Input, View, Text, Icon, Button, Left, Right, Body, Header } from "native-base";
 import * as mConstants from '../../utils/Constants'
 import { connect } from "react-redux";
 
@@ -53,8 +53,14 @@ class HeaderContent extends Component {
       <View>
       </View>
     }
-
   }
+  renderMenuLeft() {
+      return (
+        <Button transparent onPress={this.props.leftSearchMenu}>
+          <Icon style={{ color: 'white' }} active name='menu' />
+        </Button>
+      )
+    }
   renderLeft() {
     if (this.props.leftButton != null) {
       if (this.props.textLeft) {
@@ -122,11 +128,38 @@ class HeaderContent extends Component {
       )
     }
   }
+  changeSearchText(text){
+    this.props.changeText(text)
+  }
   render() {
-    console.log('mvgfdmsnkvbjswero')
+    if(this.props.search) {
+      return (
+        <Header  keyboardShouldPersistTaps='handle' searchBar rounded>
+          <Left style={{flexDirection: 'row' }}>
+          {this.renderMenuLeft()}
+          </Left>
+					<Item style={{flex:5}}>
+						<Icon name="ios-search" />
+						<Input style={{marginLeft:5}} value={this.props.value}
+							onSubmitEditing={this.props.search}
+              autoCorrect={false}
+              returnKeyType='search'
+							onChangeText={(text) => { this.changeSearchText(text) }}
+							placeholder="Tìm kiếm" />
+						<TouchableOpacity onPress={this.props.deleteSearch}>
+							<Icon name="ios-close-circle" />
+						</TouchableOpacity>
+					</Item>
+          <Right style={{flexDirection: 'row' }}>
+            {this.renderRight()}
+          </Right>
+				</Header>
+      );
+    }
     if (this.props.secondRightBtn) {
       return (
-        <Header style={{ borderBottomWidth: 0, backgroundColor: primary }}>
+        <Header
+         style={{ borderBottomWidth: 0, backgroundColor: primary }}>
           <Left style={{ flex: 1, marginLeft:0 }}>
             {this.renderLeft()}
           </Left>

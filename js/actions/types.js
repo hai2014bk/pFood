@@ -43,6 +43,8 @@ export type Action =
 	| {	type: "FETCH_HISTORYDETAIL_SUCCESS"}
 	| {	type: "SEARCH_FOOD_SUCCESS"}
 	| {	type: "SEARCH_FOOD_FAILED"}
+	| {	type: "	SEARCH_POPULAR_SUCCESS"}
+	| {	type: "	SEARCH_POPULAR_FAILED"}
 	
 	
 	;
