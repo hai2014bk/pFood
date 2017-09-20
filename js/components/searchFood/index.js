@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {ActivityIndicator, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
-import { fetchTrending } from "../../actions/fetchTrending.js"
+import { searchFood } from "../../actions/searchFood.js"
 import HeaderContent from "./../headerContent/";
 import {Item, Input,CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -35,6 +35,7 @@ class SearchFood extends Component {
 			disabled: false,
 			isLoading: false,
 			searchText:'',
+			loadedAll:false,
 			field: {
 				Id: false,
 				Name: false,
@@ -78,16 +79,16 @@ class SearchFood extends Component {
 
 	componentWillReceiveProps(props) {
 		this.setState({ isLoading: false })
-		if (props.fetchTrending.success) {
-			if (props.fetchTrending.data.model.length > 0) {
+		if (props.searchFood.success) {
+			if (props.searchFood.data.model.length > 0) {
 				var data = this.state.data
 				data.splice(data.length - 1, 1)
 				this.setState({ data: data })
 				var listFood = []
 				if (this.state.isSort) {
-					listFood = props.fetchProduct.data.model
+					listFood = props.searchFood.data.model
 				} else {
-					listFood = this.state.data.concat(props.fetchTrending.data.model)
+					listFood = this.state.data.concat(props.searchFood.data.model)
 				}
 				for (i in listFood) {
                     if (!listFood[i].quantity) {
@@ -118,7 +119,7 @@ class SearchFood extends Component {
 				this.setState({ data: data, loadedAll: true })
 			}
 		}
-		if (!props.fetchTrending.success) {
+		if (!props.searchFood.success) {
 			setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
 		}
 	}
@@ -126,13 +127,13 @@ class SearchFood extends Component {
 	loadMore() {
 		console.log('90498043io23kl32', this.state.loadedAll, this.state.shouldLoadMore)
 		if (!this.state.loadedAll && this.state.shouldLoadMore) {
-			console.log('90498043io23kl32')
+			console.log('90498043io23kl322314231232sa')
 			var index = this.state.index + 1
 			const { params } = this.props.navigation.state
 			var parameter = {
-				"PageSize": "20",
-				"PageIndex": index,
-				"LastViewedDate": "2017-08-20T15:20:34.8699498"
+				"PageSize":"20",
+				"PageIndex":index,
+				"searchTerm":this.state.searchText
 				
 			}
 			this.setState({ isSort: false, index: this.state.index + 1 })
@@ -318,7 +319,16 @@ class SearchFood extends Component {
         let active = 0
         let color = ''
         var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
-        var disabled = false
+		var disabled = false
+		var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'		
+		for (i in item.productMetaData) {
+			if (item.productMetaData[i].name == 'ImageUrl') {
+				if (item.productMetaData[i]) {
+					console.log('92345m,fd')
+					imageUrl = item.productMetaData[i].value
+				}
+			}
+		}
         if (item.quantity >= item.quantityStep * item.minOrderedItems) {
                 if (item.quantity == item.quantityStep * item.minOrderedItems) {
                     disabled = true
@@ -355,7 +365,7 @@ class SearchFood extends Component {
                             <Grid >
                                 <Col size={2} style={styles.imageWrap}>
                                     <View style={styles.imageContainer}>
-                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image}>
+                                        <Image source={{ uri: imageUrl }} style={styles.image}>
                                                 {this.renderDiscount(item)}
                                             </Image>
                                     </View>
@@ -368,7 +378,7 @@ class SearchFood extends Component {
                                         <Text style={styles.shopName}>{item.cities}</Text>
                                     </Row>
                                     <View style={{ width: 50 }}>
-                                        {this.renderStar(item.rate)}
+                                        {this.renderStar(item.avgRate)}
                                     </View>
                                     <Text style={styles.price}>{price}đ</Text>
                                 </Col>
@@ -487,9 +497,9 @@ class SearchFood extends Component {
 	search(){
 		this.setState({index:1,isLoading:true})
 		var params = {
-            "PageSize": "20",
-            "PageIndex": "1",
-            "LastViewedDate": "2017-08-20T15:20:34.8699498"
+				"PageSize":"20",
+				"PageIndex":"1",
+				"searchTerm":this.state.searchText
         }
         this.props.fetch(params)
 	}
@@ -542,13 +552,13 @@ class SearchFood extends Component {
 }
 function bindActions(dispatch) {
 	return {
-        fetch: (params) => dispatch(fetchTrending(params)),
+        fetch: (params) => dispatch(searchFood(params)),
 		reRenderHeader: () => dispatch(reRenderHeader())
 	};
 }
 
 const mapStateToProps = state => ({
-    fetchTrending: state.fetchTrending,
+    searchFood: state.searchFood,
 });
 
 export default connect(mapStateToProps, bindActions)(SearchFood);

@@ -28,6 +28,20 @@ export function fetchHistoryDetailFailed(error) {
 	};
 }
 
+export function updateRate(params) {
+	let url = mConstants.BASE_URL + 'product/rateproduct'
+	return dispatch => {
+		APIRequest.APIRequestPOST(url,params,true,
+			response => {
+				console.log('respone',response)
+			},
+			error => {
+				console.log('error',error)
+			}
+		)
+	};
+}
+
 export function fetchHistoryDetail(id) {
 	let url = mConstants.BASE_URL + '/order/' + id
 	return dispatch => {

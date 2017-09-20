@@ -185,7 +185,7 @@ class StoreProduct extends Component {
 									<View style={{
 										marginRight: 2, marginRight: 5
 									}}>
-										{this.renderStar(food.rate)}
+										{this.renderStar(food.avgRate)}
 									</View>
 								</Row>
 							</View>

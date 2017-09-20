@@ -4,7 +4,13 @@ import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
+import FadeIn from 'react-native-fade-in-image';
 import HeaderContent from "./../headerContent/";
+import {
+	LazyloadScrollView,
+	LazyloadView,
+	LazyloadImage
+} from 'react-native-lazyload';
 import { fetchBanner, fetchTrendingRecomend } from "../../actions/fetchTrendingRecomend.js"
 import Swiper from 'react-native-swiper';
 import styles from "./styles";
@@ -166,20 +172,20 @@ class RecommendFood extends Component {
 		if (data.productMetaData[1]) {
 			var discount = ''
 			for (i in data.productMetaData) {
-				if(data.productMetaData[i].name == 'Discount') {
-					if(data.productMetaData[i].value) {
+				if (data.productMetaData[i].name == 'Discount') {
+					if (data.productMetaData[i].value) {
 						discount = data.productMetaData[i].value
-					}				
+					}
 				}
 			}
-			if(discount == '') {
+			if (discount == '') {
 				return null
 			}
 			return (
 				<View style={styles.saleView}>
 					<Text style={styles.saleText}>-{discount} %</Text>
 				</View>
-			) 
+			)
 		} else {
 			return null
 		}
@@ -187,8 +193,8 @@ class RecommendFood extends Component {
 	renderOldPrice(data) {
 		if (data.productMetaData[1]) {
 			for (i in data.productMetaData) {
-				if(data.productMetaData[i].name == 'Discount') {
-					var oldPrice = this.priceHandle(data.price)					
+				if (data.productMetaData[i].name == 'Discount') {
+					var oldPrice = this.priceHandle(data.price)
 				}
 			}
 			return (
@@ -199,12 +205,12 @@ class RecommendFood extends Component {
 		} else {
 			return (
 				<View>
-					<Text style={[styles.oldPriceText,{color:'white'}]}>22132132</Text>
+					<Text style={[styles.oldPriceText, { color: 'white' }]}>22132132</Text>
 				</View>
 			)
 		}
 	}
-	
+
 	priceHandle(price) {
 		var count = 0
 		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
@@ -214,20 +220,20 @@ class RecommendFood extends Component {
 		var food = data.item
 		var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'
 		for (i in food.productMetaData) {
-			if(food.productMetaData[i].name == 'ImageUrl') {
+			if (food.productMetaData[i].name == 'ImageUrl') {
 				if (food.productMetaData[i]) {
 					console.log('92345m,fd')
 					imageUrl = food.productMetaData[i].value
-				}					
+				}
 			}
 		}
-		
+
 		var price = this.priceHandle(food.price)
 		var price = this.priceHandle(food.price)
 		for (i in food.productMetaData) {
-			if(food.productMetaData[i].name == 'Discount') {
-				var discountPrice = food.price * (food.productMetaData[i].value/100)
-				price = this.priceHandle(food.price - discountPrice)				
+			if (food.productMetaData[i].name == 'Discount') {
+				var discountPrice = food.price * (food.productMetaData[i].value / 100)
+				price = this.priceHandle(food.price - discountPrice)
 			}
 		}
 		return (
@@ -235,9 +241,9 @@ class RecommendFood extends Component {
 				<TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openDetail(food) }} style={{ flex: 1, alignItems: 'center' }} >
 					<Grid style={styles.cellContainer}>
 						<Row style={styles.upContainer}>
-							<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: imageUrl }} >
+								<Image resizeMode='cover' style={styles.foodThumnail} source={{ uri: imageUrl }} >
 									{this.renderDiscount(data.item)}
-							</Image>
+								</Image>
 						</Row>
 						<Row style={styles.downContainer}>
 							<Text style={styles.foodNameText}>{food.name}</Text>
@@ -254,7 +260,7 @@ class RecommendFood extends Component {
 									<View style={{
 										marginRight: 2, marginRight: 5
 									}}>
-										{this.renderStar(food.rate)}
+										{this.renderStar(food.avgRate)}
 									</View>
 								</Row>
 							</View>
@@ -296,7 +302,7 @@ class RecommendFood extends Component {
 				keyExtractor={(item) => item.sectionName}
 				extraData={this.state.dataSection}
 				renderItem={(item) =>
-					<ListItem style={{marginBottom:-15, borderBottomWidth: 0 }} >
+					<ListItem style={{ marginBottom: -15, borderBottomWidth: 0 }} >
 						{this.renderHorizontalList(item)}
 					</ListItem>
 				}>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InteractionManager, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { Modal,InteractionManager, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail, CheckBox } from "native-base";
@@ -417,7 +417,7 @@ class FoodDetail extends Component {
 function bindActions(dispatch) {
 	return {
 		fetch: (id) => dispatch(fetchDetail(id)),
-		reRenderHeader: () => dispatch(reRenderHeader())
+		reRenderHeader: () => dispatch(reRenderHeader()),
 	};
 }
 

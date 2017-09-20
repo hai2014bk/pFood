@@ -41,6 +41,10 @@ export type Action =
 	| { type: "FETCH_HISTORIES_FAILED"}	
 	| {	type: "FETCH_HISTORYDETAIL_FAILED"}
 	| {	type: "FETCH_HISTORYDETAIL_SUCCESS"}
+	| {	type: "SEARCH_FOOD_SUCCESS"}
+	| {	type: "SEARCH_FOOD_FAILED"}
+	
+	
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;

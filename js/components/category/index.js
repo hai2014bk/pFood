@@ -386,7 +386,15 @@ class Category extends Component {
         let id = item.id
         console.log('2332mjklbkljkioeeq', item.price, item)
         let price = this.priceHandle(item.price)
-
+        var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'		
+		for (i in item.productMetaData) {
+			if (item.productMetaData[i].name == 'ImageUrl') {
+				if (item.productMetaData[i]) {
+					console.log('92345m,fd')
+					imageUrl = item.productMetaData[i].value
+				}
+			}
+		}
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(item) }}>
                 <Card style={styles.card}>
@@ -395,7 +403,7 @@ class Category extends Component {
                             <Grid >
                                 <Col size={2} style={styles.imageWrap}>
                                     <View style={styles.imageContainer}>
-                                        <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image}>
+                                        <Image source={{ uri: imageUrl }} style={styles.image}>
                                             {this.renderDiscount(item)}
                                         </Image>
                                     </View>
@@ -408,7 +416,7 @@ class Category extends Component {
                                         <Text style={styles.shopName}>{item.cities}</Text>
                                     </Row>
                                     <View style={{ width: 50 }}>
-                                        {this.renderStar(item.rate)}
+                                        {this.renderStar(item.avgRate)}
                                     </View>
                                     <Text style={styles.price}>{price}đ</Text>
                                 </Col>

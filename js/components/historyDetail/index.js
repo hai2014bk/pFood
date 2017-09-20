@@ -1,17 +1,19 @@
 
 import React, { Component } from "react";
-import { Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, FlatList, AsyncStorage } from "react-native";
+import { Modal, Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, FlatList, AsyncStorage } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
 import { connect } from "react-redux";
-import { Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
+import { Card, Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
 import HeaderContent from "./../headerContent/";
 import styles from "./styles";
+import StarRating from 'react-native-star-rating';
 import commonColor from "../../../native-base-theme/variables/commonColor";
 import Utils from "../../utils/validate.js"
 import * as mConstants from '../../utils/Constants';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { fetchHistoryDetail } from "../../actions/fetchHistories.js"
+import { fetchHistoryDetail, updateRate } from "../../actions/fetchHistories.js"
 var background = require('../../../images/background.png')
+const primary = require("../../themes/variable").brandPrimary;
 var money = require('../../../images/money.png')
 var food = ''
 
@@ -25,7 +27,7 @@ class HistoryDetail extends Component {
             visible: false,
             totalPrice: 0,
             data: [],
-            order:'',
+            order: '',
             checked: false,
             shipServices: {
                 vPost: true,
@@ -39,7 +41,9 @@ class HistoryDetail extends Component {
                 creditCard: false
             },
             addClick: true,
-            data: []
+            data: [],
+            productData: [],
+            rate: 0
         };
 
     }
@@ -52,9 +56,12 @@ class HistoryDetail extends Component {
     }
 
     componentWillReceiveProps(props) {
-        console.log('921vcdsfas',props)
         if (props.fetchHistoryDetail.success) {
-            this.setState({order:props.fetchHistoryDetail.data.model})
+            var products = props.fetchHistoryDetail.data.model.orderedProducts
+            for (i in products) {
+                products[i].rate = 0
+            }
+            this.setState({ order: props.fetchHistoryDetail.data.model, productData: products })
         }
     }
 
@@ -66,17 +73,21 @@ class HistoryDetail extends Component {
 
 
     renderDetail() {
-        var data = this.state.order.orderedProducts
+        var data = this.state.productData
+        console.log('data', data)
         return (
             <FlatList
                 data={data}
+                extraData={this.state}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => this.renderItem(item)}
-            ></FlatList>
+            />
         );
     }
     renderItem(item) {
-        let proPrice = item.price * item.quantity / item.quantityStep;
+        let product = item.product
+        let proPrice = product.price * item.quantity / product.quantityStep;
+        proPrice = this.priceHandle(proPrice)
         let price = '10.000'
         let quantity = item.quantity
         return (
@@ -84,16 +95,19 @@ class HistoryDetail extends Component {
                 <View style={styles.flexCol}>
                     <View style={styles.textProInput}>
                         <Left>
-                            <Text style={styles.productBlackText}>{item.name}</Text>
+                            <Text style={styles.productBlackText}>{product.name}</Text>
                         </Left>
                         <Right>
-                            <Text style={styles.productText}>{price}đ</Text>
+                            <Text style={styles.productText}>{proPrice}đ</Text>
                         </Right>
                     </View>
                     <View style={styles.textProInput}>
                         <Text style={styles.shopText}>Vinmart</Text>
-                        <Text style={styles.proNumber}>Số lượng: {quantity}{item.unitType}</Text>
-                        <Text style={styles.proNumber}>Vận chuyển : {item.shipType}</Text>
+                        <Text style={styles.proNumber}>Số lượng: {quantity}</Text>
+                        <Text style={styles.proNumber}>Vận chuyển : Grab</Text>
+                    </View>
+                    <View style={{width:'40%'}}>
+                        {this.renderStar(item)}
                     </View>
                 </View>
             </View>
@@ -119,12 +133,60 @@ class HistoryDetail extends Component {
             )
         }
     }
+    renderStar(item) {
+        return (
+            <StarRating
+                emptyStar={'ios-star-outline'}
+                fullStar={'ios-star'}
+                halfStar={'ios-star-half'}
+                iconSet={'Ionicons'}
+                maxStars={5}
+                rating={item.rate}
+                starColor={primary}
+                selectedStar={(rating) => this.onStarRatingPress(rating, item)}
+                starSize={25}
+            />
+        )
+    }
+    onStarRatingPress(rating, item) {
+        console.log('ratea')
+        var products = this.state.productData
+        for (i in products) {
+            if (products[i].id == item.id) {
+                products[i].rate = rating
+            }
+        }
+        this.setState({ productData: products })
+    }
+    rate()
+    {
+        var product = this.state.productData
+        this.setState({visible:true})
+        for (i in product){
+            if (product[i].rate > 0) {
+                var params = {
+                    "ProductId":product[i].productId,
+                    "RatePoint":product[i].rate
+                }
+                this.props.updateRate(params)
+            }
+        }
+        setTimeout(()=>{
+            this.setState({visible:false}),
+            this.showSuccessRate()
+        },2000)
+    }
+
+    showSuccessRate(){
+        setTimeout(() => { Alert.alert('Thành công', 'Đánh giá sản phẩm thành công') },100)
+    }
+
     render() {
         var mdh = "F001"
         var data = this.state.order
         var totalPrice = ''
-        if(data) {
-        let totalPrice = this.priceHandle(data.totalPrice);
+        if (data) {
+            let totalPrice = this.priceHandle(data.totalPrice);
         }
         const navigation = this.props.navigation;
         return (
@@ -167,6 +229,9 @@ class HistoryDetail extends Component {
                     <Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
                     <Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
                     <View style={styles.footer}></View>
+                    <Button style={{marginBottom:20}} block success onPress={() => { this.rate() }}>
+                        <Text>Đánh giá</Text>
+                    </Button>
                 </Content>
 
             </Container>
@@ -177,6 +242,7 @@ class HistoryDetail extends Component {
 function bindActions(dispatch) {
     return {
         fetch: (id) => dispatch(fetchHistoryDetail(id)),
+        updateRate: (params) => dispatch(updateRate(params))
     };
 }
 

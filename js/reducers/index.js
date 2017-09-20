@@ -10,6 +10,7 @@ import { fetchUser } from "./fetchUser"
 import { fetchDetail } from "./fetchDetail"
 import { fetchRelate } from "./fetchRelate"
 import { fetchTrending } from "./fetchTrending"
+import { searchFood } from "./searchFood"
 import { fetchStores } from "./fetchStores"
 import { fetchHistories,fetchHistoryDetail } from "./fetchHistories"
 import { addOrder } from "./addOrder"
@@ -46,7 +47,8 @@ export default combineReducers({
 	reRender,
 	fetchUser,
 	fetchHistories,
-	fetchHistoryDetail
+	fetchHistoryDetail,
+	searchFood
 
 
 });

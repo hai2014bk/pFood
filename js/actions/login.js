@@ -56,7 +56,7 @@ export function fetchUser(email) {
 
 export function loginClick(params) {
 	var url = mConstants.BASE_URL + "user/login"
-	var params = params
+	params.role = "consumer"	
 	var isAuth = false
 	console.log(params)
 	return dispatch => {

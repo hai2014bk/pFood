@@ -162,7 +162,7 @@ class Billing extends Component {
 		for (i = 0; i < data.length; i++) {
 			var product = {
 				ProductId: data[i].id,
-				Quantity: data[i].quantity / data[i].quantityStep,
+				Quantity: data[i].quantity,
 			}
 			param.OrderedProducts.push(product);
 		}
