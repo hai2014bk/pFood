@@ -4,6 +4,7 @@ import { StackNavigator } from 'react-navigation';
 import SearchStore from "./components/searchStore";
 import StoreTab from "./components/storeTab";
 import FoodTab from "./components/foodTab";
+import PurveyorTab from "./components/purveyorTab"
 
 const SearchStoreStack = StackNavigator({
   SearchStore: {
@@ -15,6 +16,9 @@ const SearchStoreStack = StackNavigator({
   StoreTab: {
     screen: StoreTab,
   },
+  PurveyorTab:{
+    screen: PurveyorTab,
+  }
 },
 {
 		index: 0,
