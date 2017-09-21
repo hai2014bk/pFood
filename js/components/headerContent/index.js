@@ -134,7 +134,7 @@ class HeaderContent extends Component {
   render() {
     if(this.props.search) {
       return (
-        <Header  keyboardShouldPersistTaps='handle' searchBar rounded>
+        <Header keyboardShouldPersistTaps='handle' searchBar rounded>
           <Left style={{flexDirection: 'row' }}>
           {this.renderMenuLeft()}
           </Left>

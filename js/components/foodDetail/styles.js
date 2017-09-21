@@ -27,6 +27,11 @@ export default {
 		fontWeight:'500',
 		color:'gray'
 	},
+	perPrice: {
+		fontSize:17,
+		fontWeight:'300',
+		color:'gray'
+	},
 	iconWrapPlus: {
 		flex:1,
 		maxWidth:30,

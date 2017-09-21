@@ -214,7 +214,8 @@ class Trending extends Component {
                                     <View style={{ width: 50 }}>
                                         {this.renderStar(item.avgRate)}
                                     </View>
-                                    <Text style={styles.price}>{price}đ</Text>
+                                    <Text style={styles.price}> {price}đ/ <Text style={styles.perPrice}>{item.quantityStep} {item.unitType}</Text></Text>
+
                                 </Col>
                                 <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>

@@ -267,7 +267,7 @@ class FoodDetail extends Component {
 					<Row>
 						<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain'>
 						</Image>
-						<Text style={styles.price} > {price}đ</Text>
+						<Text style={styles.price} > {price}/<Text style={styles.perPrice}>{food.quantityStep} {food.unitType}</Text></Text>
 					</Row>
 				</Col>
 				<Col style={{ margin: 10 }}>

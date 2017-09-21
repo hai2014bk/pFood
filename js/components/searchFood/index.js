@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Keyboard, ActivityIndicator, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
+import { Keyboard, ActivityIndicator, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { searchFood, searchPopular } from "../../actions/searchFood.js"
@@ -69,11 +69,10 @@ class SearchFood extends Component {
 		var j = 0;
 		for (var i = 0; i < len; i++) {
 			var item = a[i];
-			console.log('item bbasw', seen.indexOf(item.id))
+
 			if (seen.indexOf(item.id) == -1) {
 				seen.push(item.id)
 				out[j++] = item;
-				console.log('bnmfvf', item.id, seen, out.length)
 			}
 		}
 		return out;
@@ -95,7 +94,6 @@ class SearchFood extends Component {
 				this.setState({ data: data })
 				var listFood = []
 				if (this.state.isSearch) {
-					console.log('isSehara', props.searchFood.data.model)
 					listFood = props.searchFood.data.model
 				} else {
 					listFood = this.state.data.concat(props.searchFood.data.model)
@@ -126,7 +124,6 @@ class SearchFood extends Component {
 				if (this.state.isSearch) {
 					this.setState({ data: [], loadedAll: true })
 				} else {
-					console.log('bvasaaa', this.state.data[this.state.data.length - 1])
 					var data = this.state.data
 					data.splice(data.length - 1, 1)
 					this.setState({ data: data, loadedAll: true })
@@ -139,9 +136,7 @@ class SearchFood extends Component {
 	}
 
 	loadMore() {
-		console.log('90498043io23kl32', this.state.loadedAll, this.state.shouldLoadMore)
 		if (!this.state.loadedAll && this.state.shouldLoadMore) {
-			console.log('90498043io23kl322314231232sa')
 			var index = this.state.index + 1
 			const { params } = this.props.navigation.state
 			var parameter = {
@@ -298,30 +293,33 @@ class SearchFood extends Component {
 		)
 	}
 	renderDiscount(data) {
-		if (data.productMetaData[1]) {
-			var discount = ''
-			for (i in data.productMetaData) {
-				if (data.productMetaData[i].name == 'Discount') {
-					if (data.productMetaData[i].value) {
-						discount = data.productMetaData[i].value
+		console.log('9021321321321xzca',data)
+		if (data.name !='loadmore') {
+			if (data.productMetaData[1]) {
+				var discount = ''
+				for (i in data.productMetaData) {
+					if (data.productMetaData[i].name == 'Discount') {
+						if (data.productMetaData[i].value) {
+							discount = data.productMetaData[i].value
+						}
 					}
 				}
-			}
-			if (discount == '') {
+				if (discount == '') {
+					return null
+				}
+				return (
+					<View style={styles.saleView}>
+						<Text style={styles.saleText}>-{discount} %</Text>
+					</View>
+				)
+			} else {
 				return null
 			}
-			return (
-				<View style={styles.saleView}>
-					<Text style={styles.saleText}>-{discount} %</Text>
-				</View>
-			)
-		} else {
-			return null
 		}
 	}
 
 	searchPopular(text) {
-		this.setState({searchText:text, searched: true, index: 1, isLoading: true })
+		this.setState({ searchText: text, searched: true, index: 1, isLoading: true })
 		var params = {
 			"PageSize": "15",
 			"PageIndex": "1",
@@ -333,9 +331,9 @@ class SearchFood extends Component {
 	renderSearchItems(data) {
 		var item = data.item
 		return (
-				<TouchableOpacity style={{flex:1, marginTop: 10 }} onPress={() => this.searchPopular(item.term)}>
-					<Text style={styles.popularText}>{item.term}</Text>
-				</TouchableOpacity>
+			<TouchableOpacity style={{ flex: 1, marginTop: 10 }} onPress={() => this.searchPopular(item.term)}>
+				<Text style={styles.popularText}>{item.term}</Text>
+			</TouchableOpacity>
 		)
 	}
 
@@ -387,9 +385,8 @@ class SearchFood extends Component {
 			)
 		}
 		let id = item.id
-		console.log('priraaw',item.price)
 		var price = ''
-		if(item.price) {
+		if (item.price) {
 			price = this.priceHandle(item.price)
 		}
 
@@ -416,7 +413,7 @@ class SearchFood extends Component {
 									<View style={{ width: 50 }}>
 										{this.renderStar(item.avgRate)}
 									</View>
-									<Text style={styles.price}>{price}đ</Text>
+									<Text style={styles.price}> {price}đ/ <Text style={styles.perPrice}>{item.quantityStep} {item.unitType}</Text></Text>
 								</Col>
 								<TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
 									<Col style={styles.buttonWrap}>
@@ -537,13 +534,11 @@ class SearchFood extends Component {
 			"PageIndex": "1",
 			"searchTerm": this.state.searchText
 		}
-		console.log('2133123123', params)
 		this.props.fetch(params)
 		Keyboard.dismiss()
 	}
 
 	deleteSearch() {
-		console.log('9089')
 		this.setState({ searchText: '' })
 	}
 
@@ -604,14 +599,14 @@ class SearchFood extends Component {
 		const { params } = this.props.navigation.state
 		var data = this.state.data
 		return (
-			<Container style={styles.container}>
-				<HeaderContent  keyboardShouldPersistTaps='handle'
-				navi={navigation}
-				value = {this.state.searchText}
-				changeText={(text)=>{this.setState({searchText:text})}}
-				leftSearchMenu={() => navigation.navigate('DrawerOpen')} rightButton={true} leftSearchMenuIcon={'menu'} 
-				deleteSearch={() => {this.deleteSearch()}}
-				search={()=>this.search()}/>
+			<Container keyboardShouldPersistTaps='handle' style={styles.container}>
+				<HeaderContent keyboardShouldPersistTaps='handle'
+					navi={navigation}
+					value={this.state.searchText}
+					changeText={(text) => { this.setState({ searchText: text }) }}
+					leftSearchMenu={() => navigation.navigate('DrawerOpen')} rightButton={true} leftSearchMenuIcon={'menu'}
+					deleteSearch={() => { this.deleteSearch() }}
+					search={() => this.search()} />
 				<Spinner visible={this.state.isLoading} />
 				{this.renderContent()}
 			</Container>

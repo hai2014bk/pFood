@@ -65,8 +65,16 @@ export default {
     },
     price: {
         color: 'gray',
-        fontSize: 15,
+        fontSize: 13,
         fontWeight: '600',
+        textAlign: 'left',
+        marginBottom: 0,
+        alignSelf: 'baseline'
+    },
+    perPrice: {
+        color: 'gray',
+        fontSize: 12,
+        fontWeight: '400',
         textAlign: 'left',
         marginBottom: 0,
         alignSelf: 'baseline'

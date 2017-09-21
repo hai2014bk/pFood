@@ -104,9 +104,9 @@ class HistoryDetail extends Component {
                     <View style={styles.textProInput}>
                         <Text style={styles.shopText}>Vinmart</Text>
                         <Text style={styles.proNumber}>Số lượng: {quantity}</Text>
-                        <Text style={styles.proNumber}>Vận chuyển : Grab</Text>
+                        <Text style={styles.proNumber}>Vận chuyển : {this.state.order.deliveryMethod}</Text>
                     </View>
-                    <View style={{width:'40%'}}>
+                    <View style={{ width: '40%' }}>
                         {this.renderStar(item)}
                     </View>
                 </View>
@@ -158,27 +158,38 @@ class HistoryDetail extends Component {
         }
         this.setState({ productData: products })
     }
-    rate()
-    {
+    rate() {
+        var error = false
+        this.setState({ disabled: true })
         var product = this.state.productData
-        this.setState({visible:true})
-        for (i in product){
+        this.setState({ visible: true })
+        for (i in product) {
             if (product[i].rate > 0) {
                 var params = {
-                    "ProductId":product[i].productId,
-                    "RatePoint":product[i].rate
+                    "ProductId": product[i].productId,
+                    "RatePoint": product[i].rate
                 }
                 this.props.updateRate(params)
+            } else {
+                error = true
+                setTimeout(() => { Alert.alert('Lỗi', 'Vui lòng đánh giá toàn bộ sản phẩm') }, 100)
+                break
             }
         }
-        setTimeout(()=>{
-            this.setState({visible:false}),
-            this.showSuccessRate()
-        },2000)
+        if (!error) {
+            setTimeout(() => {
+                this.setState({ visible: false, disabled: false }),
+                this.showSuccessRate()
+            }, 2000)
+        } else {
+            setTimeout(() => {
+                this.setState({ visible: false, disabled: false })
+        }, 1000)
+        }
     }
 
-    showSuccessRate(){
-        setTimeout(() => { Alert.alert('Thành công', 'Đánh giá sản phẩm thành công') },100)
+    showSuccessRate() {
+        setTimeout(() => { Alert.alert('Thành công', 'Đánh giá sản phẩm thành công') }, 100)
     }
 
     render() {
@@ -186,7 +197,7 @@ class HistoryDetail extends Component {
         var data = this.state.order
         var totalPrice = ''
         if (data) {
-            let totalPrice = this.priceHandle(data.totalPrice);
+            totalPrice = this.priceHandle(data.totalPrice);
         }
         const navigation = this.props.navigation;
         return (
@@ -229,7 +240,7 @@ class HistoryDetail extends Component {
                     <Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
                     <Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
                     <View style={styles.footer}></View>
-                    <Button style={{marginBottom:20}} block success onPress={() => { this.rate() }}>
+                    <Button disabled={this.state.disabled} style={{ marginBottom: 20 }} block success onPress={() => { this.rate() }}>
                         <Text>Đánh giá</Text>
                     </Button>
                 </Content>

@@ -190,15 +190,15 @@ class FoodRelate extends Component {
             )
         }
         let price = this.priceHandle(item.price.toString())
-        var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'		
-		for (i in item.productMetaData) {
-			if (item.productMetaData[i].name == 'ImageUrl') {
-				if (item.productMetaData[i]) {
-					console.log('92345m,fd')
-					imageUrl = item.productMetaData[i].value
-				}
-			}
-		}
+        var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'
+        for (i in item.productMetaData) {
+            if (item.productMetaData[i].name == 'ImageUrl') {
+                if (item.productMetaData[i]) {
+                    console.log('92345m,fd')
+                    imageUrl = item.productMetaData[i].value
+                }
+            }
+        }
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openDetail(item) }}>
                 <Card style={styles.card}>
@@ -222,29 +222,29 @@ class FoodRelate extends Component {
                                     <View style={{ width: 50 }}>
                                         {this.renderStar(item.avgRate)}
                                     </View>
-                                    <Text style={styles.price}>{price}đ</Text>
+                                    <Text style={styles.price}> {price}đ/ <Text style={styles.perPrice}>{item.quantityStep} {item.unitType}</Text></Text>
                                 </Col>
-                                <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
-                                    <Col style={styles.buttonWrap}>
-                                        <TouchableOpacity disabled={disabled} activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
-                                            <Icon style={[styles.icon, { color: color }]} name="md-remove" />
-                                        </TouchableOpacity>
-                                        <Col style={styles.quantityContainer}>
-                                            <Text style={styles.quantity}>{quantity}</Text>
-                                        </Col>
-                                        <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
-                                            <Icon name="md-add" style={styles.icon} />
-                                        </TouchableOpacity>
+                            <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
+                                <Col style={styles.buttonWrap}>
+                                    <TouchableOpacity disabled={disabled} activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus(data.index)} >
+                                        <Icon style={[styles.icon, { color: color }]} name="md-remove" />
+                                    </TouchableOpacity>
+                                    <Col style={styles.quantityContainer}>
+                                        <Text style={styles.quantity}>{quantity}</Text>
                                     </Col>
-                                    <Col style={styles.buttonAddCard}>
-                                        {buttonAdd}
-                                    </Col>
-                                </TouchableOpacity>
+                                    <TouchableOpacity style={styles.iconWrapPlus} onPress={() => this.plus(data.index)} >
+                                        <Icon name="md-add" style={styles.icon} />
+                                    </TouchableOpacity>
+                                </Col>
+                                <Col style={styles.buttonAddCard}>
+                                    {buttonAdd}
+                                </Col>
+                            </TouchableOpacity>
                             </Grid>
                         </Body>
                     </CardItem>
                 </Card>
-            </TouchableOpacity>
+            </TouchableOpacity >
         )
     }
 

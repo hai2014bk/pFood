@@ -7,10 +7,13 @@ import HeaderContent from "./../headerContent/";
 import { CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import { reRenderHeader } from '../../actions/header'
+import  TouchAble  from 'react-native-touch-able'
+
 import Spinner from "react-native-loading-spinner-overlay";
 import * as appFunction from "../../utils/function"
 import * as mConstants from '../../utils/Constants'
 import { connect } from "react-redux";
+
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
 import styles from "./styles";
@@ -58,7 +61,6 @@ class Category extends Component {
     }
 
     componentDidMount() {
-        console.log('load 1 ')
         InteractionManager.runAfterInteractions(() => {
             const { params } = this.props.navigation.state
             var parameter = {
@@ -68,7 +70,6 @@ class Category extends Component {
                 "OrderDirection": this.state.sortDirection,
                 "CategoryId": params.parent.id
             }
-            console.log('load 1')
             this.props.fetch(parameter)
         })
 
@@ -80,11 +81,9 @@ class Category extends Component {
         var j = 0;
         for (var i = 0; i < len; i++) {
             var item = a[i];
-            console.log('item bbasw', seen.indexOf(item.id))
             if (seen.indexOf(item.id) == -1) {
                 seen.push(item.id)
                 out[j++] = item;
-                console.log('bnmfvf', item.id, seen, out.length)
             }
         }
         return out;
@@ -97,12 +96,14 @@ class Category extends Component {
                 var data = this.state.data
                 data.splice(data.length - 1, 1)
                 this.setState({ data: data })
-                var listFood = []
-                if (this.state.isSort) {
-                    listFood = props.fetchProduct.data.model
-                } else {
+                var listFood = props.fetchProduct.data.model
+                console.log('kncnbiu2aasq',this.state.isSort)
+                if (!this.state.isSort) {
                     listFood = this.state.data.concat(props.fetchProduct.data.model)
-                }
+                } 
+                // else {
+                //     listFood = this.state.data.concat(props.fetchProduct.data.model)
+                // }
                 for (i in listFood) {
                     if (!listFood[i].quantity) {
                         listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
@@ -126,9 +127,10 @@ class Category extends Component {
                 }
                 this.setState({ data: listFood })
             } else {
-                console.log('bvasaaa', this.state.data[this.state.data.length - 1])
                 var data = this.state.data
-                data.splice(data.length - 1, 1)
+                if (data[data.length - 1].name == 'loadmore'){
+                    data.splice(data.length - 1, 1)
+                }
                 this.setState({ data: data, loadedAll: true })
             }
         }
@@ -138,9 +140,8 @@ class Category extends Component {
     }
 
     loadMore() {
-        console.log('90498043io23kl32', this.state.loadedAll, this.state.shouldLoadMore)
+
         if (!this.state.loadedAll && this.state.shouldLoadMore) {
-            console.log('90498043io23kl32')
             var index = this.state.index + 1
             const { params } = this.props.navigation.state
             var parameter = {
@@ -257,7 +258,7 @@ class Category extends Component {
         const { params } = this.props.navigation.state
         var parameter = {
             "PageSize": 10,
-            "PageIndex": this.state.index,
+            "PageIndex": 1,
             "OrderBy": this.state.sortBy,
             "OrderDirection": this.state.sortDirection,
             "CategoryId": params.parent.id
@@ -384,13 +385,11 @@ class Category extends Component {
             )
         }
         let id = item.id
-        console.log('2332mjklbkljkioeeq', item.price, item)
         let price = this.priceHandle(item.price)
         var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'		
 		for (i in item.productMetaData) {
 			if (item.productMetaData[i].name == 'ImageUrl') {
 				if (item.productMetaData[i]) {
-					console.log('92345m,fd')
 					imageUrl = item.productMetaData[i].value
 				}
 			}
@@ -418,7 +417,7 @@ class Category extends Component {
                                     <View style={{ width: 50 }}>
                                         {this.renderStar(item.avgRate)}
                                     </View>
-                                    <Text style={styles.price}>{price}đ</Text>
+                                    <Text style={styles.price} > {price}đ/ <Text style={styles.perPrice}>{item.quantityStep} {item.unitType}</Text></Text>
                                 </Col>
                                 <TouchableOpacity activeOpacity={1} style={styles.buyColumn}>
                                     <Col style={styles.buttonWrap}>
