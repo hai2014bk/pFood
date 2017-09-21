@@ -45,6 +45,7 @@ export type Action =
 	| {	type: "SEARCH_FOOD_FAILED"}
 	| {	type: "	SEARCH_POPULAR_SUCCESS"}
 	| {	type: "	SEARCH_POPULAR_FAILED"}
+	| { type: "	DUPLICATE_FAILED" }
 	
 	
 	;
