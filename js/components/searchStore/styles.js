@@ -12,10 +12,10 @@ export default {
         height: null,
         backgroundColor: '#e7e9e5',
     },
-    imageBanner:{
-		width : deviceWidth,
-		height:137,
-	},
+    imageBanner: {
+        width: deviceWidth,
+        height: 137,
+    },
     cellContainer: {
         backgroundColor: 'white',
         flex: 1,
@@ -156,9 +156,11 @@ export default {
         padding: 10,
     },
     titleWrap: {
-        flexDirection: 'row',
+        borderColor: '#D8D8D8',
+        borderBottomWidth: 1,
         marginTop: 5,
-        marginLeft: 2
+        marginLeft: 10,
+        marginRight: 10,
     },
     moneyIcon: {
         width: 30,
@@ -182,6 +184,18 @@ export default {
         fontSize: 10,
         marginTop: 3,
         marginLeft: 5,
-        textDecorationLine : 'underline'
+        textDecorationLine: 'underline'
+    },
+    titleText: {
+        fontSize: 20,
+        fontWeight: '400',
+        color: '#848484',
+    },
+    noDataText: {
+        fontSize: 12,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10,
+        marginBottom: 10,
     }
 };
