@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage } from "react-native";
+import {Alert, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchTrending } from "../../actions/fetchTrending.js"

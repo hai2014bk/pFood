@@ -108,7 +108,10 @@ class RecommendFood extends Component {
 		}
 		if (!props.fetchTrendingRecomend.success) {
 			// console.log('9328934893141', props)
-			setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
+			if(!this.state.failed) {
+				setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') })
+				this.setState({failed:true})
+			}
 		}
 	}
 
