@@ -190,9 +190,15 @@ class FoodDetail extends Component {
 	renderInfo() {
 		var food = this.state.food
 		var categoryName = ''
-		if (food) {
+		var shopName = ''
+		var hqAdress = ''
+		var minOrder = ''
+		if (food.name) {
 			var productCategories = food.productCategories
 			categoryName = productCategories[0].name
+			shopName = food.storeProducts[0].store.name
+			hqAdress = food.storeProducts[0].store.hqAddress
+			minOrder = appFunction.handleUnitType(food.unitType, food.minOrderedItems * food.quantityStep)
 		}
 		return (
 			<Card>
@@ -200,10 +206,10 @@ class FoodDetail extends Component {
 					<Row style={{ alignItems: 'center', flex: 1, borderBottomWidth: 1, borderColor: '#e7e9e5' }}>
 						<Text style={styles.headerText}> Thông Tin Sản Phẩm </Text>
 					</Row>
-					{this.renderContentInfo('Store', 'Vinmart')}
-					{this.renderContentInfo('Khu vực', 'Hà Nội')}
+					{this.renderContentInfo('Store', shopName)}
+					{this.renderContentInfo('Khu vực', hqAdress)}
 					{this.renderContentInfo('Danh Mục', categoryName)}
-					{this.renderContentInfo('Số lượng tối thiểu', '500g')}
+					{this.renderContentInfo('Số lượng tối thiểu', minOrder)}
 					{this.renderContentInfo('Thời gian ship', '1 - 2 giờ')}
 				</View>
 			</Card>
@@ -268,14 +274,14 @@ class FoodDetail extends Component {
 		}
 		return (
 			<Grid>
-				<Col style={{ margin: 10 }}>
+				<Col size={3} style={{ margin: 10 }}>
 					<Row>
 						<Image source={money} style={{ height: 20, width: 20 }} resizeMode='contain'>
 						</Image>
 						<Text style={styles.price} > {price} đ/<Text style={styles.perPrice}>{food.quantityStep} {food.unitType}</Text></Text>
 					</Row>
 				</Col>
-				<Col style={{ margin: 10 }}>
+				<Col size={2.5} style={{ margin: 10 }}>
 					<Row style={{ marginLeft: '20%', flex: 1, justifyContent: 'flex-end' }}>
 						<TouchableOpacity disabled={disabled} activeOpacity={active} style={[styles.iconWrapMinus, { borderColor: color }]} onPress={() => this.minus()} >
 							<Icon style={[styles.icon, { color: color }]} name="md-remove" />
@@ -332,6 +338,7 @@ class FoodDetail extends Component {
 		let data = []
 		var storeId = ''
 		let storeProducts = item.storeProducts
+		console.log('38129ádas',storeProducts)
 		storeId = storeProducts[0].storeId
 		console.log('storeIdaaaa', storeId)
 		this.setState({ disabled: true })

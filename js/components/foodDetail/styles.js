@@ -23,7 +23,7 @@ export default {
 		height: deviceHeight * 208/990
 	},
 	price: {
-		fontSize:20,
+		fontSize:18,
 		fontWeight:'500',
 		color:'gray'
 	},

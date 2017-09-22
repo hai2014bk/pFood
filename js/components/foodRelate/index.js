@@ -251,9 +251,8 @@ class FoodRelate extends Component {
     async addtoCart(item) {
 		let data = []
 		var storeId = ''
-		let storeProducts = item.storeProducts
+        let storeProducts = item.storeProducts
 		storeId = storeProducts[0].storeId
-		console.log('storeIdaaaa', storeId)
 		this.setState({ disabled: true })
 		setTimeout(() => { this.setState({ disabled: false }), 500 })
 		var seen = false
