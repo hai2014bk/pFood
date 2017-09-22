@@ -67,9 +67,6 @@ class RecommendFood extends Component {
 		if (props.fetchTrendingRecomend.success && !this.state.tredingLoaded) {
 			if (props.fetchTrendingRecomend.data.model[0]) {
 				var listFood = props.fetchTrendingRecomend.data.model
-				for (i in listFood) {
-					listFood[i].quantity = 0
-				}
 				var trendingFood = {}
 				trendingFood.sectionName = 'Được xem nhiều nhất'
 				trendingFood.food = listFood
@@ -79,6 +76,7 @@ class RecommendFood extends Component {
 			}
 		}
 		if (props.fetchLastestRecomend.success && !this.state.lastestLoaded) {
+			console.log('djals12ádas')
 			if (props.fetchLastestRecomend.data.model[0]) {
 				var listFood = props.fetchLastestRecomend.data.model
 				for (i in listFood) {
@@ -225,7 +223,6 @@ class RecommendFood extends Component {
 		for (i in food.productMetaData) {
 			if (food.productMetaData[i].name == 'ImageUrl') {
 				if (food.productMetaData[i]) {
-					console.log('92345m,fd')
 					imageUrl = food.productMetaData[i].value
 				}
 			}
@@ -254,7 +251,7 @@ class RecommendFood extends Component {
 								<Row style={{ justifyContent: 'space-between', marginTop: 3 }} >
 									<Row style={{ alignSelf: 'flex-end' }} >
 										<Icon name='ios-pin' style={styles.locationIcon} />
-										<Text style={styles.shopNameText}>Vinmart</Text>
+										<Text style={styles.shopNameText}>{food.storeProducts[0].store.name}</Text>
 									</Row>
 									{this.renderOldPrice(data.item)}
 								</Row>

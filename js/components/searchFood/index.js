@@ -49,13 +49,10 @@ class SearchFood extends Component {
 				Asc: false,
 			},
 			shipTypes: {
-				ViettelPost: true,
-				Adayroi: false,
-				Grab: false,
-				Uber: false
+				ShipStore: true,
 			},
 			item: {},
-			ship: 'ViettelPost',
+			ship: 'Ship của cửa hàng',
 		};
 	}
 
@@ -100,7 +97,7 @@ class SearchFood extends Component {
 				}
 				for (i in listFood) {
 					if (!listFood[i].quantity) {
-						listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
+						listFood[i].quantity = listFood[i].minOrderedItems
 						let metaData = listFood[i].productMetaData
 						for (j in metaData) {
 							if (metaData[j].name == 'Discount') {
@@ -359,8 +356,8 @@ class SearchFood extends Component {
 				}
 			}
 		}
-		if (item.quantity >= item.quantityStep * item.minOrderedItems) {
-			if (item.quantity == item.quantityStep * item.minOrderedItems) {
+		if (item.quantity >=  item.minOrderedItems) {
+			if (item.quantity ==  item.minOrderedItems) {
 				disabled = true
 				color = '#cecece'
 				active = 1
@@ -408,8 +405,8 @@ class SearchFood extends Component {
 									<Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
 									<Row style={{ alignItems: 'flex-end' }} >
 										<Icon name='ios-pin' style={styles.locationIcon} />
-										<Text style={styles.shopName}>{item.cities}</Text>
-									</Row>
+                                        <Text style={styles.shopName}>{item.storeProducts[0].store.name}</Text>
+										</Row>
 									<View style={{ width: 50 }}>
 										{this.renderStar(item.avgRate)}
 									</View>
@@ -468,13 +465,20 @@ class SearchFood extends Component {
 	}
 
 	renderShipPopup() {
+		var shipType = this.state.shipTypes
+        var numberChild =  Object.keys(shipType).length
+        if(numberChild == 1){
+            numberChild = 2
+        }
+        var height = 70 * (numberChild)
+        
 		return (
 			<PopupDialog
 				dialogTitle={<DialogTitle title="Hình thức vận chuyển" />}
 				ref={(shipPopupDialog) => { this.shipPopupDialog = shipPopupDialog; }}
 				dialogStyle={{ marginTop: -200 }}
-				width={250}
-				height={250}
+				width={280}
+				height={height}
 				actions={[
 					<DialogButton
 						text="Xác nhận" t
@@ -486,10 +490,7 @@ class SearchFood extends Component {
 				]}
 			>
 				<View style={styles.pickerContainer}>
-					{this.shipPickerWrap('Viettel Post', 'ViettelPost')}
-					{this.shipPickerWrap('Adayroi', 'Adayroi')}
-					{this.shipPickerWrap('Grab', 'Grab')}
-					{this.shipPickerWrap('Uber', 'Uber')}
+					{this.shipPickerWrap('ShipStore', 'Ship của cửa hàng')}
 				</View>
 			</PopupDialog>
 		)
@@ -525,13 +526,13 @@ class SearchFood extends Component {
 						item.shipType = seenItemShipType
 						appFunction.add(item, this.props)
 					} else {
-						this.popupDialog.show()
+						this.shipPopupDialog.show()
 					}
 				} else {
-                    this.popupDialog.show()
+					this.shipPopupDialog.show()
 				}
 			} else {
-                this.popupDialog.show()
+				this.shipPopupDialog.show()
 			}
 		} catch (error) {
 		}

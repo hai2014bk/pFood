@@ -55,11 +55,19 @@ export default {
     },
     price: {
         color: 'gray',
-        fontSize: 16,
+        fontSize: 13,
+        fontWeight: '600',
+        textAlign: 'left',
+        marginBottom: 0,
+        alignSelf: 'baseline'
+    },
+    perPrice: {
+        color: 'gray',
+        fontSize: 12,
         fontWeight: '400',
         textAlign: 'left',
         marginBottom: 0,
-        alignSelf: 'baseline',
+        alignSelf: 'baseline'
     },
     shopName: {
         color: 'gray',
@@ -229,11 +237,10 @@ export default {
         flex: 1
     },
     trashWrap: {
-        width: '50%',
-        height: '100%',
         backgroundColor: '#F57463',
-        justifyContent:'center',
-        alignItems:'center'
+        flex: 1,
+        justifyContent: 'center',
+        paddingLeft: 45
     },
     iconTrash:{
         fontSize:35

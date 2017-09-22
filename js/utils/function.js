@@ -36,7 +36,8 @@ export function handleUnitType(unitType,quantity){
 export async function add(item, props) {   
     let data = [];
     var quantity = item.quantity - item.quantityStep
-    if (quantity  < 0 || (quantity == 0 && item.quantityStep == 0)) {
+    var minOrders = item.minOrderedItems
+    if ((quantity  < 0 && minOrders > item.quantityStep ) || (quantity == 0 && item.quantityStep == 0)) {
         Alert.alert('', 'Hãy chọn số lượng')
     } else {
         Toast.show({

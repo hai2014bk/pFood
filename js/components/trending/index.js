@@ -27,13 +27,10 @@ class Trending extends Component {
         this.state = {
             data: [],
             shipTypes: {
-                ViettelPost: true,
-                Adayroi: false,
-                Grab: false,
-                Uber: false
+                ShipStore: true,
             },
             item: {},
-            ship: 'ViettelPost',
+            ship: 'Ship của cửa hàng',
         };
     }
 
@@ -53,7 +50,7 @@ class Trending extends Component {
             if (props.fetchTrending.data.model.length > 0) {
                 var listFood = this.state.data.concat(props.fetchTrending.data.model)
                 for (i in listFood) {
-                    listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
+                    listFood[i].quantity = listFood[i].minOrderedItems
                     let metaData = listFood[i].productMetaData
                     for (j in metaData){
                         if (metaData[j].name == 'Discount'){
@@ -154,8 +151,8 @@ class Trending extends Component {
         let color = ''
         var quantity = appFunction.handleUnitType(item.unitType, item.quantity)
         var disabled = false
-        if (item.quantity >= item.quantityStep * item.minOrderedItems) {
-                if (item.quantity == item.quantityStep * item.minOrderedItems) {
+        if (item.quantity >=  item.minOrderedItems) {
+                if (item.quantity == item.minOrderedItems) {
                     disabled = true
                     color = '#cecece'
                     active = 1
@@ -186,7 +183,6 @@ class Trending extends Component {
 		for (i in item.productMetaData) {
 			if (item.productMetaData[i].name == 'ImageUrl') {
 				if (item.productMetaData[i]) {
-					console.log('92345m,fd')
 					imageUrl = item.productMetaData[i].value
 				}
 			}
@@ -209,8 +205,8 @@ class Trending extends Component {
                                     <Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
                                     <Row style={{ alignItems: 'flex-end' }} >
                                         <Icon name='ios-pin' style={styles.locationIcon} />
-                                        <Text style={styles.shopName}>{item.cities}</Text>
-                                    </Row>
+                                        <Text style={styles.shopName}>{item.storeProducts[0].store.name}</Text>
+                                        </Row>
                                     <View style={{ width: 50 }}>
                                         {this.renderStar(item.avgRate)}
                                     </View>
@@ -308,13 +304,20 @@ class Trending extends Component {
         )
     }
     renderPopup() {
+        var shipType = this.state.shipTypes
+        var numberChild =  Object.keys(shipType).length
+        if(numberChild == 1){
+            numberChild = 2
+        }
+        var height = 70 * (numberChild)
+        
         return (
             <PopupDialog
                 dialogTitle={<DialogTitle title="Hình thức vận chuyển" />}
                 ref={(popupDialog) => { this.popupDialog = popupDialog; }}
                 dialogStyle={{ marginTop: -200 }}
-                width={250}
-                height={250}
+                width={280}
+                height={height}
                 actions={[
                     <DialogButton
                         text="Xác nhận" t
@@ -326,10 +329,7 @@ class Trending extends Component {
                 ]}
             >
                 <View style={styles.pickerContainer}>
-                    {this.pickerWrap('Viettel Post', 'ViettelPost')}
-                    {this.pickerWrap('Adayroi', 'Adayroi')}
-                    {this.pickerWrap('Grab', 'Grab')}
-                    {this.pickerWrap('Uber', 'Uber')}
+                    {this.pickerWrap('Ship của cửa hàng', 'ShipStore')}
                 </View>
             </PopupDialog>
         )

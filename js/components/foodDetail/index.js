@@ -35,14 +35,11 @@ class FoodDetail extends Component {
 			food: '',
 			isLoading: true,
 			shipTypes: {
-				ViettelPost: true,
-				Adayroi: false,
-				Grab: false,
-				Uber: false
+				StoreShip: true,
 			},
 			loaded: false,
 			item: {},
-			ship: 'ViettelPost',
+			ship: 'Ship của cửa hàng',
 			disabled: false,
 		};
 	}
@@ -58,7 +55,7 @@ class FoodDetail extends Component {
 			if (!this.state.loaded) {
 				var food = props.fetchDetail.data.model
 				if (food.id == this.props.food.id) {
-					food.quantity = food.quantityStep * food.minOrderedItems
+					food.quantity = food.minOrderedItems
 					let metaData = food.productMetaData
 					for (j in metaData) {
 						console.log('mcncvs', metaData)
@@ -210,7 +207,6 @@ class FoodDetail extends Component {
 					{this.renderContentInfo('Khu vực', hqAdress)}
 					{this.renderContentInfo('Danh Mục', categoryName)}
 					{this.renderContentInfo('Số lượng tối thiểu', minOrder)}
-					{this.renderContentInfo('Thời gian ship', '1 - 2 giờ')}
 				</View>
 			</Card>
 		)
@@ -246,8 +242,8 @@ class FoodDetail extends Component {
 			price = this.priceHandle(food.price.toString())
 			quantity = appFunction.handleUnitType(food.unitType, food.quantity)
 		}
-		if (food.quantity >= food.quantityStep * food.minOrderedItems) {
-			if (food.quantity == food.quantityStep * food.minOrderedItems) {
+		if (food.quantity >=  food.minOrderedItems) {
+			if (food.quantity == food.minOrderedItems) {
 				disabled = true
 				color = '#cecece'
 				active = 1
@@ -401,13 +397,19 @@ class FoodDetail extends Component {
 		)
 	}
 	renderPopup() {
+		var shipType = this.state.shipTypes
+        var numberChild =  Object.keys(shipType).length
+        if(numberChild == 1){
+            numberChild = 2
+        }
+        var height = 70 * (numberChild)
 		return (
 			<PopupDialog
 				dialogTitle={<DialogTitle title="Hình thức vận chuyển" />}
 				ref={(popupDialog) => { this.popupDialog = popupDialog; }}
 				dialogStyle={{ marginTop: -200 }}
-				width={250}
-				height={250}
+				width={280}
+				height={height}
 				actions={[
 					<DialogButton
 						text="Xác nhận" t
@@ -419,10 +421,7 @@ class FoodDetail extends Component {
 				]}
 			>
 				<View style={styles.pickerContainer}>
-					{this.pickerWrap('Viettel Post', 'ViettelPost')}
-					{this.pickerWrap('Adayroi', 'Adayroi')}
-					{this.pickerWrap('Grab', 'Grab')}
-					{this.pickerWrap('Uber', 'Uber')}
+					{this.pickerWrap('Ship của cửa hàng', 'StoreShip')}
 				</View>
 			</PopupDialog>
 		)
@@ -453,13 +452,9 @@ class FoodDetail extends Component {
 					</Image>
 					{this.renderPriceAndBuy()}
 					{this.renderDecription()}
-					<View style={{ marginTop: 10 }}>
+					<View style={{marginBottom:10, marginTop: 10 }}>
 						{this.renderInfo()}
 					</View>
-					<View style={{ marginTop: 25 }}>
-						{this.renderFoodContent()}
-					</View>
-
 				</Content>
 				{this.renderPopup()}
 			</Container>

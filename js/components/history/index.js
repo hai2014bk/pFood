@@ -138,15 +138,28 @@ class History extends Component {
         var item = data.item
         var date = this.dateHandle(item.orderDate)        
         let price = this.priceHandle(item.totalPrice)
+        console.log('asjkdsadas',data.item)
         var paymentMethod = '' 
         var status = ''
         var color = ''
         if (item.paymentMethod == 'cash') {
             paymentMethod = 'Trả tiền mặt'
         } 
-        if (item.status == 'Submitted') {
-            status = 'Hoàn thành'
-            color =  'green'
+        if(item.status == 'Submitted'){
+             color = 'orange'
+             status = 'Đang chờ'
+        }
+        if(item.status == 'Delivered'){
+            color = 'green'
+            status = 'Đã thanh toán'
+        }
+        if(item.status == 'Canceled'){
+            color = 'red'
+            status = 'Đã huỷ'
+       }
+        if(item.status == 'Delivering'){
+             color = 'blue'
+             status = 'Đang giao'
         }
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => this.onDetail(item) } style={styles.listItemWrap}>
@@ -164,7 +177,7 @@ class History extends Component {
                     </View>
                     <View style={styles.flexRow}>
                         <Image source={money} style={styles.moneyIcon} resizeMode='contain' />
-                        <Text style={styles.grayText}> {paymentMethod}</Text>
+                        <Text style={styles.grayText}> Tiền mặt</Text>
                     </View>
                     <View style={styles.flexRow}>
                         <Icon name='ios-pin' style={styles.pinIcon} />

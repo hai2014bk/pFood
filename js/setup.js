@@ -55,7 +55,7 @@ export default class Setup extends Component {
 
 	render() {
 		if (!this.state.isReady) {
-			return <Expo.AppLoading />;
+			return null;
 		}
 		var initialRoute = this.state.isLogined ? "Drawer":"Login"
 			return (

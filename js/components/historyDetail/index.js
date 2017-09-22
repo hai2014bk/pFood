@@ -100,6 +100,7 @@ class HistoryDetail extends Component {
         let proPrice = item.price * data.quantity / item.quantityStep;
         let price = this.priceHandle(proPrice.toString())
         let quantity = appFunction.handleUnitType(item.unitType, data.quantity)
+        console.log('12njskadasda', data)
         return (
             <View style={styles.proDetail}>
                 <View style={styles.flexCol}>
@@ -122,9 +123,25 @@ class HistoryDetail extends Component {
     }
     renderStoreItems(item) {
         console.log('đáq2edasdas11`1`', item)
+        var color = ''
+        var statusText = ''
+        var status = item.status
+        if (status == 'Submitted') {
+            color = 'orange'
+            statusText = 'Đang chờ'
+        }
+        if (status == 'Delivered') {
+            color = 'green'
+            statusText = 'Đã thanh toán'
+        }
+        if (status == 'Canceled') {
+            color = 'red'
+            statusText = 'Đã huỷ'
+        }
         return (
             <View style={styles.wrapStoreItems}>
-                <Text style={styles.storeNameText}>Cửa hàng: {item.name} </Text>
+                <Text style={styles.storeNameText}>Cửa hàng: {item.store.name} </Text>
+                <Text style={styles.shipTypeText}>Trạng thái: <Text style={[styles.shopText, { color: color }]}> {statusText} </Text> </Text>
                 <Text style={styles.shipTypeText}>Vận chuyển: <Text style={styles.shopText}> {item.deliveryMethod} </Text> </Text>
                 <FlatList
                     style={{ marginTop: 10 }}
@@ -157,6 +174,7 @@ class HistoryDetail extends Component {
         }
     }
     renderStar(item) {
+        var disabled = item.rated
         return (
             <StarRating
                 emptyStar={'ios-star-outline'}
@@ -164,6 +182,7 @@ class HistoryDetail extends Component {
                 halfStar={'ios-star-half'}
                 iconSet={'Ionicons'}
                 maxStars={5}
+                disabled={disabled}
                 rating={item.rate}
                 starColor={primary}
                 selectedStar={(rating) => this.onStarRatingPress(rating, item)}
@@ -181,6 +200,17 @@ class HistoryDetail extends Component {
                 if (parcelProducts[it].product.id == item.id) {
                     console.log('213812kdfcads', parcelProducts[it].product.id, item.id)
                     parcelProducts[it].product.rate = rating
+                    parcelProducts[it].product.rated = true
+                    Alert.alert(
+                        '',
+                        'Bạn có muốn đánh giá sản phẩm này ?',
+                        [
+                            { text: 'Chắc chắn', onPress: () => this.rate(item,rating) },
+                            { text: 'Không', onPress: () => this.dismissRate(item), style: 'cancel' },
+                            { onDismiss: () => {this.dismissRate(item)} }
+                        ],
+                        { cancelable: false }
+                    )
                 }
             }
             stores.parcelProducts = parcelProducts
@@ -188,44 +218,30 @@ class HistoryDetail extends Component {
         order.orderParcels = stores
         this.setState({ order: order })
     }
-    rate() {
-        var error = false
-        this.setState({ disabled: true })
+    dismissRate(item){
         var order = this.state.order
         var stores = order.orderParcels
-        this.setState({ visible: true })
-        for (i in stores) {
-            var store = stores[i]
-            console.log('uhhj3242312', store)
-            if (store) {
-                var parcelProducts = store.parcelProducts
-                for (it in parcelProducts) {
-                    var item = store.parcelProducts[it]
-                    if (item.product.rate > 0) {
-                        var params = {
-                            "ProductId": item.product.id,
-                            "RatePoint": item.product.rate
-                        }
-                        console.log('2913usdcdasfa2312321', params)
-                        this.props.updateRate(params)
-                    } else {
-                        error = true
-                        setTimeout(() => { Alert.alert('Lỗi', 'Vui lòng đánh giá toàn bộ sản phẩm') }, 100)
-                        break
-                    }
+        for (st in stores) {
+            var store = stores[st]
+            var parcelProducts = store.parcelProducts
+            for (it in parcelProducts) {
+                if (parcelProducts[it].product.id == item.id) {
+                    parcelProducts[it].product.rated = false
                 }
             }
+            stores.parcelProducts = parcelProducts
+        }  
+        order.orderParcels = stores
+        this.setState({ order: order })  
+    }
+    rate(item, rating) {
+        var params = {
+            "ProductId": item.id,
+            "RatePoint": rating
         }
-        if (!error) {
-            setTimeout(() => {
-                this.setState({ visible: false, disabled: false }),
-                    this.showSuccessRate()
-            }, 2000)
-        } else {
-            setTimeout(() => {
-                this.setState({ visible: false, disabled: false })
-            }, 1000)
-        }
+        this.props.updateRate(params)
+
+        this.showSuccessRate()
     }
 
     showSuccessRate() {
@@ -234,15 +250,16 @@ class HistoryDetail extends Component {
     }
 
     render() {
-        var mdh = "F001"
+        var mdh = "F"
         var data = this.state.order
         var lastName = ''
         var email = ''
         var phoneNumber = ''
         var deliveryAddress = ''
         if (data.user) {
-            lastName = data.user.lastName
+            lastName = data.user.firstName
             email = data.user.email
+            mdh += data.id
         }
         var totalPrice = ''
         if (data.totalPrice) {

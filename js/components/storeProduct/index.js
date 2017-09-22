@@ -37,7 +37,13 @@ class StoreProduct extends Component {
 	componentWillReceiveProps(props) {
 		this.setState({isLoading:false})
 		if (props.fetchStoreProduct.success) {
-			var food = props.fetchStoreProduct.data.model
+			var food = []
+			for (i in props.fetchStoreProduct.data.model){
+				var item = props.fetchStoreProduct.data.model[i]
+				if (item.status != 'Deleted'){
+					food.push(item)
+				}
+			}
 			this.setState({ data: food })
 		}
 		if (!props.fetchStoreProduct.success) {
@@ -148,7 +154,6 @@ class StoreProduct extends Component {
 		for (i in food.productMetaData) {
 			if(food.productMetaData[i].name == 'ImageUrl') {
 				if (food.productMetaData[i]) {
-					console.log('92345m,fd')
 					imageUrl = food.productMetaData[i].value
 				}					
 			}
@@ -176,7 +181,7 @@ class StoreProduct extends Component {
 								<Row style={{ justifyContent: 'space-between', marginTop: 3 }} >
 									<Row style={{ alignSelf: 'flex-end' }} >
 										<Icon name='ios-pin' style={styles.locationIcon} />
-										<Text style={styles.shopNameText}>Vinmart</Text>
+										<Text style={styles.shopNameText}>{this.props.storeParrent.name}</Text>
 									</Row>
 									{this.renderOldPrice(food)}
 								</Row>

@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import {InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
+import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import * as mConstants from '../../utils/Constants'
 import { connect } from "react-redux";
 import * as appFunction from "../../utils/function"
-import {reRenderHeader} from '../../actions/header'
+import { reRenderHeader } from '../../actions/header'
+import Swipeable from 'react-native-swipeable';
 
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail, SwipeRow } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
@@ -22,7 +23,9 @@ class Cart extends Component {
         this.state = {
             data: [],
             totalPrice: 0,
-            disabled:false,
+            disabled: false,
+            disableMinus: false,
+            listScroll:true,
         };
     }
 
@@ -37,8 +40,10 @@ class Cart extends Component {
                 console.log('value', data)
                 this.setState({ data })
                 for (i = 0; i < data.length; i++) {
-                    var quantity = data[i].quantity/data[i].quantityStep
-                    totalPrice += data[i].price * quantity
+                    var quantity = data[i].quantity / data[i].quantityStep
+                    totalPrice += (data[i].price * quantity)
+                    console.log('asjmd12a32121',totalPrice,quantity,data[i].price,data[i].price * quantity )
+                    totalPrice = Math.round(totalPrice)
                     this.setState({ totalPrice })
                 }
             }
@@ -47,11 +52,10 @@ class Cart extends Component {
         }
     }
     componentWillReceiveProps(props) {
-		if (props.addOrder.success == true) {
-			this.setState({data:[]})
-		} 
-	}
-
+        if (props.addOrder.success == true) {
+            this.setState({ data: [] })
+        }
+    }
 
     async plus(rowID) {
         let newArray = this.state.data.slice(0);
@@ -69,35 +73,42 @@ class Cart extends Component {
         this.totalPrice(newArray)
     }
 
-    async minus(data, rowID) {
-        console.log('data', data)
-        if (data.item.quantity/data.item.quantityStep == 1) {
-            Alert.alert(
-                '',
-                'Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?',
-                [
-                    { text: 'Chắc chắn', onPress: () => this.remove(rowID) },
-                    { text: 'Không', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                ],
-                { cancelable: false }
-            )
-        } else {
-            let newArray = this.state.data.slice(0);
-            newArray[rowID] = {
-                ...this.state.data[rowID],
-                quantity: this.state.data[rowID].quantity - this.state.data[rowID].quantityStep > 0 ? this.state.data[rowID].quantity - this.state.data[rowID].quantityStep : this.state.data[rowID].quantityStep,
-            };
-            this.setState({
-                data: newArray
-            });
-            try {
-                await AsyncStorage.setItem(mConstants.CART, JSON.stringify(newArray));
-            } catch (error) {
-            }
-            this.totalPrice(newArray)
-        }
+    minusCheck(data,rowID){
+        this.setState({ disableMinus: true })
+        setTimeout(()=>{
+            this.minus(data,rowID)
+        },500)        
     }
 
+    async minus(data, rowID) {
+        console.log('data', data)
+            if (data.item.quantity == data.item.minOrderedItems) {
+                Alert.alert(
+                    '',
+                    'Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?',
+                    [
+                        { text: 'Chắc chắn', onPress: () => this.remove(rowID) },
+                        { text: 'Không', onPress: () => this.setState({ disableMinus: false }), style: 'cancel' },
+                    ],
+                    { cancelable: false }
+                )
+            } else {
+                this.setState({ disableMinus: false })
+                let newArray = this.state.data.slice(0);
+                newArray[rowID] = {
+                    ...this.state.data[rowID],
+                    quantity: this.state.data[rowID].quantity - this.state.data[rowID].quantityStep > 0 ? this.state.data[rowID].quantity - this.state.data[rowID].quantityStep : this.state.data[rowID].quantityStep,
+                };
+                this.setState({
+                    data: newArray
+                });
+                try {
+                    await AsyncStorage.setItem(mConstants.CART, JSON.stringify(newArray));
+                } catch (error) {
+                }
+                this.totalPrice(newArray)
+            }
+    }
     renderStar(rate) {
         return (
             <StarRating
@@ -123,8 +134,7 @@ class Cart extends Component {
         })
         try {
             await AsyncStorage.setItem(mConstants.CART, JSON.stringify(tempArray));
-            console.log('kmccmnmcx')
-            this.props.reRenderHeader()            
+            this.props.reRenderHeader()
         } catch (error) {
         }
         this.totalPrice(tempArray)
@@ -132,38 +142,45 @@ class Cart extends Component {
 
     priceHandle(price) {
         var count = 0
-		price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
+        price = price.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")
         return price
     }
-   
+
     renderItems(data) {
         let item = data.item
         let id = item.id
-        let quantity = appFunction.handleUnitType(item.unitType,item.quantity)
+        let quantity = appFunction.handleUnitType(item.unitType, item.quantity)
         let price = this.priceHandle(item.price.toString())
-        var disabled = false 
+        var disabled = false
+        var disableMinus = this.state.disableMinus
         var color = primary
-        var active =  0.2
+        var active = 0.2
         if (item.quantity < 0) {
             disabled = true
+            disableMinus = true
             active = 1
         }
+        const rightButtons = [
+            <TouchableOpacity style={styles.trashWrap} onPress={() => this.remove(data.index)}>
+            <Icon active name="trash" style={styles.iconTrash} />
+        </TouchableOpacity>
+          ];
         return (
-            <SwipeRow
-                list={true}
-                disableRightSwipe={true}
-                stopRightSwipe={-100}
-                rightOpenValue={-100}
-                body={
-                    <View style={styles.card}>
+            <Swipeable
+                rightButtons={rightButtons}
+                rightButtonWidth={100}
+                onSwipeStart={() => this.setState({listScroll: false})}
+                onSwipeRelease={() => this.setState({listScroll: true})}               
+            >
+            <View style={styles.card}>
                         <View style={styles.imageContainer}>
                             <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
                         </View>
                         <View style={styles.infoWrap}>
                             <Text style={styles.foodName}>{item.name}</Text>
-                            <Text style={styles.price}>{price}đ</Text>
+                            <Text style={styles.price} > {price}đ/ <Text style={styles.perPrice}>{item.quantityStep} {item.unitType}</Text></Text>
                             <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                                <TouchableOpacity disabled = {disabled} onPress={() => this.minus(data, data.index)} style={styles.buttonMinus}>
+                                <TouchableOpacity disabled={disableMinus} onPress={() => this.minusCheck(data, data.index)} style={styles.buttonMinus}>
                                     <Icon style={styles.icon} name="md-remove" />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.plus(data.index)} style={styles.buttonAdd}>
@@ -174,13 +191,7 @@ class Cart extends Component {
                             </View>
                         </View>
                     </View>
-                }
-                right={
-                    <TouchableOpacity style={styles.trashWrap} onPress={() => this.remove(data.index)}>
-                        <Icon active name="trash" style={styles.iconTrash} />
-                    </TouchableOpacity>
-                }
-            />
+            </Swipeable>
         )
     }
 
@@ -195,7 +206,7 @@ class Cart extends Component {
     renderList() {
         if (this.state.data.length > 0) {
             return (
-                <FlatList scrollEnabled={false} style={styles.listViewWrap}
+                <FlatList scrollEnabled={this.state.listScroll} style={styles.listViewWrap}
                     data={this.state.data}
                     extraData={this.state.data}
                     keyExtractor={(item) => item.id}
@@ -214,25 +225,25 @@ class Cart extends Component {
             )
         }
     }
-    openBilling(){
-        if(this.state.data.length > 0) {
-            this.setState({disabled:true})
+    openBilling() {
+        if (this.state.data.length > 0) {
+            this.setState({ disabled: true })
             const navigation = this.props.navigation;
             navigation.navigate("Billing")
             InteractionManager.runAfterInteractions(() => {
-                this.setState({disabled:false})            
-        })
+                this.setState({ disabled: false })
+            })
         }
     }
 
     render() {
         let content = null
         let num = this.state.totalPrice
-        let price = this.priceHandle(num.toString())
+        let price = this.priceHandle(num)
         const navigation = this.props.navigation;
         if (this.state.data.length > 0) {
             content = (
-                <Content bounces={false} style={styles.contentWrap}>
+                <Content scrollEnabled={this.state.listScroll} bounces={false} style={styles.contentWrap}>
                     <View>
                         {this.renderList()}
                     </View>
@@ -243,7 +254,7 @@ class Cart extends Component {
                             <Text style={[styles.totalPrice, { fontSize: 20 }]}> {price}đ</Text>
                         </View>
                     </View>
-                    <TouchableOpacity disabled={this.state.disabled} style={styles.checkoutWrap} onPress={() => {this.openBilling()}}>
+                    <TouchableOpacity disabled={this.state.disabled} style={styles.checkoutWrap} onPress={() => { this.openBilling() }}>
                         <Text style={styles.checkout}> Thanh toán </Text>
                     </TouchableOpacity>
                 </Content>
@@ -251,9 +262,9 @@ class Cart extends Component {
         } else {
             content = (
                 <Content style={styles.contentWrap}>
-                  <View style={styles.alert}>
-                      <Text style={styles.alertText}>Không có sản phẩm nào {"\n"} trong giỏ hàng</Text>
-                  </View>
+                    <View style={styles.alert}>
+                        <Text style={styles.alertText}>Không có sản phẩm nào {"\n"} trong giỏ hàng</Text>
+                    </View>
                 </Content>
             )
         }
@@ -269,14 +280,14 @@ class Cart extends Component {
 }
 
 function bindActions(dispatch) {
-	return {
+    return {
         fetch: (id) => dispatch(fetchDetail(id)),
-        reRenderHeader : () => dispatch(reRenderHeader())            
-	};
+        reRenderHeader: () => dispatch(reRenderHeader())
+    };
 }
 
 const mapStateToProps = state => ({
     addOrder: state.addOrder,
 });
 
-export default connect(mapStateToProps,bindActions)(Cart);
+export default connect(mapStateToProps, bindActions)(Cart);
