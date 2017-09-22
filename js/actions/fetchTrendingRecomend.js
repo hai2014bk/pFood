@@ -61,6 +61,7 @@ export function fetchTrendingRecomend(params) {
 			},
 			error => {
 				console.log('error', error)
+				dispatch(fetchLastestRecomend())				
 				dispatch(fetchTrendingRecomendFailed(error));
 			}
 		)

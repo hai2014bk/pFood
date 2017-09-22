@@ -158,7 +158,7 @@ export default {
         marginRight: -10,
     },
     quantity: {
-        fontSize: 13,
+        fontSize: 10,
         alignSelf: 'center',
         textAlign:'center'
     },

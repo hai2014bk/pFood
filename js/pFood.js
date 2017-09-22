@@ -35,8 +35,7 @@ const Main = StackNavigator(
 		ForgetPassword: {screen:ForgetPassword},
 		Cart: { screen: Cart },	
 		Billing : { screen: Billing },
-		HistoryDetail : { screen: HistoryDetail },		
-		StoreNear : { screen: StoreNear },
+		HistoryDetail: {screen:HistoryDetail},
 	},
 	{
 		index: 0,
@@ -44,7 +43,7 @@ const Main = StackNavigator(
 		headerMode: "none",
 		navigationOptions: {
 			gesturesEnabled: false,
-			drawerLockMode: 'locked-open'
+			drawerLockMode: 'locked-closed'
 		},
 	}
 );

@@ -17,6 +17,32 @@ export default {
 		paddingTop: 10,
 		paddingRight: 30,
 	},
+	wrapStoreItems:{
+		flex:1,
+		paddingTop:5,
+		marginTop:5,
+		borderBottomWidth:0.5,
+		borderColor:"#A4A4A4"
+	},
+	storeNameText: {
+		fontWeight:'600',
+		color:'black',
+		fontSize:16,
+	},
+	shipTypeText:{
+		marginTop:5,
+		marginLeft:5,
+		color:"#A0A0A0",
+		fontSize:14,
+		width:'100%',
+	},
+	lineView:{
+		marginTop:5,
+		backgroundColor:"#A0A0A0",
+		height:1,
+		alignSelf:'flex-start',
+		width:'80%'
+	},
 	checkoutWrap: {
         backgroundColor: primary,
         width: '90%',
@@ -121,12 +147,13 @@ export default {
 		fontWeight: 'bold',
 	},
 	proDetail: {
-		marginLeft: 5,
+		marginLeft: 16,
 		borderBottomWidth: 1,
 		borderColor: '#E1E1E1',
 		marginTop: 5,
 		paddingBottom: 5, 
-		flexDirection:'column'
+		flexDirection:'column',
+		borderBottomWidth:0,
 	},
 	productText:{
 		color: 'black',
@@ -147,7 +174,6 @@ export default {
 	},
 	proNumber:{
 		color: '#A0A0A0',
-		marginLeft:15,
 		fontSize: 12,
 	},
 	totalPriceText:{
@@ -156,6 +182,7 @@ export default {
 		fontWeight:'500'
 	},
 	totalPrice:{
+		marginTop:10,
 		flexDirection: 'row',
 		paddingLeft:5,
 	},

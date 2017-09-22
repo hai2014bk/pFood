@@ -57,7 +57,7 @@
     "react-native-star-rating": "^1.0.8",
     "react-native-swiper": "^1.5.10",
     "react-native-viewpager": "^0.2.13",
-    "react-navigation": "^1.0.0-beta.11",
+    "react-navigation": "git+https://github.com/martnu/react-navigation.git#pass-down-drawer-lock-mode",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-persist": "^3.2.2",

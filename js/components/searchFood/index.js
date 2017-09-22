@@ -497,24 +497,41 @@ class SearchFood extends Component {
 
 	async addtoCart(item) {
 		let data = []
+		var storeId = ''
+		let storeProducts = item.storeProducts
+		storeId = storeProducts[0].storeId
+		console.log('storeIdaaaa', storeId)
+		this.setState({ disabled: true })
+		setTimeout(() => { this.setState({ disabled: false }), 500 })
+		var seen = false
+		var seenItemShipType = ''
 		try {
 			const value = await AsyncStorage.getItem(mConstants.CART);
 			if (value !== null) {
 				data = JSON.parse(value)
 				if (data.length > 0) {
-					for (let i = 0; i <= data.length; i++) {
-						if (data[i].purveyorId == item.purveyorId) {
-							item.shipType = data[i].shipType
-							appFunction.add(item, this.props)
-						} else {
-							this.shipPopupDialog.show()
+					for (let i in data) {
+						var food = data[i]
+						var inCartStoreId = ''
+						let inCartstoreProducts = food.storeProducts
+						inCartStoreId = inCartstoreProducts[0].storeId
+						if (inCartStoreId == storeId) {
+							seen = true
+							seenItemShipType = data[i].shipType
+							break
 						}
 					}
+					if (seen) {
+						item.shipType = seenItemShipType
+						appFunction.add(item, this.props)
+					} else {
+						this.popupDialog.show()
+					}
 				} else {
-					this.shipPopupDialog.show()
+                    this.popupDialog.show()
 				}
 			} else {
-				this.shipPopupDialog.show()
+                this.popupDialog.show()
 			}
 		} catch (error) {
 		}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal,InteractionManager, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { Modal, InteractionManager, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail, CheckBox } from "native-base";
@@ -101,7 +101,6 @@ class FoodDetail extends Component {
 	}
 
 	renderDiscount(data) {
-		console.log('2133213fbfvvbf', data)
 		if (data) {
 			if (data.productMetaData[1]) {
 				var discount = ''
@@ -189,6 +188,12 @@ class FoodDetail extends Component {
 		)
 	}
 	renderInfo() {
+		var food = this.state.food
+		var categoryName = ''
+		if (food) {
+			var productCategories = food.productCategories
+			categoryName = productCategories[0].name
+		}
 		return (
 			<Card>
 				<View style={styles.cardContainer}>
@@ -197,7 +202,7 @@ class FoodDetail extends Component {
 					</Row>
 					{this.renderContentInfo('Store', 'Vinmart')}
 					{this.renderContentInfo('Khu vực', 'Hà Nội')}
-					{this.renderContentInfo('Danh Mục', 'Thực phẩm sạch')}
+					{this.renderContentInfo('Danh Mục', categoryName)}
 					{this.renderContentInfo('Số lượng tối thiểu', '500g')}
 					{this.renderContentInfo('Thời gian ship', '1 - 2 giờ')}
 				</View>
@@ -265,9 +270,9 @@ class FoodDetail extends Component {
 			<Grid>
 				<Col style={{ margin: 10 }}>
 					<Row>
-						<Image source={money} style={{ height: 30, width: 30 }} resizeMode='contain'>
+						<Image source={money} style={{ height: 20, width: 20 }} resizeMode='contain'>
 						</Image>
-						<Text style={styles.price} > {price}/<Text style={styles.perPrice}>{food.quantityStep} {food.unitType}</Text></Text>
+						<Text style={styles.price} > {price} đ/<Text style={styles.perPrice}>{food.quantityStep} {food.unitType}</Text></Text>
 					</Row>
 				</Col>
 				<Col style={{ margin: 10 }}>
@@ -290,29 +295,70 @@ class FoodDetail extends Component {
 		)
 	}
 
+	// async addtoCart(item) {
+	// 	let data = []
+	// 	this.setState({ disabled: true })
+	// 	setTimeout(() => { this.setState({ disabled: false }) }, 500)
+	// 	try {
+	// 		const value = await AsyncStorage.getItem(mConstants.CART);
+	// 		if (value !== null) {
+	// 			data = JSON.parse(value)
+	// 			if (data.length > 0) {
+	// 				for (let i = 0; i <= data.length; i++) {
+	// 					console.log(data[i].purveyorId)
+	// 					if (item.purveyorId == null) {
+	// 						item.purveyorId = 0
+	// 						item.shipType = data[i].shipType
+	// 						appFunction.add(item, this.props)
+	// 					} else {
+	// 						if (data[i].purveyorId == item.purveyorId) {
+	// 							item.shipType = data[i].shipType
+	// 							appFunction.add(item, this.props)
+	// 						} else {
+	// 							this.popupDialog.show()
+	// 						}
+	// 					}
+	// 				}
+	// 			} else {
+	// 				this.popupDialog.show()
+	// 			}
+	// 		} else {
+	// 			this.popupDialog.show()
+	// 		}
+	// 	} catch (error) {
+	// 	}
+	// }
 	async addtoCart(item) {
 		let data = []
+		var storeId = ''
+		let storeProducts = item.storeProducts
+		storeId = storeProducts[0].storeId
+		console.log('storeIdaaaa', storeId)
 		this.setState({ disabled: true })
-		setTimeout(() => { this.setState({ disabled: false }) }, 500)
+		setTimeout(() => { this.setState({ disabled: false }), 500 })
+		var seen = false
+		var seenItemShipType = ''
 		try {
 			const value = await AsyncStorage.getItem(mConstants.CART);
 			if (value !== null) {
 				data = JSON.parse(value)
 				if (data.length > 0) {
-					for (let i = 0; i <= data.length; i++) {
-						console.log(data[i].purveyorId)
-						if (item.purveyorId == null) {
-							item.purveyorId = 0
-							item.shipType = data[i].shipType
-							appFunction.add(item, this.props)
-						} else {
-							if (data[i].purveyorId == item.purveyorId) {
-								item.shipType = data[i].shipType
-								appFunction.add(item, this.props)
-							} else {
-								this.popupDialog.show()
-							}
+					for (let i in data) {
+						var food = data[i]
+						var inCartStoreId = ''
+						let inCartstoreProducts = food.storeProducts
+						inCartStoreId = inCartstoreProducts[0].storeId
+						if (inCartStoreId == storeId) {
+							seen = true
+							seenItemShipType = data[i].shipType
+							break
 						}
+					}
+					if (seen) {
+						item.shipType = seenItemShipType
+						appFunction.add(item, this.props)
+					} else {
+						this.popupDialog.show()
 					}
 				} else {
 					this.popupDialog.show()

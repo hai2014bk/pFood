@@ -10,6 +10,7 @@ import StarRating from 'react-native-star-rating';
 import commonColor from "../../../native-base-theme/variables/commonColor";
 import Utils from "../../utils/validate.js"
 import * as mConstants from '../../utils/Constants';
+import * as appFunction from "../../utils/function"
 import Spinner from 'react-native-loading-spinner-overlay';
 import { fetchHistoryDetail, updateRate } from "../../actions/fetchHistories.js"
 var background = require('../../../images/background.png')
@@ -42,7 +43,7 @@ class HistoryDetail extends Component {
             },
             addClick: true,
             data: [],
-            productData: [],
+            order: [],
             rate: 0
         };
 
@@ -57,11 +58,17 @@ class HistoryDetail extends Component {
 
     componentWillReceiveProps(props) {
         if (props.fetchHistoryDetail.success) {
-            var products = props.fetchHistoryDetail.data.model.orderedProducts
-            for (i in products) {
-                products[i].rate = 0
+            var order = props.fetchHistoryDetail.data.model
+            var stores = order.orderParcels
+            for (st in stores) {
+                var store = stores[st]
+                var parcelProducts = store.parcelProducts
+                for (it in parcelProducts) {
+                    parcelProducts[it].product.rate = 0
+                }
             }
-            this.setState({ order: props.fetchHistoryDetail.data.model, productData: products })
+            order.orderParcels = stores
+            this.setState({ order: order })
         }
     }
 
@@ -73,43 +80,59 @@ class HistoryDetail extends Component {
 
 
     renderDetail() {
-        var data = this.state.productData
-        console.log('data', data)
+        console.log('saodpq2wdas2211', this.state.data)
+        let order = this.state.order
+        var stores = []
+        if (order.orderParcels) {
+            stores = order.orderParcels
+        }
         return (
             <FlatList
-                data={data}
-                extraData={this.state}
+                data={stores}
                 keyExtractor={item => item.id}
-                renderItem={({ item }) => this.renderItem(item)}
-            />
+                extraData={this.state}
+                renderItem={({ item }) => this.renderStoreItems(item)}
+            ></FlatList>
         );
     }
-    renderItem(item) {
-        let product = item.product
-        let proPrice = product.price * item.quantity / product.quantityStep;
-        proPrice = this.priceHandle(proPrice)
-        let price = '10.000'
-        let quantity = item.quantity
+    renderItem(data) {
+        var item = data.product
+        let proPrice = item.price * data.quantity / item.quantityStep;
+        let price = this.priceHandle(proPrice.toString())
+        let quantity = appFunction.handleUnitType(item.unitType, data.quantity)
         return (
             <View style={styles.proDetail}>
                 <View style={styles.flexCol}>
                     <View style={styles.textProInput}>
                         <Left>
-                            <Text style={styles.productBlackText}>{product.name}</Text>
+                            <Text style={styles.productBlackText}>{item.name}</Text>
                         </Left>
                         <Right>
-                            <Text style={styles.productText}>{proPrice}đ</Text>
+                            <Text style={styles.productText}>{price}đ</Text>
                         </Right>
                     </View>
-                    <View style={styles.textProInput}>
-                        <Text style={styles.shopText}>Vinmart</Text>
-                        <Text style={styles.proNumber}>Số lượng: {quantity}</Text>
-                        <Text style={styles.proNumber}>Vận chuyển : {this.state.order.deliveryMethod}</Text>
-                    </View>
-                    <View style={{ width: '40%' }}>
-                        {this.renderStar(item)}
-                    </View>
+                    <Text style={styles.proNumber}>Số lượng: {quantity} </Text>
                 </View>
+                <View style={{ width: '40%' }}>
+                    {this.renderStar(item)}
+                </View>
+
+            </View>
+        )
+    }
+    renderStoreItems(item) {
+        console.log('đáq2edasdas11`1`', item)
+        return (
+            <View style={styles.wrapStoreItems}>
+                <Text style={styles.storeNameText}>Cửa hàng: {item.name} </Text>
+                <Text style={styles.shipTypeText}>Vận chuyển: <Text style={styles.shopText}> {item.deliveryMethod} </Text> </Text>
+                <FlatList
+                    style={{ marginTop: 10 }}
+                    data={item.parcelProducts}
+                    extraData={this.state}
+                    keyExtractor={item => item.id}
+                    renderItem={({ item }) => this.renderItem(item)}
+                ></FlatList>
             </View>
         )
     }
@@ -149,55 +172,90 @@ class HistoryDetail extends Component {
         )
     }
     onStarRatingPress(rating, item) {
-        console.log('ratea')
-        var products = this.state.productData
-        for (i in products) {
-            if (products[i].id == item.id) {
-                products[i].rate = rating
+        var order = this.state.order
+        var stores = order.orderParcels
+        for (st in stores) {
+            var store = stores[st]
+            var parcelProducts = store.parcelProducts
+            for (it in parcelProducts) {
+                if (parcelProducts[it].product.id == item.id) {
+                    console.log('213812kdfcads', parcelProducts[it].product.id, item.id)
+                    parcelProducts[it].product.rate = rating
+                }
             }
+            stores.parcelProducts = parcelProducts
         }
-        this.setState({ productData: products })
+        order.orderParcels = stores
+        this.setState({ order: order })
     }
     rate() {
         var error = false
         this.setState({ disabled: true })
-        var product = this.state.productData
+        var order = this.state.order
+        var stores = order.orderParcels
         this.setState({ visible: true })
-        for (i in product) {
-            if (product[i].rate > 0) {
-                var params = {
-                    "ProductId": product[i].productId,
-                    "RatePoint": product[i].rate
+        for (i in stores) {
+            var store = stores[i]
+            console.log('uhhj3242312', store)
+            if (store) {
+                var parcelProducts = store.parcelProducts
+                for (it in parcelProducts) {
+                    var item = store.parcelProducts[it]
+                    if (item.product.rate > 0) {
+                        var params = {
+                            "ProductId": item.product.id,
+                            "RatePoint": item.product.rate
+                        }
+                        console.log('2913usdcdasfa2312321', params)
+                        this.props.updateRate(params)
+                    } else {
+                        error = true
+                        setTimeout(() => { Alert.alert('Lỗi', 'Vui lòng đánh giá toàn bộ sản phẩm') }, 100)
+                        break
+                    }
                 }
-                this.props.updateRate(params)
-            } else {
-                error = true
-                setTimeout(() => { Alert.alert('Lỗi', 'Vui lòng đánh giá toàn bộ sản phẩm') }, 100)
-                break
             }
         }
         if (!error) {
             setTimeout(() => {
                 this.setState({ visible: false, disabled: false }),
-                this.showSuccessRate()
+                    this.showSuccessRate()
             }, 2000)
         } else {
             setTimeout(() => {
                 this.setState({ visible: false, disabled: false })
-        }, 1000)
+            }, 1000)
         }
     }
 
     showSuccessRate() {
         setTimeout(() => { Alert.alert('Thành công', 'Đánh giá sản phẩm thành công') }, 100)
+        this.setState({ disabled: true })
     }
 
     render() {
         var mdh = "F001"
         var data = this.state.order
+        var lastName = ''
+        var email = ''
+        var phoneNumber = ''
+        var deliveryAddress = ''
+        if (data.user) {
+            lastName = data.user.lastName
+            email = data.user.email
+        }
         var totalPrice = ''
-        if (data) {
+        if (data.totalPrice) {
             totalPrice = this.priceHandle(data.totalPrice);
+        }
+        var color = ''
+        var active = ''
+        if (this.state.disabled) {
+            color = '#cecece'
+            active = 1
+        } else {
+            active = 0.2
+            color = primary
         }
         const navigation = this.props.navigation;
         return (
@@ -235,12 +293,12 @@ class HistoryDetail extends Component {
                         <Icon name="ios-contact" style={styles.userIcon} />
                         <Text style={styles.infoDetail}>Thông tin người đặt</Text>
                     </View>
-                    <Input style={styles.textInput} disabled placeholder="Nguyen Van A" placeholderTextColor='#A4A4A4' />
+                    <Input style={styles.textInput} disabled placeholder={lastName} placeholderTextColor='#A4A4A4' />
                     <Input style={styles.textInput} disabled placeholder={data.deliveryAddress} placeholderTextColor='#A4A4A4' />
-                    <Input style={styles.textInput} disabled placeholder="0123456789" placeholderTextColor='#A4A4A4' />
-                    <Input style={styles.textInput} disabled placeholder="Nguyen.Van.Nam@gmail.com" placeholderTextColor='#A4A4A4' />
+                    <Input style={styles.textInput} disabled placeholder={data.contactNumber} placeholderTextColor='#A4A4A4' />
+                    <Input style={styles.textInput} disabled placeholder={email} placeholderTextColor='#A4A4A4' />
                     <View style={styles.footer}></View>
-                    <Button disabled={this.state.disabled} style={{ marginBottom: 20 }} block success onPress={() => { this.rate() }}>
+                    <Button disabled={this.state.disabled} style={{ marginBottom: 20, backgroundColor: color }} block onPress={() => { this.rate() }}>
                         <Text>Đánh giá</Text>
                     </Button>
                 </Content>

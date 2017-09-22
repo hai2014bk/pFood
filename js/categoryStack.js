@@ -26,7 +26,8 @@ const CategoryStack = StackNavigator({
 		initialRouteName: "Categories",
 		headerMode: "none",
 		 navigationOptions: {
-      		gesturesEnabled: false,
+          gesturesEnabled: false,
+          drawerLockMode: 'locked-closed'			          
         },
 	}
 );

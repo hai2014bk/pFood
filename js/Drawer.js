@@ -36,6 +36,10 @@ const Drawer = DrawerNavigator(
 	{
 		initialRouteName: "MainTabFood",
 		contentComponent: props => <SideBar {...props} />,
+		navigationOptions: {
+			gesturesEnabled: false,
+			drawerLockMode: 'locked-closed'
+		},
 	}
 );
 

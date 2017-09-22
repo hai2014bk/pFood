@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Platform, Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, FlatList, AsyncStorage } from "react-native";
+import { Platform, Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, FlatList, AsyncStorage } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
 import { connect } from "react-redux";
 import { NavigationActions } from "react-navigation";
@@ -33,6 +33,7 @@ class Billing extends Component {
 			visible: true,
 			totalPrice: 0,
 			data: [],
+			dataStores:[],
 			checked: false,
 			shipServices: {
 				vPost: true,
@@ -57,7 +58,8 @@ class Billing extends Component {
 	async componentDidMount() {
 		console.log('propsss2321', this.props);
 		totalPrice = 0
-		let data = []
+		var data = []
+		var dataStores = []
 		this.setState({ totalPrice })
 		try {
 			const value = await AsyncStorage.getItem(mConstants.USER_DETAIL);
@@ -75,7 +77,7 @@ class Billing extends Component {
 					userInfo: userInfo,
 					userAddress: userInfo.address,
 					userEmail: userInfo.email,
-					userName:  userInfo.firstName,
+					userName: userInfo.firstName,
 					userMobile: userInfo.mobile
 				})
 			}
@@ -86,7 +88,31 @@ class Billing extends Component {
 			if (value !== null) {
 				this.setState({ visible: false })
 				data = JSON.parse(value)
-				this.setState({ data })
+				for (it in data) {
+					var item = data[it]
+					var seen = false
+					for (st in dataStores) {
+						var store = dataStores[st]
+						if (item.storeProducts[0].storeId == store.id) {
+							store.foods.push(item)
+							seen = true
+							break
+						}
+					}
+					if (!seen) {
+						var newStore = {}
+						newStore.id = item.storeProducts[0].storeId
+						newStore.name = item.storeProducts[0].store.name
+						newStore.shipType = item.shipType
+						var foods = []
+						foods.push(item)
+						newStore.foods = foods
+						dataStores.push(newStore)
+					}
+				}
+				console.log('dataStoreaq', dataStores[0].shipType)
+
+				this.setState({ data,dataStores:dataStores })
 				for (i = 0; i < data.length; i++) {
 					totalPrice += data[i].price * data[i].quantity / data[i].quantityStep
 					this.setState({ totalPrice })
@@ -97,8 +123,7 @@ class Billing extends Component {
 		}
 	}
 
-	backToDrawer()
-	{
+	backToDrawer() {
 		console.log('939jklfdmfdgv21')
 		this.props.navigation.dispatch(resetAction)
 	}
@@ -110,15 +135,15 @@ class Billing extends Component {
 			this.setState({ addClick: true })
 			if (props.addOrder.success == true) {
 				if (Platform.OS == 'ios') {
-				Alert.alert('', 'Lưu hóa đơn thành công',
-				 [{ text: 'OK', onPress: () => this.backToDrawer()  }]);
+					Alert.alert('', 'Lưu hóa đơn thành công',
+						[{ text: 'OK', onPress: () => this.backToDrawer() }]);
 				} else {
 					Alert.alert('', 'Lưu hóa đơn thành công',
-					[{ text: 'OK', onPress: () => this.backToDrawer() }],
-					{ cancelable: false },					
-				);
+						[{ text: 'OK', onPress: () => this.backToDrawer() }],
+						{ cancelable: false },
+					);
 				}
-				 let keys = [mConstants.CART];
+				let keys = [mConstants.CART];
 				AsyncStorage.multiRemove(keys)
 			} else {
 				Alert.alert('', props.addOrder.message, [{ text: 'OK', onPress: () => console.log('error') }]);
@@ -135,37 +160,50 @@ class Billing extends Component {
 	checkValue() {
 		if (this.state.userEmail == '' || Utils.checkSpaceAll(this.state.userEmail)) {
 			this.userEmail._root.focus()
-			this.setState({userEmail:''})
+			this.setState({ userEmail: '' })
 		}
 		if (this.state.userMobile == '' || Utils.checkSpaceAll(this.state.userMobile)) {
 			this.userMobile._root.focus()
-			this.setState({userMobile:''})
-			
+			this.setState({ userMobile: '' })
+
 		}
 
 		if (this.state.userAddress == '' || Utils.checkSpaceAll(this.state.userAddress)) {
 			this.userAddress._root.focus()
-			this.setState({userAddress:''})
-			
+			this.setState({ userAddress: '' })
+
 		}
 		if (this.state.userName == '' || Utils.checkSpaceAll(this.state.userName)) {
 			this.userName._root.focus()
-			this.setState({userName:''})
-			
+			this.setState({ userName: '' })
+
 		}
 	}
 	addOrderClick() {
 		var param = {};
 		Keyboard.dismiss()
-		data = this.state.data
-		param.OrderedProducts = [];
-		for (i = 0; i < data.length; i++) {
-			var product = {
-				ProductId: data[i].id,
-				Quantity: data[i].quantity,
+		dataStores = this.state.dataStores
+		var orderParcels = []
+		for (st in dataStores){
+			let store = dataStores[st]
+			var parcel = {}
+			var parcelProducts = []
+			for (it in store.foods){
+				var food =  store.foods[it]
+				var item = {}
+				item.productId = food.id
+				item.quantity = food.quantity
+				parcelProducts.push(item)
 			}
-			param.OrderedProducts.push(product);
+			parcel = {
+				status : "Submitted",
+				deliveryMethod:store.shipType,
+				storeId:store.id,
+				parcelProducts:parcelProducts
+			}
+			orderParcels.push(parcel)
 		}
+		param.orderParcels = orderParcels
 		if (this.state.userAddress == '' ||
 			this.state.userName == '' ||
 			this.state.userEmail == '' ||
@@ -202,10 +240,9 @@ class Billing extends Component {
 				param.TotalPrice = this.state.totalPrice;
 				param.BillingAddress = this.state.userAddress;
 				param.DeliveryAddress = this.state.userAddress;
-				param.DeliveryMethod = this.state.shipKey;
-				param.PaymentMethod = this.state.payKey;
+				param.contactNumber = this.state.userMobile
 				this.props.add(param)
-				console.log(param)
+				console.log('oi222111',param)
 				this.setState({ visible: true, addClick: false })
 				this.setState({ visible: true })
 			}
@@ -238,9 +275,9 @@ class Billing extends Component {
 	renderDetail() {
 		return (
 			<FlatList
-				data={this.state.data}
+				data={this.state.dataStores}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => this.renderItem(item)}
+				renderItem={({ item }) => this.renderStoreItems(item)}
 			></FlatList>
 		);
 	}
@@ -259,12 +296,24 @@ class Billing extends Component {
 							<Text style={styles.productText}>{price}đ</Text>
 						</Right>
 					</View>
-					<View style={styles.textProInput}>
-						<Text style={styles.shopText}>Vinmart</Text>
 						<Text style={styles.proNumber}>Số lượng: {quantity} </Text>
-					</View>
-					<Text style={styles.shopText}>Vận chuyển : {item.shipType}</Text>
 				</View>
+			</View>
+		)
+	}
+
+	renderStoreItems(item) {
+		console.log('đáq2edasdas',item)
+		return (
+			<View style={styles.wrapStoreItems}>
+				<Text style={styles.storeNameText}>Cửa hàng: {item.name} </Text>
+				<Text style={styles.shipTypeText}>Vận chuyển: <Text style={styles.shopText}> {item.shipType} </Text> </Text>
+				<FlatList
+					style={{marginTop:10}}
+					data={item.foods}
+					keyExtractor={item => item.id}
+					renderItem={({ item }) => this.renderItem(item)}
+				></FlatList>
 			</View>
 		)
 	}

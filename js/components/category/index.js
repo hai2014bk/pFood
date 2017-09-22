@@ -40,7 +40,7 @@ class Category extends Component {
             field: {
                 Name: true,
                 Price: false,
-                RateCount: false
+                AvgRate: false
             },
             direction: {
                 Desc: true,
@@ -101,9 +101,6 @@ class Category extends Component {
                 if (!this.state.isSort) {
                     listFood = this.state.data.concat(props.fetchProduct.data.model)
                 } 
-                // else {
-                //     listFood = this.state.data.concat(props.fetchProduct.data.model)
-                // }
                 for (i in listFood) {
                     if (!listFood[i].quantity) {
                         listFood[i].quantity = listFood[i].quantityStep * listFood[i].minOrderedItems
@@ -243,7 +240,7 @@ class Category extends Component {
                 <View style={styles.sortFieldWrap}>
                     {this.pickerWrap('Tên sản phẩm', 'Name', 'field')}
                     {this.pickerWrap('Giá sản phẩm', 'Price', 'field')}
-                    {this.pickerWrap('Đánh giá', 'RateCount', 'field')}
+                    {this.pickerWrap('Đánh giá', 'AvgRate', 'field')}
                 </View>
                 <View style={styles.sortDirectionWrap}>
                     {this.pickerWrap('Tăng dần', 'Asc', 'direction')}
@@ -263,9 +260,9 @@ class Category extends Component {
             "OrderDirection": this.state.sortDirection,
             "CategoryId": params.parent.id
         }
-        this.setState({ isSort: true, fieldChose: this.state.sortBy, directionChose: this.state.sortDirection })
+        this.setState({data:[], index:1, isSort: true, fieldChose: this.state.sortBy, directionChose: this.state.sortDirection })
         this.props.fetch(parameter)
-    }
+    }       
     onDismissed() {
         let fieldType = Object.assign({}, this.state.field)
         let directionType = Object.assign({}, this.state.direction)
@@ -500,31 +497,46 @@ class Category extends Component {
     }
 
     async addtoCart(item) {
-        let data = []
-        this.setState({ disabled: true })
-        setTimeout(() => { this.setState({ disabled: false }), 500 })
-        try {
-            const value = await AsyncStorage.getItem(mConstants.CART);
-            if (value !== null) {
-                data = JSON.parse(value)
-                if (data.length > 0) {
-                    for (let i = 0; i <= data.length; i++) {
-                        if (data[i].purveyorId == item.purveyorId) {
-                            item.shipType = data[i].shipType
-                            appFunction.add(item, this.props)
-                        } else {
-                            this.shipPopupDialog.show()
-                        }
-                    }
-                } else {
+		let data = []
+		var storeId = ''
+		let storeProducts = item.storeProducts
+		storeId = storeProducts[0].storeId
+		console.log('storeIdaaaa', storeId)
+		this.setState({ disabled: true })
+		setTimeout(() => { this.setState({ disabled: false }), 500 })
+		var seen = false
+		var seenItemShipType = ''
+		try {
+			const value = await AsyncStorage.getItem(mConstants.CART);
+			if (value !== null) {
+				data = JSON.parse(value)
+				if (data.length > 0) {
+					for (let i in data) {
+						var food = data[i]
+						var inCartStoreId = ''
+						let inCartstoreProducts = food.storeProducts
+						inCartStoreId = inCartstoreProducts[0].storeId
+						if (inCartStoreId == storeId) {
+							seen = true
+							seenItemShipType = data[i].shipType
+							break
+						}
+					}
+					if (seen) {
+						item.shipType = seenItemShipType
+						appFunction.add(item, this.props)
+					} else {
+						this.shipPopupDialog.show()
+					}
+				} else {
                     this.shipPopupDialog.show()
-                }
-            } else {
+				}
+			} else {
                 this.shipPopupDialog.show()
-            }
-        } catch (error) {
-        }
-    }
+			}
+		} catch (error) {
+		}
+	}
 
     addCart() {
         let item = this.state.item
@@ -545,6 +557,7 @@ class Category extends Component {
                 <Spinner visible={this.state.isLoading} />
                 <View style={{ flex: 1 }}>
                     <FlatList style={{ marginTop: 5 }}
+                        ref={(list) => {this.listView = list}}
                         onEndReached={(distanceFromEnd) => this.loadMore()}
                         onEndReachedThreshold={0.5}
                         data={this.state.data}
