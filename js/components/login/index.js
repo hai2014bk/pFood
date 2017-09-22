@@ -69,17 +69,18 @@ class Login extends Component {
       noneSpaceEmail = this.state.email.replace(/^\s+/, "").replace(/\s+$/, "").replace(/\s+/g, " ");
       this.setState({ email: noneSpaceEmail });
     }
-    if (this.state.click === false) {
-      setTimeout(() => {
-        this.loginClick();
-      }, 200)
 
-    } Keyboard.dismiss()
+    this.setState({ disabled: true })
+    setTimeout(() => {
+      this.loginClick();
+    }, 200)
+
+    Keyboard.dismiss()
   }
 
   loginClick() {
 
-    this.setState({ click: true })
+
     if (this.state.email && this.state.password) {
       if ((!this.checkSpaceAll(this.state.email))) {
         if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
@@ -87,7 +88,7 @@ class Login extends Component {
           setTimeout(() => {
             Alert.alert('', 'Địa chỉ email không hợp lệ',
               [
-                { text: 'OK', onPress: () => {this.emailInput._root.focus(), this.setState({ disabled: false })} },
+                { text: 'OK', onPress: () => { this.emailInput._root.focus(), this.setState({ disabled: false }) } },
               ],
               { cancelable: false }
             )
@@ -108,7 +109,7 @@ class Login extends Component {
             'Các trường không được phép trống'
             ,
             [
-              { text: 'OK', onPress: () => this.checkSpace() },
+              { text: 'OK', onPress: () => { this.checkSpace(), this.setState({ disabled: false }) } },
             ],
             { cancelable: false }
           )
@@ -120,19 +121,18 @@ class Login extends Component {
           '',
           'Các trường không được phép trống',
           [
-            { text: 'OK', onPress: () => this.checkValue() },
+            { text: 'OK', onPress: () => { this.checkValue(), this.setState({ disabled: false }) } },
           ],
           { cancelable: false }
         )
       }, 200)
     }
-    this.setState({ click: false })
   }
 
 
   componentWillReceiveProps(props) {
     console.log('props', props)
-    this.setState({ isLoading: false, click: false })
+    this.setState({ isLoading: false, disabled: false })
     if (props.login.success) {
       this.props.navigation.navigate('Drawer')
     }
@@ -221,6 +221,7 @@ class Login extends Component {
               />
               <TouchableOpacity
                 rounded
+                disabled={this.state.disabled}
                 style={styles.loginBtn}
                 onPress={() => this.checkClick()}
               >
@@ -291,8 +292,8 @@ class Login extends Component {
                   disabled={this.state.disabled}
                   onPress={() => {
                     this.setState({ disabled: true }),
-                    navigation.navigate("SignUp"),
-                    this.setState({ email: '' })
+                      navigation.navigate("SignUp"),
+                      this.setState({ email: '' })
                     this.setState({ password: "" })
                     Keyboard.dismiss()
                     InteractionManager.runAfterInteractions(() => {
