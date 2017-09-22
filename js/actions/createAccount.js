@@ -14,14 +14,23 @@ export function createAccountFailed(error) {
 	};
 }
 
+export function duplicateEmail(){
+	return{
+		type: "DUPLICATE_EMAIL",
+	}
+}
+
 export function createAccount(params) {
 	console.log('params action',params)
 	let url = mConstants.BASE_URL + 'user/register'
 	return dispatch => {
 		APIRequest.APIRequestPOST(url, params, false,
 			response => {
-				console.log('respone',response)
-				dispatch(createAccountSuccess(response));
+				if (response.errorMessage== null){
+					dispatch(createAccountSuccess(response));
+				}else{
+					dispatch(duplicateEmail());
+				}
 			},
 			error => {
 				console.log('error',error)
