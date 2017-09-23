@@ -150,27 +150,11 @@ class SearchFood extends Component {
 		let boxType = type === 'field' ? this.state.field : this.state.direction;
 		let checked = boxType[key] ? true : false;
 		return (
-			<TouchableOpacity onPress={() => this.updateStatus(key, type)} style={styles.pickerWrap}>
+			<TouchableOpacity onPress={() => this.updateShipStatus(key, type)} style={styles.pickerWrap}>
 				<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateStatus(key, type)} />
 				<Text style={styles.checkboxText}>{text}</Text>
 			</TouchableOpacity>
 		)
-	}
-	updateStatus(key, type) {
-		let boxType = type === 'field' ? Object.assign({}, this.state.field) : Object.assign({}, this.state.direction);
-		for (let k in boxType) {
-			if (boxType.hasOwnProperty(k)) {
-				boxType[k] = false;
-				if (k === key) {
-					boxType[k] = true;
-				}
-			}
-		}
-		if (type === 'field') {
-			this.setState({ field: boxType, sortBy: key });
-		} else {
-			this.setState({ direction: boxType, sortDirection: key });
-		}
 	}
 
 	plus(rowID) {
@@ -224,71 +208,11 @@ class SearchFood extends Component {
 			this.setState({ disabled: false })
 		})
 	}
-	renderSort() {
-		return (
-			<View style={styles.sortWrap}>
-				<View style={styles.sortFieldWrap}>
-					{this.pickerWrap('Mã sản phẩm', 'Id', 'field')}
-					{this.pickerWrap('Tên sản phẩm', 'Name', 'field')}
-					{this.pickerWrap('Giá sản phẩm', 'Price', 'field')}
-					{this.pickerWrap('Đánh giá', 'RateCount', 'field')}
-				</View>
-				<View style={styles.sortDirectionWrap}>
-					{this.pickerWrap('Tăng dần', 'Asc', 'direction')}
-					{this.pickerWrap('Giảm dần', 'Desc', 'direction')}
-				</View>
-			</View>
-		)
-	}
-	sortButton() {
-		this.popupDialog.dismiss()
-		this.setState({ loadedAll: false })
-		const { params } = this.props.navigation.state
-		var parameter = {
-			"PageSize": 10,
-			"PageIndex": this.state.index,
-			"OrderBy": this.state.sortBy,
-			"OrderDirection": this.state.sortDirection,
-			"CategoryId": params.parent.id
-		}
-		this.setState({ isSort: true })
-		this.props.fetch(parameter)
-	}
 	onDismissed() {
 
 	}
 
-	renderSortPopup() {
-		var disable = false
-		if (this.state.sortBy == '' || this.state.sortDirection == '') {
-			disable = true
-		}
-		return (
-			<PopupDialog
-				dialogTitle={<DialogTitle title="Sắp xếp" />}
-				ref={(popupDialog) => { this.popupDialog = popupDialog; }}
-				onDismissed={() => this.onDismissed()}
-				dialogStyle={{ marginTop: -200 }}
-				width={300}
-				height={300}
-				actions={[
-					<DialogButton
-						text="OK"
-						disabled={disable}
-						onPress={() => {
-							this.sortButton()
-						}}
-						key="button-1"
-					/>,
-				]}
-			>
-				<View style={{ flex: 1 }}>
-					{this.renderSort()}
-				</View>
-
-			</PopupDialog>
-		)
-	}
+	
 	renderDiscount(data) {
 		console.log('9021321321321xzca',data)
 		if (data.name !='loadmore') {
@@ -436,10 +360,7 @@ class SearchFood extends Component {
 			</TouchableOpacity>
 		)
 	}
-	openSort() {
-		this.popupDialog.show();
-	}
-
+	
 	updateShipStatus(key) {
 		let boxType = Object.assign({}, this.state.shipTypes)
 		for (let k in boxType) {
@@ -456,6 +377,7 @@ class SearchFood extends Component {
 	shipPickerWrap(text, key) {
 		let shipTypes = this.state.shipTypes
 		let checked = shipTypes[key] ? true : false;
+		console.log('29sjakdadsdfa',checked, key)
 		return (
 			<TouchableOpacity style={styles.pickerWrap} onPress={() => this.updateShipStatus(key)}>
 				<CheckBox style={styles.checkBox} color='#43CA9C' checked={checked} onPress={() => this.updateShipStatus(key)} />
@@ -490,7 +412,7 @@ class SearchFood extends Component {
 				]}
 			>
 				<View style={styles.pickerContainer}>
-					{this.shipPickerWrap('ShipStore', 'Ship của cửa hàng')}
+					{this.shipPickerWrap('Ship của cửa hàng', 'ShipStore')}
 				</View>
 			</PopupDialog>
 		)
@@ -606,7 +528,6 @@ class SearchFood extends Component {
 					)
 					}
 				/>
-				{this.renderSortPopup()}
 				{this.renderShipPopup()}
 			</View>
 		);

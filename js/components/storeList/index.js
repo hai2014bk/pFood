@@ -143,7 +143,6 @@ class StoreList extends Component {
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
                     </View>
-                    <Spinner visible={this.state.isLoading} />
                     <View style={styles.bodyWrap}>
                         <View style={styles.titleWrap}>
                             <Image source={money} style={styles.moneyIcon} resizeMode='contain' />
