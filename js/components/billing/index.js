@@ -176,8 +176,8 @@ class Billing extends Component {
 		if (this.state.userName == '' || Utils.checkSpaceAll(this.state.userName)) {
 			this.userName._root.focus()
 			this.setState({ userName: '' })
-
 		}
+		this.setState({disabled:false})
 	}
 	addOrderClick() {
 		var param = {};
@@ -218,6 +218,7 @@ class Billing extends Component {
 					'Các trường không được phép trống',
 					[
 						{ text: 'OK', onPress: () => this.checkValue() },
+						{ onDismiss: () => {this.dismissPop()} },																			
 					],
 					{ cancelable: false }
 				)
@@ -230,6 +231,7 @@ class Billing extends Component {
 						'Địa chỉ email không hợp lệ',
 						[
 							{ text: 'OK', onPress: () => this.userEmail._root.focus() },
+							{ onDismiss: () => {this.dismissPop()} },													
 						],
 						{ cancelable: false }
 					)
@@ -247,6 +249,9 @@ class Billing extends Component {
 				this.setState({ visible: true })
 			}
 		}
+	}
+	dismissPop(){
+		this.setState({disabled:false})
 	}
 
 	updateStatus(key, type) {
@@ -405,7 +410,7 @@ class Billing extends Component {
 							onChangeText={(text) => { this.setState({ userEmail: text }) }}
 							value={this.state.userEmail}
 							placeholder="Email" placeholderTextColor='#A4A4A4' />
-						<TouchableOpacity style={styles.checkoutWrap} onPress={() => { this.addOrderClick() }}>
+						<TouchableOpacity disabled={this.state.disabled} style={styles.checkoutWrap} onPress={() => {this.setState({disabled:true}), this.addOrderClick() }}>
 							<Text style={styles.checkout}> Thanh toán </Text>
 						</TouchableOpacity>
 					</Content>

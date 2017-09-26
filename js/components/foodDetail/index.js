@@ -195,7 +195,7 @@ class FoodDetail extends Component {
 			categoryName = productCategories[0].name
 			shopName = food.storeProducts[0].store.name
 			hqAdress = food.storeProducts[0].store.hqAddress
-			minOrder = appFunction.handleUnitType(food.unitType, food.minOrderedItems * food.quantityStep)
+			minOrder = appFunction.handleUnitType(food.unitType, food.minOrderedItems)
 		}
 		return (
 			<Card>
@@ -297,39 +297,7 @@ class FoodDetail extends Component {
 		)
 	}
 
-	// async addtoCart(item) {
-	// 	let data = []
-	// 	this.setState({ disabled: true })
-	// 	setTimeout(() => { this.setState({ disabled: false }) }, 500)
-	// 	try {
-	// 		const value = await AsyncStorage.getItem(mConstants.CART);
-	// 		if (value !== null) {
-	// 			data = JSON.parse(value)
-	// 			if (data.length > 0) {
-	// 				for (let i = 0; i <= data.length; i++) {
-	// 					console.log(data[i].purveyorId)
-	// 					if (item.purveyorId == null) {
-	// 						item.purveyorId = 0
-	// 						item.shipType = data[i].shipType
-	// 						appFunction.add(item, this.props)
-	// 					} else {
-	// 						if (data[i].purveyorId == item.purveyorId) {
-	// 							item.shipType = data[i].shipType
-	// 							appFunction.add(item, this.props)
-	// 						} else {
-	// 							this.popupDialog.show()
-	// 						}
-	// 					}
-	// 				}
-	// 			} else {
-	// 				this.popupDialog.show()
-	// 			}
-	// 		} else {
-	// 			this.popupDialog.show()
-	// 		}
-	// 	} catch (error) {
-	// 	}
-	// }
+	
 	async addtoCart(item) {
 		let data = []
 		var storeId = ''

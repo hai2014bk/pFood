@@ -60,7 +60,7 @@ export default {
     },
 	textInput: {
 		width: '100%',
-		height: 45,
+		minHeight:45,
 		backgroundColor: 'white',
 		borderWidth: 1,
 		borderColor: '#F6F6F6',
@@ -68,6 +68,7 @@ export default {
 		borderRadius: 2,
 		marginBottom: 5,
 		marginTop: 5,
+		color:'gray'
 	},
 	infoDetail: {
 		fontWeight: '500',

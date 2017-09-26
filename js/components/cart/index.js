@@ -73,16 +73,12 @@ class Cart extends Component {
         this.totalPrice(newArray)
     }
 
-    minusCheck(data,rowID){
-        this.setState({ disableMinus: true })
-        setTimeout(()=>{
-            this.minus(data,rowID)
-        },500)        
-    }
+    
 
     async minus(data, rowID) {
-        console.log('data', data)
             if (data.item.quantity == data.item.minOrderedItems) {
+                console.log('ád2qxas',data.item.quantity, data.item.minOrderedItems)
+                this.setState({disableMinus:true})
                 Alert.alert(
                     '',
                     'Bạn có muốn xóa sản phẩm này khỏi giỏ hàng?',
@@ -160,6 +156,14 @@ class Cart extends Component {
             disableMinus = true
             active = 1
         }
+        var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'        
+        for (i in item.productMetaData) {
+			if (item.productMetaData[i].name == 'ImageUrl') {
+				if (item.productMetaData[i]) {
+					imageUrl = item.productMetaData[i].value
+				}
+			}
+		}
         const rightButtons = [
             <TouchableOpacity style={styles.trashWrap} onPress={() => this.remove(data.index)}>
             <Icon active name="trash" style={styles.iconTrash} />
@@ -174,13 +178,13 @@ class Cart extends Component {
             >
             <View style={styles.card}>
                         <View style={styles.imageContainer}>
-                            <Image source={{ uri: data.item.productMetaData[0].value }} style={styles.image} />
+                            <Image source={{ uri: imageUrl }} style={styles.image} />
                         </View>
                         <View style={styles.infoWrap}>
                             <Text style={styles.foodName}>{item.name}</Text>
                             <Text style={styles.price} > {price}đ/ <Text style={styles.perPrice}>{item.quantityStep} {item.unitType}</Text></Text>
                             <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                                <TouchableOpacity disabled={disableMinus} onPress={() => this.minusCheck(data, data.index)} style={styles.buttonMinus}>
+                                <TouchableOpacity disabled={disableMinus} onPress={() => this.minus(data, data.index)} style={styles.buttonMinus}>
                                     <Icon style={styles.icon} name="md-remove" />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.plus(data.index)} style={styles.buttonAdd}>
@@ -200,6 +204,7 @@ class Cart extends Component {
         for (i = 0; i < newArray.length; i++) {
             quantity = newArray[i].quantity / newArray[i].quantityStep
             totalPrice += newArray[i].price * quantity
+            totalPrice = Math.round(totalPrice)            
         }
         this.setState({ totalPrice })
     }

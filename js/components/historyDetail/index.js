@@ -227,6 +227,7 @@ class HistoryDetail extends Component {
             for (it in parcelProducts) {
                 if (parcelProducts[it].product.id == item.id) {
                     parcelProducts[it].product.rated = false
+                    parcelProducts[it].product.rate = 0
                 }
             }
             stores.parcelProducts = parcelProducts
@@ -310,14 +311,11 @@ class HistoryDetail extends Component {
                         <Icon name="ios-contact" style={styles.userIcon} />
                         <Text style={styles.infoDetail}>Thông tin người đặt</Text>
                     </View>
-                    <Input style={styles.textInput} disabled placeholder={lastName} placeholderTextColor='#A4A4A4' />
-                    <Input style={styles.textInput} disabled placeholder={data.deliveryAddress} placeholderTextColor='#A4A4A4' />
-                    <Input style={styles.textInput} disabled placeholder={data.contactNumber} placeholderTextColor='#A4A4A4' />
-                    <Input style={styles.textInput} disabled placeholder={email} placeholderTextColor='#A4A4A4' />
+                    <Input style={styles.textInput} disabled multiline = {true} value={lastName} placeholderTextColor='#A4A4A4' />
+                    <Input style={styles.textInput} disabled multiline = {true} value={data.deliveryAddress} placeholderTextColor='#A4A4A4' />
+                    <Input style={styles.textInput} disabled multiline = {true} value={data.contactNumber} placeholderTextColor='#A4A4A4' />
+                    <Input style={styles.textInput} disabled multiline = {true} value={email} placeholderTextColor='#A4A4A4' />
                     <View style={styles.footer}></View>
-                    <Button disabled={this.state.disabled} style={{ marginBottom: 20, backgroundColor: color }} block onPress={() => { this.rate() }}>
-                        <Text>Đánh giá</Text>
-                    </Button>
                 </Content>
 
             </Container>

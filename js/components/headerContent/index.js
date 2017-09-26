@@ -144,6 +144,7 @@ class HeaderContent extends Component {
 							onSubmitEditing={this.props.search}
               autoCorrect={false}
               returnKeyType='search'
+              onFocus={()=>{this.changeSearchText('')}}
 							onChangeText={(text) => { this.changeSearchText(text) }}
 							placeholder="Tìm kiếm" />
 						<TouchableOpacity onPress={this.props.deleteSearch}>

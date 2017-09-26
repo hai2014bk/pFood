@@ -380,7 +380,11 @@ class Category extends Component {
         }
         let id = item.id
         let price = this.priceHandle(item.price)
-        var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'		
+        var imageUrl = 'http://runawayapricot.com/wp-content/uploads/2014/09/placeholder.jpg'
+        var shopName = ''
+        if(item.storeProducts[0]){
+            shopName = item.storeProducts[0].store.name
+        }
 		for (i in item.productMetaData) {
 			if (item.productMetaData[i].name == 'ImageUrl') {
 				if (item.productMetaData[i]) {
@@ -406,7 +410,7 @@ class Category extends Component {
                                     <Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
                                     <Row style={{ alignItems: 'flex-end' }} >
                                         <Icon name='ios-pin' style={styles.locationIcon} />
-                                        <Text style={styles.shopName}>{item.storeProducts[0].store.name}</Text>
+                                        <Text style={styles.shopName}>{shopName}</Text>
                                     </Row>
                                     <View style={{ width: 50 }}>
                                         {this.renderStar(item.avgRate)}
