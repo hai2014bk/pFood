@@ -168,7 +168,8 @@ export default {
         color: primary,
         fontSize: 17,
         marginLeft: 8,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginRight: 0,
     },
     hotlineWrap: {
         flexDirection: 'row'

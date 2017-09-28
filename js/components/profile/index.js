@@ -99,7 +99,8 @@ class Profile extends Component {
 			<Container style={styles.containerWrap}>
 				<Spinner visible={this.state.isLoading} />
 				<HeaderContent title="Thông tin cá nhân"
-					leftIcon={'menu'} leftButton={() => navigation.navigate("DrawerOpen")}
+					keyboardShouldPersistTaps='handle'
+					leftIcon={'menu'} leftButton={() => {navigation.navigate("DrawerOpen"), Keyboard.dismiss()}}
 				/>
 				<Content keyboardShouldPersistTaps='handled' style={styles.content} contentContainerStyle={{ flexGrow: 1 }}>
 					<View style={styles.headerTitle}>
@@ -107,10 +108,7 @@ class Profile extends Component {
 						<Text style={styles.infoDetail}>Thông tin chi tiết</Text>
 					</View>
 					<Form>
-						<View style={{ flexDirection: 'row' }}>
-							<Input style={styles.textInput} placeholder="Họ" placeholderTextColor='#C6C6C6' value={this.state.firstName} onChangeText={text => this.setState({ firstName: text })} />
-							<Input style={styles.textInput} placeholder="Tên" placeholderTextColor='#C6C6C6' value={this.state.lastName} onChangeText={text => this.setState({ lastName: text })} />
-						</View>
+						<Input style={styles.textInput} placeholder="Họ và tên" placeholderTextColor='#C6C6C6' value={this.state.firstName} onChangeText={text => this.setState({ firstName: text })} />
 						<Input style={styles.textInput} placeholder="Địa chỉ hiện tại" placeholderTextColor='#C6C6C6' value={this.state.address} onChangeText={text => this.setState({ address: text })} />
 						<Input keyboardType='phone-pad' style={styles.textInput} placeholder="Số điện thoại" placeholderTextColor='#C6C6C6' value={this.state.phone} onChangeText={text => this.setState({ phone: text })} />
 						<Input style={styles.textInput} placeholder="Email" placeholderTextColor='#C6C6C6' value={this.state.email} onChangeText={text => this.setState({ email: text })} />
