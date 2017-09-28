@@ -76,8 +76,10 @@ class Cart extends Component {
     
 
     async minus(data, rowID) {
+       if (data.item.quantity == data.item.quantityStep){
+            data.item.quantity == data.item.minOrderedItems
+       }
             if (data.item.quantity == data.item.minOrderedItems) {
-                console.log('ád2qxas',data.item.quantity, data.item.minOrderedItems)
                 this.setState({disableMinus:true})
                 Alert.alert(
                     '',

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, Image, View, TouchableOpacity } from "react-native";
+import {BackHandler, Text, Image, View, TouchableOpacity } from "react-native";
 
 import { Icon, Button, Footer, FooterTab, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
@@ -27,6 +27,17 @@ class MainTabStore extends Component {
 	}
 	selected(tab) {
 		this.setState({ selectedTab: tab })
+	}
+	componentDidMount(){
+		console.log(';2dwsadas')
+		BackHandler.addEventListener("hardwareBackPress", this.onBackPress);		
+	}
+	componentWillUnmount() {
+		BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+	  }
+	onBackPress(){
+		BackHandler.exitApp()
+		 return true;
 	}
 	render() {
 		const navigation = this.props.navigation;

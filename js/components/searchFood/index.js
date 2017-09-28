@@ -310,6 +310,10 @@ class SearchFood extends Component {
 		if (item.price) {
 			price = this.priceHandle(item.price)
 		}
+		var shopName = ''
+		if(item.storeProducts[0]){
+            shopName = item.storeProducts[0].store.name
+        }
 
 		return (
 			<TouchableOpacity disabled={this.state.disabled} onPress={() => { this.setState({ disabled: true }), this.openDetail(item) }}>
@@ -329,7 +333,7 @@ class SearchFood extends Component {
 									<Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
 									<Row style={{ alignItems: 'flex-end' }} >
 										<Icon name='ios-pin' style={styles.locationIcon} />
-                                        <Text style={styles.shopName}>{item.storeProducts[0].store.name}</Text>
+                                        <Text style={styles.shopName}>{shopName}</Text>
 										</Row>
 									<View style={{ width: 50 }}>
 										{this.renderStar(item.avgRate)}

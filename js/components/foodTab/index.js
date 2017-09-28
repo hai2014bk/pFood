@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, Image, View, TouchableOpacity } from "react-native";
+import { BackHandler,Text, Image, View, TouchableOpacity } from "react-native";
 
 import { Icon, Button, Footer, FooterTab, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
 import { Grid, Col } from "react-native-easy-grid";
@@ -27,6 +27,7 @@ class FoodTab extends Component {
 	disableSwipe(){
 		this.setState({disable:true})
 	}
+	
 	render() {
 		const navigation = this.props.navigation;
 		const { params } = this.props.navigation.state

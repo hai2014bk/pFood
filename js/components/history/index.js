@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {InteractionManager,ActivityIndicator, FlatList,AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {BackHandler, InteractionManager,ActivityIndicator, FlatList,AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -29,8 +29,16 @@ class History extends Component {
             disabled:false
         };
     }
+	componentWillUnmount() {
+		BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+	  }
+	onBackPress(){
+		BackHandler.exitApp()
+		 return true;
+	}
     async componentDidMount() {
-		let data = []
+        let data = []
+        BackHandler.addEventListener("hardwareBackPress", this.onBackPress);		        
 		console.log('94kjngjkdf89dl')
 		try {
 			const value = await AsyncStorage.getItem(mConstants.USER_DETAIL);

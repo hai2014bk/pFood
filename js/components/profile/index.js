@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, AsyncStorage } from "react-native";
+import { BackHandler, Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, AsyncStorage } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
 import * as mConstants from '../../utils/Constants'
 import { connect } from "react-redux";
@@ -41,7 +41,16 @@ class Profile extends Component {
 
 	}
 
+	componentWillUnmount() {
+		BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+	  }
+	onBackPress(){
+		BackHandler.exitApp()
+		 return true;
+	}
+
 	async componentDidMount() {
+		BackHandler.addEventListener("hardwareBackPress", this.onBackPress);		        		
 		let data = []
 		const value = await AsyncStorage.getItem(mConstants.USER_DETAIL);
 		if (value !== null) {

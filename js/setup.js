@@ -4,7 +4,8 @@ import { Provider } from "react-redux";
 import { StyleProvider, Root  } from "native-base";
 import * as mConstants from './utils/Constants'
 import {
-	AsyncStorage
+	AsyncStorage,
+	BackHandler
   } from "react-native";
 import App from "./pFood";
 import configureStore from "./configureStore";
