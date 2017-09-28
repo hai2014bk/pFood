@@ -59,16 +59,16 @@ export default {
         fontSize: 16,
     },
 	textInput: {
-		width: '100%',
-		minHeight:45,
+		justifyContent: 'center',
+		minHeight: 45,
 		backgroundColor: 'white',
 		borderWidth: 1,
 		borderColor: '#F6F6F6',
 		paddingLeft: 20,
 		borderRadius: 2,
+		color:'gray',
 		marginBottom: 5,
-		marginTop: 5,
-		color:'gray'
+		marginTop:5,
 	},
 	infoDetail: {
 		fontWeight: '500',

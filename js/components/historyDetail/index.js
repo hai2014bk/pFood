@@ -205,9 +205,9 @@ class HistoryDetail extends Component {
                         '',
                         'Bạn có muốn đánh giá sản phẩm này ?',
                         [
-                            { text: 'Chắc chắn', onPress: () => this.rate(item,rating) },
+                            { text: 'Chắc chắn', onPress: () => this.rate(item, rating) },
                             { text: 'Không', onPress: () => this.dismissRate(item), style: 'cancel' },
-                            { onDismiss: () => {this.dismissRate(item)} }
+                            { onDismiss: () => { this.dismissRate(item) } }
                         ],
                         { cancelable: false }
                     )
@@ -218,7 +218,7 @@ class HistoryDetail extends Component {
         order.orderParcels = stores
         this.setState({ order: order })
     }
-    dismissRate(item){
+    dismissRate(item) {
         var order = this.state.order
         var stores = order.orderParcels
         for (st in stores) {
@@ -231,9 +231,9 @@ class HistoryDetail extends Component {
                 }
             }
             stores.parcelProducts = parcelProducts
-        }  
+        }
         order.orderParcels = stores
-        this.setState({ order: order })  
+        this.setState({ order: order })
     }
     rate(item, rating) {
         var params = {
@@ -311,10 +311,10 @@ class HistoryDetail extends Component {
                         <Icon name="ios-contact" style={styles.userIcon} />
                         <Text style={styles.infoDetail}>Thông tin người đặt</Text>
                     </View>
-                    <Input style={styles.textInput} disabled multiline = {true} value={lastName} placeholderTextColor='#A4A4A4' />
-                    <Input style={styles.textInput} disabled multiline = {true} value={data.deliveryAddress} placeholderTextColor='#A4A4A4' />
-                    <Input style={styles.textInput} disabled multiline = {true} value={data.contactNumber} placeholderTextColor='#A4A4A4' />
-                    <Input style={styles.textInput} disabled multiline = {true} value={email} placeholderTextColor='#A4A4A4' />
+                    <Input style={styles.textInput} disabled multiline={true} value={lastName} placeholderTextColor='#A4A4A4' />
+                    <View style={styles.textInput}><Text style={{ color: 'grey', marginTop: 10, marginBottom: 10}}>{data.deliveryAddress}</Text></View>
+                    <Input style={styles.textInput} disabled multiline={true} value={data.contactNumber} placeholderTextColor='#A4A4A4' />
+                    <Input style={styles.textInput} disabled multiline={true} value={email} placeholderTextColor='#A4A4A4' />
                     <View style={styles.footer}></View>
                 </Content>
 
