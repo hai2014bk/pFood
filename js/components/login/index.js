@@ -16,6 +16,7 @@ import {
   Right,
 } from "native-base";
 import Expo from "expo"
+import { Permissions, Notifications } from 'expo';
 import { Grid, Col } from "react-native-easy-grid";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from "react-redux";
@@ -37,8 +38,15 @@ class Login extends Component {
       isLoading: false,
       click: false,
       disabled: false,
+      deviceToken:''
     };
   }
+
+  async componentDidMount() {
+    let token = await Notifications.getExpoPushTokenAsync();
+    this.setState({deviceToken:token})
+  }
+
   checkSpace() {
     this.setState({ click: false })
     noneSpaceEmail = this.state.email.replace(/^\s+/, "").replace(/\s+$/, "").replace(/\s+/g, " ");
@@ -98,6 +106,7 @@ class Login extends Component {
           params.email = this.state.email
           params.password = this.state.password
           params.loginType = 'default'
+          params.deviceId = this.state.deviceToken
           this.props.loginAction(params)
           this.setState({ isLoading: true })
         }
@@ -152,6 +161,8 @@ class Login extends Component {
       let params = {}
       params.accessToken = token
       params.loginType = 'Facebook'
+      params.deviceId = this.state.deviceToken    
+      params.role = 'Consumer'              
       this.props.loginAction(params)
     }
   }
@@ -169,6 +180,8 @@ class Login extends Component {
         let params = {}
         params.accessToken = result.accessToken
         params.loginType = 'Google'
+        params.deviceId = this.state.deviceToken
+        params.role = 'Consumer'        
         console.log('params', params)
         this.props.loginAction(params)
       } else {
