@@ -133,6 +133,7 @@ class SearchFood extends Component {
 	}
 
 	loadMore() {
+		console.log('kasdlasdasdasasass,')		
 		if (!this.state.loadedAll && this.state.shouldLoadMore) {
 			var index = this.state.index + 1
 			const { params } = this.props.navigation.state
@@ -144,6 +145,7 @@ class SearchFood extends Component {
 			}
 			this.setState({ isSearch: false, index: this.state.index + 1 })
 			this.props.fetch(parameter)
+			console.log('kasdlasdasdas,',parameter)			
 		}
 	}
 	pickerWrap(text, key, type) {
@@ -259,7 +261,7 @@ class SearchFood extends Component {
 	}
 
 	renderItems(data) {
-		if (data.index == this.state.data.length - 1 && this.state.data.length > 10 && !this.state.loadedAll) {
+		if (data.item.name == 'loadmore') {
 			return (
 				<View style={styles.loadMoreCell}>
 					<ActivityIndicator />
@@ -311,7 +313,7 @@ class SearchFood extends Component {
 			price = this.priceHandle(item.price)
 		}
 		var shopName = ''
-		if(item.storeProducts[0]){
+		if(item.storeProducts){
             shopName = item.storeProducts[0].store.name
         }
 
@@ -484,6 +486,7 @@ class SearchFood extends Component {
 
 	deleteSearch() {
 		this.setState({ searchText: '' })
+		Keyboard.dismiss()
 	}
 
 	renderContent() {

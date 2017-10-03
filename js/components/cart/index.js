@@ -76,9 +76,22 @@ class Cart extends Component {
     
 
     async minus(data, rowID) {
-       if (data.item.quantity == data.item.quantityStep){
-            data.item.quantity == data.item.minOrderedItems
-       }
+        console.log('d3qdasd',data.item.quantity)
+       if (data.item.quantity <= data.item.quantityStep && data.item.quantity != data.item.minOrderedItems){
+        let newArray = this.state.data.slice(0);
+        newArray[rowID] = {
+            ...this.state.data[rowID],
+            quantity: this.state.data[rowID].minOrderedItems ,
+        };
+        this.setState({
+            data: newArray
+        });
+        try {
+            await AsyncStorage.setItem(mConstants.CART, JSON.stringify(newArray));
+        } catch (error) {
+        }
+        this.totalPrice(newArray)
+       } else {
             if (data.item.quantity == data.item.minOrderedItems) {
                 this.setState({disableMinus:true})
                 Alert.alert(
@@ -106,6 +119,7 @@ class Cart extends Component {
                 }
                 this.totalPrice(newArray)
             }
+        }
     }
     renderStar(rate) {
         return (
@@ -186,7 +200,7 @@ class Cart extends Component {
                             <Text style={styles.foodName}>{item.name}</Text>
                             <Text style={styles.price} > {price}đ/ <Text style={styles.perPrice}>{item.quantityStep} {item.unitType}</Text></Text>
                             <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                                <TouchableOpacity disabled={disableMinus} onPress={() => this.minus(data, data.index)} style={styles.buttonMinus}>
+                                <TouchableOpacity disabled={this.state.disabled} onPress={() => this.minus(data, data.index)} style={styles.buttonMinus}>
                                     <Icon style={styles.icon} name="md-remove" />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.plus(data.index)} style={styles.buttonAdd}>

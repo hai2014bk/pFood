@@ -189,7 +189,7 @@ class History extends Component {
                     </View>
                     <View style={styles.flexRow}>
                         <Icon name='ios-pin' style={styles.pinIcon} />
-                        <Text style={[styles.grayText, {marginLeft:5}]}>{item.deliveryAddress}</Text>
+                        <Text style={[styles.grayText, {marginLeft:5, marginRight:5}]}>{item.deliveryAddress}</Text>
                     </View>
                     <Text style={styles.price}>{price}đ</Text>
                 </View>
