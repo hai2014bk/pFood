@@ -158,7 +158,8 @@ export default {
     titleWrap: {
         flexDirection: 'row',
         marginTop: 5,
-        marginLeft: 2
+        marginLeft: 2,
+        marginRight:8,
     },
     moneyIcon: {
         width: 30,
@@ -169,7 +170,7 @@ export default {
         fontSize: 17,
         marginLeft: 8,
         fontWeight: 'bold',
-        marginRight: 0,
+        marginRight: 8,
     },
     hotlineWrap: {
         flexDirection: 'row'

@@ -202,7 +202,7 @@ class StoreProduct extends Component {
 	}
 
 	render() {
-		var imageUrl = bbq
+		var imageUrl = 'https://education.microsoft.com/Assets/images/workspace/placeholder-camera-760x370.png'
 		if (this.props.storeParrent.storeImageUrl) {
 			imageUrl = this.props.storeParrent.storeImageUrl
 		}

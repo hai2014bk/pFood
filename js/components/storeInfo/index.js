@@ -100,29 +100,8 @@ class StoreInfo extends Component {
             </Card>
         )
     }
-    renderContentInfo(header, content) {
-        return (
-            <Grid style={{ flex: 1, borderColor: '#e7e9e5', borderTopWidth: 1 }}>
-                <Row style={{ margin: 10, flex: 1, justifyContent: 'space-between' }}>
-                    <Text style={styles.contentText}>{header}</Text>
-                    <Text style={styles.contentText}>{content}</Text>
-                </Row>
-            </Grid>
-        )
-    }
-    renderInfo() {
-        return (
-            <Card>
-                <View style={styles.cardContainer}>
-                    <Row style={{ alignItems: 'center', flex: 1, borderBottomWidth: 1, borderColor: '#e7e9e5' }}>
-                        <Text style={styles.headerText}> Giờ mở cửa </Text>
-                    </Row>
-                    {this.renderContentInfo('Cả tuần', '07:00 AM - 22:00 PM')}
-                </View>
-            </Card>
-        )
-    }
-    renderContentAddress(header, content) {
+    renderContentAddress(header, content, open,close, title) {
+        var time = open.slice(0,5) + ' - ' + close.slice(0,5)
         return (
             <Grid style={{ flex: 1, borderColor: '#e7e9e5', borderTopWidth: 1 }}>
                 <View style={{ margin: 10, flex: 1, }}>
@@ -131,29 +110,32 @@ class StoreInfo extends Component {
                         <Icon name='ios-pin' style={styles.locationIcon} />
                         <Text style={styles.contentText}>{content}</Text>
                     </Row>
+                    <Row style={{ margin: 10, flex: 1, justifyContent: 'space-between' }}>
+                        <Text style={styles.contentText}>{title}</Text>
+                        <Text style={styles.contentText}>{time}</Text>
+                    </Row>
                 </View>
             </Grid>
         )
     }
     renderAdress() {
         var storeLocations = []
-        if(this.state.store.storeLocations){
-           storeLocations = this.state.store.storeLocations
+        if (this.state.store.storeLocations) {
+            storeLocations = this.state.store.storeLocations
         }
-          
         return (
             <Card>
                 <View style={styles.cardContainer}>
                     <Row style={{ alignItems: 'center', flex: 1, borderBottomWidth: 1, borderColor: '#e7e9e5' }}>
                         <Text style={styles.headerText}> Địa chỉ </Text>
                     </Row>
-                        {storeLocations.map((location) => {
-                            return (
-                                <View key={location.id}>
-                                {this.renderContentAddress(location.name, location.city)}
-                                </View>
-                            );
-                        })}
+                    {storeLocations.map((location) => {
+                        return (
+                            <View key={location.id}>
+                                {this.renderContentAddress(location.name, location.city,location.openTime,location.closeTime,'Giờ mở cửa')}
+                            </View>
+                        );
+                    })}
                 </View>
             </Card>
         )
@@ -182,7 +164,7 @@ class StoreInfo extends Component {
     }
 
     render() {
-        var imageUrl = ''
+        var imageUrl = 'https://education.microsoft.com/Assets/images/workspace/placeholder-camera-760x370.png'
         if (this.props.storeParrent.storeImageUrl) {
             imageUrl = this.props.storeParrent.storeImageUrl
         }
@@ -193,9 +175,6 @@ class StoreInfo extends Component {
                     <View>
                         <Image resizeMode='contain' source={{ uri: imageUrl }} style={styles.foodImage} />
                         {this.renderDecription()}
-                        <View style={{ marginTop: 10 }}>
-                            {this.renderInfo()}
-                        </View>
                         <View style={{ marginTop: 10 }}>
                             {this.renderAdress()}
                         </View>

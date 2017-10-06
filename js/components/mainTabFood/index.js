@@ -32,15 +32,21 @@ class MainTabFood extends Component {
 		this.setState({ selectedTab: tab })
 	}
 	componentDidMount(){
-		console.log(';2dwsadas')
-		BackHandler.addEventListener("hardwareBackPress", this.onBackPress);		
+		BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+		var isVisible = this.props
 	}
 	componentWillUnmount() {
 		BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
 	  }
 	onBackPress(){
+		var isVisible = this.props
+		if (isVisible){		
 		BackHandler.exitApp()
+		console.log('kldasd va',isVisible)
 		 return true;
+		} else {
+			return false
+		}
 	}
 	render() {
 		const navigation = this.props.navigation;

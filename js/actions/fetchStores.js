@@ -16,6 +16,7 @@ export function fetchStoresFailed(error) {
 }
 
 export function fetchStores(params) {
+	console.log('19jasdasdsa',params)
 	let url = mConstants.BASE_URL + 'store/GetStoreList'
 	return dispatch => {
 		APIRequest.APIRequestPOST(url,params,true,

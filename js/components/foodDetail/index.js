@@ -44,6 +44,8 @@ class FoodDetail extends Component {
 		};
 	}
 	componentDidMount() {
+		var isVisible = this.props
+		console.log('kldasd va',isVisible)
 		InteractionManager.runAfterInteractions(() => {
 			this.props.fetch(this.props.food.id)
 		})

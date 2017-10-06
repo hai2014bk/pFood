@@ -24,23 +24,43 @@ class Store extends Component {
             data: [],
             disabled: false,
             banners: [],
-            isLoading: true
+            isLoading: true,
+            index:1,
+            shouldLoadMore:true
         };
     }
     componentDidMount() {
         let params = {}
         params.city = 'Hanoi'
-        params.pageSize = 100
+        params.pageSize = 50
         params.pageIndex = 1
         this.props.fetch(params)
         this.props.fetchBanner()
+    }
+
+    loadMore() {
+        console.log('nasncascsa')
+        if (this.state.shouldLoadMore) {
+            let params = {}
+            params.city = 'Hanoi'
+            params.pageSize = 50
+            params.pageIndex = this.state.index + 1
+            this.setState({ index: this.state.index + 1 })
+            this.props.fetch(params)
+        }
     }
 
     componentWillReceiveProps(props) {
         let items = []
         this.setState({ isLoading: false })
         if (props.fetchStores.success) {
-            this.setState({ data: props.fetchStores.data.model, isLoading: false })
+            if (props.fetchStores.data.model.length < 50) {
+                listData = this.state.data.concat(props.fetchStores.data.model)                
+                this.setState({data:listData,shouldLoadMore:false})
+            } else { 
+                listData = this.state.data.concat(props.fetchStores.data.model)
+                this.setState({ data:listData, shouldLoadMore:true})                
+            }
         }
         if (props.fetchStoreBanner.success) {
             this.setState({ banners: props.fetchStoreBanner.data.model })
@@ -138,7 +158,7 @@ class Store extends Component {
             <Container style={styles.container}>
                 <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
                     rightButton={true} title={'Cửa hàng'} />
-                <Content>
+                <Content style={{flex:1}}>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
                     </View>
@@ -152,6 +172,8 @@ class Store extends Component {
                             data={this.state.data}
                             extraData={this.state.data}
                             keyExtractor={this._keyExtractor}
+                            onEndReached={(distanceFromEnd) => this.loadMore()}
+                            onEndReachedThreshold={0.5}
                             numColumns={2}
                             renderItem={(item) => (
                                 <View style={styles.listItemWrap} >

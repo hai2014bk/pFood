@@ -42,10 +42,12 @@ class RecommendFood extends Component {
 
 		};
 	}
-	componentDidMount() {
+	async componentDidMount() {
 		var date = new Date()
 		let isoDate = date.toISOString().slice(0, -1)
 		// console.log('2321321', isoDate)
+		var isVisible = this.props
+		console.log('kldasd va',isVisible)
 		var params = {
 			"PageSize": "20",
 			"PageIndex": "1",
@@ -57,9 +59,9 @@ class RecommendFood extends Component {
 
 	componentWillReceiveProps(props) {
 		if (props.fetchBannerRecomend.success && !this.state.bannerLoaded) {
-			// console.log('dskjfdaklsf')
+			console.log('dskjfdaklsf',props.fetchBannerRecomend)
 			if (props.fetchBannerRecomend.data.model[0]) {
-				// console.log('dskjfdakls22221')
+				console.log('dskjfdakls22221')
 				var listBanner = props.fetchBannerRecomend.data.model
 				this.setState({ banners: listBanner, bannerLoaded: true })
 			}
@@ -228,6 +230,11 @@ class RecommendFood extends Component {
 			}
 		}
 
+		var shopName = ''
+        if(food.storeProducts[0]){
+            shopName = food.storeProducts[0].store.name
+        }
+
 		var price = this.priceHandle(food.price)
 		var price = this.priceHandle(food.price)
 		for (i in food.productMetaData) {
@@ -251,7 +258,7 @@ class RecommendFood extends Component {
 								<Row style={{ justifyContent: 'space-between', marginTop: 3 }} >
 									<Row style={{ alignSelf: 'flex-end' }} >
 										<Icon name='ios-pin' style={styles.locationIcon} />
-										<Text style={styles.shopNameText}>{food.storeProducts[0].store.name}</Text>
+										<Text style={styles.shopNameText}>{shopName}</Text>
 									</Row>
 									{this.renderOldPrice(data.item)}
 								</Row>

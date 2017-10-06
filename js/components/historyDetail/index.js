@@ -1,6 +1,6 @@
 
 import React, { Component } from "react";
-import { Modal, Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, FlatList, AsyncStorage } from "react-native";
+import {BackHandler, Modal, Image, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard, FlatList, AsyncStorage } from "react-native";
 import { createAccount } from "../../actions/createAccount.js"
 import { connect } from "react-redux";
 import { Card, Container, Content, Text, Button, Icon, Item, Input, View, Form, CheckBox, Label, ListItem, Body, Header, Left, Right, Grid, Col } from "native-base";
@@ -55,7 +55,7 @@ class HistoryDetail extends Component {
         this.props.fetch(params.id)
         console.log('props', params)
     }
-
+	
     componentWillReceiveProps(props) {
         if (props.fetchHistoryDetail.success) {
             var order = props.fetchHistoryDetail.data.model
@@ -193,6 +193,7 @@ class HistoryDetail extends Component {
     onStarRatingPress(rating, item) {
         var order = this.state.order
         var stores = order.orderParcels
+        this.setState({choseItem:item})
         for (st in stores) {
             var store = stores[st]
             var parcelProducts = store.parcelProducts
@@ -233,7 +234,7 @@ class HistoryDetail extends Component {
             stores.parcelProducts = parcelProducts
         }
         order.orderParcels = stores
-        this.setState({ order: order })
+        this.setState({ order: order,openPop:false })
     }
     rate(item, rating) {
         var params = {
@@ -243,6 +244,7 @@ class HistoryDetail extends Component {
         this.props.updateRate(params)
 
         this.showSuccessRate()
+        this.setState({openPop:false})
     }
 
     showSuccessRate() {

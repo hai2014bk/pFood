@@ -35,9 +35,15 @@ class MainTabStore extends Component {
 	componentWillUnmount() {
 		BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
 	  }
-	onBackPress(){
+	  onBackPress(){
+		var isVisible = this.props
+		if (isVisible){		
 		BackHandler.exitApp()
+		console.log('kldasd va',isVisible)
 		 return true;
+		} else {
+			return false
+		}
 	}
 	render() {
 		const navigation = this.props.navigation;

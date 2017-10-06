@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -24,7 +24,9 @@ class StoreList extends Component {
             data: [],
             disabled: false,
             banners: [],
-            isLoading: true
+            isLoading: true,
+            index: 1,
+            shouldLoadMore:true
         };
     }
     componentDidMount() {
@@ -36,11 +38,30 @@ class StoreList extends Component {
         this.props.fetchBanner()
     }
 
+    loadMore() {
+        console.log('nasncascsa')
+        if (this.state.shouldLoadMore) {
+            let params = {}
+            params.city = 'Hanoi'
+            params.pageSize = 50
+            params.pageIndex = this.state.index + 1
+            this.setState({ index: this.state.index + 1 })
+            this.props.fetch(params)
+        }
+    }
+
     componentWillReceiveProps(props) {
         let items = []
         this.setState({ isLoading: false })
+        var listData = this.state.data
         if (props.fetchStores.success) {
-            this.setState({ data: props.fetchStores.data.model, isLoading: false })
+            if (props.fetchStores.data.model.length < 50) {
+                listData = this.state.data.concat(props.fetchStores.data.model)                
+                this.setState({data:listData,shouldLoadMore:false})
+            } else { 
+                listData = this.state.data.concat(props.fetchStores.data.model)
+                this.setState({ data:listData, shouldLoadMore:true})                
+            }
         }
         if (props.fetchStoreBanner.success) {
             this.setState({ banners: props.fetchStoreBanner.data.model })
@@ -78,9 +99,9 @@ class StoreList extends Component {
             )
         }
         return (
-            <View style={{ flex:1, height:137 }} style={styles.slide1}>
-                    <ActivityIndicator style={{height:137}}/>
-                </View>
+            <View style={{ flex: 1, height: 137 }} style={styles.slide1}>
+                <ActivityIndicator style={{ height: 137 }} />
+            </View>
         )
     }
     renderStar(rate) {
@@ -135,11 +156,11 @@ class StoreList extends Component {
 
     render() {
         const navigation = this.props.screenProps.navi;
-        let params  = this.props.storeParrent
+        let params = this.props.storeParrent
         var name = 'Chuỗi cửa hàng của ' + params.name
         return (
             <Container style={styles.container}>
-                <Content>
+                <View style={{ flex: 1 }}>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
                     </View>
@@ -152,6 +173,8 @@ class StoreList extends Component {
                             data={this.state.data}
                             extraData={this.state.data}
                             keyExtractor={this._keyExtractor}
+                            onEndReached={(distanceFromEnd) => this.loadMore()}
+                            onEndReachedThreshold={0.5}
                             numColumns={2}
                             renderItem={(item) => (
                                 <View style={styles.listItemWrap} >
@@ -161,7 +184,7 @@ class StoreList extends Component {
                             }
                         />
                     </View>
-                </Content>
+                </View>
             </Container>
         );
     }

@@ -151,8 +151,9 @@ class Login extends Component {
   }
 
   async loginFb() {
+    this.setState({isLoading:true})               
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1237620896349287', {
-      permissions: ['public_profile', 'email']
+      behavior:'native',permissions: ['public_profile', 'email']
     });
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
@@ -162,12 +163,15 @@ class Login extends Component {
       params.accessToken = token
       params.loginType = 'Facebook'
       params.deviceId = this.state.deviceToken    
-      params.role = 'Consumer'              
+      params.role = 'Consumer'   
       this.props.loginAction(params)
+    } else {
+      this.setState({isLoading:false})                 
     }
   }
 
   async loginGoogle() {
+    this.setState({isLoading:true})               
     try {
       const result = await Expo.Google.logInAsync({
         androidClientId: '514654911028-9ougk5pan5mdb1rrnk3va5uqnpdsu3b1.apps.googleusercontent.com',
@@ -184,8 +188,9 @@ class Login extends Component {
         params.role = 'Consumer'        
         console.log('params', params)
         this.props.loginAction(params)
+              this.setState({isLoading:true})           
       } else {
-        return { cancelled: true };
+        return { cancelled: true,isLoading:false };
       }
     } catch (e) {
       return { error: true };
