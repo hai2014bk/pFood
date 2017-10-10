@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage } from "react-native";
+import { InteractionManager, FlatList, View, TouchableOpacity, Platform, Text, AsyncStorage } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
@@ -7,7 +7,7 @@ import * as appFunction from "../../utils/function"
 import { reRenderHeader } from '../../actions/header'
 import * as mConstants from '../../utils/Constants'
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
-
+import Image from 'react-native-image-progress';
 import { Card, CardItem, Container, Header, Content, Button, Icon, Left, Right, Body, List, ListItem, Thumbnail, CheckBox } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import HeaderContent from "./../headerContent/";

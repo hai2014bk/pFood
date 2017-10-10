@@ -11,7 +11,7 @@ import Swiper from 'react-native-swiper';
 import styles from "./styles";
 import * as appFunction from "../../utils/function"
 import { MapView, Constants, Location, Permissions } from 'expo';
-import { fetchStores } from "../../actions/fetchStores.js"
+import { fetchStoresNear } from "../../actions/fetchStoreNear.js"
 
 const primary = require("../../themes/variable").brandPrimary;
 
@@ -65,9 +65,9 @@ class StoreNear extends Component {
         );
     }
     componentWillReceiveProps(props) {
-        if (props.fetchStores.success) {
+        if (props.fetchStoresNear.success) {
             this.setState({ isLoading: false })
-            this.creatMaker(props.fetchStores.data.model)
+            this.creatMaker(props.fetchStoresNear.data.model)
         }
     }
 
@@ -135,6 +135,7 @@ class StoreNear extends Component {
     }
     render() {
         const navigation = this.props.screenProps.navi
+        console.log('sdsadas',this.state.dataMakers)
         return (
             <Container style={styles.container}>
                 <HeaderContent leftIcon={'menu'} navi={this.props.screenProps.navi} leftButton={() => navigation.navigate("DrawerOpen")}
@@ -166,12 +167,12 @@ class StoreNear extends Component {
 
 function bindActions(dispatch) {
     return {
-        fetch: (params) => dispatch(fetchStores(params)),
+        fetch: (params) => dispatch(fetchStoresNear(params)),
     };
 }
 
 const mapStateToProps = state => ({
-    fetchStores: state.fetchStores,
+    fetchStoresNear: state.fetchStoresNear,
 });
 
 export default connect(mapStateToProps, bindActions)(StoreNear);

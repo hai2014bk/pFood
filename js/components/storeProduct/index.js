@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {InteractionManager, FlatList, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {InteractionManager, FlatList, Platform, Dimensions, AsyncStorage, Text, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -19,6 +19,7 @@ const steak = 'http://www.chadwicksbutchers.com/wp-content/uploads/fillet-steak-
 const pizza = 'http://media.bizwebmedia.net/Sites/99161/data/upload/2016/t2/than_bo_uc_1.jpg?20'
 const bbq = 'http://nutright.com/blog/wp-content/uploads/2017/01/bbq-islamabad.jpg'
 const money = require("../../../images/money.png");
+import Image from 'react-native-image-progress';
 
 class StoreProduct extends Component {
 	constructor(props) {

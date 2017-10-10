@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ActivityIndicator, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
+import { ActivityIndicator, InteractionManager, FlatList, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchProduct } from "../../actions/fetchProduct.js"
@@ -8,7 +8,7 @@ import { CheckBox, Card, CardItem, Container, Header, Content, Button, Icon, Lef
 import { Grid, Col, Row } from "react-native-easy-grid";
 import { reRenderHeader } from '../../actions/header'
 import  TouchAble  from 'react-native-touch-able'
-
+import Image from 'react-native-image-progress';
 import Spinner from "react-native-loading-spinner-overlay";
 import * as appFunction from "../../utils/function"
 import * as mConstants from '../../utils/Constants'

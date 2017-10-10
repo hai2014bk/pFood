@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import FadeIn from 'react-native-fade-in-image';
 import HeaderContent from "./../headerContent/";
+import Image from 'react-native-image-progress';
+
 import {
 	LazyloadScrollView,
 	LazyloadView,

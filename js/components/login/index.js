@@ -152,7 +152,7 @@ class Login extends Component {
 
   async loginFb() {
     this.setState({isLoading:true})               
-    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1237620896349287', {
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('809591582535382', {
       behavior:'native',permissions: ['public_profile', 'email']
     });
     if (type === 'success') {
@@ -176,11 +176,12 @@ class Login extends Component {
       const result = await Expo.Google.logInAsync({
         androidClientId: '514654911028-9ougk5pan5mdb1rrnk3va5uqnpdsu3b1.apps.googleusercontent.com',
         iosClientId: '514654911028-9ougk5pan5mdb1rrnk3va5uqnpdsu3b1.apps.googleusercontent.com',
+        androidStandaloneAppClientId: '514654911028-nj3mtjc5lpoa3ehvam1pl0j83i418k0q.apps.googleusercontent.com',
+        iosStandaloneAppClientId: '514654911028-cth4am95goqh08ck3lfqrijkgq5ds5ik.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       });
       console.log('result', result)
       if (result.type === 'success') {
-
         let params = {}
         params.accessToken = result.accessToken
         params.loginType = 'Google'

@@ -46,8 +46,12 @@ export type Action =
 	| {	type: "	SEARCH_POPULAR_SUCCESS"}
 	| {	type: "	SEARCH_POPULAR_FAILED"}
 	| { type: "	DUPLICATE_FAILED" }
+	| { type: "FETCH_NEARSTORES_SUCCESS" }
+	| { type: "FETCH_NEARSTORES_FAILED" }
+	| { type: "FETCH_STORESSEARCH_FAILED"}
+	| { type: "FETCH_STORESSEARCH_SUCCESS"}
 	
-	
+
 	;
 
 export type Dispatch = (action: Action | Array<Action>) => any;

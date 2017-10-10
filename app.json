@@ -2,24 +2,33 @@
 	"expo": {
 		"sdkVersion": "19.0.0",
 		"icon": "./images/icon.png",
-		"slug": "pfood",
+		"slug": "Farmous-customer",
 		"loading": {
 			"hideExponentText": true,
 			"backgroundImage": "./images/launchImages/splashscreen.png"
 		},
+		"facebookScheme":"fb8809591582535382",    		
 		"orientation": "portrait",
 		"primaryColor": "#cccccc",
 		"packagerOpts": {
 			"assetExts": ["ttf"]
 		},
 		"ios": {
-			"bundleIdentifier": "io.market.nativebase.geekyants.flatappui"
+			"bundleIdentifier": "com.Farmous.customer",
+			"config":{
+				"googleSignIn":{
+					"reservedClientId":"514654911028-cth4am95goqh08ck3lfqrijkgq5ds5ik.apps.googleusercontent.com"
+				}
+			}
 		},
 		"android": {
-			"package": "io.market.nativebase.geekyants.flatappui",
+			"package": "com.Farmous.customer",
 			"config": {
 				"googleMaps": {
 				  "apiKey": "AIzaSyDFXchmJX9nP2q6mHKNpkJgzVSgfBOsky0"
+				},
+				"googleSignIn":{
+					"certificateHash":"637AB616DFEC0951D23E66C38B3382728BF5B17C"
 				}
 		}
 		},

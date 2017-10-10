@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, Text, Image, View, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, Text, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, Header, Container, Content } from "native-base";
@@ -13,6 +13,7 @@ import { fetchPurveyor } from "../../actions/fetchPurveyor.js"
 import Spinner from 'react-native-loading-spinner-overlay';
 import Communications from 'react-native-communications';
 import Carousel from 'react-native-banner-carousel';
+import Image from 'react-native-image-progress';
 
 const BannerWidth = Dimensions.get('window').width;
 const primary = require("../../themes/variable").brandPrimary;

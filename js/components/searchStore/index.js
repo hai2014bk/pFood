@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { Keyboard,ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Button, Input, Item, Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -8,12 +8,13 @@ import HeaderContent from "./../headerContent/";
 import Swiper from 'react-native-swiper';
 import { connect } from "react-redux";
 import styles from "./styles";
-import { fetchStores } from "../../actions/fetchStores.js"
+import { fetchStoresSearch } from "../../actions/fetchStoresSearch.js"
 import { fetchBanner } from "../../actions/fetchStoresDetail.js"
 import { fetchPurveyor } from "../../actions/fetchPurveyor.js"
 import Spinner from 'react-native-loading-spinner-overlay';
 import Communications from 'react-native-communications';
 import Carousel from 'react-native-banner-carousel';
+import Image from 'react-native-image-progress';
 
 const BannerWidth = Dimensions.get('window').width;
 const primary = require("../../themes/variable").brandPrimary;
@@ -37,15 +38,15 @@ class SearchStore extends Component {
     componentWillReceiveProps(props) {
         let items = []
         this.setState({ isLoading: false })
-        if (props.fetchStores.success) {
-            this.setState({ data: props.fetchStores.data.model, isLoading: false })
+        if (props.fetchStoresSearch.success) {
+            this.setState({ data: props.fetchStoresSearch.data.model, isLoading: false })
             console.log('start data', this.state.data)
         }
         if (props.fetchPurveyor.success) {
             this.setState({ dataPurveyor: props.fetchPurveyor.data.model, isLoading: false })
             console.log('start data', this.state.dataPurveyor)
         }
-        if (!props.fetchStores.success && !props.fetchPurveyor.success) {
+        if (!props.fetchStoresSearch.success && !props.fetchPurveyor.success) {
             this.setState({ isLoading: false })
             setTimeout(() => { Alert.alert('Lỗi mạng', 'Có vấn đề khi kết nối đến máy chủ') }, 200)
         }
@@ -119,7 +120,7 @@ class SearchStore extends Component {
     renderStore() {
         console.log('âffaf', this.state.dataPurveyor)
         if (this.state.searchClick == true) {
-            if (!this.state.data[0]) {
+            if (!this.state.data) {
                 return (
                     <View style={styles.bodyWrap}>
                         <View style={styles.titleWrap}>
@@ -248,6 +249,7 @@ class SearchStore extends Component {
         this.setState({ isLoading: true })
         this.props.fetch(params)
         this.props.fetchPurvey(params)
+        Keyboard.dismiss()
         this.setState({ searchClick: true })
     }
     deleteSearch() {
@@ -277,14 +279,14 @@ class SearchStore extends Component {
 }
 function bindActions(dispatch) {
     return {
-        fetch: (params) => dispatch(fetchStores(params)),
+        fetch: (params) => dispatch(fetchStoresSearch(params)),
         fetchBanner: () => dispatch(fetchBanner()),
         fetchPurvey: (params) => dispatch(fetchPurveyor(params))
     };
 }
 
 const mapStateToProps = state => ({
-    fetchStores: state.fetchStores,
+    fetchStoresSearch: state.fetchStoresSearch,
     fetchStoreBanner: state.fetchStoreBanner,
     fetchPurveyor: state.fetchPurveyor
 });

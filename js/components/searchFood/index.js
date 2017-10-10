@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Keyboard, ActivityIndicator, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
+import { Keyboard, ActivityIndicator, InteractionManager, FlatList, View, TouchableOpacity, Platform, Text, AsyncStorage, Alert } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { searchFood, searchPopular } from "../../actions/searchFood.js"
@@ -12,6 +12,7 @@ import * as appFunction from "../../utils/function"
 import * as mConstants from '../../utils/Constants'
 import { connect } from "react-redux";
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
+import Image from 'react-native-image-progress';
 
 import styles from "./styles";
 
@@ -313,7 +314,8 @@ class SearchFood extends Component {
 			price = this.priceHandle(item.price)
 		}
 		var shopName = ''
-		if(item.storeProducts){
+		if(item.storeProducts[0]){
+			console.log('12idsadsad',item)
             shopName = item.storeProducts[0].store.name
         }
 

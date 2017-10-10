@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Alert, InteractionManager, FlatList, Image, View, TouchableOpacity, Platform, Text, AsyncStorage } from "react-native";
+import {Alert, InteractionManager, FlatList, View, TouchableOpacity, Platform, Text, AsyncStorage } from "react-native";
 import StarRating from 'react-native-star-rating';
 import { NavigationActions } from "react-navigation";
 import { fetchTrending } from "../../actions/fetchTrending.js"
@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 import * as appFunction from "../../utils/function"
 import * as mConstants from '../../utils/Constants'
+import Image from 'react-native-image-progress';
 
 
 import styles from "./styles";

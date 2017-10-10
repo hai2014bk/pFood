@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -13,6 +13,7 @@ import { fetchBanner } from "../../actions/fetchStoresDetail.js"
 import Spinner from 'react-native-loading-spinner-overlay';
 import Communications from 'react-native-communications';
 import Carousel from 'react-native-banner-carousel';
+import Image from 'react-native-image-progress';
 
 const BannerWidth = Dimensions.get('window').width;
 const primary = require("../../themes/variable").brandPrimary;
@@ -158,6 +159,7 @@ class StoreList extends Component {
         const navigation = this.props.screenProps.navi;
         let params = this.props.storeParrent
         var name = 'Chuỗi cửa hàng của ' + params.name
+        console.log('úadsadsaavcadsasca',this.state.data)
         return (
             <Container style={styles.container}>
                 <View style={{ flex: 1 }}>

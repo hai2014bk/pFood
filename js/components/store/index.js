@@ -154,6 +154,7 @@ class Store extends Component {
     render() {
         const navigation = this.props.screenProps.navi;
         let params  = this.props.navigation.state
+        console.log('úadsadsaavcadsasca',this.state.data)        
         return (
             <Container style={styles.container}>
                 <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
