@@ -130,9 +130,9 @@ class HistoryDetail extends Component {
             color = 'orange'
             statusText = 'Đang chờ'
         }
-        if (status == 'Delivered') {
-            color = 'green'
-            statusText = 'Đã thanh toán'
+        if (status == 'Delivering') {
+            color = 'blue'
+            statusText = 'Đang giao'
         }
         if (status == 'Canceled') {
             color = 'red'

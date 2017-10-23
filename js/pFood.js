@@ -29,8 +29,8 @@ import StoreNear from "./components/storeNear";
 const App = ({ initialRouteName }) => {
 const Main = StackNavigator(
 	{
-		Drawer: { screen: Drawer, gesturesEnabled: false },
-		Login : {screen: Login},
+		Login : {screen: Login},		
+		Drawer: { screen: Drawer },
 		SignUp: {screen:SignUp},
 		ForgetPassword: {screen:ForgetPassword},
 		Cart: { screen: Cart },	

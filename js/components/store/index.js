@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import {ActivityIndicator, Dimensions, Alert, FlatList, InteractionManager, AsyncStorage, Text, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -13,6 +13,7 @@ import { fetchBanner } from "../../actions/fetchStoresDetail.js"
 import Spinner from 'react-native-loading-spinner-overlay';
 import Communications from 'react-native-communications';
 import Carousel from 'react-native-banner-carousel';
+import Image from 'react-native-image-progress';
 
 const BannerWidth = Dimensions.get('window').width;
 const primary = require("../../themes/variable").brandPrimary;
@@ -26,7 +27,8 @@ class Store extends Component {
             banners: [],
             isLoading: true,
             index:1,
-            shouldLoadMore:true
+            shouldLoadMore:true,
+            isLoadingStore:true
         };
     }
     componentDidMount() {
@@ -39,27 +41,27 @@ class Store extends Component {
     }
 
     loadMore() {
-        console.log('nasncascsa')
         if (this.state.shouldLoadMore) {
             let params = {}
             params.city = 'Hanoi'
             params.pageSize = 50
             params.pageIndex = this.state.index + 1
-            this.setState({ index: this.state.index + 1 })
+            this.setState({isLoadingStore:true, index: this.state.index + 1 })
             this.props.fetch(params)
+            console.log('qwdsadqwdasdasdas',params)            
         }
     }
 
     componentWillReceiveProps(props) {
         let items = []
         this.setState({ isLoading: false })
-        if (props.fetchStores.success) {
+        if (props.fetchStores.success && this.state.isLoadingStore) {
             if (props.fetchStores.data.model.length < 50) {
                 listData = this.state.data.concat(props.fetchStores.data.model)                
-                this.setState({data:listData,shouldLoadMore:false})
+                this.setState({data:listData,shouldLoadMore:false,isLoading:false})
             } else { 
                 listData = this.state.data.concat(props.fetchStores.data.model)
-                this.setState({ data:listData, shouldLoadMore:true})                
+                this.setState({ data:listData, shouldLoadMore:true,isLoadingStore:false})                
             }
         }
         if (props.fetchStoreBanner.success) {
@@ -129,11 +131,15 @@ class Store extends Component {
     }
     renderStoreList(data) {
         var item = data.item
+        var imageUrl = 'https://education.microsoft.com/Assets/images/workspace/placeholder-camera-760x370.png'
+        if(item.storeImageUrl){
+            imageUrl = item.storeImageUrl
+        }       
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openStoreDetail(item) }} style={{ flex: 1 }} >
                 <View style={styles.itemWrap}>
                     <View style={styles.imageWrap}>
-                        <Image source={{ uri: item.storeImageUrl }} style={styles.image} resizeMode='contain' />
+                        <Image source={{ uri: imageUrl }} style={styles.image} resizeMode='contain' />
                     </View>
                     <View style={styles.descriptionWrap}>
                         <Text style={styles.products}>{item.name}</Text>
@@ -154,7 +160,7 @@ class Store extends Component {
     render() {
         const navigation = this.props.screenProps.navi;
         let params  = this.props.navigation.state
-        console.log('úadsadsaavcadsasca',this.state.data)        
+        console.log('úadsadsaavcadsasca',this.state.data.length)        
         return (
             <Container style={styles.container}>
                 <HeaderContent leftIcon={'menu'} navi={navigation} leftButton={() => navigation.navigate("DrawerOpen")} navi={navigation}
@@ -172,9 +178,9 @@ class Store extends Component {
                         <FlatList style={{}}
                             data={this.state.data}
                             extraData={this.state.data}
-                            keyExtractor={this._keyExtractor}
+                            keyExtractor={item=>item.id}
                             onEndReached={(distanceFromEnd) => this.loadMore()}
-                            onEndReachedThreshold={0.5}
+                            onEndReachedThreshold={0.9}
                             numColumns={2}
                             renderItem={(item) => (
                                 <View style={styles.listItemWrap} >

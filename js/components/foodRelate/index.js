@@ -195,6 +195,11 @@ class FoodRelate extends Component {
                 }
             }
         }
+        var shopName = ''
+        if(item.storeProducts[0]){
+			console.log('12idsadsad',item)
+            shopName = item.storeProducts[0].store.name
+        }
         return (
             <TouchableOpacity disabled={this.state.disabled} onPress={() => { this.openDetail(item) }}>
                 <Card style={styles.card}>
@@ -213,7 +218,7 @@ class FoodRelate extends Component {
                                     <Text style={styles.unit}> {item.quantityStep} {item.unitType}</Text>
                                     <Row style={{ alignItems: 'flex-end' }} >
                                         <Icon name='ios-pin' style={styles.locationIcon} />
-                                        <Text style={styles.shopName}>{item.storeProducts[0].store.name}</Text>
+                                        <Text style={styles.shopName}>{shopName}</Text>
                                         </Row>
                                     <View style={{ width: 50 }}>
                                         {this.renderStar(item.avgRate)}

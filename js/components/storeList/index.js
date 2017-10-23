@@ -162,7 +162,7 @@ class StoreList extends Component {
         console.log('úadsadsaavcadsasca',this.state.data)
         return (
             <Container style={styles.container}>
-                <View style={{ flex: 1 }}>
+                <Content style={{ flex: 1 }}>
                     <View style={styles.pageBanner}>
                         {this.pageBanner()}
                     </View>
@@ -186,7 +186,7 @@ class StoreList extends Component {
                             }
                         />
                     </View>
-                </View>
+                </Content>
             </Container>
         );
     }

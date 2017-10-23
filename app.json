@@ -7,7 +7,7 @@
 			"hideExponentText": true,
 			"backgroundImage": "./images/launchImages/splashscreen.png"
 		},
-		"facebookScheme":"fb8809591582535382",    		
+		"facebookScheme":"fb809591582535382",    		
 		"orientation": "portrait",
 		"primaryColor": "#cccccc",
 		"packagerOpts": {
@@ -17,7 +17,7 @@
 			"bundleIdentifier": "com.Farmous.customer",
 			"config":{
 				"googleSignIn":{
-					"reservedClientId":"514654911028-cth4am95goqh08ck3lfqrijkgq5ds5ik.apps.googleusercontent.com"
+					"reservedClientId":"com.googleusercontent.apps.869302665056-echp9o5ip8ennc9l0smcltegu0uk6gfe"
 				}
 			}
 		},
@@ -25,10 +25,11 @@
 			"package": "com.Farmous.customer",
 			"config": {
 				"googleMaps": {
-				  "apiKey": "AIzaSyDFXchmJX9nP2q6mHKNpkJgzVSgfBOsky0"
+				  "apiKey": "AIzaSyCJnJoHYh3wt8sUaNi14J-U9e_BVqE92q8"
 				},
 				"googleSignIn":{
-					"certificateHash":"637AB616DFEC0951D23E66C38B3382728BF5B17C"
+					"certificateHash":"637AB616DFEC0951D23E66C38B3382728BF5B17C",
+					"apiKey":"AIzaSyCJnJoHYh3wt8sUaNi14J-U9e_BVqE92q8"
 				}
 		}
 		},

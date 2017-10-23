@@ -1,6 +1,6 @@
 {
   "name": "Farmous",
-  "version": "1.0.0",
+  "version": "1.7.0",
   "private": true,
   "devDependencies": {
     "babel-eslint": "^6.1.2",

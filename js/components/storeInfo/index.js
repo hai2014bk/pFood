@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Platform, Dimensions, AsyncStorage, Text, Image, View, TouchableOpacity } from "react-native";
+import { Alert, Platform, Dimensions, AsyncStorage, Text, View, TouchableOpacity } from "react-native";
 import * as mConstants from '../../utils/Constants'
 import StarRating from 'react-native-star-rating';
 import { Card, Button, Icon, List, ListItem, Header, Container, Content, Thumbnail } from "native-base";
@@ -10,6 +10,7 @@ import Swiper from 'react-native-swiper';
 import styles from "./styles";
 import { fetchStoresDetail } from "../../actions/fetchStoresDetail.js"
 import * as appFunction from "../../utils/function"
+import Image from 'react-native-image-progress';
 
 const primary = require("../../themes/variable").brandPrimary;
 

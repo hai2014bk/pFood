@@ -67,6 +67,7 @@ class StoreNear extends Component {
     componentWillReceiveProps(props) {
         if (props.fetchStoresNear.success) {
             this.setState({ isLoading: false })
+            console.log('sadwdasdv331',props.fetchStoresNear.data.model)
             this.creatMaker(props.fetchStoresNear.data.model)
         }
     }
@@ -148,6 +149,7 @@ class StoreNear extends Component {
                     showsUserLocation={true}
                     onPress={()=> {this.setState({showCallout:false})}}
                     onMarkerPress={(e)=> {this.setState({showCallout:true})}}
+                    showsMyLocationButton={true}
                 >
                     {this.state.dataMakers.map(marker =>
                         <MapView.Marker

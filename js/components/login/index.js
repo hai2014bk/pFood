@@ -87,8 +87,6 @@ class Login extends Component {
   }
 
   loginClick() {
-
-
     if (this.state.email && this.state.password) {
       if ((!this.checkSpaceAll(this.state.email))) {
         if (!this.validateEmail(this.state.email) || !this.validateUnicode(this.state.email)) {
@@ -137,8 +135,6 @@ class Login extends Component {
       }, 200)
     }
   }
-
-
   componentWillReceiveProps(props) {
     console.log('props', props)
     this.setState({ isLoading: false, disabled: false })
@@ -153,7 +149,7 @@ class Login extends Component {
   async loginFb() {
     this.setState({isLoading:true})               
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('809591582535382', {
-      behavior:'native',permissions: ['public_profile', 'email']
+      behavior:'system',permissions: ['public_profile', 'email']
     });
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
@@ -174,10 +170,8 @@ class Login extends Component {
     this.setState({isLoading:true})               
     try {
       const result = await Expo.Google.logInAsync({
-        androidClientId: '514654911028-9ougk5pan5mdb1rrnk3va5uqnpdsu3b1.apps.googleusercontent.com',
-        iosClientId: '514654911028-9ougk5pan5mdb1rrnk3va5uqnpdsu3b1.apps.googleusercontent.com',
-        androidStandaloneAppClientId: '514654911028-nj3mtjc5lpoa3ehvam1pl0j83i418k0q.apps.googleusercontent.com',
-        iosStandaloneAppClientId: '514654911028-cth4am95goqh08ck3lfqrijkgq5ds5ik.apps.googleusercontent.com',
+        androidStandaloneAppClientId: '869302665056-lielon900ehjup01nueih7805ubkqi0j.apps.googleusercontent.com',
+        iosStandaloneAppClientId: '869302665056-echp9o5ip8ennc9l0smcltegu0uk6gfe.apps.googleusercontent.com',
         scopes: ['profile', 'email'],
       });
       console.log('result', result)
@@ -194,6 +188,7 @@ class Login extends Component {
         return { cancelled: true,isLoading:false };
       }
     } catch (e) {
+      return { isLoading:false };
       return { error: true };
     }
   }
@@ -283,6 +278,7 @@ class Login extends Component {
                   style={
                     styles.icon
                   }
+                  disabled={true}
                   onPress={() => this.loginGoogle()}
                 >
                   <Entypo name="google--with-circle" size={50} color='white' />
